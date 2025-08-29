@@ -1,0 +1,76 @@
+# ========================
+# Python バイトコード・キャッシュ
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ========================
+# 仮想環境関連（venv, pipenv, poetry）
+# ========================
+.venv/
+venv/
+env/
+ENV/
+.poetry/
+.pipenv/
+Pipfile.lock
+poetry.lock
+
+# ========================
+# 環境ファイル・機密情報（APIキーなど）
+# ========================
+.env
+.env.*
+*.env
+config/secrets.env*
+config/secrets.test.env
+config/secrets.prod.env
+config/*.secret.env
+config/*.private.env
+config/gcp_credentials.json
+config/credentials.json
+
+# ========================
+# ログ・一時ファイル・スワップ
+# ========================
+logs/
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.orig
+
+# ========================
+# テスト・カバレッジ・ビルドキャッシュ
+# ========================
+.pytest_cache/
+coverage/
+htmlcov/
+.tox/
+.nox/
+dist/
+build/
+.eggs/
+*.egg-info/
+*.cover
+
+# ========================
+# Jupyter Notebook チェックポイント
+# ========================
+.ipynb_checkpoints/
+
+# ========================
+# エディタ・IDE関連
+# ========================
+.vscode/
+.idea/
+*.code-workspace
+
+# ========================
+# OS・その他不要ファイル
+# ========================
+.DS_Store
+Thumbs.db
+desktop.ini

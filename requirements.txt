@@ -1,0 +1,4 @@
+pytz
+requests
+websocket-client
+python-dotenv
