@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>そろばんトレーニング</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>そろばんトレーニング</h1>
+
+<!-- HOME -->
+<div id="home">
+  <button onclick="goFlash()">フラッシュ暗算</button>
+  <button onclick="goPrint()">問題作成</button>
+  <button onclick="goRead()">読み上げ</button>
+</div>
+
+<!-- 種目選択 -->
+<div id="typeSelect" style="display:none;">
+  <h2>種目を選んでください</h2>
+  <button onclick="selectType('mitori')">見取り算</button>
+  <button onclick="selectType('kake')">乗算</button>
+  <button onclick="selectType('wari')">除算</button>
+</div>
+
+<!-- レベル選択 -->
+<div id="levelSelect" style="display:none;">
+  <h2>級・段を選んでください</h2>
+  <div id="levelButtons"></div>
+</div>
+
+<!-- 実行 -->
+<div id="app" style="display:none;">
+  <h1 id="display"></h1>
+
+  <!-- フラッシュ表示用 -->
+  <div id="printArea"></div>
+
+  <!-- ★入力エリア -->
+  <div id="answerArea" style="display:none;">
+    <input id="answerInput" type="number" placeholder="答えを入力">
+    <button onclick="checkAnswer()">答え合わせ</button>
+  </div>
+
+  <!-- 判定 -->
+  <p id="judge"></p>
+
+  <button onclick="backHome()">ホームへ戻る</button>
+</div>
+
+<script src="levelConfig.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
