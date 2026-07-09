@@ -1,7 +1,6 @@
 @font-face {
   font-family: 'Soloburn';
-  src: url('./Soloburn.woff') format('woff'),
-       url('./Soloburn.ttf') format('truetype');
+  src: url('Soloburn.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
