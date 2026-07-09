@@ -1,0 +1,44 @@
+{
+  "ALUUSDT": {
+    "tick_size": 1e-06,
+    "qty_step": 1.0,
+    "min_qty": 1.0,
+    "min_notional": 5.0
+  },
+  "PROMPTUSDT": {
+    "tick_size": 1e-05,
+    "qty_step": 1.0,
+    "min_qty": 1.0,
+    "min_notional": 5.0
+  },
+  "BRUSDT": {
+    "tick_size": 1e-05,
+    "qty_step": 1.0,
+    "min_qty": 1.0,
+    "min_notional": 5.0
+  },
+  "BSWUSDT": {
+    "tick_size": 1e-05,
+    "qty_step": 1.0,
+    "min_qty": 1.0,
+    "min_notional": 5.0
+  },
+  "DAMUSDT": {
+    "tick_size": 1e-05,
+    "qty_step": 1.0,
+    "min_qty": 1.0,
+    "min_notional": 5.0
+  },
+  "FLOCKUSDT": {
+    "tick_size": 1e-05,
+    "qty_step": 1.0,
+    "min_qty": 1.0,
+    "min_notional": 5.0
+  },
+  "LOOKSUSDT": {
+    "tick_size": 1e-05,
+    "qty_step": 0.1,
+    "min_qty": 0.1,
+    "min_notional": 5.0
+  }
+}
