@@ -82,6 +82,9 @@ function getConfig(levelName) {
 
 // 問題生成
 function startEngine() {
+
+  document.getElementById("homeBtn").style.display = "none";
+
   state.numbers = [];
   state.index = 0;
   state.answer = 0;
@@ -137,6 +140,8 @@ function checkAnswer() {
   } else {
     judge.textContent = "不正解：正解は " + state.answer;
   }
+
+  document.getElementById("homeBtn").style.display = "block";
 }
 
 function randDigit(digit) {
@@ -147,8 +152,15 @@ function randDigit(digit) {
 
 function backHome() {
   document.getElementById("home").style.display = "block";
+  document.getElementById("typeSelect").style.display = "none";
+  document.getElementById("levelSelect").style.display = "none";
   document.getElementById("app").style.display = "none";
+
   document.getElementById("display").textContent = "";
+  document.getElementById("judge").textContent = "";
+  document.getElementById("answerInput").value = "";
+
+  document.getElementById("homeBtn").style.display = "block";
 }
 
 document.getElementById("answerInput")
