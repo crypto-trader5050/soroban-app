@@ -51,9 +51,22 @@ function createLevelButtons() {
 
   const levels = [];
 
-  for (let i = 20; i >= 1; i--) levels.push(i + "級");
+  // 38級〜1級
+  for (let i = 38; i >= 1; i--) {
+    levels.push(i + "級");
+  }
+
+  // 初段〜十段
   levels.push("初段");
-  for (let i = 1; i <= 10; i++) levels.push(i + "段");
+  levels.push("弐段");
+  levels.push("参段");
+  levels.push("四段");
+  levels.push("五段");
+  levels.push("六段");
+  levels.push("七段");
+  levels.push("八段");
+  levels.push("九段");
+  levels.push("十段");
 
   levels.forEach(lv => {
     const btn = document.createElement("button");
