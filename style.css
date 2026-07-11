@@ -35,21 +35,18 @@ body {
    フラッシュ表示（メイン）
 ===================== */
 #display {
-  font-size: 100px;          /* 少し大きく */
-  margin-top: 120px;
-  margin-bottom: 40px;
-
-  letter-spacing: 12px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   color: #00ff00;
+  white-space: nowrap;
+  max-width: 95%;
+  overflow: hidden;
+  text-align: center;
 
-  /* ★光る感じ（重要） */
-  text-shadow:
-    0 0 5px #00ff00,
-    0 0 10px #00ff00,
-    0 0 20px #00ff00;
-
-  transition: opacity 0.1s linear;
+  letter-spacing: 6px;
 }
 
 /* =====================
@@ -106,4 +103,22 @@ button:hover {
 ===================== */
 .hidden {
   display: none;
+}
+
+/* =====================
+   題目表示（例：1題目）
+===================== */
+#questionTitle {
+  font-size: 36px;
+  color: #00ff00;
+  margin-top: 100px;
+}
+
+/* =====================
+   級表示（例：38級）
+===================== */
+#levelInfo {
+  font-size: 22px;
+  color: #00ff00;
+  margin-bottom: 20px;
 }

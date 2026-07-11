@@ -55,10 +55,10 @@ function flashBeep() {
 
 // カウントダウン音
 function countdownBeep(callback) {
-  let count = 3;
+  let count = 2;
 
   function step() {
-    beep(600, 0.08);
+    beep(600, 0.1);
 
     if (count === 0) {
       callback();
@@ -66,7 +66,7 @@ function countdownBeep(callback) {
     }
 
     count--;
-    setTimeout(step, 200);
+    setTimeout(step, 1000);
   }
 
   step();
@@ -174,20 +174,41 @@ function runFlash() {
     return;
   }
 
-  el.textContent = state.numbers[state.index];
+  const num = state.numbers[state.index];
+  const numStr = String(num);
+
+  // ★数字表示
+  el.textContent = numStr;
+
+  // =====================
+  // ★桁に応じてサイズ変更（重要）
+  // =====================
+  const len = numStr.length;
+
+  if (len <= 4) {
+    el.style.fontSize = "100px";
+  } else if (len <= 8) {
+    el.style.fontSize = "80px";
+  } else if (len <= 12) {
+    el.style.fontSize = "60px";
+  } else {
+    el.style.fontSize = "45px"; // ←16桁対応
+  }
+
   flashBeep();
 
-  // ★ここ追加
+  // =====================
+  // フェード表示
+  // =====================
   el.style.opacity = 1;
 
   setTimeout(() => {
-    el.style.opacity = 0;   // ←フェードアウト
+    el.style.opacity = 0;
   }, state.speed * 0.4);
 
   state.index++;
   setTimeout(runFlash, state.speed);
 }
-
 // =====================
 // 回答チェック
 // =====================
