@@ -121,9 +121,6 @@ function startEngine() {
 
 function generateQuestion() {
 
-  if (isRunning) return;
-  isRunning = true;
-
   state.timers.forEach(t => clearTimeout(t));
   state.timers = [];
 
