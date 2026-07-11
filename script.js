@@ -18,7 +18,10 @@ let state = {
 // =====================
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-function beep(freq = 800, duration = 0.1) {
+// =====================
+// ★完全同期用の音
+// =====================
+function beepAt(time, freq = 800, duration = 0.1) {
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
 
@@ -26,50 +29,26 @@ function beep(freq = 800, duration = 0.1) {
   gain.connect(audioCtx.destination);
 
   osc.frequency.value = freq;
-  osc.type = "sine";
-
-  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + duration);
-}
-
-// フラッシュ音（高音・短い）
-function flashBeep() {
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
   osc.type = "square";
-  osc.frequency.value = 1200;
 
-  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+  gain.gain.setValueAtTime(0.3, time);
+  gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
 
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.05);
+  osc.start(time);
+  osc.stop(time + duration);
 }
 
 // カウントダウン音
 function countdownBeep(callback) {
-  let count = 2;
+  const start = audioCtx.currentTime + 0.2;
 
-  function step() {
-    beep(600, 0.1);
+  // 2回分予約（完全等間隔）
+  beepAt(start, 600);
+  beepAt(start + 1, 700);
 
-    if (count === 0) {
-      callback();
-      return;
-    }
-
-    count--;
-    setTimeout(step, 1000);
-  }
-
-  step();
+  // 表示開始タイミングも合わせる
+  const delay = (start + 2 - audioCtx.currentTime) * 1000;
+  setTimeout(callback, delay);
 }
 
 // =====================
@@ -138,6 +117,9 @@ function startEngine() {
 
 function generateQuestion() {
 
+  document.getElementById("questionInfo").textContent =
+    `${state.currentQuestion}問目 / 全${state.questionCount}問`;
+
   document.getElementById("homeBtn").style.display = "none";
 
   state.numbers = [];
@@ -168,47 +150,48 @@ function generateQuestion() {
 function runFlash() {
   const el = document.getElementById("display");
 
-  if (state.index >= state.numbers.length) {
+  const startAudioTime = audioCtx.currentTime + 0.2;
+
+  state.numbers.forEach((num, i) => {
+    const t = startAudioTime + i * (state.speed / 1000);
+
+    // =====================
+    // 音を正確に予約
+    // =====================
+    beepAt(t, 1200, 0.05);
+
+    // =====================
+    // 表示を同期
+    // =====================
+    setTimeout(() => {
+      const numStr = String(num);
+      el.textContent = numStr;
+
+      // 桁に応じてサイズ
+      const len = numStr.length;
+      if (len <= 4) el.style.fontSize = "100px";
+      else if (len <= 8) el.style.fontSize = "80px";
+      else if (len <= 12) el.style.fontSize = "60px";
+      else el.style.fontSize = "45px";
+
+      el.style.opacity = 1;
+
+      setTimeout(() => {
+        el.style.opacity = 0;
+      }, state.speed * 0.4);
+
+    }, i * state.speed);
+  });
+
+  // =====================
+  // 最後
+  // =====================
+  setTimeout(() => {
     el.textContent = "？";
     document.getElementById("answerArea").style.display = "block";
-    return;
-  }
-
-  const num = state.numbers[state.index];
-  const numStr = String(num);
-
-  // ★数字表示
-  el.textContent = numStr;
-
-  // =====================
-  // ★桁に応じてサイズ変更（重要）
-  // =====================
-  const len = numStr.length;
-
-  if (len <= 4) {
-    el.style.fontSize = "100px";
-  } else if (len <= 8) {
-    el.style.fontSize = "80px";
-  } else if (len <= 12) {
-    el.style.fontSize = "60px";
-  } else {
-    el.style.fontSize = "45px"; // ←16桁対応
-  }
-
-  flashBeep();
-
-  // =====================
-  // フェード表示
-  // =====================
-  el.style.opacity = 1;
-
-  setTimeout(() => {
-    el.style.opacity = 0;
-  }, state.speed * 0.4);
-
-  state.index++;
-  setTimeout(runFlash, state.speed);
+  }, state.numbers.length * state.speed);
 }
+
 // =====================
 // 回答チェック
 // =====================
