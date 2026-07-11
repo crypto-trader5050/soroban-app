@@ -10,7 +10,8 @@ let state = {
   speed: 1000,
   questionCount: 15,
   currentQuestion: 0,
-  correctCount: 0
+  correctCount: 0,
+  timers: []
 };
 
 // =====================
@@ -44,7 +45,7 @@ function countdownBeep(callback) {
 
   // 2回分予約（完全等間隔）
   beepAt(start, 600);
-  beepAt(start + 1, 700);
+  beepAt(start + 1, 600);
 
   // 表示開始タイミングも合わせる
   const delay = (start + 2 - audioCtx.currentTime) * 1000;
@@ -117,6 +118,9 @@ function startEngine() {
 
 function generateQuestion() {
 
+  state.timers.forEach(t => clearTimeout(t));
+  state.timers = [];
+
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion}問目 / 全${state.questionCount}問`;
 
@@ -163,7 +167,7 @@ function runFlash() {
     // =====================
     // 表示を同期
     // =====================
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const numStr = String(num);
       el.textContent = numStr;
 
@@ -176,20 +180,26 @@ function runFlash() {
 
       el.style.opacity = 1;
 
-      setTimeout(() => {
+      const fadeTimer = setTimeout(() => {
         el.style.opacity = 0;
       }, state.speed * 0.4);
 
+      state.timers.push(fadeTimer);
+
     }, i * state.speed);
+
+    state.timers.push(timer);
   });
 
   // =====================
   // 最後
   // =====================
-  setTimeout(() => {
+  const timer = setTimeout(() => {
     el.textContent = "？";
     document.getElementById("answerArea").style.display = "block";
   }, state.numbers.length * state.speed);
+
+  state.timers.push(timer);
 }
 
 // =====================
