@@ -1,14 +1,21 @@
+// =====================
 // 状態管理
+// =====================
 let state = {
   type: null,
   level: null,
   numbers: [],
   index: 0,
   answer: 0,
-  speed: 500
+  speed: 1000,
+  questionCount: 15,
+  currentQuestion: 0,
+  correctCount: 0
 };
 
+// =====================
 // 音
+// =====================
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function beep(freq = 800, duration = 0.1) {
@@ -28,13 +35,51 @@ function beep(freq = 800, duration = 0.1) {
   osc.stop(audioCtx.currentTime + duration);
 }
 
-// HOME → フラッシュ
+// フラッシュ音（高音・短い）
+function flashBeep() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.type = "square";
+  osc.frequency.value = 1200;
+
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.05);
+}
+
+// カウントダウン音
+function countdownBeep(callback) {
+  let count = 3;
+
+  function step() {
+    beep(600, 0.08);
+
+    if (count === 0) {
+      callback();
+      return;
+    }
+
+    count--;
+    setTimeout(step, 200);
+  }
+
+  step();
+}
+
+// =====================
+// 画面遷移
+// =====================
 function goFlash() {
   document.getElementById("home").style.display = "none";
   document.getElementById("typeSelect").style.display = "block";
 }
 
-// 種目選択
 function selectType(type) {
   state.type = type;
 
@@ -44,29 +89,20 @@ function selectType(type) {
   createLevelButtons();
 }
 
-// レベルボタン生成
 function createLevelButtons() {
   const area = document.getElementById("levelButtons");
   area.innerHTML = "";
 
   const levels = [];
 
-  // 38級〜1級
   for (let i = 38; i >= 1; i--) {
     levels.push(i + "級");
   }
 
-  // 初段〜十段
-  levels.push("初段");
-  levels.push("弐段");
-  levels.push("参段");
-  levels.push("四段");
-  levels.push("五段");
-  levels.push("六段");
-  levels.push("七段");
-  levels.push("八段");
-  levels.push("九段");
-  levels.push("十段");
+  levels.push(
+    "初段","弐段","参段","四段","五段",
+    "六段","七段","八段","九段","十段"
+  );
 
   levels.forEach(lv => {
     const btn = document.createElement("button");
@@ -76,7 +112,6 @@ function createLevelButtons() {
   });
 }
 
-// レベル選択
 function selectLevel(level) {
   state.level = level;
 
@@ -88,13 +123,20 @@ function selectLevel(level) {
   startEngine();
 }
 
-// LEVEL_CONFIG取得
+// =====================
+// メイン処理
+// =====================
 function getConfig(levelName) {
   return LEVEL_CONFIG.find(l => l.level === levelName);
 }
 
-// 問題生成
 function startEngine() {
+  state.currentQuestion = 1;
+  state.correctCount = 0;
+  generateQuestion();
+}
+
+function generateQuestion() {
 
   document.getElementById("homeBtn").style.display = "none";
 
@@ -108,22 +150,21 @@ function startEngine() {
 
   const config = getConfig(state.level);
 
-  const digit = config.digit;
-  const length = config.length;
-  const speed = config.speed;
+  state.speed = config.speed;
 
-  state.speed = speed;
-
-  for (let i = 0; i < length; i++) {
-    const n = randDigit(digit);
+  for (let i = 0; i < config.length; i++) {
+    const n = randDigit(config.digit);
     state.numbers.push(n);
     state.answer += n;
   }
 
-  runFlash();
+  // ★カウント後スタート
+  countdownBeep(runFlash);
 }
 
-// フラッシュ
+// =====================
+// フラッシュ表示
+// =====================
 function runFlash() {
   const el = document.getElementById("display");
 
@@ -133,30 +174,55 @@ function runFlash() {
     return;
   }
 
-  beep();
   el.textContent = state.numbers[state.index];
+  flashBeep();
+
+  // ★ここ追加
+  el.style.opacity = 1;
 
   setTimeout(() => {
-    el.textContent = "";
+    el.style.opacity = 0;   // ←フェードアウト
   }, state.speed * 0.4);
 
   state.index++;
   setTimeout(runFlash, state.speed);
 }
 
+// =====================
+// 回答チェック
+// =====================
 function checkAnswer() {
   const input = document.getElementById("answerInput").value;
   const judge = document.getElementById("judge");
 
   if (Number(input) === state.answer) {
     judge.textContent = "正解！";
+    state.correctCount++;
   } else {
     judge.textContent = "不正解：正解は " + state.answer;
   }
 
+  if (state.currentQuestion < state.questionCount) {
+    state.currentQuestion++;
+    setTimeout(generateQuestion, 1200);
+  } else {
+    showResult();
+  }
+}
+
+// =====================
+// 結果表示
+// =====================
+function showResult() {
+  document.getElementById("display").textContent =
+    `結果：${state.correctCount} / ${state.questionCount}`;
+
   document.getElementById("homeBtn").style.display = "block";
 }
 
+// =====================
+// その他
+// =====================
 function randDigit(digit) {
   const min = Math.pow(10, digit - 1);
   const max = Math.pow(10, digit) - 1;

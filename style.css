@@ -1,47 +1,109 @@
-@font-face {
+/* =====================
+   フォント
+===================== */
+@font-face { 
   font-family: 'Soloburn';
   src: url('Soloburn.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
+/* =====================
+   全体（フラッシュ仕様）
+===================== */
 body {
-  font-family: sans-serif;
-  text-align: center;
   margin: 0;
   padding: 20px;
+  text-align: center;
+
+  background-color: black;   /* ←重要 */
+  color: #00ff00;            /* ←緑 */
+
+  font-family: sans-serif;
 }
 
-/* 数字系は全部Soloburn */
+/* =====================
+   数字フォント統一
+===================== */
 #display,
-#printArea {
+#printArea,
+#answerInput {
   font-family: "Soloburn", monospace;
 }
 
-/* フラッシュ表示 */
+/* =====================
+   フラッシュ表示（メイン）
+===================== */
 #display {
-  font-size: 90px;
-  margin: 40px 0;
-  letter-spacing: 10px; 
+  font-size: 100px;          /* 少し大きく */
+  margin-top: 120px;
+  margin-bottom: 40px;
+
+  letter-spacing: 12px;
+
+  color: #00ff00;
+
+  /* ★光る感じ（重要） */
+  text-shadow:
+    0 0 5px #00ff00,
+    0 0 10px #00ff00,
+    0 0 20px #00ff00;
+
+  transition: opacity 0.1s linear;
 }
 
-/* 印刷表示 */
+/* =====================
+   入力欄
+===================== */
+#answerInput {
+  font-size: 28px;
+  padding: 10px;
+  margin-top: 20px;
+  text-align: center;
+
+  background: black;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+}
+
+/* =====================
+   判定表示
+===================== */
+#judge {
+  margin-top: 20px;
+  font-size: 22px;
+}
+
+/* =====================
+   ボタン
+===================== */
+button {
+  font-size: 16px;
+  padding: 10px 15px;
+  margin: 5px;
+
+  background: black;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #003300;
+}
+
+/* =====================
+   印刷エリア（使うなら）
+===================== */
 #printArea {
   font-size: 20px;
   line-height: 1.6;
   margin-top: 20px;
 }
 
-/* ボタン */
-button {
-  font-size: 16px;
-  padding: 10px 15px;
-  margin: 5px;
-}
-
-#answerInput {
-  font-size: 24px;
-  padding: 10px;
-  margin-top: 20px;
-  text-align: center;
+/* =====================
+   不要な文字を消す用（任意）
+===================== */
+.hidden {
+  display: none;
 }
