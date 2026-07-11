@@ -101,7 +101,9 @@ function selectLevel(level) {
 
   audioCtx.resume();
 
-  startEngine();
+  document.fonts.ready.then(() => {
+    startEngine();
+  });
 }
 
 // =====================
@@ -118,6 +120,9 @@ function startEngine() {
 }
 
 function generateQuestion() {
+
+  if (isRunning) return;
+  isRunning = true;
 
   state.timers.forEach(t => clearTimeout(t));
   state.timers = [];
@@ -146,7 +151,10 @@ function generateQuestion() {
   }
 
   // ★カウント後スタート
-  countdownBeep(runFlash);
+  countdownBeep(() => {
+    runFlash();
+    isRunning = false;
+  });
 }
 
 // =====================
