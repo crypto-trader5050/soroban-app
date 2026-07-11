@@ -11,7 +11,9 @@ let state = {
   questionCount: 15,
   currentQuestion: 0,
   correctCount: 0,
-  timers: []
+  timers: [],
+  nextTimer: null,
+  runId: 0,
 };
 
 // =====================
@@ -102,7 +104,11 @@ function selectLevel(level) {
   audioCtx.resume();
 
   document.fonts.ready.then(() => {
-    startEngine();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        startEngine();
+      });
+    });
   });
 }
 
@@ -120,6 +126,13 @@ function startEngine() {
 }
 
 function generateQuestion() {
+
+  state.runId++;
+
+  if (state.nextTimer) {
+    clearTimeout(state.nextTimer);
+    state.nextTimer = null;
+  }
 
   state.timers.forEach(t => clearTimeout(t));
   state.timers = [];
@@ -150,7 +163,6 @@ function generateQuestion() {
   // ★カウント後スタート
   countdownBeep(() => {
     runFlash();
-    isRunning = false;
   });
 }
 
@@ -158,7 +170,18 @@ function generateQuestion() {
 // フラッシュ表示
 // =====================
 function runFlash() {
+
+  if (!state.numbers.length) return;
+
+  const myRun = state.runId;
+
   const el = document.getElementById("display");
+
+    // ★フォント強制適用
+  el.style.fontFamily = "soloburn";
+  el.textContent = "0";
+  el.offsetHeight; // ←これで強制反映
+  el.textContent = "";
 
   const startAudioTime = audioCtx.currentTime + 0.2;
 
@@ -170,10 +193,13 @@ function runFlash() {
     // =====================
     beepAt(t, 1200, 0.05);
 
+    const delay = (t - audioCtx.currentTime) * 1000;
+
     // =====================
     // 表示を同期
     // =====================
     const timer = setTimeout(() => {
+      if (myRun !== state.runId) return;
       const numStr = String(num);
       el.textContent = numStr;
 
@@ -187,12 +213,13 @@ function runFlash() {
       el.style.opacity = 1;
 
       const fadeTimer = setTimeout(() => {
+        if (myRun !== state.runId) return;
         el.style.opacity = 0;
       }, state.speed * 0.4);
 
       state.timers.push(fadeTimer);
 
-    }, i * state.speed);
+    }, delay);
 
     state.timers.push(timer);
   });
@@ -200,13 +227,17 @@ function runFlash() {
   // =====================
   // 最後
   // =====================
+  const endTime = startAudioTime + state.numbers.length * (state.speed / 1000);
+  const delay = (endTime - audioCtx.currentTime) * 1000;
+
   const timer = setTimeout(() => {
+    if (myRun !== state.runId) return;
     el.textContent = "？";
     document.getElementById("answerArea").style.display = "block";
-  }, state.numbers.length * state.speed);
+  }, delay);
 
-  state.timers.push(timer);
-}
+    state.timers.push(timer);
+  }
 
 // =====================
 // 回答チェック
@@ -224,7 +255,11 @@ function checkAnswer() {
 
   if (state.currentQuestion < state.questionCount) {
     state.currentQuestion++;
-    setTimeout(generateQuestion, 1200);
+
+    state.nextTimer = setTimeout(() => {
+      generateQuestion();
+    }, 1200);
+
   } else {
     showResult();
   }
