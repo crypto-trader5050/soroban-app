@@ -49,7 +49,8 @@ function countdownBeep(callback) {
 
   // 表示開始タイミングも合わせる
   const delay = (start + 2 - audioCtx.currentTime) * 1000;
-  setTimeout(callback, delay);
+  const timer = setTimeout(callback, delay);
+  state.timers.push(timer);
 }
 
 // =====================
