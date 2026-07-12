@@ -211,7 +211,7 @@ function runFlash() {
     // =====================
     const timer = setTimeout(() => {
       if (myRun !== state.runId) return;
-      const numStr = String(num);
+      const numStr = num.toLocaleString();
       el.textContent = numStr;
 
       // 桁に応じてサイズ
@@ -258,7 +258,7 @@ function checkAnswer() {
   const input = inputEl.value;
   const judge = document.getElementById("judge");
 
-  if (Number(input) === state.answer) {
+  if (Number(input.replace(/,/g, "")) === state.answer) {
     judge.textContent = "正解！";
     state.correctCount++;
 
@@ -334,8 +334,12 @@ document.getElementById("keypad").addEventListener("click", (e) => {
   const num = e.target.dataset.num;
 
   if (num !== undefined) {
-    tapSound(); // 🔊 ここ
-    inputEl.value += num;
+    tapSound();
+
+    let value = inputEl.value.replace(/,/g, "");
+    value += num;
+
+    inputEl.value = Number(value).toLocaleString();
   }
 
   if (e.target.id === "clear") {
