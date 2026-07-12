@@ -180,6 +180,8 @@ function generateQuestion() {
 // =====================
 function runFlash() {
 
+  document.getElementById("answerArea").style.display = "none";
+
   if (!state.numbers.length) return;
 
   const myRun = state.runId;
