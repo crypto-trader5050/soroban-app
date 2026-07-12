@@ -21,9 +21,7 @@ let state = {
 // =====================
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-// =====================
-// ★完全同期用の音
-// =====================
+// ① 基本音（先に定義）
 function beepAt(time, freq = 800, duration = 0.1) {
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
@@ -39,6 +37,17 @@ function beepAt(time, freq = 800, duration = 0.1) {
 
   osc.start(time);
   osc.stop(time + duration);
+}
+
+// ② それを使う関数（後）
+function tapSound() {
+  beepAt(audioCtx.currentTime, 500, 0.02);
+}
+
+// ③ 正解音
+function playCorrectSound() {
+  beepAt(audioCtx.currentTime, 1000, 0.08);
+  beepAt(audioCtx.currentTime + 0.08, 1400, 0.1);
 }
 
 // カウントダウン音
@@ -243,26 +252,41 @@ function runFlash() {
 // 回答チェック
 // =====================
 function checkAnswer() {
-  const input = document.getElementById("answerInput").value;
+  const inputEl = document.getElementById("answerInput");
+  const input = inputEl.value;
   const judge = document.getElementById("judge");
 
   if (Number(input) === state.answer) {
     judge.textContent = "正解！";
     state.correctCount++;
+
+    // 🔊 正解音
+    playCorrectSound();
+
+    // 💡 視覚フィードバック（光る）
+    inputEl.style.background = "#003300";
+
   } else {
     judge.textContent = "不正解：正解は " + state.answer;
   }
 
-  if (state.currentQuestion < state.questionCount) {
-    state.currentQuestion++;
+  // ⏱ 少しだけ余韻を残す
+  setTimeout(() => {
+    inputEl.style.background = "black";
+    inputEl.value = ""; // ←入力リセット
 
-    state.nextTimer = setTimeout(() => {
-      generateQuestion();
-    }, 1200);
+    if (state.currentQuestion < state.questionCount) {
+      state.currentQuestion++;
 
-  } else {
-    showResult();
-  }
+      state.nextTimer = setTimeout(() => {
+        generateQuestion();
+      }, 800); // ←少し速くしてテンポUP
+
+    } else {
+      showResult();
+    }
+
+  }, 300); // ←この300msが「気持ちよさ」
 }
 
 // =====================
@@ -301,3 +325,24 @@ document.getElementById("answerInput")
   .addEventListener("keydown", e => {
     if (e.key === "Enter") checkAnswer();
   });
+
+const inputEl = document.getElementById("answerInput");
+
+document.getElementById("keypad").addEventListener("click", (e) => {
+  const num = e.target.dataset.num;
+
+  if (num !== undefined) {
+    tapSound(); // 🔊 ここ
+    inputEl.value += num;
+  }
+
+  if (e.target.id === "clear") {
+    tapSound(); // 🔊
+    inputEl.value = "";
+  }
+
+  if (e.target.id === "ok") {
+    tapSound(); // 🔊
+    checkAnswer();
+  }
+});
