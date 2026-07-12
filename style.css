@@ -40,6 +40,8 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 
+  font-family: "Soloburn", monospace;
+
   color: #00ff00;
   white-space: nowrap;
   max-width: 95%;
@@ -52,6 +54,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  pointer-events: none;
 }
 
 /* =====================
@@ -77,6 +81,9 @@ body {
   grid-template-columns: repeat(3, 80px);
   gap: 12px;
   justify-content: center;
+
+  position: relative;
+  z-index: 10;
 }
 
 #keypad button {
@@ -89,6 +96,9 @@ body {
   border: 1px solid #00ff00;
 
   transition: 0.1s;
+
+  position: relative;
+  z-index: 11;
 }
 
 /* ホバー */
