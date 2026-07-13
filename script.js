@@ -16,6 +16,11 @@ let state = {
   runId: 0,
 };
 
+let levelList = [];
+let currentLevelIndex = 0;
+
+const PASS_SCORE = 10;
+
 // =====================
 // 音
 // =====================
@@ -85,18 +90,18 @@ function createLevelButtons() {
   const area = document.getElementById("levelButtons");
   area.innerHTML = "";
 
-  const levels = [];
+  levelList = [];
 
   for (let i = 38; i >= 1; i--) {
-    levels.push(i + "級");
+    levelList.push(i + "級");
   }
 
-  levels.push(
+  levelList.push(
     "初段","弐段","参段","四段","五段",
     "六段","七段","八段","九段","十段"
   );
 
-  levels.forEach(lv => {
+  levelList.forEach(lv => {
     const btn = document.createElement("button");
     btn.textContent = lv;
     btn.onclick = () => selectLevel(lv);
@@ -106,6 +111,11 @@ function createLevelButtons() {
 
 function selectLevel(level) {
   state.level = level;
+
+  currentLevelIndex = levelList.indexOf(level);
+
+  state.correctCount = 0;
+  state.currentQuestion = 0;
 
   document.getElementById("levelSelect").style.display = "none";
   document.getElementById("app").style.display = "block";
@@ -189,7 +199,7 @@ function runFlash() {
   const el = document.getElementById("display");
 
     // ★フォント強制適用
-  el.style.fontFamily = "soloburn";
+  el.style.fontFamily = '"Soloburn", monospace';
   el.textContent = "0";
   el.offsetHeight; // ←これで強制反映
   el.textContent = "";
@@ -295,10 +305,79 @@ function checkAnswer() {
 // 結果表示
 // =====================
 function showResult() {
-  document.getElementById("display").textContent =
-    `結果：${state.correctCount} / ${state.questionCount}`;
+  const display = document.getElementById("display");
+  const judge = document.getElementById("judge");
 
-  document.getElementById("homeBtn").style.display = "block";
+  const isPass = state.correctCount >= PASS_SCORE;
+  const rate = Math.round(
+    (state.correctCount / state.questionCount) * 100
+  );
+
+  if (isPass) playCorrectSound();
+
+  // 問題表示を結果に変更
+  display.innerHTML = `
+    <div style="font-size:28px;">
+      結果<br>
+      ${state.correctCount} / ${state.questionCount}<br>
+      正答率：${rate}%
+    </div>
+  `;
+
+  judge.innerHTML = "";
+
+  // 合否表示
+  judge.innerHTML = isPass
+    ? "🎉 合格！"
+    : "❌ 不合格";
+  
+  if (isPass) {
+    const next = levelList[currentLevelIndex + 1] || "なし";
+    judge.innerHTML += `<br>次：${next}`;
+  }
+
+  // ボタン表示切り替え
+  const answerArea = document.getElementById("answerArea");
+  answerArea.style.display = "none";
+
+  const homeBtn = document.getElementById("homeBtn");
+  homeBtn.style.display = "block";
+
+  // 追加ボタン（動的に出す）
+  const extraBtn = document.createElement("button");
+
+  if (isPass) {
+    extraBtn.textContent = "次の級へ ▶";
+    extraBtn.onclick = nextLevel;
+  } else {
+    extraBtn.textContent = "もう一度挑戦";
+    extraBtn.onclick = retry;
+  }
+
+  judge.appendChild(document.createElement("br"));
+  judge.appendChild(extraBtn);
+}
+
+function nextLevel() {
+  state.correctCount = 0;
+  state.currentQuestion = 0;
+
+  currentLevelIndex++;
+
+  if (currentLevelIndex >= levelList.length) {
+    alert("すべてクリア！");
+    backHome();
+    return;
+  }
+
+  selectLevel(levelList[currentLevelIndex]);
+}
+
+function retry() {
+  state.correctCount = 0;
+  state.currentQuestion = 0;
+
+  startEngine();
 }
 
 // =====================
