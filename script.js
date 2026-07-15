@@ -163,7 +163,9 @@ function generateQuestion() {
 
   state.numbers = [];
   state.index = 0;
-  state.answer = 0;
+
+  // ✅ 修正①
+  state.answer = BigInt(0);
 
   document.getElementById("answerArea").style.display = "none";
   document.getElementById("judge").textContent = "";
@@ -176,10 +178,11 @@ function generateQuestion() {
   for (let i = 0; i < config.length; i++) {
     const n = randDigit(config.digit);
     state.numbers.push(n);
-    state.answer += n;
+
+    // ✅ 修正②
+    state.answer += BigInt(n);
   }
 
-  // ★カウント後スタート
   countdownBeep(() => {
     runFlash();
   });
@@ -268,37 +271,39 @@ function checkAnswer() {
   const input = inputEl.value;
   const judge = document.getElementById("judge");
 
-  if (Number(input.replace(/,/g, "")) === state.answer) {
+  const clean = input.replace(/,/g, "");
+
+  // 空入力ガード
+  if (clean === "") return;
+
+  // ✅ ここ修正
+  if (BigInt(clean) === BigInt(state.answer)) {
     judge.textContent = "正解！";
     state.correctCount++;
 
-    // 🔊 正解音
     playCorrectSound();
-
-    // 💡 視覚フィードバック（光る）
     inputEl.style.background = "#003300";
 
   } else {
     judge.textContent = "不正解：正解は " + state.answer;
   }
 
-  // ⏱ 少しだけ余韻を残す
   setTimeout(() => {
     inputEl.style.background = "black";
-    inputEl.value = ""; // ←入力リセット
+    inputEl.value = "";
 
     if (state.currentQuestion < state.questionCount) {
       state.currentQuestion++;
 
       state.nextTimer = setTimeout(() => {
         generateQuestion();
-      }, 800); // ←少し速くしてテンポUP
+      }, 800);
 
     } else {
       showResult();
     }
 
-  }, 300); // ←この300msが「気持ちよさ」
+  }, 300);
 }
 
 // =====================
