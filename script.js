@@ -433,7 +433,7 @@ document.getElementById("keypad").addEventListener("click", (e) => {
     let value = inputEl.value.replace(/,/g, "");
     value += num;
 
-    inputEl.value = Number(value).toLocaleString();
+    inputEl.value = BigInt(value).toLocaleString();
   }
 
   if (e.target.id === "clear") {
