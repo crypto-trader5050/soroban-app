@@ -275,7 +275,7 @@ function checkAnswer() {
     if (len <= 6) inputEl.style.fontSize = "36px";
     else if (len <= 10) inputEl.style.fontSize = "30px";
     else if (len <= 14) inputEl.style.fontSize = "24px";
-    else inputEl.style.fontSize = "18px";
+    else inputEl.style.fontSize = "16px";
   });
 
   const input = inputEl.value;
