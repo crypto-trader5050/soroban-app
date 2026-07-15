@@ -63,9 +63,10 @@ body {
 ===================== */
 #answerInput {
   font-size: 36px;
-  width: 260px;
+  width: 320px;
+  max-width: 90%;
   padding: 15px;
-  text-align: center;
+  text-align: right;
   margin-bottom: 15px;
 
   background: black;
