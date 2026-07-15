@@ -434,11 +434,13 @@ document.getElementById("keypad").addEventListener("click", (e) => {
     value += num;
 
     inputEl.value = BigInt(value).toLocaleString();
+    inputEl.dispatchEvent(new Event("input"));
   }
 
   if (e.target.id === "clear") {
     tapSound(); // 🔊
     inputEl.value = "";
+    inputEl.dispatchEvent(new Event("input"));
   }
 
   if (e.target.id === "ok") {
