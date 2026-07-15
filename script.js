@@ -269,15 +269,6 @@ function runFlash() {
 function checkAnswer() {
   const inputEl = document.getElementById("answerInput");
 
-  inputEl.addEventListener("input", () => {
-    const len = inputEl.value.replace(/,/g, "").length;
-
-    if (len <= 6) inputEl.style.fontSize = "36px";
-    else if (len <= 10) inputEl.style.fontSize = "28px";
-    else if (len <= 14) inputEl.style.fontSize = "22px";
-    else inputEl.style.fontSize = "14px";
-  });
-
   const input = inputEl.value;
   const judge = document.getElementById("judge");
 
@@ -423,6 +414,15 @@ document.getElementById("answerInput")
   });
 
 const inputEl = document.getElementById("answerInput");
+
+inputEl.addEventListener("input", () => {
+  const len = inputEl.value.replace(/,/g, "").length;
+
+  if (len <= 6) inputEl.style.fontSize = "36px";
+  else if (len <= 10) inputEl.style.fontSize = "28px";
+  else if (len <= 14) inputEl.style.fontSize = "22px";
+  else inputEl.style.fontSize = "12px"; // ←17桁対応
+});
 
 document.getElementById("keypad").addEventListener("click", (e) => {
   const num = e.target.dataset.num;
