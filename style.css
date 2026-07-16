@@ -3,7 +3,9 @@
 ===================== */
 @font-face { 
   font-family: 'Soloburn';
-  src: url('Soloburn.woff2') format('woff2');
+  src:
+    url('Soloburn.woff2') format('woff2'),
+    url('Soloburn.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
