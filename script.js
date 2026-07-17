@@ -139,8 +139,22 @@ function getConfig(levelName) {
 }
 
 function startEngine() {
+
   state.currentQuestion = 1;
   state.correctCount = 0;
+
+  // 👇ここが超重要
+  if (state.type === "kake") {
+    startMultiplication(); // ← 乗算へ
+    return;
+  }
+
+  if (state.type === "wari") {
+    startDivision(); // ← 将来用
+    return;
+  }
+
+  // デフォルト（見取り算）
   generateQuestion();
 }
 
