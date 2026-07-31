@@ -325,6 +325,11 @@ function checkAnswer() {
 // 結果表示
 // =====================
 function showResult() {
+
+  state.runId++;
+  state.timers.forEach(t => clearTimeout(t));
+  state.timers = [];
+
   const display = document.getElementById("display");
   const judge = document.getElementById("judge");
 
