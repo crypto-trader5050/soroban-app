@@ -160,6 +160,8 @@ function startEngine() {
 
 function generateQuestion() {
 
+  console.log("現在:", state.currentQuestion, "/", state.questionCount);
+
   state.runId++;
 
   if (state.nextTimer) {
@@ -288,10 +290,25 @@ function checkAnswer() {
 
   const clean = input.replace(/,/g, "");
 
-  // 空入力ガード
-  if (clean === "") return;
+  // 👇 ★ここに追加！！
+  if (clean === "") {
+    judge.textContent = "未入力";
 
-  // ✅ ここ修正
+    setTimeout(() => {
+      inputEl.value = "";
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+        generateQuestion();
+      } else {
+        showResult();
+      }
+    }, 300);
+
+    return;
+  }
+
+  // ↓ ここから元の処理
   if (BigInt(clean) === BigInt(state.answer)) {
     judge.textContent = "正解！";
     state.correctCount++;
@@ -467,3 +484,5 @@ document.getElementById("keypad").addEventListener("click", (e) => {
     checkAnswer();
   }
 });
+
+document.getElementById("ok").addEventListener("click", checkAnswer);
