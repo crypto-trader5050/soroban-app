@@ -339,7 +339,7 @@ function showResult() {
   display.innerHTML = `
     <div style="font-size:28px;">
       結果<br>
-      ${state.correctCount} / ${state.questionCount}<br>
+      ${state.questionCount}問中 ${state.correctCount}問正解<br>
       正答率：${rate}%
     </div>
   `;
