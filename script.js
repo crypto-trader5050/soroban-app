@@ -351,6 +351,11 @@ function checkAnswer() {
 // =====================
 function showResult() {
 
+  if (state.nextTimer) {
+    clearTimeout(state.nextTimer);
+    state.nextTimer = null;
+  }
+
   state.runId++;
   state.timers.forEach(t => clearTimeout(t));
   state.timers = [];
