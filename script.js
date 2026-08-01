@@ -272,6 +272,8 @@ function runFlash() {
 
   const timer = setTimeout(() => {
     if (myRun !== state.runId) return;
+    if (!state.numbers.length) return;
+
     el.textContent = "？";
     document.getElementById("answerArea").style.display = "block";
   }, delay);
@@ -283,6 +285,12 @@ function runFlash() {
 // 回答チェック
 // =====================
 function checkAnswer() {
+
+  if (state.nextTimer) {
+    clearTimeout(state.nextTimer);
+    state.nextTimer = null;
+  }
+
   const inputEl = document.getElementById("answerInput");
 
   const input = inputEl.value;
@@ -499,5 +507,3 @@ document.getElementById("keypad").addEventListener("click", (e) => {
     checkAnswer();
   }
 });
-
-document.getElementById("ok").addEventListener("click", checkAnswer);
