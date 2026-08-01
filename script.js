@@ -160,6 +160,11 @@ function startEngine() {
 
 function generateQuestion() {
 
+  if (state.currentQuestion > state.questionCount) {
+    console.log("生成停止：結果表示中");
+    return;
+  }
+
   console.log("現在:", state.currentQuestion, "/", state.questionCount);
 
   state.runId++;
@@ -350,6 +355,8 @@ function checkAnswer() {
 // 結果表示
 // =====================
 function showResult() {
+
+  state.currentQuestion = state.questionCount + 1;
 
   if (state.nextTimer) {
     clearTimeout(state.nextTimer);
