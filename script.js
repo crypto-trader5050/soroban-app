@@ -366,6 +366,17 @@ function showResult() {
     </div>
   `;
 
+  // ★ 強制固定（これが効く）
+  setTimeout(() => {
+    display.innerHTML = `
+      <div style="font-size:32px; line-height:1.6;">
+        📊 結果<br>
+        ${state.questionCount}問中 ${state.correctCount}問正解<br>
+        正答率：${rate}%
+      </div>
+    `;
+  }, 50);
+
   judge.innerHTML = "";
 
   // 合否表示
@@ -398,6 +409,10 @@ function showResult() {
 
   judge.appendChild(document.createElement("br"));
   judge.appendChild(extraBtn);
+
+  // ★ 完全停止
+  state.numbers = [];
+  state.index = 0;
 }
 
 function nextLevel() {
