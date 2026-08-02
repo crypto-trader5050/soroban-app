@@ -160,6 +160,11 @@ function startEngine() {
 
 function generateQuestion() {
 
+  if (state.isFinished) {
+    console.log("完全停止中");
+    return;
+  }
+
   if (state.currentQuestion > state.questionCount) {
     console.log("生成停止：結果表示中");
     return;
@@ -308,6 +313,9 @@ function checkAnswer() {
     judge.textContent = "未入力";
 
     setTimeout(() => {
+
+      if (state.isFinished) return;
+
       inputEl.value = "";
 
       if (state.currentQuestion < state.questionCount) {
@@ -334,6 +342,9 @@ function checkAnswer() {
   }
 
   setTimeout(() => {
+
+    if (state.isFinished) return;
+
     inputEl.style.background = "black";
     inputEl.value = "";
 
@@ -341,6 +352,9 @@ function checkAnswer() {
       state.currentQuestion++;
 
       state.nextTimer = setTimeout(() => {
+
+        if (state.isFinished) return;
+
         generateQuestion();
       }, 800);
 
@@ -388,17 +402,6 @@ function showResult() {
     </div>
   `;
 
-  // ★ 強制固定（これが効く）
-  setTimeout(() => {
-    display.innerHTML = `
-      <div style="font-size:32px; line-height:1.6;">
-        📊 結果<br>
-        ${state.questionCount}問中 ${state.correctCount}問正解<br>
-        正答率：${rate}%
-      </div>
-    `;
-  }, 50);
-
   judge.innerHTML = "";
 
   // 合否表示
@@ -436,7 +439,7 @@ function showResult() {
   state.numbers = [];
   state.index = 0;
 
-  console.log("表示内容:", display.innerHTML);
+  state.isFinished = true;
 }
 
 function nextLevel() {
