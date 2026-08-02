@@ -112,6 +112,8 @@ function createLevelButtons() {
 function selectLevel(level) {
   state.level = level;
 
+   state.isFinished = false;
+
   currentLevelIndex = levelList.indexOf(level);
 
   state.correctCount = 0;
@@ -139,6 +141,8 @@ function getConfig(levelName) {
 }
 
 function startEngine() {
+
+  state.isFinished = false;
 
   state.currentQuestion = 1;
   state.correctCount = 0;
@@ -219,6 +223,11 @@ function generateQuestion() {
 // =====================
 function runFlash() {
 
+  if (state.isFinished) {
+    console.log("runFlash停止");
+    return;
+  }
+
   document.getElementById("answerArea").style.display = "none";
 
   if (!state.numbers.length) return;
@@ -249,6 +258,8 @@ function runFlash() {
     // 表示を同期
     // =====================
     const timer = setTimeout(() => {
+
+      if (state.isFinished) return;
       if (myRun !== state.runId) return;
       const numStr = num.toLocaleString();
       el.textContent = numStr;
@@ -263,6 +274,8 @@ function runFlash() {
       el.style.opacity = 1;
 
       const fadeTimer = setTimeout(() => {
+
+        if (state.isFinished) return;
         if (myRun !== state.runId) return;
         el.style.opacity = 0;
       }, state.speed * 0.4);
@@ -281,6 +294,8 @@ function runFlash() {
   const delay = (endTime - audioCtx.currentTime) * 1000;
 
   const timer = setTimeout(() => {
+
+    if (state.isFinished) return;
     if (myRun !== state.runId) return;
     if (!state.numbers.length) return;
 
