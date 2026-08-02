@@ -311,6 +311,8 @@ function runFlash() {
 // =====================
 function checkAnswer() {
 
+  console.log("問題番号", state.currentQuestion);
+
   if (state.nextTimer) {
     clearTimeout(state.nextTimer);
     state.nextTimer = null;
@@ -384,6 +386,9 @@ function checkAnswer() {
 // 結果表示
 // =====================
 function showResult() {
+
+  console.log("★結果表示開始");
+  console.log("正解数:", state.correctCount);
 
   state.isFinished = true;
 
