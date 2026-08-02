@@ -408,6 +408,8 @@ function showResult() {
   const display = document.getElementById("display");
   const judge = document.getElementById("judge");
 
+  display.style.opacity = 1;
+
   document.getElementById("printArea").style.display = "none";
 
   const isPass = state.correctCount >= PASS_SCORE;
