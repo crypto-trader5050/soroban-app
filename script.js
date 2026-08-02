@@ -385,6 +385,8 @@ function checkAnswer() {
 // =====================
 function showResult() {
 
+  state.isFinished = true;
+
   state.currentQuestion = state.questionCount + 1;
 
   if (state.nextTimer) {
@@ -453,8 +455,6 @@ function showResult() {
   // ★ 完全停止
   state.numbers = [];
   state.index = 0;
-
-  state.isFinished = true;
 }
 
 function nextLevel() {
