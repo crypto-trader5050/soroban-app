@@ -433,6 +433,8 @@ function showResult() {
   // ★ 完全停止
   state.numbers = [];
   state.index = 0;
+
+  console.log("表示内容:", display.innerHTML);
 }
 
 function nextLevel() {
