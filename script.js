@@ -419,7 +419,12 @@ function showResult() {
 
   // 問題表示を結果に変更
   display.innerHTML = `
-    <div style="font-size:28px;">
+    <div style="
+      font-family:sans-serif;
+      font-size:28px;
+      color:#00ff00;
+      white-space:normal;
+    ">
       結果<br>
       ${state.questionCount}問中 ${state.correctCount}問正解<br>
       正答率：${rate}%
