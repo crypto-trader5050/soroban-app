@@ -339,6 +339,8 @@ function checkAnswer() {
         state.currentQuestion++;
         generateQuestion();
       } else {
+
+        console.log("★15問終了処理へ", state.currentQuestion);
         showResult();
       }
     }, 300);
