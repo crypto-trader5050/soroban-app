@@ -78,6 +78,10 @@ function startMultiplication() {
   // 回答欄を表示
   document.getElementById("answerArea").style.display = "none";
 
+  // 乗算：解答するボタンを表示
+  const solveBtn = document.getElementById("solveBtn");
+  solveBtn.style.display = "inline-block";
+
   // 問題番号
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion}問目 / 全${state.questionCount}問`;
@@ -167,3 +171,24 @@ function handleOk() {
     checkAnswer();
   }
 }
+
+// =====================
+// 乗算：解答開始
+// =====================
+document.getElementById("solveBtn").addEventListener("click", () => {
+
+  // 問題を消す
+  document.getElementById("display").textContent = "";
+
+  // 解答するボタンを消す
+  document.getElementById("solveBtn").style.display = "none";
+
+  // 回答欄・キーパッドを表示
+  document.getElementById("answerArea").style.display = "block";
+
+  // 入力欄をクリア
+  document.getElementById("answerInput").value = "";
+
+  // 入力欄にフォーカス
+  document.getElementById("answerInput").focus();
+});
