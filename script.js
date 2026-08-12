@@ -152,7 +152,7 @@ function createLevelButtons() {
 function selectLevel(level) {
   state.level = level;
 
-   state.isFinished = false;
+  state.isFinished = false;
 
   currentLevelIndex = levelList.indexOf(level);
 
@@ -164,13 +164,27 @@ function selectLevel(level) {
 
   audioCtx.resume();
 
-  document.fonts.ready.then(() => {
-    requestAnimationFrame(() => {
+  // =====================
+  // 種目ごとに開始処理を分ける
+  // =====================
+
+  if (state.type === "kake") {
+
+    // 乗算
+    startMultiplicationGame();
+
+  } else {
+
+    // 見取り算
+    document.fonts.ready.then(() => {
       requestAnimationFrame(() => {
-        startEngine();
+        requestAnimationFrame(() => {
+          startEngine();
+        });
       });
     });
-  });
+
+  }
 }
 
 // =====================
