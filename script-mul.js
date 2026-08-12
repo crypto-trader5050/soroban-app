@@ -1,4 +1,35 @@
 // =====================
+// 乗算・級段設定
+// =====================
+
+const MUL_LEVEL_CONFIG = [
+  { level: "13級", aDigits: 2, bDigits: 1 },
+  { level: "12級", aDigits: 3, bDigits: 1 },
+  { level: "11級", aDigits: 4, bDigits: 1 },
+  { level: "10級", aDigits: 2, bDigits: 2 },
+  { level: "9級",  aDigits: 3, bDigits: 2 },
+  { level: "8級",  aDigits: 4, bDigits: 2 },
+  { level: "7級",  aDigits: 3, bDigits: 3 },
+  { level: "6級",  aDigits: 4, bDigits: 3 },
+  { level: "5級",  aDigits: 5, bDigits: 3 },
+  { level: "4級",  aDigits: 4, bDigits: 4 },
+  { level: "3級",  aDigits: 5, bDigits: 4 },
+  { level: "2級",  aDigits: 6, bDigits: 4 },
+  { level: "1級",  aDigits: 5, bDigits: 5 },
+
+  { level: "初段", aDigits: 6, bDigits: 5 },
+  { level: "弐段", aDigits: 7, bDigits: 5 },
+  { level: "参段", aDigits: 6, bDigits: 6 },
+  { level: "四段", aDigits: 7, bDigits: 6 },
+  { level: "五段", aDigits: 8, bDigits: 6 },
+  { level: "六段", aDigits: 7, bDigits: 7 },
+  { level: "七段", aDigits: 8, bDigits: 7 },
+  { level: "八段", aDigits: 9, bDigits: 7 },
+  { level: "九段", aDigits: 8, bDigits: 8 },
+  { level: "十段", aDigits: 9, bDigits: 8 }
+];
+
+// =====================
 // 状態（共通前提）
 // =====================
 // ※ state は見取り側と共通でOK
@@ -16,21 +47,59 @@ function startMultiplication() {
     return;
   }
 
-  console.log("現在:", state.currentQuestion, "/", state.questionCount);
+  console.log(
+    "現在:",
+    state.currentQuestion,
+    "/",
+    state.questionCount
+  );
 
-  const a = Math.floor(Math.random() * 9) + 1;
-  const b = Math.floor(Math.random() * 9) + 1;
+  // 現在の級・段の設定を取得
+  const config = MUL_LEVEL_CONFIG.find(
+    item => item.level === state.level
+  );
 
+  if (!config) {
+    console.error("乗算設定が見つかりません:", state.level);
+    return;
+  }
+
+  // 設定された桁数で数字を作る
+  const a = generateMultiplicationNumber(config.aDigits);
+  const b = generateMultiplicationNumber(config.bDigits);
+
+  // 問題表示
   const el = document.getElementById("display");
-  el.textContent = `${a} × ${b}`;
+  el.textContent = `${a.toLocaleString()} × ${b.toLocaleString()}`;
 
-  // ★ BigInt統一（重要）
-  state.answer = BigInt(a * b);
+  // 正解
+  state.answer = BigInt(a) * BigInt(b);
 
+  // 回答欄を表示
   document.getElementById("answerArea").style.display = "block";
 
+  // 問題番号
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion}問目 / 全${state.questionCount}問`;
+
+  // 判定表示をクリア
+  document.getElementById("judge").textContent = "";
+
+  // 入力欄をクリア
+  document.getElementById("answerInput").value = "";
+}
+
+// =====================
+// 乗算用・ランダム数字生成
+// =====================
+function generateMultiplicationNumber(digits) {
+
+  const min = 10 ** (digits - 1);
+  const max = 10 ** digits - 1;
+
+  return Math.floor(
+    Math.random() * (max - min + 1)
+  ) + min;
 }
 
 // =====================
@@ -54,7 +123,8 @@ function checkAnswerMultiplication() {
     judge.textContent = "正解！";
     state.correctCount++;
   } else {
-    judge.textContent = "不正解：正解は " + state.answer;
+    judge.textContent =
+      "不正解：正解は " + state.answer.toLocaleString();
   }
 
   setTimeout(() => {
