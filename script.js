@@ -92,19 +92,59 @@ function createLevelButtons() {
 
   levelList = [];
 
-  for (let i = 38; i >= 1; i--) {
-    levelList.push(i + "級");
+  // =====================
+  // 見取り算
+  // =====================
+  if (state.type === "mitori") {
+
+    for (let i = 38; i >= 1; i--) {
+      levelList.push(i + "級");
+    }
+
+  // =====================
+  // 乗算
+  // =====================
+  } else if (state.type === "kake") {
+
+    levelList = MUL_LEVEL_CONFIG.map(item => item.level);
+
+  // =====================
+  // 除算
+  // =====================
+  } else if (state.type === "wari") {
+
+    // 現在は見取り算と同じ
+    for (let i = 38; i >= 1; i--) {
+      levelList.push(i + "級");
+    }
   }
 
+  // =====================
+  // 段位
+  // =====================
   levelList.push(
-    "初段","弐段","参段","四段","五段",
-    "六段","七段","八段","九段","十段"
+    "初段",
+    "弐段",
+    "参段",
+    "四段",
+    "五段",
+    "六段",
+    "七段",
+    "八段",
+    "九段",
+    "十段"
   );
 
+  // =====================
+  // ボタン作成
+  // =====================
   levelList.forEach(lv => {
     const btn = document.createElement("button");
+
     btn.textContent = lv;
+
     btn.onclick = () => selectLevel(lv);
+
     area.appendChild(btn);
   });
 }
