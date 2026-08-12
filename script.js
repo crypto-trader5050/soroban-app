@@ -571,7 +571,7 @@ function backHome() {
 
 document.getElementById("answerInput")
   .addEventListener("keydown", e => {
-    if (e.key === "Enter") checkAnswer();
+    if (e.key === "Enter") handleOk();
   });
 
 const inputEl = document.getElementById("answerInput");
@@ -606,6 +606,6 @@ document.getElementById("keypad").addEventListener("click", (e) => {
 
   if (e.target.id === "ok") {
     tapSound(); // 🔊
-    checkAnswer();
+    handleOk();
   }
 });
