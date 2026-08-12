@@ -76,7 +76,7 @@ function startMultiplication() {
   state.answer = BigInt(a) * BigInt(b);
 
   // 回答欄を表示
-  document.getElementById("answerArea").style.display = "block";
+  document.getElementById("answerArea").style.display = "none";
 
   // 問題番号
   document.getElementById("questionInfo").textContent =
