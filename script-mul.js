@@ -68,28 +68,67 @@ function startMultiplication() {
   const a = generateMultiplicationNumber(config.aDigits);
   const b = generateMultiplicationNumber(config.bDigits);
 
+  // =====================
   // 問題表示
+  // =====================
   const el = document.getElementById("display");
-  el.textContent = `${a.toLocaleString()} × ${b.toLocaleString()}`;
 
+  const problemText =
+    `${a.toLocaleString()} × ${b.toLocaleString()}`;
+
+  el.textContent = problemText;
+
+  // 文字数に応じて問題の大きさを調整
+  const length = problemText.replace(/,/g, "").length;
+
+  if (length <= 7) {
+    el.style.fontSize = "100px";
+  } else if (length <= 11) {
+    el.style.fontSize = "85px";
+  } else if (length <= 15) {
+    el.style.fontSize = "70px";
+  } else {
+    el.style.fontSize = "55px";
+  }
+
+  el.style.opacity = "1";
+  el.style.fontFamily = '"Soloburn", monospace';
+
+  // =====================
   // 正解
+  // =====================
   state.answer = BigInt(a) * BigInt(b);
 
-  // 回答欄を表示
+  // =====================
+  // 回答欄・キーパッドを隠す
+  // =====================
   document.getElementById("answerArea").style.display = "none";
 
-  // 乗算：解答するボタンを表示
+  // =====================
+  // 「解答する」ボタンを表示
+  // =====================
   const solveBtn = document.getElementById("solveBtn");
   solveBtn.style.display = "inline-block";
 
+  // =====================
+  // ホームへ戻るボタンを隠す
+  // =====================
+  document.getElementById("homeBtn").style.display = "none";
+
+  // =====================
   // 問題番号
+  // =====================
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion}問目 / 全${state.questionCount}問`;
 
+  // =====================
   // 判定表示をクリア
+  // =====================
   document.getElementById("judge").textContent = "";
 
+  // =====================
   // 入力欄をクリア
+  // =====================
   document.getElementById("answerInput").value = "";
 }
 
@@ -126,6 +165,10 @@ function checkAnswerMultiplication() {
   if (BigInt(clean) === state.answer) {
     judge.textContent = "正解！";
     state.correctCount++;
+
+    // ★正解音
+    playCorrectSound();
+
   } else {
     judge.textContent =
       "不正解：正解は " + state.answer.toLocaleString();
