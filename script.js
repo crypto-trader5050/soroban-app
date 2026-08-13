@@ -493,11 +493,6 @@ function showResult() {
   judge.innerHTML = isPass
     ? "🎉 合格！"
     : "❌ 不合格";
-  
-  if (isPass) {
-    const next = levelList[currentLevelIndex + 1] || "なし";
-    judge.innerHTML += `<br>次：${next}`;
-  }
 
   // ボタン表示切り替え
   const answerArea = document.getElementById("answerArea");
