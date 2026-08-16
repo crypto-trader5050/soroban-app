@@ -2,82 +2,440 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>そろばんトレーニング</title>
-  <link rel="preload" href="Soloburn.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="preload"
+        href="Soloburn.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin>
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>そろばんトレーニング</h1>
-
-<!-- HOME -->
+<!-- ==================================================
+     HOME
+================================================== -->
 <div id="home">
-  <button onclick="goFlash()">フラッシュ暗算</button>
-  <button onclick="goPrint()">問題作成</button>
-  <button onclick="goRead()">読み上げ</button>
+
+  <!-- =========================
+       ヘッダー
+  ========================== -->
+  <header class="home-header">
+
+    <div class="logo-area">
+      <div class="logo-icon">🧮</div>
+      <div class="logo-text">そろばんトレーニング</div>
+    </div>
+
+    <div class="header-menu">
+
+      <button class="header-menu-button" type="button">
+        <span class="header-menu-icon">⚙</span>
+        <span>設定</span>
+      </button>
+
+      <button class="header-menu-button" type="button">
+        <span class="header-menu-icon">?</span>
+        <span>使い方</span>
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       メイン
+  ========================== -->
+  <main class="home-main">
+
+    <!-- ヒーロー -->
+    <section class="hero-section">
+
+      <div class="hero-text">
+
+        <h1>
+          さあ、<span>今日も</span>練習しよう！
+        </h1>
+
+        <p>
+          楽しく繰り返して、そろばんの力を伸ばそう！
+        </p>
+
+      </div>
+
+      <!-- キャラクター用スペース -->
+      <div class="hero-character" aria-hidden="true">
+        <div class="abacus-character">
+
+          <div class="character-abacus">
+            <div class="abacus-frame">
+              <div class="abacus-bar"></div>
+              <div class="abacus-bar"></div>
+              <div class="abacus-bar"></div>
+              <div class="abacus-bar"></div>
+              <div class="abacus-bar"></div>
+
+              <div class="abacus-beads">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+
+            <div class="character-face">
+              <span class="eye left"></span>
+              <span class="eye right"></span>
+              <span class="cheek left"></span>
+              <span class="cheek right"></span>
+              <span class="mouth">⌣</span>
+            </div>
+          </div>
+
+          <div class="character-arm left-arm">✋</div>
+          <div class="character-arm right-arm">✋</div>
+
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         3つのメインメニュー
+    ========================== -->
+    <section class="main-cards">
+
+
+      <!-- フラッシュ暗算 -->
+      <article class="main-card flash-card">
+
+        <div class="card-icon flash-icon">
+          ⚡
+        </div>
+
+        <h2>フラッシュ暗算</h2>
+
+        <p class="card-lead">
+          瞬時に計算する力を鍛えよう！<br>
+          級・段に挑戦して力をつけよう。
+        </p>
+
+        <ul class="card-features">
+          <li>見取り算</li>
+          <li>乗算</li>
+          <li>除算</li>
+        </ul>
+
+        <button class="main-card-button"
+                type="button"
+                onclick="goFlash()">
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+
+      <!-- 問題作成 -->
+      <article class="main-card print-card">
+
+        <div class="card-icon print-icon">
+          📝
+        </div>
+
+        <h2>問題作成</h2>
+
+        <p class="card-lead">
+          授業や練習に使える問題を<br>
+          すばやく作成！
+        </p>
+
+        <ul class="card-features">
+          <li>全珠連対応</li>
+          <li>日珠連対応</li>
+          <li>日商対応</li>
+          <li>自由設定</li>
+        </ul>
+
+        <button class="main-card-button"
+                type="button"
+                onclick="goPrint()">
+          <span>つくる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+
+      <!-- 読み上げ -->
+      <article class="main-card read-card">
+
+        <div class="card-icon read-icon">
+          🔊
+        </div>
+
+        <h2>読み上げ</h2>
+
+        <p class="card-lead">
+          自動で問題を読み上げます。<br>
+          聞き取り練習に最適！
+        </p>
+
+        <ul class="card-features">
+          <li>見取り算</li>
+          <li>乗算</li>
+          <li>除算</li>
+        </ul>
+
+        <button class="main-card-button"
+                type="button"
+                onclick="goRead()">
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+    </section>
+
+
+    <!-- =========================
+         4つの特徴
+    ========================== -->
+    <section class="feature-bar">
+
+      <div class="feature-item">
+        <div class="feature-icon">🏆</div>
+        <div>
+          <h3>級・段に挑戦！</h3>
+          <p>目標を決めて<br>どんどん上を目指そう！</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">⏱</div>
+        <div>
+          <h3>スピード設定！</h3>
+          <p>自分に合ったスピードで<br>効率よく練習！</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">🖨</div>
+        <div>
+          <h3>印刷・PDF出力！</h3>
+          <p>作った問題はすぐに<br>印刷・PDFで使える！</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="feature-icon">⭐</div>
+        <div>
+          <h3>シンプルで使いやすい！</h3>
+          <p>先生も生徒も迷わず<br>使えるデザイン！</p>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         下部2パネル
+    ========================== -->
+    <section class="bottom-panels">
+
+
+      <!-- 今日のひとこと -->
+      <div class="bottom-panel message-panel">
+
+        <div class="panel-title">
+          <span class="panel-title-icon">✎</span>
+          <h2>今日のひとこと</h2>
+        </div>
+
+        <div class="message-content">
+          <p>
+            継続は力なり。
+          </p>
+
+          <p>
+            毎日の積み重ねが、<br>
+            大きな力になるよ！
+          </p>
+        </div>
+
+        <div class="small-character">
+          🧮
+        </div>
+
+      </div>
+
+
+      <!-- おすすめの使い方 -->
+      <div class="bottom-panel recommend-panel">
+
+        <div class="panel-title">
+          <span class="panel-title-icon">💡</span>
+          <h2>おすすめの使い方</h2>
+        </div>
+
+        <ol class="recommend-list">
+          <li>
+            <strong>フラッシュ暗算</strong>で力をつける
+          </li>
+          <li>
+            <strong>問題作成</strong>で授業や宿題を準備する
+          </li>
+          <li>
+            <strong>読み上げ</strong>で聞き取り練習をする
+          </li>
+        </ol>
+
+        <p class="recommend-message">
+          この3つを上手に使って、そろばん力をアップ！
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================
+       フッター
+  ========================== -->
+  <footer class="home-footer">
+
+    <div class="footer-logo">
+      🧮
+      <span>そろばんトレーニング</span>
+    </div>
+
+    <div class="footer-description">
+      先生の授業をサポートする、そろばん学習アプリ
+    </div>
+
+  </footer>
+
 </div>
 
-<!-- 種目選択 -->
+
+<!-- ==================================================
+     種目選択
+     ※既存機能
+================================================== -->
 <div id="typeSelect" style="display:none;">
+
   <h2>種目を選んでください</h2>
-  <button onclick="selectType('mitori')">見取り算</button>
-  <button onclick="selectType('kake')">乗算</button>
-  <button onclick="selectType('wari')">除算</button>
+
+  <button onclick="selectType('mitori')">
+    見取り算
+  </button>
+
+  <button onclick="selectType('kake')">
+    乗算
+  </button>
+
+  <button onclick="selectType('wari')">
+    除算
+  </button>
+
 </div>
 
-<!-- レベル選択 -->
+
+<!-- ==================================================
+     レベル選択
+     ※既存機能
+================================================== -->
 <div id="levelSelect" style="display:none;">
+
   <h2>級・段を選んでください</h2>
+
   <div id="levelButtons"></div>
+
 </div>
 
-<!-- 実行 -->
+
+<!-- ==================================================
+     実行画面
+     ※既存機能をそのまま維持
+================================================== -->
 <div id="app" style="display:none;">
 
   <div id="questionInfo"></div>
 
   <div id="questionTitle"></div>
+
   <div id="levelInfo"></div>
 
   <div id="display"></div>
 
+
   <!-- 乗算：解答開始ボタン -->
-  <button id="solveBtn" style="display:none;">解答する</button>
+  <button id="solveBtn" style="display:none;">
+    解答する
+  </button>
+
 
   <!-- フラッシュ表示用 -->
   <div id="printArea"></div>
 
-  <!-- ★入力エリア -->
-<div id="answerArea" style="display:none;">
-  <input id="answerInput" readonly />
 
-  <div id="keypad">
-    <button data-num="1">1</button>
-    <button data-num="2">2</button>
-    <button data-num="3">3</button>
+  <!-- 入力エリア -->
+  <div id="answerArea" style="display:none;">
 
-    <button data-num="4">4</button>
-    <button data-num="5">5</button>
-    <button data-num="6">6</button>
+    <input id="answerInput" readonly>
 
-    <button data-num="7">7</button>
-    <button data-num="8">8</button>
-    <button data-num="9">9</button>
+    <div id="keypad">
 
-    <button id="clear">C</button>
-    <button data-num="0">0</button>
-    <button id="ok">OK</button>
+      <button data-num="1">1</button>
+      <button data-num="2">2</button>
+      <button data-num="3">3</button>
+
+      <button data-num="4">4</button>
+      <button data-num="5">5</button>
+      <button data-num="6">6</button>
+
+      <button data-num="7">7</button>
+      <button data-num="8">8</button>
+      <button data-num="9">9</button>
+
+      <button id="clear">C</button>
+      <button data-num="0">0</button>
+      <button id="ok">OK</button>
+
+    </div>
+
   </div>
-</div>
+
 
   <!-- 判定 -->
   <p id="judge"></p>
 
-  <button id="homeBtn" onclick="backHome()">ホームへ戻る</button>
+
+  <!-- ホームへ戻る -->
+  <button id="homeBtn" onclick="backHome()">
+    ホームへ戻る
+  </button>
+
 </div>
 
+
+<!-- ==================================================
+     JavaScript
+     ※ここは変更しない
+================================================== -->
 <script src="levelConfig.js"></script>
 <script src="script.js"></script>
 <script src="script-mul.js"></script>
 
 </body>
+</html>

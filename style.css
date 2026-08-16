@@ -1,7 +1,18 @@
-/* =====================
+/* =========================================================
+   そろばんトレーニング
+   style.css 完全統合版
+
+   ・既存フラッシュ暗算CSSを維持
+   ・新トップ画面CSSを追加
+   ・JavaScriptは変更しない
+========================================================= */
+
+
+/* =====================================================
    フォント
-===================== */
-@font-face { 
+===================================================== */
+
+@font-face {
   font-family: 'Soloburn';
   src:
     url('Soloburn.woff2') format('woff2'),
@@ -10,168 +21,1536 @@
   font-style: normal;
 }
 
-/* =====================
+
+/* =====================================================
+   共通設定
+===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+
+/* =====================================================
+   HOME画面
+===================================================== */
+
+#home {
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f4fbff 0%,
+      #ffffff 45%,
+      #f4f9fc 100%
+    );
+
+  color: #294257;
+
+  text-align: left;
+}
+
+
+/* =====================================================
+   HOME ヘッダー
+===================================================== */
+
+.home-header {
+  width: 100%;
+
+  min-height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 6%;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #dcebf4;
+
+  box-shadow:
+    0 2px 10px rgba(40, 91, 120, 0.06);
+}
+
+
+.logo-area {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.logo-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #e8f6ff;
+
+  font-size: 27px;
+
+  line-height: 1;
+}
+
+
+.logo-text {
+  margin: 0;
+
+  color: #177bb0;
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+
+.header-menu {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.header-menu-button {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  margin: 0;
+  padding: 9px 14px;
+
+  background: #ffffff;
+
+  color: #617787;
+
+  border: 1px solid #d8e5ed;
+
+  border-radius: 9px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.1s ease;
+}
+
+
+.header-menu-button:hover {
+  background: #f1f9fe;
+
+  border-color: #abd0e6;
+}
+
+
+.header-menu-button:active {
+  transform: scale(0.97);
+}
+
+
+.header-menu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+/* =====================================================
+   HOME メイン
+===================================================== */
+
+.home-main {
+  width: min(1200px, 92%);
+
+  margin: 0 auto;
+
+  padding: 38px 0 55px;
+}
+
+
+/* =====================================================
+   HOME ヒーロー
+===================================================== */
+
+.hero-section {
+  position: relative;
+
+  min-height: 250px;
+
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 28px;
+
+  padding: 42px 55px;
+
+  overflow: hidden;
+
+  border: 1px solid #d7ebf7;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e7f6ff 0%,
+      #f7fcff 58%,
+      #e5f4fc 100%
+    );
+
+  box-shadow:
+    0 5px 20px rgba(41, 100, 133, 0.06);
+}
+
+
+.hero-text {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 720px;
+}
+
+
+.hero-text h1 {
+  margin: 0 0 12px;
+
+  color: #294458;
+
+  font-size: clamp(30px, 4vw, 45px);
+
+  font-weight: 800;
+
+  line-height: 1.35;
+
+  letter-spacing: 1px;
+}
+
+
+.hero-text h1 span {
+  color: #1498d4;
+}
+
+
+.hero-text p {
+  margin: 0;
+
+  color: #667f90;
+
+  font-size: 16px;
+
+  line-height: 1.8;
+}
+
+
+/* =====================================================
+   HOME ヒーロー キャラクター
+===================================================== */
+
+.hero-character {
+  position: absolute;
+
+  right: 38px;
+  bottom: -12px;
+
+  width: 270px;
+  height: 225px;
+
+  pointer-events: none;
+}
+
+
+.abacus-character {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+/* そろばん */
+
+.character-abacus {
+  position: absolute;
+
+  top: 20px;
+  right: 32px;
+
+  width: 180px;
+  height: 145px;
+
+  padding: 12px;
+
+  border: 9px solid #e4a044;
+
+  border-radius: 14px;
+
+  background: #fff8e9;
+
+  box-shadow:
+    0 7px 0 #c98228,
+    0 12px 22px rgba(0, 0, 0, 0.12);
+
+  transform: rotate(-4deg);
+}
+
+
+.abacus-frame {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+.abacus-bar {
+  height: 5px;
+
+  border-radius: 5px;
+
+  background: #d28a2d;
+}
+
+
+.abacus-beads {
+  position: absolute;
+
+  top: 45px;
+  left: 22px;
+  right: 22px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.abacus-beads span {
+  width: 25px;
+  height: 25px;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background: #ed6b5d;
+
+  border: 3px solid #d65348;
+
+  box-shadow:
+    inset 2px 2px 3px rgba(255, 255, 255, 0.45);
+}
+
+
+/* 顔 */
+
+.character-face {
+  position: absolute;
+
+  left: 42px;
+  bottom: 17px;
+
+  width: 84px;
+  height: 65px;
+
+  border-radius: 45%;
+
+  background: #ffe0b3;
+
+  border: 3px solid #e4a05b;
+}
+
+
+.eye {
+  position: absolute;
+
+  top: 20px;
+
+  width: 8px;
+  height: 11px;
+
+  border-radius: 50%;
+
+  background: #344752;
+}
+
+
+.eye.left {
+  left: 22px;
+}
+
+
+.eye.right {
+  right: 22px;
+}
+
+
+.cheek {
+  position: absolute;
+
+  top: 36px;
+
+  width: 12px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #f0a09a;
+}
+
+
+.cheek.left {
+  left: 10px;
+}
+
+
+.cheek.right {
+  right: 10px;
+}
+
+
+.mouth {
+  position: absolute;
+
+  left: 50%;
+  bottom: 9px;
+
+  transform: translateX(-50%);
+
+  color: #754b43;
+
+  font-size: 21px;
+
+  line-height: 1;
+}
+
+
+/* 手 */
+
+.character-arm {
+  position: absolute;
+
+  z-index: 3;
+
+  font-size: 35px;
+}
+
+
+.left-arm {
+  top: 103px;
+  left: 0;
+
+  transform: rotate(-25deg);
+}
+
+
+.right-arm {
+  top: 112px;
+  right: 0;
+
+  transform: rotate(20deg);
+}
+
+
+/* =====================================================
+   HOME メイン3カード
+===================================================== */
+
+.main-cards {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 22px;
+
+  margin-bottom: 25px;
+}
+
+
+.main-card {
+  position: relative;
+
+  min-height: 390px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 29px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe9f0;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 5px 18px rgba(41, 76, 105, 0.07);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.main-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 10px 26px rgba(41, 76, 105, 0.13);
+}
+
+
+.card-icon {
+  width: 62px;
+  height: 62px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 17px;
+
+  border-radius: 16px;
+
+  font-size: 31px;
+
+  line-height: 1;
+}
+
+
+.flash-icon {
+  background: #fff0d7;
+}
+
+
+.print-icon {
+  background: #e6f5ff;
+}
+
+
+.read-icon {
+  background: #e8f7eb;
+}
+
+
+.main-card h2 {
+  margin: 0 0 11px;
+
+  color: #294255;
+
+  font-size: 24px;
+
+  font-weight: 800;
+
+  line-height: 1.4;
+}
+
+
+.card-lead {
+  min-height: 58px;
+
+  margin: 0 0 15px;
+
+  color: #6b7f8d;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+}
+
+
+.card-features {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin: 0 0 21px;
+  padding: 0;
+
+  list-style: none;
+}
+
+
+.card-features li {
+  padding: 5px 10px;
+
+  background: #f2f6f9;
+
+  color: #627586;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.main-card-button {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: auto 0 0;
+  padding: 13px 18px;
+
+  color: #ffffff;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease;
+}
+
+
+.main-card-button:hover {
+  opacity: 0.88;
+}
+
+
+.main-card-button:active {
+  transform: scale(0.98);
+}
+
+
+.flash-card .main-card-button {
+  background: #efa13a;
+}
+
+
+.print-card .main-card-button {
+  background: #2998d5;
+}
+
+
+.read-card .main-card-button {
+  background: #58a96a;
+}
+
+
+.arrow {
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+
+/* =====================================================
+   HOME 4つの特徴
+===================================================== */
+
+.feature-bar {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  margin-bottom: 25px;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe9f0;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 4px 15px rgba(41, 76, 105, 0.05);
+}
+
+
+.feature-item {
+  min-height: 125px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 21px;
+
+  border-right: 1px solid #e5edf2;
+}
+
+
+.feature-item:last-child {
+  border-right: none;
+}
+
+
+.feature-icon {
+  width: 50px;
+  height: 50px;
+
+  flex: 0 0 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #f0f6fa;
+
+  font-size: 24px;
+
+  line-height: 1;
+}
+
+
+.feature-item h3 {
+  margin: 0 0 7px;
+
+  color: #354f63;
+
+  font-size: 15px;
+
+  line-height: 1.4;
+}
+
+
+.feature-item p {
+  margin: 0;
+
+  color: #82919d;
+
+  font-size: 12px;
+
+  line-height: 1.65;
+}
+
+
+/* =====================================================
+   HOME 下部パネル
+===================================================== */
+
+.bottom-panels {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 22px;
+
+  margin-bottom: 30px;
+}
+
+
+.bottom-panel {
+  position: relative;
+
+  min-height: 205px;
+
+  padding: 27px 30px;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe9f0;
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 4px 15px rgba(41, 76, 105, 0.05);
+}
+
+
+.panel-title {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+
+.panel-title-icon {
+  width: 37px;
+  height: 37px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #edf6fc;
+
+  font-size: 19px;
+
+  line-height: 1;
+}
+
+
+.panel-title h2 {
+  margin: 0;
+
+  color: #344e61;
+
+  font-size: 18px;
+
+  font-weight: 800;
+}
+
+
+.message-content p {
+  margin: 7px 0;
+
+  color: #607585;
+
+  font-size: 14px;
+
+  line-height: 1.8;
+}
+
+
+.message-content p:first-child {
+  color: #2693c8;
+
+  font-size: 20px;
+
+  font-weight: 800;
+}
+
+
+.small-character {
+  position: absolute;
+
+  right: 28px;
+  bottom: 15px;
+
+  font-size: 52px;
+
+  line-height: 1;
+}
+
+
+.recommend-list {
+  margin: 0 0 14px;
+  padding-left: 23px;
+
+  color: #607585;
+
+  font-size: 13px;
+
+  line-height: 2;
+}
+
+
+.recommend-list strong {
+  color: #258ec0;
+}
+
+
+.recommend-message {
+  margin: 0;
+
+  color: #718491;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+   HOME フッター
+===================================================== */
+
+.home-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 23px 6%;
+
+  background: #237fb0;
+
+  color: #ffffff;
+}
+
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+
+.footer-logo span {
+  letter-spacing: 0.5px;
+}
+
+
+.footer-description {
+  font-size: 12px;
+
+  opacity: 0.85;
+}
+
+
+/* =====================================================
+   =====================================================
+   ここから下は既存機能
+   元のCSSを維持
+   =====================================================
+   ===================================================== */
+
+
+/* =====================================================
    全体（フラッシュ仕様）
-===================== */
+===================================================== */
+
 body {
   margin: 0;
   padding: 20px;
   text-align: center;
 
-  background-color: black;   /* ←重要 */
-  color: #00ff00;            /* ←緑 */
+  background-color: black;
+  color: #00ff00;
 
   font-family: sans-serif;
 }
 
-/* =====================
+
+/* =====================================================
+   HOME表示中だけbodyをHOME用にする
+===================================================== */
+
+body:has(#home:not([style*="display: none"])) {
+  background:
+    linear-gradient(
+      180deg,
+      #f4fbff 0%,
+      #ffffff 45%,
+      #f4f9fc 100%
+    );
+
+  color: #294257;
+
+  padding: 0;
+
+  text-align: left;
+}
+
+
+/* =====================================================
    数字フォント統一
-===================== */
+===================================================== */
+
 #display,
 #printArea,
 #answerInput {
   font-family: "Soloburn", monospace;
 }
 
-/* =====================
+
+/* =====================================================
    フラッシュ表示（メイン）
-===================== */
+===================================================== */
+
 #display {
   position: absolute;
+
   top: 50%;
   left: 50%;
+
   transform: translate(-50%, -50%);
 
   font-family: "Soloburn", monospace;
 
   color: #00ff00;
+
   white-space: nowrap;
+
   max-width: 95%;
+
   overflow: hidden;
+
   text-align: center;
 
   letter-spacing: 6px;
 
   width: 100%;
+
   display: flex;
+
   justify-content: center;
   align-items: center;
 
   pointer-events: none;
 }
 
-/* =====================
+
+/* =====================================================
    入力欄
-===================== */
+===================================================== */
+
 #answerInput {
   font-size: 36px;
+
   width: 480px;
+
   max-width: 90%;
+
   padding: 15px;
+
   text-align: right;
+
   margin-bottom: 15px;
 
   background: black;
+
   color: #00ff00;
+
   border: 2px solid #00ff00;
+
   border-radius: 10px;
 
-  box-shadow: 0 0 10px #00ff00;
+  box-shadow:
+    0 0 10px #00ff00;
 }
+
 
 #keypad {
   display: grid;
-  grid-template-columns: repeat(3, 80px);
+
+  grid-template-columns:
+    repeat(3, 80px);
+
   gap: 12px;
+
   justify-content: center;
 
   position: relative;
+
   z-index: 10;
 }
 
+
 #keypad button {
   font-size: 24px;
+
   padding: 18px;
+
   border-radius: 10px;
 
   background: black;
+
   color: #00ff00;
+
   border: 1px solid #00ff00;
 
   transition: 0.1s;
 
   position: relative;
+
   z-index: 11;
 }
 
+
 /* ホバー */
+
 #keypad button:hover {
   background: #002200;
 }
 
+
 /* 押したとき */
+
 #keypad button:active {
   transform: scale(0.95);
+
   background: #003300;
-  box-shadow: 0 0 8px #00ff00 inset;
+
+  box-shadow:
+    0 0 8px #00ff00 inset;
 }
 
-/* =====================
+
+/* =====================================================
    判定表示
-===================== */
+===================================================== */
+
 #judge {
   margin-top: 20px;
+
   font-size: 22px;
 }
 
-/* =====================
+
+/* =====================================================
    ボタン
-===================== */
+===================================================== */
+
 button {
   font-size: 16px;
+
   padding: 10px 15px;
+
   margin: 5px;
 
   background: black;
+
   color: #00ff00;
+
   border: 1px solid #00ff00;
+
   cursor: pointer;
 }
+
 
 button:hover {
   background: #003300;
 }
 
-/* =====================
-   印刷エリア（使うなら）
-===================== */
+
+/* =====================================================
+   印刷エリア
+===================================================== */
+
 #printArea {
   font-size: 20px;
+
   line-height: 1.6;
+
   margin-top: 20px;
 }
 
-/* =====================
-   不要な文字を消す用（任意）
-===================== */
+
+/* =====================================================
+   不要な文字を消す用
+===================================================== */
+
 .hidden {
   display: none;
 }
 
-/* =====================
-   題目表示（例：1題目）
-===================== */
+
+/* =====================================================
+   題目表示
+===================================================== */
+
 #questionTitle {
   font-size: 36px;
+
   color: #00ff00;
+
   margin-top: 100px;
 }
 
-/* =====================
-   級表示（例：38級）
-===================== */
+
+/* =====================================================
+   級表示
+===================================================== */
+
 #levelInfo {
   font-size: 22px;
+
   color: #00ff00;
+
   margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   問題情報
+===================================================== */
+
+#questionInfo {
+  color: #00ff00;
+
+  font-size: 18px;
+}
+
+
+/* =====================================================
+   種目選択
+===================================================== */
+
+#typeSelect {
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 50px 20px;
+
+  text-align: center;
+
+  background: black;
+
+  color: #00ff00;
+}
+
+
+#typeSelect h2 {
+  color: #00ff00;
+
+  margin-bottom: 30px;
+}
+
+
+#typeSelect button {
+  background: black;
+
+  color: #00ff00;
+
+  border: 1px solid #00ff00;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+
+#typeSelect button:hover {
+  background: #003300;
+}
+
+
+/* =====================================================
+   レベル選択
+===================================================== */
+
+#levelSelect {
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 50px 20px;
+
+  text-align: center;
+
+  background: black;
+
+  color: #00ff00;
+}
+
+
+#levelSelect h2 {
+  color: #00ff00;
+
+  margin-bottom: 30px;
+}
+
+
+#levelSelect button {
+  background: black;
+
+  color: #00ff00;
+
+  border: 1px solid #00ff00;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+
+#levelSelect button:hover {
+  background: #003300;
+}
+
+
+/* =====================================================
+   実行画面
+===================================================== */
+
+#app {
+  min-height: 100vh;
+
+  margin: -20px;
+
+  padding: 20px;
+
+  text-align: center;
+
+  background: black;
+
+  color: #00ff00;
+}
+
+
+/* =====================================================
+   実行画面のボタン
+===================================================== */
+
+#app > button {
+  font-size: 16px;
+
+  padding: 10px 15px;
+
+  margin: 5px;
+
+  background: black;
+
+  color: #00ff00;
+
+  border: 1px solid #00ff00;
+
+  cursor: pointer;
+}
+
+
+#app > button:hover {
+  background: #003300;
+}
+
+
+/* =====================================================
+   =====================================================
+   スマートフォン
+   =====================================================
+   ===================================================== */
+
+@media (max-width: 900px) {
+
+  /* HOME */
+
+  .home-header {
+    padding: 0 4%;
+  }
+
+
+  .home-main {
+    width: 94%;
+
+    padding-top: 25px;
+  }
+
+
+  .hero-section {
+    padding: 35px;
+
+    min-height: 230px;
+  }
+
+
+  .hero-character {
+    right: 15px;
+
+    transform: scale(0.8);
+
+    transform-origin: bottom right;
+
+    opacity: 0.75;
+  }
+
+
+  .main-cards {
+    grid-template-columns: 1fr;
+  }
+
+
+  .main-card {
+    min-height: auto;
+  }
+
+
+  .feature-bar {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .feature-item:nth-child(2) {
+    border-right: none;
+  }
+
+
+  .feature-item:nth-child(-n + 2) {
+    border-bottom: 1px solid #e6edf2;
+  }
+
+
+  .bottom-panels {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =====================================================
+   スマートフォン小型
+===================================================== */
+
+@media (max-width: 600px) {
+
+  /* HOME */
+
+  .home-header {
+    min-height: 72px;
+
+    padding: 12px 4%;
+  }
+
+
+  .logo-text {
+    font-size: 18px;
+  }
+
+
+  .logo-icon {
+    width: 39px;
+    height: 39px;
+
+    font-size: 22px;
+  }
+
+
+  .header-menu {
+    gap: 3px;
+  }
+
+
+  .header-menu-button {
+    padding: 7px 9px;
+
+    font-size: 12px;
+  }
+
+
+  .header-menu-icon {
+    font-size: 14px;
+  }
+
+
+  .hero-section {
+    min-height: 260px;
+
+    padding: 28px 23px;
+  }
+
+
+  .hero-text h1 {
+    font-size: 29px;
+  }
+
+
+  .hero-text p {
+    font-size: 13px;
+  }
+
+
+  .hero-character {
+    right: -5px;
+
+    bottom: -25px;
+
+    transform: scale(0.62);
+
+    opacity: 0.55;
+  }
+
+
+  .main-card {
+    padding: 25px;
+  }
+
+
+  .feature-bar {
+    grid-template-columns: 1fr;
+  }
+
+
+  .feature-item {
+    border-right: none;
+
+    border-bottom: 1px solid #e6edf2;
+  }
+
+
+  .feature-item:last-child {
+    border-bottom: none;
+  }
+
+
+  .bottom-panel {
+    padding: 23px;
+  }
+
+
+  .home-footer {
+    flex-direction: column;
+
+    gap: 8px;
+
+    text-align: center;
+  }
+
+
+  /* フラッシュ暗算 */
+
+  #answerInput {
+    width: 90%;
+  }
+
+
+  #keypad {
+    grid-template-columns:
+      repeat(3, 70px);
+  }
+
+
+  #keypad button {
+    padding: 15px;
+
+    font-size: 21px;
+  }
+
 }
