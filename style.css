@@ -51,6 +51,9 @@ input {
   margin: 0;
   padding: 0;
 
+  position: relative;
+  overflow: hidden;
+
   background:
     radial-gradient(
       circle at 8% 18%,
@@ -87,6 +90,86 @@ input {
   text-align: left;
 }
 
+/* =====================================================
+   HOME 背景装飾
+   水しぶき・波紋・光
+===================================================== */
+
+#home::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 12% 32%,
+      transparent 0,
+      transparent 34px,
+      rgba(255, 255, 255, 0.45) 35px,
+      transparent 37px
+    ),
+
+    radial-gradient(
+      circle at 88% 48%,
+      transparent 0,
+      transparent 48px,
+      rgba(255, 255, 255, 0.38) 49px,
+      transparent 52px
+    ),
+
+    radial-gradient(
+      circle at 28% 78%,
+      transparent 0,
+      transparent 60px,
+      rgba(117, 211, 246, 0.18) 61px,
+      transparent 64px
+    ),
+
+    linear-gradient(
+      125deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.20) 38%,
+      transparent 39%,
+      transparent 68%,
+      rgba(255, 255, 255, 0.16) 69%,
+      transparent 70%
+    );
+
+  z-index: 0;
+}
+
+
+/* 小さな光の粒 */
+
+#home::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.55) 1px,
+      transparent 2px
+    );
+
+  background-size: 70px 70px;
+
+  opacity: 0.25;
+
+  z-index: 0;
+}
+
+#home > * {
+  position: relative;
+  z-index: 1;
+}
 
 /* =====================================================
    HOME ヘッダー
