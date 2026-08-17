@@ -52,11 +52,34 @@ input {
   padding: 0;
 
   background:
+    radial-gradient(
+      circle at 8% 18%,
+      rgba(255, 255, 255, 0.95) 0,
+      rgba(255, 255, 255, 0.45) 55px,
+      transparent 130px
+    ),
+    radial-gradient(
+      circle at 92% 25%,
+      rgba(255, 255, 255, 0.8) 0,
+      rgba(255, 255, 255, 0.35) 65px,
+      transparent 150px
+    ),
+    radial-gradient(
+      circle at 18% 65%,
+      rgba(117, 211, 246, 0.22) 0,
+      transparent 150px
+    ),
+    radial-gradient(
+      circle at 85% 72%,
+      rgba(101, 204, 242, 0.20) 0,
+      transparent 170px
+    ),
     linear-gradient(
       180deg,
-      #f4fbff 0%,
-      #ffffff 45%,
-      #f4f9fc 100%
+      #d9f5ff 0%,
+      #e9f9ff 35%,
+      #f8fdff 72%,
+      #ffffff 100%
     );
 
   color: #294257;
@@ -223,22 +246,14 @@ input {
 
   overflow: hidden;
 
-  border: 1px solid #d7ebf7;
+  border: none;
 
-  border-radius: 22px;
+  border-radius: 0;
 
-  background:
-    linear-gradient(
-      135deg,
-      #e7f6ff 0%,
-      #f7fcff 58%,
-      #e5f4fc 100%
-    );
+  background: transparent;
 
-  box-shadow:
-    0 5px 20px rgba(41, 100, 133, 0.06);
+  box-shadow: none;
 }
-
 
 .hero-text {
   position: relative;
