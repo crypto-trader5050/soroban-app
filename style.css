@@ -279,216 +279,35 @@ input {
   line-height: 1.8;
 }
 
-
 /* =====================================================
    HOME ヒーロー キャラクター
+   ※画像（abacus-hero.png）を使用
 ===================================================== */
 
 .hero-character {
   position: absolute;
 
-  right: 38px;
-  bottom: -12px;
+  right: 35px;
+  bottom: -15px;
 
-  width: 270px;
-  height: 225px;
+  width: 300px;
 
   pointer-events: none;
+
+  z-index: 2;
 }
 
 
-.abacus-character {
-  position: relative;
+/* キャラクター画像 */
 
-  width: 100%;
-  height: 100%;
-}
-
-
-/* そろばん */
-
-.character-abacus {
-  position: absolute;
-
-  top: 20px;
-  right: 32px;
-
-  width: 180px;
-  height: 145px;
-
-  padding: 12px;
-
-  border: 9px solid #e4a044;
-
-  border-radius: 14px;
-
-  background: #fff8e9;
-
-  box-shadow:
-    0 7px 0 #c98228,
-    0 12px 22px rgba(0, 0, 0, 0.12);
-
-  transform: rotate(-4deg);
-}
-
-
-.abacus-frame {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-
-.abacus-bar {
-  height: 5px;
-
-  border-radius: 5px;
-
-  background: #d28a2d;
-}
-
-
-.abacus-beads {
-  position: absolute;
-
-  top: 45px;
-  left: 22px;
-  right: 22px;
-
-  display: flex;
-  justify-content: space-between;
-}
-
-
-.abacus-beads span {
-  width: 25px;
-  height: 25px;
-
+.hero-character-image {
   display: block;
 
-  border-radius: 50%;
+  width: 100%;
+  height: auto;
 
-  background: #ed6b5d;
-
-  border: 3px solid #d65348;
-
-  box-shadow:
-    inset 2px 2px 3px rgba(255, 255, 255, 0.45);
+  object-fit: contain;
 }
-
-
-/* 顔 */
-
-.character-face {
-  position: absolute;
-
-  left: 42px;
-  bottom: 17px;
-
-  width: 84px;
-  height: 65px;
-
-  border-radius: 45%;
-
-  background: #ffe0b3;
-
-  border: 3px solid #e4a05b;
-}
-
-
-.eye {
-  position: absolute;
-
-  top: 20px;
-
-  width: 8px;
-  height: 11px;
-
-  border-radius: 50%;
-
-  background: #344752;
-}
-
-
-.eye.left {
-  left: 22px;
-}
-
-
-.eye.right {
-  right: 22px;
-}
-
-
-.cheek {
-  position: absolute;
-
-  top: 36px;
-
-  width: 12px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: #f0a09a;
-}
-
-
-.cheek.left {
-  left: 10px;
-}
-
-
-.cheek.right {
-  right: 10px;
-}
-
-
-.mouth {
-  position: absolute;
-
-  left: 50%;
-  bottom: 9px;
-
-  transform: translateX(-50%);
-
-  color: #754b43;
-
-  font-size: 21px;
-
-  line-height: 1;
-}
-
-
-/* 手 */
-
-.character-arm {
-  position: absolute;
-
-  z-index: 3;
-
-  font-size: 35px;
-}
-
-
-.left-arm {
-  top: 103px;
-  left: 0;
-
-  transform: rotate(-25deg);
-}
-
-
-.right-arm {
-  top: 112px;
-  right: 0;
-
-  transform: rotate(20deg);
-}
-
 
 /* =====================================================
    HOME メイン3カード
