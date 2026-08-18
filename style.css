@@ -40,59 +40,46 @@ input {
   font-family: inherit;
 }
 
-
-/* =====================================================
+/* =========================================================
    HOME画面
-===================================================== */
+   完成デザイン版
+========================================================= */
 
 #home {
   min-height: 100vh;
-
   margin: 0;
   padding: 0;
 
   position: relative;
   overflow: hidden;
 
+  color: #102f58;
+  text-align: left;
+
   background:
     radial-gradient(
-      circle at 8% 18%,
-      rgba(255, 255, 255, 0.95) 0,
-      rgba(255, 255, 255, 0.45) 55px,
+      circle at 3% 25%,
+      rgba(93, 185, 242, 0.28) 0 38px,
+      transparent 40px
+    ),
+    radial-gradient(
+      circle at 97% 20%,
+      rgba(255, 255, 255, 0.95) 0 45px,
       transparent 130px
-    ),
-    radial-gradient(
-      circle at 92% 25%,
-      rgba(255, 255, 255, 0.8) 0,
-      rgba(255, 255, 255, 0.35) 65px,
-      transparent 150px
-    ),
-    radial-gradient(
-      circle at 18% 65%,
-      rgba(117, 211, 246, 0.22) 0,
-      transparent 150px
-    ),
-    radial-gradient(
-      circle at 85% 72%,
-      rgba(101, 204, 242, 0.20) 0,
-      transparent 170px
     ),
     linear-gradient(
       180deg,
-      #d9f5ff 0%,
-      #e9f9ff 35%,
-      #f8fdff 72%,
+      #d9f4ff 0%,
+      #eefaff 32%,
+      #ffffff 70%,
       #ffffff 100%
     );
-
-  color: #294257;
-
-  text-align: left;
 }
+
 
 /* =====================================================
    HOME 背景装飾
-   水しぶき・波紋・光
+   水しぶき・波・光
 ===================================================== */
 
 #home::before {
@@ -103,46 +90,61 @@ input {
 
   pointer-events: none;
 
+  z-index: 0;
+
   background:
+    /* 左上の斜め光 */
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 17px,
+      rgba(255, 255, 255, 0.48) 18px 27px,
+      transparent 28px 45px
+    ) left top / 360px 220px no-repeat,
+
+    /* 中央の水面 */
+    linear-gradient(
+      150deg,
+      transparent 0 38%,
+      rgba(97, 193, 239, 0.13) 38.5% 41%,
+      transparent 41.5% 48%,
+      rgba(255, 255, 255, 0.65) 48.5% 52%,
+      transparent 52.5%
+    ),
+
+    /* 左下の水しぶき */
     radial-gradient(
-      circle at 12% 32%,
-      transparent 0,
-      transparent 34px,
-      rgba(255, 255, 255, 0.45) 35px,
-      transparent 37px
+      circle at 4% 57%,
+      rgba(93, 185, 242, 0.25) 0 65px,
+      transparent 67px
     ),
 
     radial-gradient(
-      circle at 88% 48%,
-      transparent 0,
-      transparent 48px,
-      rgba(255, 255, 255, 0.38) 49px,
-      transparent 52px
+      circle at 11% 43%,
+      transparent 0 48px,
+      rgba(255, 255, 255, 0.6) 49px 52px,
+      transparent 53px
     ),
 
+    /* 右側の波紋 */
     radial-gradient(
-      circle at 28% 78%,
-      transparent 0,
-      transparent 60px,
-      rgba(117, 211, 246, 0.18) 61px,
+      circle at 94% 39%,
+      transparent 0 58px,
+      rgba(91, 187, 239, 0.18) 59px 63px,
       transparent 64px
     ),
 
-    linear-gradient(
-      125deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.20) 38%,
-      transparent 39%,
-      transparent 68%,
-      rgba(255, 255, 255, 0.16) 69%,
-      transparent 70%
+    radial-gradient(
+      circle at 96% 42%,
+      transparent 0 85px,
+      rgba(91, 187, 239, 0.12) 86px 90px,
+      transparent 91px
     );
-
-  z-index: 0;
 }
 
 
-/* 小さな光の粒 */
+/* =====================================================
+   小さな水滴・光
+===================================================== */
 
 #home::after {
   content: "";
@@ -152,24 +154,36 @@ input {
 
   pointer-events: none;
 
-  background-image:
+  z-index: 0;
+
+  opacity: 0.65;
+
+  background:
     radial-gradient(
       circle,
-      rgba(255, 255, 255, 0.55) 1px,
-      transparent 2px
-    );
+      rgba(71, 166, 231, 0.28) 0 2px,
+      transparent 3px
+    ) 87% 23% / 18px 18px,
 
-  background-size: 70px 70px;
+    radial-gradient(
+      circle,
+      rgba(71, 166, 231, 0.18) 0 2px,
+      transparent 3px
+    ) 91% 27% / 22px 22px,
 
-  opacity: 0.25;
-
-  z-index: 0;
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.85) 0 2px,
+      transparent 3px
+    ) 15% 25% / 35px 35px;
 }
+
 
 #home > * {
   position: relative;
   z-index: 1;
 }
+
 
 /* =====================================================
    HOME ヘッダー
@@ -177,46 +191,53 @@ input {
 
 .home-header {
   width: 100%;
-
-  min-height: 78px;
+  min-height: 102px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 6%;
+  padding: 0 3.5%;
 
-  background: #07508a;
+  background:
+    linear-gradient(
+      180deg,
+      #0757a3 0%,
+      #06468d 100%
+    );
 
-  border-bottom: none;
+  color: #ffffff;
 
-  box-shadow: none;
+  box-shadow:
+    0 2px 10px rgba(0, 48, 96, 0.15);
 }
 
+
+/* =====================================================
+   ロゴ
+===================================================== */
 
 .logo-area {
   display: flex;
   align-items: center;
-
-  gap: 12px;
+  gap: 14px;
 }
 
 
 .logo-icon {
-  width: 46px;
-  height: 46px;
+  width: 58px;
+  height: 58px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 12px;
-
   background: transparent;
 
-  font-size: 27px;
-
+  font-size: 45px;
   line-height: 1;
+
+  transform: rotate(-5deg);
 }
 
 
@@ -225,75 +246,95 @@ input {
 
   color: #ffffff;
 
-  font-size: 24px;
+  font-size: clamp(28px, 3.2vw, 46px);
 
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 1px;
+
+  line-height: 1;
 }
 
+
+/* =====================================================
+   ヘッダーメニュー
+===================================================== */
 
 .header-menu {
   display: flex;
   align-items: center;
-
-  gap: 8px;
+  gap: 16px;
 }
 
 
 .header-menu-button {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
 
-  gap: 6px;
+  gap: 3px;
+
+  min-width: 66px;
 
   margin: 0;
-  padding: 9px 14px;
+  padding: 0;
 
-  background: #ffffff;
+  background: transparent;
 
-  color: #617787;
+  color: #ffffff;
 
-  border: 1px solid #d8e5ed;
+  border: none;
 
-  border-radius: 9px;
+  border-radius: 0;
 
-  font-size: 14px;
-
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 800;
 
   cursor: pointer;
 
   transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.1s ease;
+    transform 0.15s ease,
+    opacity 0.15s ease;
 }
 
 
 .header-menu-button:hover {
-  background: #f1f9fe;
+  background: transparent;
+  border-color: transparent;
+  opacity: 0.9;
 
-  border-color: #abd0e6;
+  transform: translateY(-2px);
 }
 
 
 .header-menu-button:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 
 .header-menu-icon {
-  display: inline-flex;
+  width: 50px;
+  height: 50px;
+
+  display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 18px;
-  height: 18px;
+  background: #1475d1;
 
-  font-size: 15px;
+  color: #ffffff;
 
-  font-weight: 700;
+  border-radius: 50%;
+
+  font-size: 29px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,0.25),
+    0 3px 8px rgba(0,0,0,0.12);
 }
 
 
@@ -302,11 +343,11 @@ input {
 ===================================================== */
 
 .home-main {
-  width: min(1200px, 92%);
+  width: min(1240px, 92%);
 
   margin: 0 auto;
 
-  padding: 38px 0 55px;
+  padding: 25px 0 15px;
 }
 
 
@@ -317,85 +358,107 @@ input {
 .hero-section {
   position: relative;
 
-  min-height: 250px;
+  min-height: 200px;
 
   display: flex;
   align-items: center;
 
-  margin-bottom: 28px;
+  margin-bottom: 18px;
 
-  padding: 42px 55px;
+  padding: 22px 30px;
 
-  overflow: hidden;
+  overflow: visible;
+
+  background: transparent;
 
   border: none;
 
   border-radius: 0;
 
-  background: transparent;
-
   box-shadow: none;
 }
+
 
 .hero-text {
   position: relative;
 
-  z-index: 2;
+  z-index: 3;
 
-  max-width: 720px;
+  max-width: 650px;
+
+  padding-top: 3px;
 }
 
 
 .hero-text h1 {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
 
-  color: #294458;
+  color: #102f58;
 
-  font-size: clamp(30px, 4vw, 45px);
+  font-size: clamp(34px, 4vw, 51px);
 
-  font-weight: 800;
+  font-weight: 900;
 
-  line-height: 1.35;
+  line-height: 1.25;
 
   letter-spacing: 1px;
 }
 
 
 .hero-text h1 span {
-  color: #1498d4;
+  color: #f47b19;
 }
 
 
 .hero-text p {
   margin: 0;
 
-  color: #667f90;
+  color: #17385e;
 
-  font-size: 16px;
+  font-size: 20px;
 
-  line-height: 1.8;
+  font-weight: 700;
+
+  line-height: 1.6;
 }
 
+
 /* =====================================================
-   HOME ヒーロー キャラクター
-   ※画像（abacus-hero.png）を使用
+   ヒーロー下の点線
+===================================================== */
+
+.hero-text::after {
+  content: "";
+
+  display: block;
+
+  width: 630px;
+  max-width: 90%;
+
+  margin-top: 12px;
+
+  border-bottom:
+    5px dotted #4ca9e9;
+}
+
+
+/* =====================================================
+   ヒーロー キャラクター
 ===================================================== */
 
 .hero-character {
   position: absolute;
 
-  right: 35px;
-  bottom: 15px;
+  right: 12px;
+  bottom: -40px;
 
-  width: 350px;
+  width: 450px;
 
   pointer-events: none;
 
-  z-index: 2;
+  z-index: 4;
 }
 
-
-/* キャラクター画像 */
 
 .hero-character-image {
   display: block;
@@ -404,7 +467,11 @@ input {
   height: auto;
 
   object-fit: contain;
+
+  filter:
+    drop-shadow(0 7px 7px rgba(38, 91, 126, 0.13));
 }
+
 
 /* =====================================================
    HOME メイン3カード
@@ -416,30 +483,30 @@ input {
   grid-template-columns:
     repeat(3, minmax(0, 1fr));
 
-  gap: 22px;
+  gap: 42px;
 
-  margin-bottom: 25px;
+  margin-bottom: 15px;
 }
 
 
 .main-card {
   position: relative;
 
-  min-height: 390px;
+  min-height: 365px;
 
   display: flex;
   flex-direction: column;
 
-  padding: 29px;
+  padding: 20px 34px 16px;
 
-  background: #ffffff;
+  background: rgba(255,255,255,0.97);
 
-  border: 1px solid #dfe9f0;
+  border: 2px solid;
 
-  border-radius: 18px;
+  border-radius: 19px;
 
   box-shadow:
-    0 5px 18px rgba(41, 76, 105, 0.07);
+    0 4px 12px rgba(29, 76, 112, 0.06);
 
   transition:
     transform 0.2s ease,
@@ -448,79 +515,171 @@ input {
 
 
 .main-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
 
   box-shadow:
-    0 10px 26px rgba(41, 76, 105, 0.13);
+    0 9px 20px rgba(29, 76, 112, 0.12);
 }
 
 
+/* =====================================================
+   カード色
+===================================================== */
+
+.flash-card {
+  border-color: #1683e6;
+}
+
+
+.print-card {
+  border-color: #17a86b;
+}
+
+
+.read-card {
+  border-color: #ff8a00;
+}
+
+
+/* =====================================================
+   カードアイコン
+===================================================== */
+
 .card-icon {
-  width: 62px;
-  height: 62px;
+  width: 76px;
+  height: 76px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 17px;
+  margin: 0 auto 10px;
 
-  border-radius: 16px;
+  border-radius: 50%;
 
-  font-size: 31px;
+  color: #ffffff;
+
+  font-size: 39px;
 
   line-height: 1;
+
+  box-shadow:
+    0 2px 5px rgba(0,0,0,0.08);
 }
 
 
 .flash-icon {
-  background: #fff0d7;
+  background: #1683e6;
 }
 
 
 .print-icon {
-  background: #e6f5ff;
+  background: #17a86b;
 }
 
 
 .read-icon {
-  background: #e8f7eb;
+  background: #ff8a00;
 }
 
+
+/* =====================================================
+   カード見出し
+===================================================== */
 
 .main-card h2 {
-  margin: 0 0 11px;
+  margin: 0 0 5px;
 
-  color: #294255;
+  text-align: center;
 
-  font-size: 24px;
+  font-size: 28px;
 
-  font-weight: 800;
+  font-weight: 900;
 
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 
+.flash-card h2 {
+  color: #0758a8;
+}
+
+
+.print-card h2 {
+  color: #087d4d;
+}
+
+
+.read-card h2 {
+  color: #ef7100;
+}
+
+
+/* =====================================================
+   カード説明
+===================================================== */
+
 .card-lead {
-  min-height: 58px;
+  min-height: 52px;
 
-  margin: 0 0 15px;
+  margin: 0 0 7px;
 
-  color: #6b7f8d;
+  text-align: center;
+
+  color: #182c42;
 
   font-size: 14px;
 
-  line-height: 1.8;
+  font-weight: 600;
+
+  line-height: 1.65;
 }
 
 
+/* =====================================================
+   カード点線
+===================================================== */
+
+.card-lead::after {
+  content: "";
+
+  display: block;
+
+  margin: 8px auto 0;
+
+  width: 100%;
+
+  border-bottom: 3px dotted;
+}
+
+
+.flash-card .card-lead::after {
+  border-color: #1683e6;
+}
+
+
+.print-card .card-lead::after {
+  border-color: #17a86b;
+}
+
+
+.read-card .card-lead::after {
+  border-color: #ff8a00;
+}
+
+
+/* =====================================================
+   カード項目
+===================================================== */
+
 .card-features {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
 
-  gap: 7px;
+  gap: 2px;
 
-  margin: 0 0 21px;
+  margin: 4px 0 10px;
+
   padding: 0;
 
   list-style: none;
@@ -528,50 +687,104 @@ input {
 
 
 .card-features li {
-  padding: 5px 10px;
+  position: relative;
 
-  background: #f2f6f9;
+  padding: 0 0 0 25px;
 
-  color: #627586;
+  background: transparent;
 
-  border-radius: 20px;
+  color: #24384c;
 
-  font-size: 12px;
+  border-radius: 0;
 
-  font-weight: 600;
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1.55;
 }
 
+
+.card-features li::before {
+  content: "✓";
+
+  position: absolute;
+
+  left: 0;
+  top: 50%;
+
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-50%);
+
+  border-radius: 50%;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+
+.flash-card .card-features li::before {
+  background: #1683e6;
+}
+
+
+.print-card .card-features li::before {
+  background: #17a86b;
+}
+
+
+.read-card .card-features li::before {
+  background: #ff8a00;
+}
+
+
+/* =====================================================
+   カードボタン
+===================================================== */
 
 .main-card-button {
   width: 100%;
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+
+  position: relative;
 
   margin: auto 0 0;
-  padding: 13px 18px;
+
+  padding: 11px 18px;
 
   color: #ffffff;
 
   border: none;
 
-  border-radius: 10px;
+  border-radius: 28px;
 
-  font-size: 15px;
+  font-size: 22px;
 
-  font-weight: 700;
+  font-weight: 900;
 
   cursor: pointer;
 
   transition:
-    opacity 0.2s ease,
-    transform 0.1s ease;
+    transform 0.15s ease,
+    opacity 0.15s ease;
 }
 
 
 .main-card-button:hover {
-  opacity: 0.88;
+  opacity: 0.92;
+
+  transform: translateY(-1px);
 }
 
 
@@ -581,24 +794,28 @@ input {
 
 
 .flash-card .main-card-button {
-  background: #efa13a;
+  background: #1683e6;
 }
 
 
 .print-card .main-card-button {
-  background: #2998d5;
+  background: #17a86b;
 }
 
 
 .read-card .main-card-button {
-  background: #58a96a;
+  background: #ff8a00;
 }
 
 
 .arrow {
-  font-size: 25px;
+  position: absolute;
 
-  line-height: 1;
+  right: 22px;
+
+  font-size: 36px;
+
+  line-height: 0.8;
 }
 
 
@@ -612,32 +829,32 @@ input {
   grid-template-columns:
     repeat(4, minmax(0, 1fr));
 
-  margin-bottom: 25px;
+  margin-bottom: 14px;
 
   overflow: hidden;
 
-  background: #ffffff;
+  background: rgba(255,255,255,0.97);
 
-  border: 1px solid #dfe9f0;
+  border: 2px solid #d5dde4;
 
-  border-radius: 16px;
+  border-radius: 17px;
 
   box-shadow:
-    0 4px 15px rgba(41, 76, 105, 0.05);
+    0 3px 10px rgba(35, 74, 105, 0.05);
 }
 
 
 .feature-item {
-  min-height: 125px;
+  min-height: 112px;
 
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: 13px;
 
-  padding: 21px;
+  padding: 15px 18px;
 
-  border-right: 1px solid #e5edf2;
+  border-right: 1px solid #dfe5ea;
 }
 
 
@@ -647,44 +864,48 @@ input {
 
 
 .feature-icon {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
 
-  flex: 0 0 50px;
+  flex: 0 0 60px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 13px;
+  background: transparent;
 
-  background: #f0f6fa;
+  border-radius: 0;
 
-  font-size: 24px;
+  font-size: 43px;
 
   line-height: 1;
 }
 
 
 .feature-item h3 {
-  margin: 0 0 7px;
+  margin: 0 0 4px;
 
-  color: #354f63;
+  color: #123e72;
 
-  font-size: 15px;
+  font-size: 17px;
 
-  line-height: 1.4;
+  font-weight: 900;
+
+  line-height: 1.35;
 }
 
 
 .feature-item p {
   margin: 0;
 
-  color: #82919d;
+  color: #233a53;
 
   font-size: 12px;
 
-  line-height: 1.65;
+  font-weight: 600;
+
+  line-height: 1.55;
 }
 
 
@@ -698,29 +919,59 @@ input {
   grid-template-columns:
     1fr 1fr;
 
-  gap: 22px;
+  gap: 24px;
 
-  margin-bottom: 30px;
+  margin-bottom: 13px;
 }
 
 
 .bottom-panel {
   position: relative;
 
-  min-height: 205px;
+  min-height: 190px;
 
-  padding: 27px 30px;
+  padding: 16px 28px;
 
   background: #ffffff;
 
-  border: 1px solid #dfe9f0;
+  border: 2px solid;
 
   border-radius: 17px;
 
+  overflow: hidden;
+
   box-shadow:
-    0 4px 15px rgba(41, 76, 105, 0.05);
+    0 3px 10px rgba(35, 74, 105, 0.04);
 }
 
+
+.message-panel {
+  background:
+    linear-gradient(
+      135deg,
+      #eef8ff 0%,
+      #ffffff 100%
+    );
+
+  border-color: #a7d5f5;
+}
+
+
+.recommend-panel {
+  background:
+    linear-gradient(
+      135deg,
+      #fffdf4 0%,
+      #fff8e4 100%
+    );
+
+  border-color: #f2d28b;
+}
+
+
+/* =====================================================
+   パネルタイトル
+===================================================== */
 
 .panel-title {
   display: flex;
@@ -728,23 +979,23 @@ input {
 
   gap: 10px;
 
-  margin-bottom: 18px;
+  margin-bottom: 5px;
 }
 
 
 .panel-title-icon {
-  width: 37px;
-  height: 37px;
+  width: 36px;
+  height: 36px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 10px;
+  background: transparent;
 
-  background: #edf6fc;
+  border-radius: 0;
 
-  font-size: 19px;
+  font-size: 27px;
 
   line-height: 1;
 }
@@ -753,71 +1004,112 @@ input {
 .panel-title h2 {
   margin: 0;
 
-  color: #344e61;
+  color: #123e72;
 
-  font-size: 18px;
+  font-size: 22px;
 
-  font-weight: 800;
+  font-weight: 900;
+}
+
+
+/* =====================================================
+   今日のひとこと
+===================================================== */
+
+.message-content {
+  position: relative;
+
+  z-index: 2;
+
+  padding-left: 47px;
 }
 
 
 .message-content p {
-  margin: 7px 0;
+  margin: 2px 0;
 
-  color: #607585;
+  color: #17283c;
 
-  font-size: 14px;
+  font-size: 17px;
 
-  line-height: 1.8;
+  font-weight: 700;
+
+  line-height: 1.45;
 }
 
 
 .message-content p:first-child {
-  color: #2693c8;
+  margin-top: 4px;
 
-  font-size: 20px;
+  color: #152d4d;
+
+  font-family:
+    "Soloburn",
+    sans-serif;
+
+  font-size: 25px;
 
   font-weight: 800;
 }
 
 
+/* =====================================================
+   下部キャラクター
+===================================================== */
+
 .small-character {
   position: absolute;
 
-  right: 28px;
-  bottom: 15px;
+  right: 22px;
+  bottom: -3px;
 
-  font-size: 52px;
+  font-size: 74px;
 
   line-height: 1;
+
+  z-index: 1;
 }
 
 
+/* =====================================================
+   おすすめの使い方
+===================================================== */
+
 .recommend-list {
-  margin: 0 0 14px;
-  padding-left: 23px;
+  margin: 0 0 5px;
 
-  color: #607585;
+  padding-left: 28px;
 
-  font-size: 13px;
+  color: #182d46;
 
-  line-height: 2;
+  font-size: 15px;
+
+  font-weight: 700;
+
+  line-height: 1.7;
+}
+
+
+.recommend-list li {
+  padding-left: 4px;
 }
 
 
 .recommend-list strong {
-  color: #258ec0;
+  color: #123e72;
 }
 
 
 .recommend-message {
   margin: 0;
 
-  color: #718491;
+  color: #ef7210;
 
-  font-size: 13px;
+  font-size: 16px;
 
-  line-height: 1.7;
+  font-weight: 900;
+
+  line-height: 1.5;
 }
 
 
@@ -826,13 +1118,22 @@ input {
 ===================================================== */
 
 .home-footer {
+  min-height: 49px;
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 
-  padding: 23px 6%;
+  gap: 40px;
 
-  background: #07508a;
+  padding: 7px 5.5%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0758a4 0%,
+      #06488f 100%
+    );
 
   color: #ffffff;
 }
@@ -842,11 +1143,11 @@ input {
   display: flex;
   align-items: center;
 
-  gap: 9px;
+  gap: 8px;
 
-  font-size: 16px;
+  font-size: 21px;
 
-  font-weight: 700;
+  font-weight: 900;
 }
 
 
@@ -856,9 +1157,11 @@ input {
 
 
 .footer-description {
-  font-size: 12px;
+  font-size: 14px;
 
-  opacity: 0.85;
+  font-weight: 600;
+
+  opacity: 0.95;
 }
 
 
