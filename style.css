@@ -1660,7 +1660,8 @@ button:hover {
 
 
   .logo-text {
-    font-size: 18px;
+    font-size: 16px;
+    white-space: nowrap;
   }
 
 
@@ -1707,11 +1708,11 @@ button:hover {
 
 
   .hero-character {
-    right: -5px;
+    right: -45px;
 
-    bottom: -25px;
+    bottom: -45px;
 
-    transform: scale(0.62);
+    transform: scale(0.50);
 
     opacity: 0.55;
   }
