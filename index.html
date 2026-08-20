@@ -301,6 +301,130 @@
 
 </div>
 
+<!-- ==================================================
+     フラッシュ暗算 メニュー
+================================================== -->
+
+<div id="flashSelect" style="display:none;">
+
+  <div class="flash-select-inner">
+
+    <div class="flash-select-header">
+
+      <div class="flash-select-icon">
+        ⚡
+      </div>
+
+      <h1>フラッシュ暗算</h1>
+
+      <p>
+        瞬間的に数字を読み取り、<br>
+        計算する力を鍛えよう！
+      </p>
+
+    </div>
+
+
+    <!-- 3種目 -->
+
+    <div class="flash-menu-cards">
+
+
+      <!-- 見取り算 -->
+
+      <article class="flash-menu-card mitori-menu-card">
+
+        <div class="flash-menu-icon">
+          🧮
+        </div>
+
+        <h2>見取り算</h2>
+
+        <p>
+          瞬間計算力を鍛える
+        </p>
+
+        <button
+          type="button"
+          onclick="selectType('mitori')">
+
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+
+        </button>
+
+      </article>
+
+
+      <!-- 乗算 -->
+
+      <article class="flash-menu-card kake-menu-card">
+
+        <div class="flash-menu-icon">
+          ×
+        </div>
+
+        <h2>乗算</h2>
+
+        <p>
+          掛け算の力を鍛える
+        </p>
+
+        <button
+          type="button"
+          onclick="selectType('kake')">
+
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+
+        </button>
+
+      </article>
+
+
+      <!-- 除算 -->
+
+      <article class="flash-menu-card wari-menu-card">
+
+        <div class="flash-menu-icon">
+          ÷
+        </div>
+
+        <h2>除算</h2>
+
+        <p>
+          割り算の力を鍛える
+        </p>
+
+        <button
+          type="button"
+          onclick="selectType('wari')">
+
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+
+        </button>
+
+      </article>
+
+    </div>
+
+
+    <!-- ホームへ戻る -->
+
+    <button
+      type="button"
+      class="flash-home-button"
+      onclick="backHome()">
+
+      ← ホームへ戻る
+
+    </button>
+
+  </div>
+
+</div>
+
 
 <!-- ==================================================
      種目選択

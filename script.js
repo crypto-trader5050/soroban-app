@@ -70,11 +70,15 @@ function countdownBeep(callback) {
 }
 
 // =====================
-// 画面遷移
+// フラッシュ暗算画面へ
 // =====================
+
 function goFlash() {
+
   document.getElementById("home").style.display = "none";
-  document.getElementById("typeSelect").style.display = "block";
+
+  document.getElementById("flashSelect").style.display = "block";
+
 }
 
 function selectType(type) {
