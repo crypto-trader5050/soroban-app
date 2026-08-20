@@ -84,7 +84,7 @@ function goFlash() {
 function selectType(type) {
   state.type = type;
 
-  document.getElementById("typeSelect").style.display = "none";
+  document.getElementById("flashSelect").style.display = "none";
   document.getElementById("levelSelect").style.display = "block";
 
   createLevelButtons();
@@ -557,7 +557,7 @@ function randDigit(digit) {
 
 function backHome() {
   document.getElementById("home").style.display = "block";
-  document.getElementById("typeSelect").style.display = "none";
+  document.getElementById("flashSelect").style.display = "none";
   document.getElementById("levelSelect").style.display = "none";
   document.getElementById("app").style.display = "none";
 
