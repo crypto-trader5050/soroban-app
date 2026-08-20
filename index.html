@@ -427,24 +427,116 @@
 
 
 <!-- ==================================================
-     種目選択
-     ※既存機能
+     フラッシュ暗算 種目選択
 ================================================== -->
-<div id="typeSelect" style="display:none;">
+<div id="typeSelect">
 
-  <h2>種目を選んでください</h2>
+  <div class="flash-select-inner">
 
-  <button onclick="selectType('mitori')">
-    見取り算
-  </button>
+    <!-- タイトル -->
+    <div class="flash-select-header">
 
-  <button onclick="selectType('kake')">
-    乗算
-  </button>
+      <div class="flash-select-icon">
+        ⚡
+      </div>
 
-  <button onclick="selectType('wari')">
-    除算
-  </button>
+      <h1>フラッシュ暗算</h1>
+
+      <p>
+        瞬間的に数字を読み取り、<br>
+        計算する力を鍛えよう！
+      </p>
+
+    </div>
+
+
+    <!-- 3つの種目 -->
+    <div class="flash-type-cards">
+
+
+      <!-- 見取り算 -->
+      <article class="flash-type-card mitori-type-card">
+
+        <div class="flash-type-icon">
+          🧮
+        </div>
+
+        <h2>見取り算</h2>
+
+        <p>
+          瞬間計算力を鍛える
+        </p>
+
+        <button
+          type="button"
+          onclick="selectType('mitori')"
+          class="flash-type-button">
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+
+      <!-- 乗算 -->
+      <article class="flash-type-card kake-type-card">
+
+        <div class="flash-type-icon">
+          ×
+        </div>
+
+        <h2>乗算</h2>
+
+        <p>
+          掛け算の力を鍛える
+        </p>
+
+        <button
+          type="button"
+          onclick="selectType('kake')"
+          class="flash-type-button">
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+
+      <!-- 除算 -->
+      <article class="flash-type-card wari-type-card">
+
+        <div class="flash-type-icon">
+          ÷
+        </div>
+
+        <h2>除算</h2>
+
+        <p>
+          割り算の力を鍛える
+        </p>
+
+        <button
+          type="button"
+          onclick="selectType('wari')"
+          class="flash-type-button">
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+    </div>
+
+
+    <!-- ホームへ戻る -->
+    <button
+      type="button"
+      class="flash-home-button"
+      onclick="backHome()">
+      ← ホームへ戻る
+    </button>
+
+  </div>
 
 </div>
 
