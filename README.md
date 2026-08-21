@@ -469,3 +469,65 @@ ITが得意ではない先生でも迷わず使えるUIを目指す。
 壊さない
 
 既存機能を変更するときは、他種目への影響を確認してから変更する。
+
+
+そろばんトレーニング ― 最終ディレクトリ構成案
+soroban-app/
+│
+├── index.html
+│
+├── css/
+│   ├── common.css
+│   ├── home.css
+│   │
+│   ├── flash/
+│   │   ├── flash-select.css
+│   │   ├── flash-level.css
+│   │   ├── flash-app.css
+│   │   └── flash-result.css
+│   │
+│   ├── problem/
+│   │   ├── problem-select.css
+│   │   ├── problem-create.css
+│   │   └── problem-print.css
+│   │
+│   ├── reading/
+│   │   ├── reading-select.css
+│   │   └── reading-app.css
+│   │
+│   └── responsive.css
+│
+├── js/
+│   ├── common.js
+│   ├── home.js
+│   │
+│   ├── flash/
+│   │   ├── flash.js
+│   │   ├── flash-mul.js
+│   │   ├── flash-div.js
+│   │   ├── flash-level.js
+│   │   └── flash-result.js
+│   │
+│   ├── problem/
+│   │   ├── problem.js
+│   │   ├── problem-mul.js
+│   │   ├── problem-div.js
+│   │   └── problem-print.js
+│   │
+│   └── reading/
+│       ├── reading.js
+│       ├── reading-mul.js
+│       └── reading-div.js
+│
+├── config/
+│   └── levelConfig.js
+│
+├── assets/
+│   ├── fonts/
+│   │   ├── Soloburn.woff2
+│   │   └── Soloburn.woff
+│   │
+│   └── images/
+│       └── abacus-hero.png
+│
+└── README.md
