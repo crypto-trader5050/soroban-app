@@ -1442,105 +1442,148 @@ button:hover {
 
 /* =====================================================
    フラッシュ暗算 種目選択画面
-   HOMEと同じ世界観
+   HOMEと完全に同じ背景世界観
 ===================================================== */
 
-#typeSelect {
-
+#flashSelect {
   min-height: 100vh;
 
   margin: -20px;
-
   padding: 55px 20px 45px;
+
+  position: relative;
+  overflow: hidden;
+
+  color: #102f58;
+  text-align: center;
 
   background:
     radial-gradient(
       circle at 3% 25%,
-      rgba(93, 185, 242, 0.25) 0 65px,
-      transparent 150px
+      rgba(93, 185, 242, 0.28) 0 38px,
+      transparent 40px
     ),
 
     radial-gradient(
       circle at 97% 20%,
-      rgba(255, 255, 255, 0.95) 0 50px,
-      transparent 140px
-    ),
-
-    radial-gradient(
-      circle at 8% 75%,
-      rgba(93, 185, 242, 0.18) 0 70px,
-      transparent 170px
-    ),
-
-    radial-gradient(
-      circle at 92% 72%,
-      rgba(91, 187, 239, 0.16) 0 80px,
-      transparent 180px
+      rgba(255, 255, 255, 0.95) 0 45px,
+      transparent 130px
     ),
 
     linear-gradient(
       180deg,
       #d9f4ff 0%,
       #eefaff 32%,
-      #ffffff 72%,
+      #ffffff 70%,
       #ffffff 100%
     );
-
-  color: #102f58;
-
-  text-align: center;
-
-  position: relative;
-
-  overflow: hidden;
 }
 
 
 /* =====================================================
-   水しぶき・光
+   フラッシュ暗算背景装飾
+   HOMEと同じ水しぶき・波・光
 ===================================================== */
 
-#typeSelect::before {
-
+#flashSelect::before {
   content: "";
 
   position: absolute;
-
   inset: 0;
 
   pointer-events: none;
 
-  background:
+  z-index: 0;
 
+  background:
     repeating-linear-gradient(
       135deg,
       transparent 0 17px,
-      rgba(255, 255, 255, 0.45) 18px 27px,
+      rgba(255, 255, 255, 0.48) 18px 27px,
       transparent 28px 45px
-    )
-    left top / 360px 220px no-repeat,
+    ) left top / 360px 220px no-repeat,
 
     linear-gradient(
       150deg,
       transparent 0 38%,
-      rgba(97, 193, 239, 0.10) 38.5% 41%,
+      rgba(97, 193, 239, 0.13) 38.5% 41%,
       transparent 41.5% 48%,
-      rgba(255, 255, 255, 0.60) 48.5% 52%,
+      rgba(255, 255, 255, 0.65) 48.5% 52%,
       transparent 52.5%
-    );
+    ),
 
-  z-index: 0;
+    radial-gradient(
+      circle at 4% 57%,
+      rgba(93, 185, 242, 0.25) 0 65px,
+      transparent 67px
+    ),
+
+    radial-gradient(
+      circle at 11% 43%,
+      transparent 0 48px,
+      rgba(255, 255, 255, 0.6) 49px 52px,
+      transparent 53px
+    ),
+
+    radial-gradient(
+      circle at 94% 39%,
+      transparent 0 58px,
+      rgba(91, 187, 239, 0.18) 59px 63px,
+      transparent 64px
+    ),
+
+    radial-gradient(
+      circle at 96% 42%,
+      transparent 0 85px,
+      rgba(91, 187, 239, 0.12) 86px 90px,
+      transparent 91px
+    );
 }
 
 
 /* =====================================================
-   コンテンツを前面へ
+   小さな水滴・光
 ===================================================== */
 
-#typeSelect > * {
+#flashSelect::after {
+  content: "";
 
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: 0;
+
+  opacity: 0.65;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(71, 166, 231, 0.28) 0 2px,
+      transparent 3px
+    ) 87% 23% / 18px 18px,
+
+    radial-gradient(
+      circle,
+      rgba(71, 166, 231, 0.18) 0 2px,
+      transparent 3px
+    ) 91% 27% / 22px 22px,
+
+    radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.85) 0 2px,
+      transparent 3px
+    ) 15% 25% / 35px 35px;
+}
+
+
+/* =====================================================
+   フラッシュ暗算の中身を前面へ
+===================================================== */
+
+#flashSelect > * {
   position: relative;
-
   z-index: 1;
 }
 
