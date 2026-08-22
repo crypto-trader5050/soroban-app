@@ -15,8 +15,8 @@
 @font-face {
   font-family: 'Soloburn';
   src:
-    url('../fonts/Soloburn.woff2') format('woff2'),
-    url('../fonts/Soloburn.woff') format('woff');
+    url('assets/fonts/Soloburn.woff2') format('woff2'),
+    url('assets/fonts/Soloburn.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
