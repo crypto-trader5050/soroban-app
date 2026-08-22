@@ -1,0 +1,41 @@
+/* =====================================================
+   レベル選択
+===================================================== */
+
+#levelSelect {
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 50px 20px;
+
+  text-align: center;
+
+  background: black;
+
+  color: #00ff00;
+}
+
+
+#levelSelect h2 {
+  color: #00ff00;
+
+  margin-bottom: 30px;
+}
+
+
+#levelSelect button {
+  background: black;
+
+  color: #00ff00;
+
+  border: 1px solid #00ff00;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+
+#levelSelect button:hover {
+  background: #003300;
+}

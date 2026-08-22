@@ -1,0 +1,252 @@
+/* =====================================================
+   数字フォント
+===================================================== */
+
+#display,
+#printArea,
+#answerInput {
+  font-family: "Soloburn", monospace;
+}
+
+
+/* =====================================================
+   フラッシュ表示（メイン）
+===================================================== */
+
+#display {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  font-family: "Soloburn", monospace;
+
+  color: #00ff00;
+
+  white-space: nowrap;
+
+  max-width: 95%;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  letter-spacing: 6px;
+
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   入力欄
+===================================================== */
+
+#answerInput {
+  font-size: 36px;
+
+  width: 480px;
+
+  max-width: 90%;
+
+  padding: 15px;
+
+  text-align: right;
+
+  margin-bottom: 15px;
+
+  background: black;
+
+  color: #00ff00;
+
+  border: 2px solid #00ff00;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 0 10px #00ff00;
+}
+
+
+/* =====================================================
+   テンキー
+===================================================== */
+
+#keypad {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 80px);
+
+  gap: 12px;
+
+  justify-content: center;
+
+  position: relative;
+
+  z-index: 10;
+}
+
+
+#keypad button {
+  font-size: 24px;
+
+  padding: 18px;
+
+  border-radius: 10px;
+
+  background: black;
+
+  color: #00ff00;
+
+  border: 1px solid #00ff00;
+
+  transition: 0.1s;
+
+  position: relative;
+
+  z-index: 11;
+}
+
+
+/* ホバー */
+
+#keypad button:hover {
+  background: #002200;
+}
+
+
+/* 押したとき */
+
+#keypad button:active {
+  transform: scale(0.95);
+
+  background: #003300;
+
+  box-shadow:
+    0 0 8px #00ff00 inset;
+}
+
+
+/* =====================================================
+   判定表示
+===================================================== */
+
+#judge {
+  margin-top: 20px;
+
+  font-size: 22px;
+}
+
+
+/* =====================================================
+   印刷エリア
+===================================================== */
+
+#printArea {
+  font-family: "Soloburn", monospace;
+
+  font-size: 20px;
+
+  line-height: 1.6;
+
+  margin-top: 20px;
+}
+
+
+/* =====================================================
+   不要な文字を消す用
+===================================================== */
+
+.hidden {
+  display: none;
+}
+
+
+/* =====================================================
+   題目表示
+===================================================== */
+
+#questionTitle {
+  font-size: 36px;
+
+  color: #00ff00;
+
+  margin-top: 100px;
+}
+
+
+/* =====================================================
+   級表示
+===================================================== */
+
+#levelInfo {
+  font-size: 22px;
+
+  color: #00ff00;
+
+  margin-bottom: 20px;
+}
+
+
+/* =====================================================
+   問題情報
+===================================================== */
+
+#questionInfo {
+  color: #00ff00;
+
+  font-size: 18px;
+}
+
+/* =====================================================
+   実行画面
+===================================================== */
+
+#app {
+  min-height: 100vh;
+
+  margin: -20px;
+
+  padding: 20px;
+
+  text-align: center;
+
+  background: black;
+
+  color: #00ff00;
+}
+
+
+/* =====================================================
+   実行画面のボタン
+===================================================== */
+
+#app > button {
+  font-size: 16px;
+
+  padding: 10px 15px;
+
+  margin: 5px;
+
+  background: black;
+
+  color: #00ff00;
+
+  border: 1px solid #00ff00;
+
+  cursor: pointer;
+}
+
+
+#app > button:hover {
+  background: #003300;
+}
