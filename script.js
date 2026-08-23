@@ -495,7 +495,7 @@ function showResult() {
 
   // 合否表示
   judge.innerHTML = isPass
-    ? "🎉 合格！"
+    ? `🎉 ${levelList[currentLevelIndex]} 合格！`
     : "❌ 不合格";
 
   // ボタン表示切り替え
