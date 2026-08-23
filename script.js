@@ -178,61 +178,34 @@ function selectLevel(level) {
 
   audioCtx.resume();
 
-  // スマホ縦向きなら、横向きになるまで開始しない
+  // スマホ縦向きなら、横向きになるまで待つ
   if (isMobilePortrait()) {
+    showOrientationMessage();
     return;
   }
 
-  // =====================
-  // 画面の向きが変わった時の処理
-  // =====================
+  startSelectedLevel();
+}
 
-  window.addEventListener("orientationchange", () => {
+// =====================
+// 選択した級を開始
+// =====================
 
-    if (!isMobilePortrait()) {
+function startSelectedLevel() {
 
-      // スマホが横向きになったらゲーム開始
-      if (
-        document.getElementById("app").style.display !== "none" &&
-        state.currentQuestion === 0
-      ) {
+  const orientationMessage =
+    document.getElementById("orientationMessage");
 
-        audioCtx.resume();
-
-        if (state.type === "kake") {
-
-          startMultiplicationGame();
-
-        } else {
-
-          document.fonts.ready.then(() => {
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                startEngine();
-              });
-            });
-          });
-
-        }
-
-      }
-
-    }
-
-  });
-
-  // =====================
-  // 種目ごとに開始処理を分ける
-  // =====================
+  if (orientationMessage) {
+    orientationMessage.style.display = "none";
+  }
 
   if (state.type === "kake") {
 
-    // 乗算
     startMultiplicationGame();
 
   } else {
 
-    // 見取り算
     document.fonts.ready.then(() => {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -243,6 +216,27 @@ function selectLevel(level) {
 
   }
 }
+
+  // =====================
+  // スマホの向きが変わった時
+  // =====================
+
+  window.addEventListener("orientationchange", () => {
+
+    if (!isMobilePortrait()) {
+
+      if (
+        document.getElementById("app").style.display !== "none" &&
+        state.currentQuestion === 0 &&
+        state.level
+      ) {
+        audioCtx.resume();
+        startSelectedLevel();
+      }
+
+    }
+
+  });
 
 // =====================
 // メイン処理
