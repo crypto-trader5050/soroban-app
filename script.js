@@ -187,6 +187,17 @@ function selectLevel(level) {
   startSelectedLevel();
 }
 
+function showOrientationMessage() {
+
+  const message =
+    document.getElementById("orientationNotice");
+
+  if (!message) return;
+
+  message.style.display = "flex";
+
+}
+
 // =====================
 // 選択した級を開始
 // =====================
@@ -194,7 +205,7 @@ function selectLevel(level) {
 function startSelectedLevel() {
 
   const orientationMessage =
-    document.getElementById("orientationMessage");
+    document.getElementById("orientationNotice");
 
   if (orientationMessage) {
     orientationMessage.style.display = "none";
