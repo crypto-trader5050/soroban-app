@@ -250,3 +250,90 @@
 #app > button:hover {
   background: #003300;
 }
+
+/* =====================================================
+   スマホ縦向き時の横向き案内
+===================================================== */
+
+#orientationNotice {
+  min-height: 100vh;
+
+  margin: -20px;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  background: black;
+
+  color: #00ff00;
+}
+
+
+/* スマホアイコン */
+
+#orientationNotice .orientation-icon {
+  font-size: 60px;
+
+  margin-bottom: 25px;
+}
+
+
+/* メッセージ */
+
+#orientationNotice h2 {
+  margin: 0 0 15px;
+
+  font-size: 24px;
+
+  color: #00ff00;
+}
+
+
+#orientationNotice p {
+  margin: 0;
+
+  font-size: 16px;
+
+  color: #00ff00;
+}
+
+
+/* =====================================================
+   スマホ縦向き
+===================================================== */
+
+@media (max-width: 600px) and (orientation: portrait) {
+
+  #orientationNotice {
+    display: flex !important;
+  }
+
+  #app > *:not(#orientationNotice) {
+    display: none !important;
+  }
+
+}
+
+
+/* =====================================================
+   スマホ横向き
+===================================================== */
+
+@media (max-width: 600px) and (orientation: landscape) {
+
+  #orientationNotice {
+    display: none !important;
+  }
+
+}

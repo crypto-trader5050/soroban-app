@@ -22,6 +22,16 @@ let currentLevelIndex = 0;
 const PASS_SCORE = 10;
 
 // =====================
+// スマホ縦向き判定
+// =====================
+
+function isMobilePortrait() {
+  return window.matchMedia(
+    "(max-width: 600px) and (orientation: portrait)"
+  ).matches;
+}
+
+// =====================
 // 音
 // =====================
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -167,6 +177,49 @@ function selectLevel(level) {
   document.getElementById("app").style.display = "block";
 
   audioCtx.resume();
+
+  // スマホ縦向きなら、横向きになるまで開始しない
+  if (isMobilePortrait()) {
+    return;
+  }
+
+  // =====================
+  // 画面の向きが変わった時の処理
+  // =====================
+
+  window.addEventListener("orientationchange", () => {
+
+    if (!isMobilePortrait()) {
+
+      // スマホが横向きになったらゲーム開始
+      if (
+        document.getElementById("app").style.display !== "none" &&
+        state.currentQuestion === 0
+      ) {
+
+        audioCtx.resume();
+
+        if (state.type === "kake") {
+
+          startMultiplicationGame();
+
+        } else {
+
+          document.fonts.ready.then(() => {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                startEngine();
+              });
+            });
+          });
+
+        }
+
+      }
+
+    }
+
+  });
 
   // =====================
   // 種目ごとに開始処理を分ける
