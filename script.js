@@ -228,26 +228,36 @@ function startSelectedLevel() {
   }
 }
 
-  // =====================
-  // スマホの向きが変わった時
-  // =====================
+// =====================
+// スマホの向きが変わった時
+// =====================
 
-  window.addEventListener("orientationchange", () => {
+function checkOrientation() {
 
-    if (!isMobilePortrait()) {
+  if (isMobilePortrait()) {
+    return;
+  }
 
-      if (
-        document.getElementById("app").style.display !== "none" &&
-        state.currentQuestion === 0 &&
-        state.level
-      ) {
-        audioCtx.resume();
-        startSelectedLevel();
-      }
+  const app = document.getElementById("app");
 
-    }
+  if (
+    app.style.display !== "none" &&
+    state.level &&
+    state.currentQuestion === 0
+  ) {
 
-  });
+    audioCtx.resume();
+
+    startSelectedLevel();
+  }
+}
+
+
+// スマホの向き変更
+window.addEventListener("orientationchange", checkOrientation);
+
+// 画面サイズ変更
+window.addEventListener("resize", checkOrientation);
 
 // =====================
 // メイン処理
