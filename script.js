@@ -324,10 +324,24 @@ function runFlash() {
 
       // 桁に応じてサイズ
       const len = numStr.length;
-      if (len <= 4) el.style.fontSize = "100px";
-      else if (len <= 8) el.style.fontSize = "80px";
-      else if (len <= 12) el.style.fontSize = "60px";
-      else el.style.fontSize = "45px";
+
+      if (window.innerWidth <= 600) {
+
+        // スマートフォン
+        if (len <= 4) el.style.fontSize = "60px";
+        else if (len <= 8) el.style.fontSize = "48px";
+        else if (len <= 12) el.style.fontSize = "36px";
+        else el.style.fontSize = "28px";
+
+      } else {
+
+        // PC・タブレット
+        if (len <= 4) el.style.fontSize = "100px";
+        else if (len <= 8) el.style.fontSize = "80px";
+        else if (len <= 12) el.style.fontSize = "60px";
+        else el.style.fontSize = "45px";
+
+      }
 
       el.style.opacity = 1;
 
