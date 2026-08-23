@@ -81,14 +81,18 @@ function startMultiplication() {
   // 文字数に応じて問題の大きさを調整
   const length = problemText.replace(/,/g, "").length;
 
-  if (length <= 7) {
-    el.style.fontSize = "100px";
+  if (length <= 5) {
+    el.style.fontSize = "80px";
+  } else if (length <= 8) {
+    el.style.fontSize = "65px";
   } else if (length <= 11) {
-    el.style.fontSize = "85px";
-  } else if (length <= 15) {
-    el.style.fontSize = "70px";
+    el.style.fontSize = "52px";
+  } else if (length <= 14) {
+    el.style.fontSize = "42px";
+  } else if (length <= 17) {
+    el.style.fontSize = "34px";
   } else {
-    el.style.fontSize = "55px";
+    el.style.fontSize = "28px";
   }
 
   el.style.opacity = "1";
