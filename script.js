@@ -328,10 +328,12 @@ function runFlash() {
       if (window.innerWidth <= 600) {
 
         // スマートフォン
-        if (len <= 4) el.style.fontSize = "60px";
-        else if (len <= 8) el.style.fontSize = "48px";
+        if (len <= 3) el.style.fontSize = "60px";
+        else if (len <= 6) el.style.fontSize = "52px";
+        else if (len <= 9) el.style.fontSize = "44px";
         else if (len <= 12) el.style.fontSize = "36px";
-        else el.style.fontSize = "28px";
+        else if (len <= 15) el.style.fontSize = "30px";
+        else el.style.fontSize = "24px";
 
       } else {
 
