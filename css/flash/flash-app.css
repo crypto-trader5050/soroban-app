@@ -337,3 +337,22 @@
   }
 
 }
+
+/* =====================================================
+   スマホ横向き：キーパッド縮小
+===================================================== */
+
+@media screen and (orientation: landscape) and (max-width: 900px) {
+
+  #keypad {
+    grid-template-columns: repeat(3, 60px);
+    gap: 6px;
+  }
+
+  #keypad button {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+}
