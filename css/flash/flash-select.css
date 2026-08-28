@@ -1,16 +1,29 @@
-/* =====================================================
+/* =========================================================
+   そろばんトレーニング
    フラッシュ暗算 種目選択画面
-   HOMEと完全に同じ背景世界観
-===================================================== */
+
+   ・HOME画面のデザインを継承
+   ・水しぶき／光の背景
+   ・明るく爽やかな配色
+   ・3種目を大きなカードで表示
+   ・スマホ対応
+========================================================= */
+
+
+/* =========================================================
+   フラッシュ暗算画面 全体
+========================================================= */
 
 #flashSelect {
   min-height: 100vh;
 
   margin: -20px;
-  padding: 55px 20px 45px;
+  padding: 0 20px 45px;
 
   position: relative;
   overflow: hidden;
+
+  box-sizing: border-box;
 
   color: #102f58;
   text-align: center;
@@ -38,10 +51,10 @@
 }
 
 
-/* =====================================================
-   フラッシュ暗算背景装飾
-   HOMEと同じ水しぶき・波・光
-===================================================== */
+/* =========================================================
+   背景装飾
+   水しぶき・波・光
+========================================================= */
 
 #flashSelect::before {
   content: "";
@@ -50,7 +63,6 @@
   inset: 0;
 
   pointer-events: none;
-
   z-index: 0;
 
   background:
@@ -99,9 +111,9 @@
 }
 
 
-/* =====================================================
+/* =========================================================
    小さな水滴・光
-===================================================== */
+========================================================= */
 
 #flashSelect::after {
   content: "";
@@ -110,7 +122,6 @@
   inset: 0;
 
   pointer-events: none;
-
   z-index: 0;
 
   opacity: 0.65;
@@ -136,136 +147,112 @@
 }
 
 
-/* =====================================================
-   フラッシュ暗算の中身を前面へ
-===================================================== */
+/* =========================================================
+   コンテンツを背景より前面へ
+========================================================= */
 
 #flashSelect > * {
   position: relative;
   z-index: 1;
 }
 
-/* =====================================================
-   フラッシュ暗算 メニュー画面
-   トップ画面と同じ水色系の世界観
-===================================================== */
 
-#flashSelect {
-  min-height: 100vh;
+/* =========================================================
+   メインコンテンツ
+========================================================= */
 
-  margin: -20px;
+.flash-select-inner {
+  width: min(1180px, 94%);
 
-  padding: 55px 20px 45px;
+  margin: 0 auto;
+  padding-top: 42px;
+}
 
-  background:
-    radial-gradient(
-      circle at 10% 15%,
-      rgba(255, 255, 255, 0.90) 0,
-      rgba(255, 255, 255, 0.35) 70px,
-      transparent 150px
-    ),
 
-    radial-gradient(
-      circle at 90% 20%,
-      rgba(255, 255, 255, 0.80) 0,
-      rgba(255, 255, 255, 0.30) 70px,
-      transparent 150px
-    ),
+/* =========================================================
+   ヘッダー
+========================================================= */
 
-    radial-gradient(
-      circle at 15% 80%,
-      rgba(117, 211, 246, 0.20) 0,
-      transparent 180px
-    ),
-
-    radial-gradient(
-      circle at 85% 75%,
-      rgba(101, 204, 242, 0.18) 0,
-      transparent 190px
-    ),
-
-    linear-gradient(
-      180deg,
-      #d9f5ff 0%,
-      #e9f9ff 38%,
-      #f8fdff 75%,
-      #ffffff 100%
-    );
-
-  color: #294257;
+.flash-select-header {
+  margin-bottom: 38px;
 
   text-align: center;
 }
 
 
-/* =====================================================
-   フラッシュ暗算 メイン
-===================================================== */
-
-.flash-select-inner {
-  width: min(1100px, 94%);
-
-  margin: 0 auto;
-}
-
-
-/* =====================================================
-   タイトル部分
-===================================================== */
-
-.flash-select-header {
-  margin-bottom: 42px;
-}
-
+/* =========================================================
+   タイトルアイコン
+========================================================= */
 
 .flash-select-icon {
-  width: 70px;
-  height: 70px;
+  width: 76px;
+  height: 76px;
 
-  margin: 0 auto 18px;
+  margin: 0 auto 16px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      #fff5df 0%,
+      #ffe8bb 100%
+    );
 
-  background: #fff0d7;
+  color: #efa13a;
 
-  font-size: 36px;
+  border-radius: 22px;
+
+  font-size: 40px;
+  line-height: 1;
 
   box-shadow:
-    0 5px 18px rgba(41, 76, 105, 0.08);
+    0 8px 20px rgba(41, 76, 105, 0.10),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
+
+/* =========================================================
+   タイトル
+========================================================= */
 
 .flash-select-header h1 {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 
-  color: #294458;
+  color: #0757a3;
 
-  font-size: clamp(30px, 4vw, 43px);
+  font-size: clamp(32px, 4vw, 46px);
 
-  font-weight: 800;
+  font-weight: 900;
 
-  line-height: 1.35;
+  letter-spacing: 1px;
+
+  line-height: 1.25;
 }
 
+
+/* =========================================================
+   説明文
+========================================================= */
 
 .flash-select-header p {
   margin: 0;
 
-  color: #667f90;
+  color: #58758b;
 
   font-size: 16px;
+
+  font-weight: 600;
 
   line-height: 1.8;
 }
 
 
-/* =====================================================
+/* =========================================================
    3種目カード
-===================================================== */
+========================================================= */
 
 .flash-menu-cards {
   display: grid;
@@ -275,27 +262,35 @@
 
   gap: 24px;
 
-  margin-bottom: 35px;
+  width: 100%;
+
+  margin: 0 auto 30px;
 }
 
 
+/* =========================================================
+   種目カード
+========================================================= */
+
 .flash-menu-card {
-  min-height: 330px;
+  min-height: 320px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  padding: 32px 28px;
+  padding: 32px 28px 28px;
 
-  background: #ffffff;
+  box-sizing: border-box;
 
-  border: 1px solid #dfe9f0;
+  background: rgba(255, 255, 255, 0.94);
 
-  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+
+  border-radius: 26px;
 
   box-shadow:
-    0 6px 20px rgba(41, 76, 105, 0.07);
+    0 10px 28px rgba(41, 76, 105, 0.10);
 
   transition:
     transform 0.2s ease,
@@ -304,20 +299,20 @@
 
 
 .flash-menu-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-7px);
 
   box-shadow:
-    0 12px 28px rgba(41, 76, 105, 0.13);
+    0 17px 34px rgba(41, 76, 105, 0.16);
 }
 
 
-/* =====================================================
+/* =========================================================
    種目アイコン
-===================================================== */
+========================================================= */
 
 .flash-menu-icon {
-  width: 76px;
-  height: 76px;
+  width: 86px;
+  height: 86px;
 
   display: flex;
   align-items: center;
@@ -325,68 +320,124 @@
 
   margin-bottom: 20px;
 
-  border-radius: 20px;
+  border-radius: 24px;
 
-  font-size: 38px;
+  font-size: 42px;
 
-  font-weight: 800;
+  font-weight: 900;
 
   line-height: 1;
+
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+
+/* =========================================================
+   見取算
+========================================================= */
+
+.mitori-menu-card {
+  border-top: 5px solid #efa13a;
 }
 
 
 .mitori-menu-card .flash-menu-icon {
-  background: #fff0d7;
+  background:
+    linear-gradient(
+      145deg,
+      #fff5df 0%,
+      #ffe5b5 100%
+    );
+
+  color: #efa13a;
+}
+
+
+/* =========================================================
+   乗算
+========================================================= */
+
+.kake-menu-card {
+  border-top: 5px solid #2998d5;
 }
 
 
 .kake-menu-card .flash-menu-icon {
-  background: #e6f5ff;
+  background:
+    linear-gradient(
+      145deg,
+      #eaf8ff 0%,
+      #d8f0ff 100%
+    );
 
   color: #2998d5;
 }
 
 
+/* =========================================================
+   除算
+========================================================= */
+
+.wari-menu-card {
+  border-top: 5px solid #58a96a;
+}
+
+
 .wari-menu-card .flash-menu-icon {
-  background: #e8f7eb;
+  background:
+    linear-gradient(
+      145deg,
+      #effaf1 0%,
+      #ddf3e2 100%
+    );
 
   color: #58a96a;
 }
 
-/* =====================================================
+
+/* =========================================================
    種目タイトル
-===================================================== */
+========================================================= */
 
 .flash-menu-card h2 {
-  margin: 0 0 12px;
+  margin: 0 0 10px;
 
-  color: #294255;
+  color: #173f67;
 
-  font-size: 24px;
+  font-size: 26px;
 
-  font-weight: 800;
+  font-weight: 900;
 
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
+
+/* =========================================================
+   種目説明
+========================================================= */
 
 .flash-menu-card p {
   margin: 0 0 28px;
 
-  color: #6b7f8d;
+  color: #698092;
 
-  font-size: 14px;
+  font-size: 15px;
+
+  font-weight: 600;
 
   line-height: 1.7;
 }
 
 
-/* =====================================================
+/* =========================================================
    はじめるボタン
-===================================================== */
+========================================================= */
 
 .flash-menu-card button {
   width: 100%;
+
+  min-height: 52px;
 
   display: flex;
   align-items: center;
@@ -394,129 +445,225 @@
 
   margin: auto 0 0;
 
-  padding: 13px 18px;
+  padding: 12px 18px;
+
+  box-sizing: border-box;
 
   color: #ffffff;
 
   border: none;
 
-  border-radius: 10px;
+  border-radius: 14px;
 
-  font-size: 15px;
+  font-size: 16px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 10px rgba(41, 76, 105, 0.12);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease;
+}
+
+
+/* =========================================================
+   見取算ボタン
+========================================================= */
+
+.mitori-menu-card button {
+  background:
+    linear-gradient(
+      180deg,
+      #f5ad4c 0%,
+      #efa13a 100%
+    );
+}
+
+
+/* =========================================================
+   乗算ボタン
+========================================================= */
+
+.kake-menu-card button {
+  background:
+    linear-gradient(
+      180deg,
+      #3da8df 0%,
+      #2998d5 100%
+    );
+}
+
+
+/* =========================================================
+   除算ボタン
+========================================================= */
+
+.wari-menu-card button {
+  background:
+    linear-gradient(
+      180deg,
+      #69b978 0%,
+      #58a96a 100%
+    );
+}
+
+
+/* =========================================================
+   ボタン ホバー
+========================================================= */
+
+.flash-menu-card button:hover {
+  opacity: 1;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 15px rgba(41, 76, 105, 0.18);
+}
+
+
+/* =========================================================
+   ボタン クリック
+========================================================= */
+
+.flash-menu-card button:active {
+  transform: translateY(1px) scale(0.98);
+
+  box-shadow:
+    0 3px 7px rgba(41, 76, 105, 0.12);
+}
+
+
+/* =========================================================
+   矢印
+========================================================= */
+
+.flash-menu-card button .arrow {
+  font-size: 28px;
+
+  font-weight: 400;
+
+  line-height: 0.8;
+}
+
+
+/* =========================================================
+   ホームへ戻る
+========================================================= */
+
+.flash-home-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  margin: 0 auto;
+
+  padding: 8px 18px;
+
+  background: rgba(255, 255, 255, 0.55) !important;
+
+  color: #527187 !important;
+
+  border: 1px solid rgba(82, 113, 135, 0.18) !important;
+
+  border-radius: 12px !important;
+
+  font-size: 14px !important;
 
   font-weight: 700;
 
   cursor: pointer;
 
   transition:
-    opacity 0.2s ease,
-    transform 0.1s ease;
-}
-
-
-.mitori-menu-card button {
-  background: #efa13a;
-}
-
-
-.kake-menu-card button {
-  background: #2998d5;
-}
-
-
-.wari-menu-card button {
-  background: #58a96a;
-}
-
-
-.flash-menu-card button:hover {
-  opacity: 0.88;
-}
-
-
-.flash-menu-card button:active {
-  transform: scale(0.98);
-}
-
-
-/* =====================================================
-   ホームへ戻る
-===================================================== */
-
-.flash-home-button {
-  background: transparent !important;
-
-  color: #5e7889 !important;
-
-  border: none !important;
-
-  font-size: 14px !important;
-
-  font-weight: 600;
-
-  cursor: pointer;
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
 }
 
 
 .flash-home-button:hover {
-  background: transparent !important;
+  background: rgba(255, 255, 255, 0.9) !important;
 
   color: #168dc4 !important;
+
+  transform: translateY(-1px);
 }
 
 
-/* =====================================================
-   フラッシュ暗算画面
-   タブレット・スマートフォン
-===================================================== */
+/* =========================================================
+   タブレット
+========================================================= */
 
 @media (max-width: 900px) {
 
+  .flash-select-inner {
+    width: min(700px, 94%);
+  }
+
+
   .flash-menu-cards {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
 
     gap: 18px;
   }
 
 
   .flash-menu-card {
-    min-height: 285px;
+    min-height: 300px;
+  }
+
+
+  .flash-menu-card:last-child {
+    grid-column: 1 / -1;
+
+    width: min(340px, 100%);
+
+    justify-self: center;
   }
 
 }
 
 
-/* =====================================================
-   フラッシュ暗算画面
-   小型スマートフォン
-===================================================== */
+/* =========================================================
+   スマートフォン
+========================================================= */
 
 @media (max-width: 600px) {
 
   #flashSelect {
-    padding: 38px 15px 35px;
+    padding: 0 12px 30px;
   }
 
 
   .flash-select-inner {
     width: 94%;
+
+    padding-top: 30px;
   }
 
 
   .flash-select-header {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 
 
   .flash-select-icon {
-    width: 60px;
-    height: 60px;
+    width: 62px;
+    height: 62px;
 
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 
-    border-radius: 17px;
+    border-radius: 18px;
 
-    font-size: 30px;
+    font-size: 32px;
   }
 
 
@@ -530,10 +677,26 @@
   }
 
 
-  .flash-menu-card {
-    min-height: 270px;
+  .flash-menu-cards {
+    grid-template-columns: 1fr;
 
-    padding: 27px 23px;
+    gap: 15px;
+
+    margin-bottom: 24px;
+  }
+
+
+  .flash-menu-card {
+    min-height: 245px;
+
+    padding: 24px 22px 22px;
+
+    border-radius: 22px;
+  }
+
+
+  .flash-menu-card:last-child {
+    width: 100%;
   }
 
 
@@ -541,23 +704,148 @@
     width: 68px;
     height: 68px;
 
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 
-    border-radius: 18px;
+    border-radius: 19px;
 
     font-size: 34px;
   }
 
 
   .flash-menu-card h2 {
+    margin-bottom: 7px;
+
     font-size: 22px;
   }
 
 
   .flash-menu-card p {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 
     font-size: 13px;
+  }
+
+
+  .flash-menu-card button {
+    min-height: 48px;
+
+    padding: 10px 16px;
+
+    border-radius: 13px;
+
+    font-size: 15px;
+  }
+
+
+  .flash-menu-card button .arrow {
+    font-size: 25px;
+  }
+
+}
+
+
+/* =========================================================
+   スマートフォン 横向き
+========================================================= */
+
+@media screen and (max-width: 900px) and (orientation: landscape) {
+
+  #flashSelect {
+    padding-bottom: 25px;
+  }
+
+
+  .flash-select-inner {
+    padding-top: 20px;
+  }
+
+
+  .flash-select-header {
+    margin-bottom: 20px;
+  }
+
+
+  .flash-select-icon {
+    width: 52px;
+    height: 52px;
+
+    margin-bottom: 8px;
+
+    border-radius: 15px;
+
+    font-size: 27px;
+  }
+
+
+  .flash-select-header h1 {
+    font-size: 28px;
+
+    margin-bottom: 5px;
+  }
+
+
+  .flash-select-header p {
+    font-size: 12px;
+
+    line-height: 1.5;
+  }
+
+
+  .flash-menu-cards {
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 12px;
+  }
+
+
+  .flash-menu-card {
+    min-height: 210px;
+
+    padding: 18px 15px;
+
+    border-radius: 18px;
+  }
+
+
+  .flash-menu-icon {
+    width: 55px;
+    height: 55px;
+
+    margin-bottom: 10px;
+
+    border-radius: 16px;
+
+    font-size: 28px;
+  }
+
+
+  .flash-menu-card h2 {
+    font-size: 19px;
+
+    margin-bottom: 5px;
+  }
+
+
+  .flash-menu-card p {
+    margin-bottom: 12px;
+
+    font-size: 11px;
+  }
+
+
+  .flash-menu-card button {
+    min-height: 40px;
+
+    padding: 7px 12px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+  }
+
+
+  .flash-menu-card button .arrow {
+    font-size: 22px;
   }
 
 }
