@@ -273,10 +273,13 @@
 ========================================================= */
 
 .flash-menu-card {
+
   min-height: 320px;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
 
   padding: 32px 28px 28px;
@@ -299,10 +302,71 @@
 
 
 .flash-menu-card:hover {
+
   transform: translateY(-7px);
 
   box-shadow:
     0 17px 34px rgba(41, 76, 105, 0.16);
+}
+
+
+/* =========================================================
+   見取算カード
+========================================================= */
+
+.mitori-menu-card {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 247, 231, 0.98) 0%,
+      rgba(255, 252, 245, 0.96) 100%
+    );
+
+  border: 2px solid rgba(239, 161, 58, 0.38);
+
+  box-shadow:
+    0 10px 28px rgba(239, 161, 58, 0.16);
+}
+
+
+/* =========================================================
+   乗算カード
+========================================================= */
+
+.kake-menu-card {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(234, 248, 255, 0.98) 0%,
+      rgba(249, 253, 255, 0.96) 100%
+    );
+
+  border: 2px solid rgba(41, 152, 213, 0.34);
+
+  box-shadow:
+    0 10px 28px rgba(41, 152, 213, 0.15);
+}
+
+
+/* =========================================================
+   除算カード
+========================================================= */
+
+.wari-menu-card {
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(237, 250, 240, 0.98) 0%,
+      rgba(250, 254, 251, 0.96) 100%
+    );
+
+  border: 2px solid rgba(88, 169, 106, 0.34);
+
+  box-shadow:
+    0 10px 28px rgba(88, 169, 106, 0.15);
 }
 
 
@@ -337,11 +401,6 @@
    見取算
 ========================================================= */
 
-.mitori-menu-card {
-  border-top: 5px solid #efa13a;
-}
-
-
 .mitori-menu-card .flash-menu-icon {
   background:
     linear-gradient(
@@ -358,11 +417,6 @@
    乗算
 ========================================================= */
 
-.kake-menu-card {
-  border-top: 5px solid #2998d5;
-}
-
-
 .kake-menu-card .flash-menu-icon {
   background:
     linear-gradient(
@@ -378,11 +432,6 @@
 /* =========================================================
    除算
 ========================================================= */
-
-.wari-menu-card {
-  border-top: 5px solid #58a96a;
-}
-
 
 .wari-menu-card .flash-menu-icon {
   background:
@@ -842,7 +891,6 @@
 
     font-size: 13px;
   }
-
 
   .flash-menu-card button .arrow {
     font-size: 22px;
