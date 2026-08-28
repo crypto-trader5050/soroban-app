@@ -345,14 +345,14 @@
 @media screen and (orientation: landscape) and (max-width: 900px) {
 
   #keypad {
-    grid-template-columns: repeat(3, 60px);
-    gap: 6px;
+    grid-template-columns: repeat(3, 52px);
+    gap: 5px;
   }
 
   #keypad button {
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 8px;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 7px;
   }
 
 }

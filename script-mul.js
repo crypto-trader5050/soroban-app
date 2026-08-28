@@ -130,6 +130,8 @@ function startMultiplication() {
   // =====================
   // 問題番号
   // =====================
+  document.getElementById("questionInfo").style.display = "block";
+
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion}問目 / 全${state.questionCount}問`;
 
