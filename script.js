@@ -444,6 +444,8 @@ function runFlash() {
     el.textContent = "？";
     document.getElementById("answerArea").style.display = "block";
     document.getElementById("questionInfo").style.display = "none";
+    document.getElementById("questionTitle").style.display = "none";
+    document.getElementById("levelInfo").style.display = "none";
   }, delay);
 
     state.timers.push(timer);

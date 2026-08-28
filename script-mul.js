@@ -240,6 +240,9 @@ document.getElementById("solveBtn").addEventListener("click", () => {
 
   // 回答欄・キーパッドを表示
   document.getElementById("answerArea").style.display = "block";
+  document.getElementById("questionInfo").style.display = "none";
+  document.getElementById("questionTitle").style.display = "none";
+  document.getElementById("levelInfo").style.display = "none";
 
   // 入力欄をクリア
   document.getElementById("answerInput").value = "";
