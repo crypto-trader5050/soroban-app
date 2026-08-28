@@ -260,7 +260,7 @@
   grid-template-columns:
     repeat(3, minmax(0, 1fr));
 
-  gap: 24px;
+  gap: 42px;
 
   width: 100%;
 
@@ -270,11 +270,13 @@
 
 /* =========================================================
    種目カード
+   HOMEのメインカードと同じデザイン
 ========================================================= */
 
 .flash-menu-card {
+  position: relative;
 
-  min-height: 320px;
+  min-height: 365px;
 
   display: flex;
 
@@ -282,18 +284,18 @@
 
   align-items: center;
 
-  padding: 32px 28px 28px;
+  padding: 20px 34px 16px;
 
   box-sizing: border-box;
 
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.97);
 
-  border: 2px solid rgba(255, 255, 255, 0.9);
+  border: 2px solid;
 
-  border-radius: 26px;
+  border-radius: 19px;
 
   box-shadow:
-    0 10px 28px rgba(41, 76, 105, 0.10);
+    0 4px 12px rgba(29, 76, 112, 0.06);
 
   transition:
     transform 0.2s ease,
@@ -302,11 +304,10 @@
 
 
 .flash-menu-card:hover {
-
-  transform: translateY(-7px);
+  transform: translateY(-3px);
 
   box-shadow:
-    0 17px 34px rgba(41, 76, 105, 0.16);
+    0 9px 20px rgba(29, 76, 112, 0.12);
 }
 
 
@@ -315,18 +316,7 @@
 ========================================================= */
 
 .mitori-menu-card {
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 247, 231, 0.98) 0%,
-      rgba(255, 252, 245, 0.96) 100%
-    );
-
-  border: 2px solid rgba(239, 161, 58, 0.38);
-
-  box-shadow:
-    0 10px 28px rgba(239, 161, 58, 0.16);
+  border-color: #ff8a00;
 }
 
 
@@ -335,18 +325,7 @@
 ========================================================= */
 
 .kake-menu-card {
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(234, 248, 255, 0.98) 0%,
-      rgba(249, 253, 255, 0.96) 100%
-    );
-
-  border: 2px solid rgba(41, 152, 213, 0.34);
-
-  box-shadow:
-    0 10px 28px rgba(41, 152, 213, 0.15);
+  border-color: #1683e6;
 }
 
 
@@ -355,18 +334,7 @@
 ========================================================= */
 
 .wari-menu-card {
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(237, 250, 240, 0.98) 0%,
-      rgba(250, 254, 251, 0.96) 100%
-    );
-
-  border: 2px solid rgba(88, 169, 106, 0.34);
-
-  box-shadow:
-    0 10px 28px rgba(88, 169, 106, 0.15);
+  border-color: #17a86b;
 }
 
 
