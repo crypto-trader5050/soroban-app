@@ -127,10 +127,8 @@ function createLevelButtons() {
   // =====================
   } else if (state.type === "wari") {
 
-    // 現在は見取り算と同じ
-    for (let i = 38; i >= 1; i--) {
-      levelList.push(i + "級");
-    }
+    levelList = DIV_LEVEL_CONFIG.map(item => item.level);
+
   }
 
   // =====================
@@ -201,7 +199,6 @@ function showOrientationMessage() {
 // =====================
 // 選択した級を開始
 // =====================
-
 function startSelectedLevel() {
 
   const orientationMessage =
@@ -211,21 +208,42 @@ function startSelectedLevel() {
     orientationMessage.style.display = "none";
   }
 
+  // =====================
+  // 乗算
+  // =====================
   if (state.type === "kake") {
 
     startMultiplicationGame();
-
-  } else {
-
-    document.fonts.ready.then(() => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          startEngine();
-        });
-      });
-    });
+    return;
 
   }
+
+  // =====================
+  // 除算
+  // =====================
+  if (state.type === "wari") {
+
+    startDivisionGame();
+    return;
+
+  }
+
+  // =====================
+  // 見取り算
+  // =====================
+  document.fonts.ready.then(() => {
+
+    requestAnimationFrame(() => {
+
+      requestAnimationFrame(() => {
+
+        startEngine();
+
+      });
+
+    });
+
+  });
 }
 
 // =====================
