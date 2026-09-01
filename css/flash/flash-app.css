@@ -243,7 +243,9 @@
    実行画面のボタン
 ===================================================== */
 
-#app > button {
+#app > button,
+#problemArea > #solveBtn {
+
   font-size: 16px;
 
   padding: 10px 15px;
@@ -257,11 +259,15 @@
   border: 1px solid #00ff00;
 
   cursor: pointer;
+
 }
 
 
-#app > button:hover {
+#app > button:hover,
+#problemArea > #solveBtn:hover {
+
   background: #003300;
+
 }
 
 /* =====================================================
