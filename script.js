@@ -715,3 +715,25 @@ document.getElementById("keypad").addEventListener("click", (e) => {
     handleOk();
   }
 });
+
+// =====================
+// OKボタン・回答処理の振り分け
+// =====================
+
+function handleOk() {
+
+  if (state.type === "kake") {
+
+    checkAnswerMultiplication();
+
+  } else if (state.type === "wari") {
+
+    checkAnswerDivision();
+
+  } else {
+
+    checkAnswer();
+
+  }
+
+}

@@ -221,14 +221,6 @@ function startMultiplicationGame() {
   startMultiplication();
 }
 
-function handleOk() {
-  if (state.type === "kake") {
-    checkAnswerMultiplication();
-  } else {
-    checkAnswer();
-  }
-}
-
 // =====================
 // 乗算：解答開始
 // =====================
