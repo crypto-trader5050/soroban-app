@@ -101,10 +101,10 @@ function startMultiplication() {
   // =====================
   // 乗算：通常レイアウト
   // =====================
-  el.style.position = "relative";
-  el.style.top = "auto";
-  el.style.left = "auto";
-  el.style.transform = "none";
+  el.style.position = "absolute";
+  el.style.top = "50%";
+  el.style.left = "50%";
+  el.style.transform = "translate(-50%, -50%)";
 
   // =====================
   // 正解

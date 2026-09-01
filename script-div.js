@@ -89,10 +89,10 @@ function startDivision() {
   el.style.opacity = "1";
   el.style.fontFamily = '"Soloburn", monospace';
 
-  el.style.position = "relative";
-  el.style.top = "auto";
-  el.style.left = "auto";
-  el.style.transform = "none";
+  el.style.position = "absolute";
+  el.style.top = "50%";
+  el.style.left = "50%";
+  el.style.transform = "translate(-50%, -50%)";
 
   // 正解
   state.answer = problem.answer;
