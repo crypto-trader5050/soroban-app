@@ -89,11 +89,6 @@ function startDivision() {
   el.style.opacity = "1";
   el.style.fontFamily = '"Soloburn", monospace';
 
-  el.style.position = "absolute";
-  el.style.top = "50%";
-  el.style.left = "50%";
-  el.style.transform = "translate(-50%, -50%)";
-
   // 正解
   state.answer = problem.answer;
 

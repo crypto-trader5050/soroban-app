@@ -99,14 +99,6 @@ function startMultiplication() {
   el.style.fontFamily = '"Soloburn", monospace';
 
   // =====================
-  // 乗算：通常レイアウト
-  // =====================
-  el.style.position = "absolute";
-  el.style.top = "50%";
-  el.style.left = "50%";
-  el.style.transform = "translate(-50%, -50%)";
-
-  // =====================
   // 正解
   // =====================
   state.answer = BigInt(a) * BigInt(b);
