@@ -1,41 +1,288 @@
 /* =====================================================
    レベル選択
+   TOP画面と統一したデザイン
 ===================================================== */
 
 #levelSelect {
   min-height: 100vh;
+  box-sizing: border-box;
 
   margin: 0;
-  padding: 50px 20px;
+  padding: 50px 20px 70px;
 
   text-align: center;
 
-  background: black;
+  color: #102f58;
 
-  color: #00ff00;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(76, 169, 233, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(35, 127, 176, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #d9f4ff 0%,
+      #ffffff 48%,
+      #eefaff 100%
+    );
+
+  position: relative;
+  overflow: hidden;
 }
 
+
+/* =====================================================
+   装飾
+===================================================== */
+
+#levelSelect::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    repeating-linear-gradient(
+      -25deg,
+      rgba(255, 255, 255, 0.35) 0,
+      rgba(255, 255, 255, 0.35) 2px,
+      transparent 2px,
+      transparent 34px
+    );
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   見出し
+===================================================== */
 
 #levelSelect h2 {
-  color: #00ff00;
+  position: relative;
+  z-index: 1;
 
-  margin-bottom: 30px;
+  margin: 0 0 35px;
+
+  color: #0757a3;
+
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
+  text-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.9);
 }
 
 
-#levelSelect button {
-  background: black;
+/* =====================================================
+   レベルボタンエリア
+===================================================== */
 
-  color: #00ff00;
+#levelButtons {
+  position: relative;
+  z-index: 1;
 
-  border: 1px solid #00ff00;
+  width: min(1000px, 94%);
+  margin: 0 auto;
 
-  border-radius: 6px;
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+
+  gap: 16px;
+}
+
+
+/* =====================================================
+   レベルボタン
+===================================================== */
+
+#levelButtons button {
+  width: 100%;
+  min-height: 82px;
+
+  padding: 16px 22px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  border: 2px solid #8bc8ed;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f4fbff 100%
+    );
+
+  color: #102f58;
+
+  box-shadow:
+    0 5px 12px rgba(7, 87, 163, 0.12);
 
   cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 }
 
 
-#levelSelect button:hover {
-  background: #003300;
+/* =====================================================
+   ホバー
+===================================================== */
+
+#levelButtons button:hover {
+  transform: translateY(-3px);
+
+  border-color: #237fb0;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #e8f7ff 100%
+    );
+
+  box-shadow:
+    0 9px 20px rgba(7, 87, 163, 0.20);
+}
+
+
+/* =====================================================
+   クリック時
+===================================================== */
+
+#levelButtons button:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 3px 8px rgba(7, 87, 163, 0.15);
+}
+
+
+/* =====================================================
+   級・段位
+===================================================== */
+
+#levelButtons .level-name {
+  flex: 0 0 auto;
+
+  min-width: 90px;
+
+  color: #0757a3;
+
+  font-size: 25px;
+  font-weight: 800;
+
+  text-align: left;
+
+  letter-spacing: 0.04em;
+}
+
+
+/* =====================================================
+   問題仕様
+===================================================== */
+
+#levelButtons .level-spec {
+  flex: 1;
+
+  color: #17385e;
+
+  font-size: 19px;
+  font-weight: 700;
+
+  text-align: right;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   スマートフォン
+===================================================== */
+
+@media (max-width: 700px) {
+
+  #levelSelect {
+    padding: 35px 15px 50px;
+  }
+
+  #levelSelect h2 {
+    margin-bottom: 25px;
+
+    font-size: 27px;
+  }
+
+  #levelButtons {
+    width: 100%;
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  #levelButtons button {
+    min-height: 70px;
+
+    padding: 13px 18px;
+
+    border-radius: 12px;
+  }
+
+  #levelButtons .level-name {
+    min-width: 75px;
+
+    font-size: 22px;
+  }
+
+  #levelButtons .level-spec {
+    font-size: 17px;
+  }
+}
+
+
+/* =====================================================
+   小さいスマートフォン
+===================================================== */
+
+@media (max-width: 400px) {
+
+  #levelSelect {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #levelButtons button {
+    padding: 11px 14px;
+
+    gap: 10px;
+  }
+
+  #levelButtons .level-name {
+    min-width: 65px;
+
+    font-size: 20px;
+  }
+
+  #levelButtons .level-spec {
+    font-size: 15px;
+  }
 }

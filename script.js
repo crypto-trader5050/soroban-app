@@ -104,16 +104,12 @@ function createLevelButtons() {
   const area = document.getElementById("levelButtons");
   area.innerHTML = "";
 
-  levelList = [];
-
   // =====================
   // 見取り算
   // =====================
   if (state.type === "mitori") {
 
-    for (let i = 38; i >= 1; i--) {
-      levelList.push(i + "級");
-    }
+    levelList = LEVEL_CONFIG.map(item => item.level);
 
   // =====================
   // 乗算
@@ -132,28 +128,44 @@ function createLevelButtons() {
   }
 
   // =====================
-  // 段位
-  // =====================
-  levelList.push(
-    "初段",
-    "弐段",
-    "参段",
-    "四段",
-    "五段",
-    "六段",
-    "七段",
-    "八段",
-    "九段",
-    "十段"
-  );
-
-  // =====================
   // ボタン作成
   // =====================
   levelList.forEach(lv => {
     const btn = document.createElement("button");
 
-    btn.textContent = lv;
+    // 級・段位
+    const levelName = document.createElement("span");
+    levelName.className = "level-name";
+    levelName.textContent = lv;
+
+    // 問題仕様
+    const levelSpec = document.createElement("span");
+    levelSpec.className = "level-spec";
+
+    if (state.type === "mitori") {
+
+      const config = LEVEL_CONFIG.find(item => item.level === lv);
+
+      levelSpec.textContent =
+        `${config.digit}桁・${config.length}口`;
+
+    } else if (state.type === "kake") {
+
+      const config = MUL_LEVEL_CONFIG.find(item => item.level === lv);
+
+      levelSpec.textContent =
+        `${config.aDigits}桁 × ${config.bDigits}桁`;
+
+    } else if (state.type === "wari") {
+
+      const config = DIV_LEVEL_CONFIG.find(item => item.level === lv);
+
+      levelSpec.textContent =
+        `${config.aDigits}桁 ÷ ${config.bDigits}桁`;
+    }
+
+    btn.appendChild(levelName);
+    btn.appendChild(levelSpec);
 
     btn.onclick = () => selectLevel(lv);
 
