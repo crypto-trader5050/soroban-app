@@ -434,6 +434,69 @@
 </div>
 
 <!-- ==================================================
+     読み上げ メニュー
+================================================== -->
+<div id="readSelect" style="display:none;">
+  <div class="flash-select-inner">
+
+    <div class="flash-select-header">
+      <div class="flash-select-icon">🔊</div>
+
+      <h1>読み上げ</h1>
+
+      <p>
+        数字を耳で聞き取り、<br>
+        計算する力を鍛えよう！
+      </p>
+    </div>
+
+
+    <div class="flash-menu-cards">
+
+      <!-- 読み上げ算 -->
+      <article class="flash-menu-card mitori-menu-card">
+
+        <div class="flash-menu-icon">🧮</div>
+
+        <h2>読み上げ算</h2>
+
+        <p>そろばんで計算する力を鍛える</p>
+
+        <button type="button" onclick="selectReadType('yomi')">
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+
+      <!-- 読み上げ暗算 -->
+      <article class="flash-menu-card kake-menu-card">
+
+        <div class="flash-menu-icon">🧠</div>
+
+        <h2>読み上げ暗算</h2>
+
+        <p>頭の中で計算する力を鍛える</p>
+
+        <button type="button" onclick="selectReadType('yomiAnzan')">
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+        </button>
+
+      </article>
+
+    </div>
+
+
+    <button type="button" class="flash-home-button" onclick="backHome()">
+      ← ホームへ戻る
+    </button>
+
+  </div>
+</div>
+
+<!-- ==================================================
      レベル選択
      ※既存機能
 ================================================== -->

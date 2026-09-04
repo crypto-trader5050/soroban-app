@@ -100,6 +100,74 @@ function selectType(type) {
   createLevelButtons();
 }
 
+// =====================
+// 読み上げ画面へ
+// =====================
+
+function goRead() {
+
+  document.getElementById("home").style.display = "none";
+
+  document.getElementById("readSelect").style.display = "block";
+
+}
+
+
+// =====================
+// 読み上げ種類選択
+// =====================
+
+function selectReadType(type) {
+
+  state.readType = type;
+
+  document.getElementById("readSelect").style.display = "none";
+  document.getElementById("levelSelect").style.display = "block";
+
+  createReadLevelButtons();
+
+}
+
+// =====================
+// 読み上げ用 レベルボタン作成
+// =====================
+
+function createReadLevelButtons() {
+
+  const area = document.getElementById("levelButtons");
+  area.innerHTML = "";
+
+  levelList = LEVEL_CONFIG.map(item => item.level);
+
+  levelList.forEach(lv => {
+
+    const btn = document.createElement("button");
+
+    // 級・段位
+    const levelName = document.createElement("span");
+    levelName.className = "level-name";
+    levelName.textContent = lv;
+
+    // 問題仕様
+    const levelSpec = document.createElement("span");
+    levelSpec.className = "level-spec";
+
+    const config = LEVEL_CONFIG.find(item => item.level === lv);
+
+    levelSpec.textContent =
+      `${config.digit}桁・${config.length}口`;
+
+    btn.appendChild(levelName);
+    btn.appendChild(levelSpec);
+
+    btn.onclick = () => selectReadLevel(lv);
+
+    area.appendChild(btn);
+
+  });
+
+}
+
 function createLevelButtons() {
   const area = document.getElementById("levelButtons");
   area.innerHTML = "";
@@ -677,6 +745,7 @@ function randDigit(digit) {
 function backHome() {
   document.getElementById("home").style.display = "block";
   document.getElementById("flashSelect").style.display = "none";
+  document.getElementById("readSelect").style.display = "none";
   document.getElementById("levelSelect").style.display = "none";
   document.getElementById("app").style.display = "none";
 
