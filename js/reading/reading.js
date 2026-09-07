@@ -612,9 +612,7 @@ function getReadingPhrase(item, index) {
 
 function speakReading(text, callback) {
 
-  if (
-    !("speechSynthesis" in window)
-  ) {
+  if (!("speechSynthesis" in window)) {
 
     if (callback) {
       callback();
@@ -623,22 +621,47 @@ function speakReading(text, callback) {
     return;
   }
 
-
   speechSynthesis.cancel();
-
 
   const utterance =
     new SpeechSynthesisUtterance(text);
 
+  /* ---------------------------------------------------------
+     日本語音声を選択
+  --------------------------------------------------------- */
+
+  const voices = speechSynthesis.getVoices();
+
+  let japaneseVoice =
+    voices.find(voice =>
+      voice.lang === "ja-JP" &&
+      (
+        voice.name.includes("Microsoft") ||
+        voice.name.includes("Google")
+      )
+    );
+
+  if (!japaneseVoice) {
+
+    japaneseVoice =
+      voices.find(voice =>
+        voice.lang.startsWith("ja")
+      );
+
+  }
+
+  if (japaneseVoice) {
+    utterance.voice = japaneseVoice;
+  }
 
   utterance.lang = "ja-JP";
 
 
-  /*
+  /* ---------------------------------------------------------
      スピード設定
-     1 = ゆっくり
+     1 = とてもゆっくり
      5 = とても速い
-  */
+  --------------------------------------------------------- */
 
   const rates = {
 
@@ -650,13 +673,20 @@ function speakReading(text, callback) {
 
   };
 
-
   utterance.rate =
     rates[readingState.speed] || 1.0;
 
 
+  /* ---------------------------------------------------------
+     音程
+  --------------------------------------------------------- */
+
   utterance.pitch = 1.0;
 
+
+  /* ---------------------------------------------------------
+     読み上げ終了
+  --------------------------------------------------------- */
 
   utterance.onend = () => {
 
