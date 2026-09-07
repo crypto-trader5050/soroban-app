@@ -803,6 +803,14 @@ document.getElementById("keypad").addEventListener("click", (e) => {
 
 function handleOk() {
 
+  if (readingState.isRunning) {
+
+    checkReadingAnswer();
+    return;
+
+  }
+
+
   if (state.type === "kake") {
 
     checkAnswerMultiplication();

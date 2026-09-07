@@ -24,7 +24,8 @@ let readingState = {
   numbers: [],
   answer: 0n,
   currentQuestion: 0,
-  correctCount: 0
+  correctCount: 0,
+  isRunning: false
 };
 
 
@@ -566,7 +567,7 @@ function getReadingPhrase(item, index) {
 
     return "ねがいましては、" +
            numberText +
-           "円なーりー";
+           "えんなーりー";
 
   }
 
@@ -575,7 +576,7 @@ function getReadingPhrase(item, index) {
 
     return "ひいては、" +
            numberText +
-           "円なーりー";
+           "えんなーりー";
 
   }
 
@@ -596,12 +597,12 @@ function getReadingPhrase(item, index) {
 
     return "くわえて、" +
            numberText +
-           "円なーりー";
+           "えんなーりー";
 
   }
 
 
-  return numberText + "円なーりー";
+  return numberText + "えんなーりー";
 
 }
 
@@ -735,7 +736,7 @@ function speakReadingCondition(callback) {
   const calculationText =
     readingState.calculation === "addition"
       ? "加算"
-      : "加減算";
+      : "かげんざん";
 
 
   const text =
@@ -758,6 +759,8 @@ function speakReadingCondition(callback) {
 ========================================================= */
 
 function startReading() {
+
+  readingState.isRunning = true;
 
   readingState.currentQuestion = 0;
   readingState.correctCount = 0;
@@ -954,7 +957,7 @@ function speakReadingSequence(
 
 
     const finalText =
-      `${numberToJapanese(last.value)}円では～`;
+      `${numberToJapanese(last.value)}えんでは～`;
 
     speakReading(finalText, callback);
 
@@ -1126,6 +1129,8 @@ function nextReadingQuestion() {
 ========================================================= */
 
 function finishReading() {
+
+  readingState.isRunning = false;
 
   const answerArea =
     document.getElementById("answerArea");
