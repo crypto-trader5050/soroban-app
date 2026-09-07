@@ -1,0 +1,700 @@
+/* =========================================================
+   読み上げ 設定画面
+   reading-select.css
+========================================================= */
+
+
+/* =========================================================
+   全体
+========================================================= */
+
+#readSelect {
+  min-height: 100vh;
+  box-sizing: border-box;
+
+  padding: 40px 20px 50px;
+
+  background:
+    radial-gradient(circle at 10% 15%,
+      rgba(255, 255, 255, 0.8) 0,
+      rgba(255, 255, 255, 0) 35%),
+    radial-gradient(circle at 90% 80%,
+      rgba(255, 255, 255, 0.7) 0,
+      rgba(255, 255, 255, 0) 35%),
+    linear-gradient(
+      135deg,
+      #dff5ff 0%,
+      #ffffff 50%,
+      #e7f7ff 100%
+    );
+
+  color: #183b4d;
+}
+
+
+/* =========================================================
+   内側
+========================================================= */
+
+.read-select-inner {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   ヘッダー
+========================================================= */
+
+.read-select-header {
+  text-align: center;
+
+  margin-bottom: 35px;
+}
+
+.read-select-icon {
+  font-size: 48px;
+  line-height: 1;
+
+  margin-bottom: 12px;
+}
+
+.read-select-header h1 {
+  margin: 0 0 12px;
+
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
+  color: #174c68;
+}
+
+.read-select-header p {
+  margin: 0;
+
+  font-size: 16px;
+  line-height: 1.8;
+
+  color: #527384;
+}
+
+
+/* =========================================================
+   設定セクション
+========================================================= */
+
+.read-setting-section {
+  margin-bottom: 28px;
+}
+
+.read-setting-section h2 {
+  margin: 0 0 12px;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  color: #24566d;
+}
+
+
+/* =========================================================
+   選択カード
+========================================================= */
+
+.read-choice-cards {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.read-choice-card {
+  position: relative;
+
+  min-height: 68px;
+
+  padding: 14px 18px;
+
+  border: 2px solid #c8dce5;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  color: #315466;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.read-choice-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #75b9d5;
+
+  box-shadow:
+    0 6px 18px rgba(35, 95, 120, 0.12);
+}
+
+.read-choice-card.selected {
+  border-color: #2584ad;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eefaff 0%,
+      #dff4ff 100%
+    );
+
+  box-shadow:
+    0 5px 16px rgba(37, 132, 173, 0.18);
+}
+
+.read-choice-title {
+  display: block;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  line-height: 1.4;
+}
+
+.read-choice-description {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  color: #6c8795;
+}
+
+
+/* =========================================================
+   種目カード
+========================================================= */
+
+.read-type-cards {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.read-type-cards .read-choice-card {
+  min-height: 100px;
+}
+
+.read-type-cards .read-choice-title {
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   口数
+========================================================= */
+
+.read-count-cards {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.read-count-cards .read-choice-card {
+  min-height: 60px;
+
+  padding: 10px;
+}
+
+.read-count-cards .read-choice-card {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   スピード
+========================================================= */
+
+.read-speed-cards {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.read-speed-cards .read-choice-card {
+  min-height: 65px;
+}
+
+.read-speed-cards .read-choice-title {
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   桁選択エリア
+========================================================= */
+
+.digit-select-area {
+  margin-top: 16px;
+
+  padding: 20px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  border: 1px solid rgba(120, 180, 205, 0.35);
+}
+
+.digit-select-area h3 {
+  margin: 0 0 14px;
+
+  text-align: center;
+
+  font-size: 17px;
+  font-weight: 800;
+
+  color: #3c687b;
+}
+
+
+/* =========================================================
+   桁揃い：1～16桁
+========================================================= */
+
+.digit-buttons {
+  display: grid;
+
+  grid-template-columns:
+    repeat(8, minmax(0, 1fr));
+
+  gap: 9px;
+}
+
+.digit-buttons button {
+  min-height: 52px;
+
+  border: 2px solid #c8dce5;
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #315466;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.digit-buttons button:hover {
+  transform: translateY(-2px);
+
+  border-color: #75b9d5;
+
+  box-shadow:
+    0 5px 14px rgba(35, 95, 120, 0.12);
+}
+
+.digit-buttons button.selected {
+  border-color: #2584ad;
+
+  background: #dff4ff;
+
+  color: #176487;
+
+  box-shadow:
+    0 4px 12px rgba(37, 132, 173, 0.16);
+}
+
+
+/* =========================================================
+   桁バラ
+========================================================= */
+
+.digit-range {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+}
+
+.digit-range select {
+  min-width: 150px;
+
+  padding: 13px 42px 13px 16px;
+
+  border: 2px solid #c8dce5;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  color: #315466;
+
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.digit-range span {
+  font-size: 22px;
+  font-weight: 800;
+
+  color: #4d7485;
+}
+
+
+/* =========================================================
+   今回の設定
+========================================================= */
+
+.read-summary {
+  margin-top: 34px;
+  margin-bottom: 22px;
+
+  padding: 20px 24px;
+
+  border-radius: 16px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 2px solid #b9dce9;
+
+  box-shadow:
+    0 7px 20px rgba(35, 95, 120, 0.10);
+}
+
+.read-summary h2 {
+  margin: 0 0 9px;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  color: #6a8794;
+}
+
+.read-summary p {
+  margin: 0;
+
+  font-size: clamp(17px, 2.5vw, 23px);
+  font-weight: 800;
+
+  line-height: 1.5;
+
+  color: #175a78;
+}
+
+
+/* =========================================================
+   スタート
+========================================================= */
+
+.read-start-button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+
+  width: 100%;
+
+  min-height: 72px;
+
+  margin: 0 auto 16px;
+
+  border: none;
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2584ad 0%,
+      #176487 100%
+    );
+
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 23px;
+  font-weight: 800;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 22px rgba(37, 132, 173, 0.25);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.read-start-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 11px 27px rgba(37, 132, 173, 0.32);
+}
+
+.read-start-button:active {
+  transform: translateY(1px);
+}
+
+.read-start-button .arrow {
+  font-size: 32px;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   ホームへ戻る
+========================================================= */
+
+.read-home-button {
+  display: block;
+
+  margin: 0 auto;
+
+  padding: 10px 20px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #527384;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.read-home-button:hover {
+  color: #176487;
+}
+
+
+/* =========================================================
+   タブレット
+========================================================= */
+
+@media (max-width: 800px) {
+
+  #readSelect {
+    padding: 30px 16px 40px;
+  }
+
+  .read-setting-section {
+    margin-bottom: 24px;
+  }
+
+  .read-count-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .read-speed-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .digit-buttons {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   スマートフォン
+========================================================= */
+
+@media (max-width: 600px) {
+
+  #readSelect {
+    padding: 24px 12px 35px;
+  }
+
+  .read-select-header {
+    margin-bottom: 25px;
+  }
+
+  .read-select-icon {
+    font-size: 38px;
+  }
+
+  .read-select-header h1 {
+    font-size: 30px;
+  }
+
+  .read-select-header p {
+    font-size: 14px;
+  }
+
+  .read-choice-cards {
+    gap: 8px;
+  }
+
+  .read-choice-card {
+    min-height: 58px;
+
+    padding: 10px 8px;
+  }
+
+  .read-choice-title {
+    font-size: 16px;
+  }
+
+  .read-type-cards .read-choice-card {
+    min-height: 82px;
+  }
+
+  .read-type-cards .read-choice-title {
+    font-size: 18px;
+  }
+
+  .read-choice-description {
+    font-size: 11px;
+  }
+
+  .read-count-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .read-speed-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .digit-select-area {
+    padding: 15px;
+  }
+
+  .digit-buttons {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 7px;
+  }
+
+  .digit-buttons button {
+    min-height: 46px;
+
+    font-size: 13px;
+  }
+
+  .digit-range {
+    gap: 8px;
+  }
+
+  .digit-range select {
+    min-width: 0;
+    width: 100%;
+
+    padding: 11px 8px;
+
+    font-size: 15px;
+  }
+
+  .digit-range span {
+    font-size: 18px;
+  }
+
+  .read-summary {
+    margin-top: 26px;
+
+    padding: 16px 12px;
+  }
+
+  .read-summary p {
+    font-size: 16px;
+  }
+
+  .read-start-button {
+    min-height: 64px;
+
+    font-size: 20px;
+  }
+
+}
+
+
+/* =========================================================
+   横向きスマホ
+========================================================= */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  #readSelect {
+    padding-top: 18px;
+    padding-bottom: 25px;
+  }
+
+  .read-select-header {
+    margin-bottom: 20px;
+  }
+
+  .read-select-icon {
+    font-size: 32px;
+    margin-bottom: 6px;
+  }
+
+  .read-select-header h1 {
+    font-size: 28px;
+    margin-bottom: 6px;
+  }
+
+  .read-select-header p {
+    font-size: 13px;
+  }
+
+  .read-setting-section {
+    margin-bottom: 18px;
+  }
+
+  .read-setting-section h2 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .read-choice-card {
+    min-height: 52px;
+  }
+
+  .read-type-cards .read-choice-card {
+    min-height: 65px;
+  }
+
+  .digit-buttons button {
+    min-height: 42px;
+  }
+
+  .read-summary {
+    margin-top: 20px;
+    padding: 12px 18px;
+  }
+
+  .read-start-button {
+    min-height: 58px;
+  }
+
+}

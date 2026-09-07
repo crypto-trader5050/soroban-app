@@ -21,6 +21,9 @@
   <link rel="stylesheet" href="css/flash/flash-level.css">
   <link rel="stylesheet" href="css/flash/flash-app.css">
   <link rel="stylesheet" href="css/flash/flash-result.css">
+
+  <link rel="stylesheet" href="css/reading/reading-select.css">
+  <link rel="stylesheet" href="css/reading/reading-app.css">
 </head>
 
 <body>
@@ -434,66 +437,347 @@
 </div>
 
 <!-- ==================================================
-     読み上げ メニュー
+     読み上げ 設定画面
 ================================================== -->
-<div id="readSelect" style="display:none;">
-  <div class="flash-select-inner">
 
-    <div class="flash-select-header">
-      <div class="flash-select-icon">🔊</div>
+<div id="readSelect" style="display:none;">
+
+  <div class="read-select-inner">
+
+    <!-- ヘッダー -->
+    <div class="read-select-header">
+
+      <div class="read-select-icon">
+        🔊
+      </div>
 
       <h1>読み上げ</h1>
 
       <p>
-        数字を耳で聞き取り、<br>
-        計算する力を鍛えよう！
+        聞く力と計算する力を鍛えよう！
       </p>
-    </div>
-
-
-    <div class="flash-menu-cards">
-
-      <!-- 読み上げ算 -->
-      <article class="flash-menu-card mitori-menu-card">
-
-        <div class="flash-menu-icon">🧮</div>
-
-        <h2>読み上げ算</h2>
-
-        <p>そろばんで計算する力を鍛える</p>
-
-        <button type="button" onclick="selectReadType('yomi')">
-          <span>はじめる</span>
-          <span class="arrow">›</span>
-        </button>
-
-      </article>
-
-
-      <!-- 読み上げ暗算 -->
-      <article class="flash-menu-card kake-menu-card">
-
-        <div class="flash-menu-icon">🧠</div>
-
-        <h2>読み上げ暗算</h2>
-
-        <p>頭の中で計算する力を鍛える</p>
-
-        <button type="button" onclick="selectReadType('yomiAnzan')">
-          <span>はじめる</span>
-          <span class="arrow">›</span>
-        </button>
-
-      </article>
 
     </div>
 
 
-    <button type="button" class="flash-home-button" onclick="backHome()">
+    <!-- ==================================================
+         種目
+    ================================================== -->
+
+    <section class="read-setting-section">
+
+      <h2>種目</h2>
+
+      <div class="read-choice-cards read-type-cards">
+
+        <button
+          type="button"
+          class="read-choice-card selected"
+          data-read-type="yomi">
+
+          <span class="read-choice-title">
+            🧮 読み上げ算
+          </span>
+
+          <span class="read-choice-description">
+            そろばんで計算
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="read-choice-card"
+          data-read-type="yomiAnzan">
+
+          <span class="read-choice-title">
+            🧠 読み上げ暗算
+          </span>
+
+          <span class="read-choice-description">
+            頭の中で計算
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         計算方法
+    ================================================== -->
+
+    <section class="read-setting-section">
+
+      <h2>計算方法</h2>
+
+      <div class="read-choice-cards">
+
+        <button
+          type="button"
+          class="read-choice-card"
+          data-calculation="addition">
+
+          <span class="read-choice-title">
+            加算
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="read-choice-card selected"
+          data-calculation="mixed">
+
+          <span class="read-choice-title">
+            加減算
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         桁数
+    ================================================== -->
+
+    <section class="read-setting-section">
+
+      <h2>桁数</h2>
+
+      <div class="read-choice-cards">
+
+        <button
+          type="button"
+          class="read-choice-card"
+          data-digit-mode="same">
+
+          <span class="read-choice-title">
+            桁揃い
+          </span>
+
+          <span class="read-choice-description">
+            すべて同じ桁
+          </span>
+
+        </button>
+
+
+        <button
+          type="button"
+          class="read-choice-card selected"
+          data-digit-mode="variable">
+
+          <span class="read-choice-title">
+            桁バラ
+          </span>
+
+          <span class="read-choice-description">
+            桁数が変化
+          </span>
+
+        </button>
+
+      </div>
+
+
+      <!-- 桁揃い -->
+
+      <div
+        id="sameDigitSelect"
+        class="digit-select-area"
+        style="display:none;">
+
+        <h3>桁を選択</h3>
+
+        <div id="sameDigitButtons" class="digit-buttons">
+          <!-- JavaScriptで1～16桁を生成 -->
+        </div>
+
+      </div>
+
+
+      <!-- 桁バラ -->
+
+      <div
+        id="variableDigitSelect"
+        class="digit-select-area">
+
+        <h3>桁の範囲</h3>
+
+        <div class="digit-range">
+
+          <select id="minDigitSelect">
+            <option value="1">1桁</option>
+            <option value="2">2桁</option>
+            <option value="3">3桁</option>
+            <option value="4">4桁</option>
+            <option value="5">5桁</option>
+            <option value="6">6桁</option>
+            <option value="7" selected>7桁</option>
+            <option value="8">8桁</option>
+            <option value="9">9桁</option>
+            <option value="10">10桁</option>
+            <option value="11">11桁</option>
+            <option value="12">12桁</option>
+            <option value="13">13桁</option>
+            <option value="14">14桁</option>
+            <option value="15">15桁</option>
+            <option value="16">16桁</option>
+          </select>
+
+          <span>～</span>
+
+          <select id="maxDigitSelect">
+            <option value="1">1桁</option>
+            <option value="2">2桁</option>
+            <option value="3">3桁</option>
+            <option value="4">4桁</option>
+            <option value="5">5桁</option>
+            <option value="6">6桁</option>
+            <option value="7">7桁</option>
+            <option value="8">8桁</option>
+            <option value="9">9桁</option>
+            <option value="10" selected>10桁</option>
+            <option value="11">11桁</option>
+            <option value="12">12桁</option>
+            <option value="13">13桁</option>
+            <option value="14">14桁</option>
+            <option value="15">15桁</option>
+            <option value="16">16桁</option>
+          </select>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         口数
+    ================================================== -->
+
+    <section class="read-setting-section">
+
+      <h2>口数</h2>
+
+      <div class="read-choice-cards read-count-cards">
+
+        <button type="button" class="read-choice-card" data-count="3">
+          3口
+        </button>
+
+        <button type="button" class="read-choice-card" data-count="5">
+          5口
+        </button>
+
+        <button type="button" class="read-choice-card" data-count="7">
+          7口
+        </button>
+
+        <button type="button" class="read-choice-card" data-count="10">
+          10口
+        </button>
+
+        <button type="button" class="read-choice-card selected" data-count="15">
+          15口
+        </button>
+
+        <button type="button" class="read-choice-card" data-count="20">
+          20口
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         スピード
+    ================================================== -->
+
+    <section class="read-setting-section">
+
+      <h2>スピード</h2>
+
+      <div class="read-choice-cards read-speed-cards">
+
+        <button type="button" class="read-choice-card" data-speed="1">
+          <span class="read-choice-title">とてもゆっくり</span>
+        </button>
+
+        <button type="button" class="read-choice-card" data-speed="2">
+          <span class="read-choice-title">ゆっくり</span>
+        </button>
+
+        <button type="button" class="read-choice-card selected" data-speed="3">
+          <span class="read-choice-title">普通</span>
+        </button>
+
+        <button type="button" class="read-choice-card" data-speed="4">
+          <span class="read-choice-title">速い</span>
+        </button>
+
+        <button type="button" class="read-choice-card" data-speed="5">
+          <span class="read-choice-title">とても速い</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         今回の設定
+    ================================================== -->
+
+    <section class="read-summary">
+
+      <h2>今回の設定</h2>
+
+      <p id="readSettingSummary">
+        読み上げ算・加減算・7～10桁・15口・普通
+      </p>
+
+    </section>
+
+
+    <!-- ==================================================
+         スタート
+    ================================================== -->
+
+    <button
+      type="button"
+      id="readStartButton"
+      class="read-start-button">
+
+      <span>スタート</span>
+      <span class="arrow">›</span>
+
+    </button>
+
+
+    <!-- ホームへ戻る -->
+
+    <button
+      type="button"
+      class="read-home-button"
+      onclick="backHome()">
+
       ← ホームへ戻る
+
     </button>
 
   </div>
+
 </div>
 
 <!-- ==================================================
@@ -593,6 +877,7 @@
 <script src="script.js"></script>
 <script src="script-mul.js"></script>
 <script src="script-div.js"></script>
+<script src="js/reading/reading.js"></script>
 
 <script>
   if ("serviceWorker" in navigator) {
