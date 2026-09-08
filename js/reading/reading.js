@@ -606,32 +606,15 @@ function getReadingPhrase(item, index) {
 
 }
 
-
 /* =========================================================
    音声読み上げ
+   競技会風の「間」と「抑揚」を付ける
 ========================================================= */
 
-function speakReading(text, callback) {
+function getJapaneseVoice() {
 
-  if (!("speechSynthesis" in window)) {
-
-    if (callback) {
-      callback();
-    }
-
-    return;
-  }
-
-  speechSynthesis.cancel();
-
-  const utterance =
-    new SpeechSynthesisUtterance(text);
-
-  /* ---------------------------------------------------------
-     日本語音声を選択
-  --------------------------------------------------------- */
-
-  const voices = speechSynthesis.getVoices();
+  const voices =
+    speechSynthesis.getVoices();
 
   let japaneseVoice =
     voices.find(voice =>
@@ -651,6 +634,41 @@ function speakReading(text, callback) {
 
   }
 
+  return japaneseVoice;
+}
+
+
+/* =========================================================
+   基本読み上げ
+========================================================= */
+
+function speakReading(
+  text,
+  callback,
+  options = {}
+) {
+
+  if (!("speechSynthesis" in window)) {
+
+    if (callback) {
+      callback();
+    }
+
+    return;
+  }
+
+
+  const utterance =
+    new SpeechSynthesisUtterance(text);
+
+
+  /* ---------------------------------------------------------
+     日本語音声
+  --------------------------------------------------------- */
+
+  const japaneseVoice =
+    getJapaneseVoice();
+
   if (japaneseVoice) {
     utterance.voice = japaneseVoice;
   }
@@ -659,30 +677,40 @@ function speakReading(text, callback) {
 
 
   /* ---------------------------------------------------------
-     スピード設定
-     1 = とてもゆっくり
-     5 = とても速い
+     スピード
   --------------------------------------------------------- */
 
   const rates = {
 
     1: 0.65,
-    2: 0.8,
-    3: 1.0,
+    2: 0.80,
+    3: 1.00,
     4: 1.25,
-    5: 1.5
+    5: 1.50
 
   };
 
-  utterance.rate =
+  const baseRate =
     rates[readingState.speed] || 1.0;
+
+
+  utterance.rate =
+    options.rate || baseRate;
 
 
   /* ---------------------------------------------------------
      音程
   --------------------------------------------------------- */
 
-  utterance.pitch = 1.0;
+  utterance.pitch =
+    options.pitch || 1.0;
+
+
+  /* ---------------------------------------------------------
+     音量
+  --------------------------------------------------------- */
+
+  utterance.volume = 1.0;
 
 
   /* ---------------------------------------------------------
@@ -698,9 +726,112 @@ function speakReading(text, callback) {
   };
 
 
+  utterance.onerror = () => {
+
+    if (callback) {
+      callback();
+    }
+
+  };
+
+
   speechSynthesis.speak(
     utterance
   );
+
+}
+
+
+/* =========================================================
+   複数の音声を「間」を入れて順番に読む
+========================================================= */
+
+function speakReadingParts(
+  parts,
+  callback
+) {
+
+  if (!("speechSynthesis" in window)) {
+
+    if (callback) {
+      callback();
+    }
+
+    return;
+  }
+
+
+  let index = 0;
+
+
+  function next() {
+
+    if (index >= parts.length) {
+
+      if (callback) {
+        callback();
+      }
+
+      return;
+    }
+
+
+    const part =
+      parts[index];
+
+    index++;
+
+
+    /* -------------------------------------------------------
+       「間」だけの場合
+    ------------------------------------------------------- */
+
+    if (
+      part.pause !== undefined &&
+      !part.text
+    ) {
+
+      setTimeout(
+        next,
+        part.pause
+      );
+
+      return;
+    }
+
+
+    /* -------------------------------------------------------
+       音声を読む
+    ------------------------------------------------------- */
+
+    speakReading(
+      part.text,
+      () => {
+
+        if (part.pause) {
+
+          setTimeout(
+            next,
+            part.pause
+          );
+
+        } else {
+
+          next();
+
+        }
+
+      },
+      {
+        rate: part.rate,
+        pitch: part.pitch
+      }
+    );
+
+  }
+
+
+  next();
 
 }
 
@@ -746,9 +877,16 @@ function speakReadingCondition(callback) {
     "です";
 
 
+  speechSynthesis.cancel();
+
+
   speakReading(
     text,
-    callback
+    callback,
+    {
+      rate: 0.90,
+      pitch: 0.95
+    }
   );
 
 }
@@ -938,6 +1076,7 @@ function startReadingQuestion() {
 
 /* =========================================================
    数字を順番に読む
+   競技会風の「間」「速度」「抑揚」を制御
 ========================================================= */
 
 function speakReadingSequence(
@@ -946,11 +1085,11 @@ function speakReadingSequence(
   callback
 ) {
 
-  if (index >= numbers.length) {
+  /* ---------------------------------------------------------
+     全て読み終わった
+  --------------------------------------------------------- */
 
-    /*
-       最後は「○○円では～」
-    */
+  if (index >= numbers.length) {
 
     const last =
       numbers[numbers.length - 1];
@@ -959,28 +1098,264 @@ function speakReadingSequence(
     const finalText =
       `${numberToJapanese(last.value)}えんでは～`;
 
-    speakReading(finalText, callback);
+
+    /*
+       最後の「では～」は少しゆっくり、
+       下降気味に読む。
+    */
+
+    speakReading(
+      finalText,
+      callback,
+      {
+        rate: 0.90,
+        pitch: 0.90
+      }
+    );
 
     return;
   }
 
 
-  const text =
-    getReadingPhrase(
-      numbers[index],
-      index
+  const item =
+    numbers[index];
+
+
+  const numberText =
+    numberToJapanese(
+      item.value
     );
 
 
-  speakReading(text, () => {
+  /* ---------------------------------------------------------
+     現在のレベルに応じた基本速度
+  --------------------------------------------------------- */
 
-    speakReadingSequence(
-      numbers,
-      index + 1,
-      callback
+  const rates = {
+
+    1: 0.65,
+    2: 0.80,
+    3: 1.00,
+    4: 1.25,
+    5: 1.50
+
+  };
+
+
+  const baseRate =
+    rates[readingState.speed] || 1.0;
+
+
+  /* ---------------------------------------------------------
+     最初の数字
+  --------------------------------------------------------- */
+
+  if (index === 0) {
+
+    const parts = [
+
+      {
+        text: "ねがいましては",
+        rate: baseRate * 0.90,
+        pitch: 1.05,
+        pause: 380
+      },
+
+      {
+        text: numberText,
+        rate: baseRate,
+        pitch: 1.00,
+        pause: 160
+      },
+
+      {
+        text: "えんなーりー",
+        rate: baseRate * 0.92,
+        pitch: 1.02,
+        pause: 300
+      }
+
+    ];
+
+
+    /*
+       1回のシーケンス開始時だけキャンセル。
+       各パーツの間ではキャンセルしない。
+    */
+
+    speechSynthesis.cancel();
+
+
+    speakReadingParts(
+      parts,
+      () => {
+
+        speakReadingSequence(
+          numbers,
+          index + 1,
+          callback
+        );
+
+      }
     );
 
-  });
+    return;
+  }
+
+
+  /* ---------------------------------------------------------
+     引き算
+  --------------------------------------------------------- */
+
+  if (
+    item.operation === "subtract"
+  ) {
+
+    const parts = [
+
+      {
+        text: "ひいては",
+        rate: baseRate * 0.90,
+        pitch: 0.98,
+        pause: 260
+      },
+
+      {
+        text: numberText,
+        rate: baseRate,
+        pitch: 1.00,
+        pause: 150
+      },
+
+      {
+        text: "えんなーりー",
+        rate: baseRate * 0.92,
+        pitch: 1.02,
+        pause: 280
+      }
+
+    ];
+
+
+    speechSynthesis.cancel();
+
+
+    speakReadingParts(
+      parts,
+      () => {
+
+        speakReadingSequence(
+          numbers,
+          index + 1,
+          callback
+        );
+
+      }
+    );
+
+    return;
+  }
+
+
+  /* ---------------------------------------------------------
+     前の数字が引き算だった場合
+     「くわえて」
+  --------------------------------------------------------- */
+
+  const previous =
+    numbers[index - 1];
+
+
+  if (
+    previous &&
+    previous.operation === "subtract"
+  ) {
+
+    const parts = [
+
+      {
+        text: "くわえて",
+        rate: baseRate * 0.90,
+        pitch: 1.03,
+        pause: 260
+      },
+
+      {
+        text: numberText,
+        rate: baseRate,
+        pitch: 1.00,
+        pause: 150
+      },
+
+      {
+        text: "えんなーりー",
+        rate: baseRate * 0.92,
+        pitch: 1.02,
+        pause: 280
+      }
+
+    ];
+
+
+    speechSynthesis.cancel();
+
+
+    speakReadingParts(
+      parts,
+      () => {
+
+        speakReadingSequence(
+          numbers,
+          index + 1,
+          callback
+        );
+
+      }
+    );
+
+    return;
+  }
+
+
+  /* ---------------------------------------------------------
+     通常の加算
+  --------------------------------------------------------- */
+
+  const parts = [
+
+    {
+      text: numberText,
+      rate: baseRate,
+      pitch: 1.00,
+      pause: 150
+    },
+
+    {
+      text: "えんなーりー",
+      rate: baseRate * 0.92,
+      pitch: 1.02,
+      pause: 280
+    }
+
+  ];
+
+
+  speechSynthesis.cancel();
+
+
+  speakReadingParts(
+    parts,
+    () => {
+
+      speakReadingSequence(
+        numbers,
+        index + 1,
+        callback
+      );
+
+    }
+  );
+
 }
 
 
