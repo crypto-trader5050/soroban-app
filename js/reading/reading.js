@@ -642,9 +642,9 @@ function getJapaneseVoice() {
   return japaneseVoice;
 }
 
-
 /* =========================================================
    基本読み上げ
+   onendが発火しない場合にも次へ進む
 ========================================================= */
 
 function speakReading(
@@ -675,10 +675,12 @@ function speakReading(
     getJapaneseVoice();
 
   if (japaneseVoice) {
-    utterance.voice = japaneseVoice;
+    utterance.voice =
+      japaneseVoice;
   }
 
-  utterance.lang = "ja-JP";
+  utterance.lang =
+    "ja-JP";
 
 
   /* ---------------------------------------------------------
@@ -695,6 +697,7 @@ function speakReading(
 
   };
 
+
   const baseRate =
     rates[readingState.speed] || 1.0;
 
@@ -707,9 +710,6 @@ function speakReading(
 
   /* ---------------------------------------------------------
      音程
-     
-     大きく変えると機械的になるため、
-     ごく小さな変化だけ使用。
   --------------------------------------------------------- */
 
   utterance.pitch =
@@ -722,25 +722,68 @@ function speakReading(
 
 
   /* ---------------------------------------------------------
-     終了
+     コールバックを一度だけ実行
+  --------------------------------------------------------- */
+
+  let finished = false;
+
+
+  function finish() {
+
+    if (finished) {
+      return;
+    }
+
+    finished = true;
+
+
+    if (callback) {
+      callback();
+    }
+
+  }
+
+
+  /* ---------------------------------------------------------
+     正常終了
   --------------------------------------------------------- */
 
   utterance.onend = () => {
 
-    if (callback) {
-      callback();
-    }
+    finish();
 
   };
 
+
+  /* ---------------------------------------------------------
+     エラー
+  --------------------------------------------------------- */
 
   utterance.onerror = () => {
 
-    if (callback) {
-      callback();
-    }
+    finish();
 
   };
+
+
+  /* ---------------------------------------------------------
+     onendが来ない場合の保険
+  --------------------------------------------------------- */
+
+  const estimatedTime =
+    Math.max(
+      1200,
+      text.length *
+      180 /
+      utterance.rate
+    );
+
+
+  setTimeout(() => {
+
+    finish();
+
+  }, estimatedTime);
 
 
   speechSynthesis.speak(
