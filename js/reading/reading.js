@@ -581,11 +581,6 @@ function getReadingPhrase(item, index) {
   }
 
 
-  /*
-     前の問題が引き算なら
-     「くわえて」を使う。
-  */
-
   const previous =
     readingState.numbers[index - 1];
 
@@ -606,11 +601,6 @@ function getReadingPhrase(item, index) {
 
 }
 
-/* =========================================================
-   音声読み上げ
-   競技会風・自然な間と抑揚
-========================================================= */
-
 
 /* =========================================================
    日本語音声取得
@@ -621,6 +611,7 @@ function getJapaneseVoice() {
   const voices =
     speechSynthesis.getVoices();
 
+
   let japaneseVoice =
     voices.find(voice =>
       voice.lang === "ja-JP" &&
@@ -629,6 +620,7 @@ function getJapaneseVoice() {
         voice.name.includes("Google")
       )
     );
+
 
   if (!japaneseVoice) {
 
@@ -639,12 +631,14 @@ function getJapaneseVoice() {
 
   }
 
+
   return japaneseVoice;
+
 }
+
 
 /* =========================================================
    基本読み上げ
-   onendが発火しない場合にも次へ進む
 ========================================================= */
 
 function speakReading(
@@ -667,25 +661,21 @@ function speakReading(
     new SpeechSynthesisUtterance(text);
 
 
-  /* ---------------------------------------------------------
-     日本語音声
-  --------------------------------------------------------- */
-
   const japaneseVoice =
     getJapaneseVoice();
 
+
   if (japaneseVoice) {
+
     utterance.voice =
       japaneseVoice;
+
   }
+
 
   utterance.lang =
     "ja-JP";
 
-
-  /* ---------------------------------------------------------
-     スピード
-  --------------------------------------------------------- */
 
   const rates = {
 
@@ -708,10 +698,6 @@ function speakReading(
       : baseRate;
 
 
-  /* ---------------------------------------------------------
-     音程
-  --------------------------------------------------------- */
-
   utterance.pitch =
     options.pitch !== undefined
       ? options.pitch
@@ -721,10 +707,6 @@ function speakReading(
   utterance.volume = 1.0;
 
 
-  /* ---------------------------------------------------------
-     コールバックを一度だけ実行
-  --------------------------------------------------------- */
-
   let finished = false;
 
 
@@ -733,6 +715,7 @@ function speakReading(
     if (finished) {
       return;
     }
+
 
     finished = true;
 
@@ -744,20 +727,12 @@ function speakReading(
   }
 
 
-  /* ---------------------------------------------------------
-     正常終了
-  --------------------------------------------------------- */
-
   utterance.onend = () => {
 
     finish();
 
   };
 
-
-  /* ---------------------------------------------------------
-     エラー
-  --------------------------------------------------------- */
 
   utterance.onerror = () => {
 
@@ -766,15 +741,18 @@ function speakReading(
   };
 
 
-  /* ---------------------------------------------------------
-     onendが来ない場合の保険
-  --------------------------------------------------------- */
+  /*
+     ブラウザ側で onend が返ってこない場合の保険。
 
-  const estimatedTime =
+     短すぎるタイマーで次の音声が重ならないよう、
+     十分長めに設定する。
+  */
+
+  const safetyTime =
     Math.max(
-      1200,
+      6000,
       text.length *
-      180 /
+      450 /
       utterance.rate
     );
 
@@ -783,7 +761,7 @@ function speakReading(
 
     finish();
 
-  }, estimatedTime);
+  }, safetyTime);
 
 
   speechSynthesis.speak(
@@ -827,14 +805,19 @@ function speakReadingCondition(callback) {
       : "かげんざん";
 
 
+  /*
+     条件説明は一つの文章として読む。
+
+     ここでは数字と「えんなーりー」のような
+     競技中の数字読みではないため、
+     通常の文章として自然に読ませる。
+  */
+
   const text =
     digitText +
     "、" +
     calculationText +
     "です";
-
-
-  speechSynthesis.cancel();
 
 
   speakReading(
@@ -850,7 +833,7 @@ function speakReadingCondition(callback) {
 
 
 /* =========================================================
-   競技会風の問題読み上げ
+   問題読み上げ
 ========================================================= */
 
 function speakReadingSequence(
@@ -859,18 +842,22 @@ function speakReadingSequence(
   callback
 ) {
 
-  if (index >= numbers.length) {
+  /*
+     全ての数字を読み終えた
+  */
 
-    /*
-       全ての数字を読み終えた後。
-
-       最後の数字と「では～」も
-       不自然に切らない。
-    */
+  if (
+    index >= numbers.length
+  ) {
 
     const last =
       numbers[numbers.length - 1];
 
+
+    /*
+       最後の数字と「えんでは～」は
+       絶対に分離しない。
+    */
 
     const finalText =
       numberToJapanese(last.value) +
@@ -881,10 +868,11 @@ function speakReadingSequence(
       finalText,
       callback,
       {
-        rate: 0.88,
-        pitch: 0.96
+        rate: 0.90,
+        pitch: 0.90
       }
     );
+
 
     return;
   }
@@ -920,12 +908,14 @@ function speakReadingSequence(
   if (index === 0) {
 
     /*
-       「ねがいましては」で少し抑揚。
+       「ねがいましては」
+       ↓
+       少し間
+       ↓
+       「数字＋えんなーりー」
 
-       その後は短い間。
-
-       数字＋えんなーりーは
-       絶対に分離しない。
+       数字と「えんなーりー」は
+       同じUtteranceにする。
     */
 
     speakReading(
@@ -935,7 +925,9 @@ function speakReadingSequence(
         setTimeout(() => {
 
           speakReading(
-            numberText + "えんなーーりーー",
+            numberText +
+            "えんなーーりーー",
+
             () => {
 
               setTimeout(() => {
@@ -949,20 +941,29 @@ function speakReadingSequence(
               }, 260);
 
             },
+
             {
-              rate: baseRate * 0.94,
-              pitch: 1.0
+              rate:
+                baseRate * 0.94,
+
+              pitch:
+                1.00
             }
           );
 
         }, 380);
 
       },
+
       {
-        rate: baseRate * 0.88,
-        pitch: 1.02
+        rate:
+          baseRate * 0.88,
+
+        pitch:
+          1.02
       }
     );
+
 
     return;
   }
@@ -983,7 +984,9 @@ function speakReadingSequence(
         setTimeout(() => {
 
           speakReading(
-            numberText + "えんなーーりーー",
+            numberText +
+            "えんなーーりーー",
+
             () => {
 
               setTimeout(() => {
@@ -997,28 +1000,36 @@ function speakReadingSequence(
               }, 250);
 
             },
+
             {
-              rate: baseRate * 0.94,
-              pitch: 0.99
+              rate:
+                baseRate * 0.94,
+
+              pitch:
+                0.99
             }
           );
 
         }, 180);
 
       },
+
       {
-        rate: baseRate * 0.90,
-        pitch: 0.98
+        rate:
+          baseRate * 0.90,
+
+        pitch:
+          0.98
       }
     );
+
 
     return;
   }
 
 
   /* =======================================================
-     前の問題が引き算
-     
+     前の数字が引き算
      →「くわえて」
   ======================================================= */
 
@@ -1038,7 +1049,9 @@ function speakReadingSequence(
         setTimeout(() => {
 
           speakReading(
-            numberText + "えんなーーりーー",
+            numberText +
+            "えんなーーりーー",
+
             () => {
 
               setTimeout(() => {
@@ -1052,20 +1065,29 @@ function speakReadingSequence(
               }, 250);
 
             },
+
             {
-              rate: baseRate * 0.94,
-              pitch: 1.0
+              rate:
+                baseRate * 0.94,
+
+              pitch:
+                1.00
             }
           );
 
         }, 180);
 
       },
+
       {
-        rate: baseRate * 0.90,
-        pitch: 1.01
+        rate:
+          baseRate * 0.90,
+
+        pitch:
+          1.01
       }
     );
+
 
     return;
   }
@@ -1076,7 +1098,9 @@ function speakReadingSequence(
   ======================================================= */
 
   speakReading(
-    numberText + "えんなーーりーー",
+    numberText +
+    "えんなーーりーー",
+
     () => {
 
       setTimeout(() => {
@@ -1090,64 +1114,13 @@ function speakReadingSequence(
       }, 250);
 
     },
+
     {
-      rate: baseRate * 0.94,
-      pitch: 1.0
-    }
-  );
+      rate:
+        baseRate * 0.94,
 
-}
-
-/* =========================================================
-   条件説明
-========================================================= */
-
-function speakReadingCondition(callback) {
-
-  let digitText;
-
-
-  if (
-    readingState.digitMode === "same"
-  ) {
-
-    digitText =
-      String(readingState.digit) +
-      "桁揃い";
-
-  } else {
-
-    digitText =
-      String(readingState.minDigit) +
-      "桁から" +
-      String(readingState.maxDigit) +
-      "桁";
-
-  }
-
-
-  const calculationText =
-    readingState.calculation === "addition"
-      ? "加算"
-      : "かげんざん";
-
-
-  const text =
-    digitText +
-    "、" +
-    calculationText +
-    "です";
-
-
-  speechSynthesis.cancel();
-
-
-  speakReading(
-    text,
-    callback,
-    {
-      rate: 0.90,
-      pitch: 0.95
+      pitch:
+        1.00
     }
   );
 
@@ -1164,6 +1137,19 @@ function startReading() {
 
   readingState.currentQuestion = 0;
   readingState.correctCount = 0;
+
+
+  /*
+     開始時だけ現在の音声をキャンセルする。
+
+     問題読み上げ中には cancel() しない。
+  */
+
+  if ("speechSynthesis" in window) {
+
+    speechSynthesis.cancel();
+
+  }
 
 
   document.getElementById(
@@ -1249,8 +1235,24 @@ function startReading() {
   }
 
 
+  const answerArea =
+    document.getElementById(
+      "answerArea"
+    );
+
+
+  if (answerArea) {
+
+    answerArea.style.display =
+      "none";
+
+  }
+
+
   /*
-     最初の条件説明
+     条件説明
+     ↓
+     1問目
   */
 
   speakReadingCondition(
@@ -1320,8 +1322,22 @@ function startReadingQuestion() {
   }
 
 
+  const answerArea =
+    document.getElementById(
+      "answerArea"
+    );
+
+
+  if (answerArea) {
+
+    answerArea.style.display =
+      "none";
+
+  }
+
+
   /*
-     問題の読み上げを開始
+     問題読み上げ
   */
 
   speakReadingSequence(
@@ -1336,290 +1352,6 @@ function startReadingQuestion() {
 
 }
 
-/* =========================================================
-   数字を順番に読む
-   競技会風の「間」「速度」「抑揚」を制御
-========================================================= */
-
-function speakReadingSequence(
-  numbers,
-  index,
-  callback
-) {
-
-  /* ---------------------------------------------------------
-     全て読み終わった
-  --------------------------------------------------------- */
-
-  if (index >= numbers.length) {
-
-    const last =
-      numbers[numbers.length - 1];
-
-
-    const finalText =
-      `${numberToJapanese(last.value)}えんでは～`;
-
-
-    /*
-       最後の「では～」は少しゆっくり、
-       下降気味に読む。
-    */
-
-    speakReading(
-      finalText,
-      callback,
-      {
-        rate: 0.90,
-        pitch: 0.90
-      }
-    );
-
-    return;
-  }
-
-
-  const item =
-    numbers[index];
-
-
-  const numberText =
-    numberToJapanese(
-      item.value
-    );
-
-
-  /* ---------------------------------------------------------
-     現在のレベルに応じた基本速度
-  --------------------------------------------------------- */
-
-  const rates = {
-
-    1: 0.65,
-    2: 0.80,
-    3: 1.00,
-    4: 1.25,
-    5: 1.50
-
-  };
-
-
-  const baseRate =
-    rates[readingState.speed] || 1.0;
-
-
-  /* ---------------------------------------------------------
-     最初の数字
-  --------------------------------------------------------- */
-
-  if (index === 0) {
-
-    const parts = [
-
-      {
-        text: "ねがいましては",
-        rate: baseRate * 0.90,
-        pitch: 1.05,
-        pause: 380
-      },
-
-      {
-        text: numberText,
-        rate: baseRate,
-        pitch: 1.00,
-        pause: 160
-      },
-
-      {
-        text: "えんなーりー",
-        rate: baseRate * 0.92,
-        pitch: 1.02,
-        pause: 300
-      }
-
-    ];
-
-
-    /*
-       1回のシーケンス開始時だけキャンセル。
-       各パーツの間ではキャンセルしない。
-    */
-
-    speechSynthesis.cancel();
-
-
-    speakReadingParts(
-      parts,
-      () => {
-
-        speakReadingSequence(
-          numbers,
-          index + 1,
-          callback
-        );
-
-      }
-    );
-
-    return;
-  }
-
-
-  /* ---------------------------------------------------------
-     引き算
-  --------------------------------------------------------- */
-
-  if (
-    item.operation === "subtract"
-  ) {
-
-    const parts = [
-
-      {
-        text: "ひいては",
-        rate: baseRate * 0.90,
-        pitch: 0.98,
-        pause: 260
-      },
-
-      {
-        text: numberText,
-        rate: baseRate,
-        pitch: 1.00,
-        pause: 150
-      },
-
-      {
-        text: "えんなーりー",
-        rate: baseRate * 0.92,
-        pitch: 1.02,
-        pause: 280
-      }
-
-    ];
-
-
-    speechSynthesis.cancel();
-
-
-    speakReadingParts(
-      parts,
-      () => {
-
-        speakReadingSequence(
-          numbers,
-          index + 1,
-          callback
-        );
-
-      }
-    );
-
-    return;
-  }
-
-
-  /* ---------------------------------------------------------
-     前の数字が引き算だった場合
-     「くわえて」
-  --------------------------------------------------------- */
-
-  const previous =
-    numbers[index - 1];
-
-
-  if (
-    previous &&
-    previous.operation === "subtract"
-  ) {
-
-    const parts = [
-
-      {
-        text: "くわえて",
-        rate: baseRate * 0.90,
-        pitch: 1.03,
-        pause: 260
-      },
-
-      {
-        text: numberText,
-        rate: baseRate,
-        pitch: 1.00,
-        pause: 150
-      },
-
-      {
-        text: "えんなーりー",
-        rate: baseRate * 0.92,
-        pitch: 1.02,
-        pause: 280
-      }
-
-    ];
-
-
-    speechSynthesis.cancel();
-
-
-    speakReadingParts(
-      parts,
-      () => {
-
-        speakReadingSequence(
-          numbers,
-          index + 1,
-          callback
-        );
-
-      }
-    );
-
-    return;
-  }
-
-
-  /* ---------------------------------------------------------
-     通常の加算
-  --------------------------------------------------------- */
-
-  const parts = [
-
-    {
-      text: numberText,
-      rate: baseRate,
-      pitch: 1.00,
-      pause: 150
-    },
-
-    {
-      text: "えんなーりー",
-      rate: baseRate * 0.92,
-      pitch: 1.02,
-      pause: 280
-    }
-
-  ];
-
-
-  speechSynthesis.cancel();
-
-
-  speakReadingParts(
-    parts,
-    () => {
-
-      speakReadingSequence(
-        numbers,
-        index + 1,
-        callback
-      );
-
-    }
-  );
-
-}
-
 
 /* =========================================================
    解答エリア
@@ -1628,21 +1360,31 @@ function speakReadingSequence(
 function showReadingAnswerArea() {
 
   const answerArea =
-    document.getElementById("answerArea");
+    document.getElementById(
+      "answerArea"
+    );
+
 
   if (answerArea) {
 
-    answerArea.style.display = "block";
+    answerArea.style.display =
+      "block";
+
   }
 
 
   const input =
-    document.getElementById("answerInput");
+    document.getElementById(
+      "answerInput"
+    );
+
 
   if (input) {
 
     input.focus();
+
   }
+
 }
 
 
@@ -1653,19 +1395,26 @@ function showReadingAnswerArea() {
 function checkReadingAnswer() {
 
   const input =
-    document.getElementById("answerInput");
+    document.getElementById(
+      "answerInput"
+    );
 
 
-  if (!input) return;
+  if (!input) {
+    return;
+  }
 
 
   const userAnswer =
     input.value.trim();
 
 
-  if (userAnswer === "") {
+  if (
+    userAnswer === ""
+  ) {
 
     return;
+
   }
 
 
@@ -1681,11 +1430,14 @@ function checkReadingAnswer() {
   } catch {
 
     correct = false;
+
   }
 
 
   const judge =
-    document.getElementById("judge");
+    document.getElementById(
+      "judge"
+    );
 
 
   if (correct) {
@@ -1697,11 +1449,13 @@ function checkReadingAnswer() {
 
       judge.textContent =
         "正解！";
+
     }
 
 
     speakReading(
       "ご名算です！",
+
       () => {
 
         nextReadingQuestion();
@@ -1715,6 +1469,7 @@ function checkReadingAnswer() {
 
       judge.textContent =
         "不正解";
+
     }
 
 
@@ -1723,7 +1478,9 @@ function checkReadingAnswer() {
       nextReadingQuestion();
 
     }, 1000);
+
   }
+
 }
 
 
@@ -1734,12 +1491,16 @@ function checkReadingAnswer() {
 function nextReadingQuestion() {
 
   const answerArea =
-    document.getElementById("answerArea");
+    document.getElementById(
+      "answerArea"
+    );
 
 
   if (answerArea) {
 
-    answerArea.style.display = "none";
+    answerArea.style.display =
+      "none";
+
   }
 
 
@@ -1758,6 +1519,7 @@ function nextReadingQuestion() {
 
 
   startReadingQuestion();
+
 }
 
 
@@ -1767,31 +1529,42 @@ function nextReadingQuestion() {
 
 function finishReading() {
 
-  readingState.isRunning = false;
+  readingState.isRunning =
+    false;
+
 
   const answerArea =
-    document.getElementById("answerArea");
+    document.getElementById(
+      "answerArea"
+    );
 
 
   if (answerArea) {
 
-    answerArea.style.display = "none";
+    answerArea.style.display =
+      "none";
+
   }
 
 
   const display =
-    document.getElementById("display");
+    document.getElementById(
+      "display"
+    );
 
 
   if (display) {
 
     display.textContent =
       "終了";
+
   }
 
 
   const judge =
-    document.getElementById("judge");
+    document.getElementById(
+      "judge"
+    );
 
 
   const score =
@@ -1802,6 +1575,7 @@ function finishReading() {
 
     judge.textContent =
       `${score} / ${readingState.count} 正解`;
+
   }
 
 
@@ -1820,7 +1594,9 @@ function finishReading() {
     speakReading(
       "終了です。もう一度挑戦しましょう。"
     );
+
   }
+
 }
 
 
