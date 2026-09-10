@@ -554,13 +554,156 @@ function numberToJapanese(value) {
 }
 
 /* =========================================================
+   数字 → 読み上げ用ひらがな
+========================================================= */
+
+function numberToJapaneseYomi(value) {
+
+  const ones = [
+    "",
+    "いち",
+    "に",
+    "さん",
+    "よん",
+    "ご",
+    "ろく",
+    "なな",
+    "はち",
+    "きゅう"
+  ];
+
+  const smallUnits = [
+    "",
+    "じゅう",
+    "ひゃく",
+    "せん"
+  ];
+
+
+  function fourDigitsToYomi(num) {
+
+    const str =
+      String(num).padStart(4, "0");
+
+    let result = "";
+
+    for (let i = 0; i < 4; i++) {
+
+      const digit =
+        Number(str[i]);
+
+      if (digit === 0) continue;
+
+      const unit =
+        smallUnits[3 - i];
+
+      /* 千 */
+      if (unit === "せん") {
+
+        if (digit === 1) {
+          result += "せん";
+        } else if (digit === 3) {
+          result += "さんぜん";
+        } else if (digit === 8) {
+          result += "はっせん";
+        } else {
+          result += ones[digit] + "せん";
+        }
+
+        continue;
+      }
+
+
+      /* 百 */
+      if (unit === "ひゃく") {
+
+        if (digit === 1) {
+          result += "ひゃく";
+        } else if (digit === 3) {
+          result += "さんびゃく";
+        } else if (digit === 6) {
+          result += "ろっぴゃく";
+        } else if (digit === 8) {
+          result += "はっぴゃく";
+        } else {
+          result += ones[digit] + "ひゃく";
+        }
+
+        continue;
+      }
+
+
+      /* 十 */
+      if (unit === "じゅう") {
+
+        if (digit === 1) {
+          result += "じゅう";
+        } else {
+          result += ones[digit] + "じゅう";
+        }
+
+        continue;
+      }
+
+
+      /* 一の位 */
+      result += ones[digit];
+    }
+
+    return result;
+  }
+
+
+  let num =
+    BigInt(value);
+
+  if (num === 0n) {
+    return "ぜろ";
+  }
+
+
+  const units = [
+    "",
+    "まん",
+    "おく",
+    "ちょう",
+    "けい"
+  ];
+
+
+  let result = "";
+  let unitIndex = 0;
+
+
+  while (num > 0n) {
+
+    const part =
+      Number(num % 10000n);
+
+    if (part !== 0) {
+
+      result =
+        fourDigitsToYomi(part) +
+        units[unitIndex] +
+        result;
+    }
+
+    num /= 10000n;
+    unitIndex++;
+  }
+
+
+  return result;
+}
+
+/* =========================================================
    読み上げ用文章
 ========================================================= */
 
 function getReadingPhrase(item, index) {
 
   const numberText =
-    numberToJapanese(item.value);
+    numberToJapaneseYomi(item.value);
 
 
   if (index === 0) {
