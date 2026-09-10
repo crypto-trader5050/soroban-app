@@ -774,6 +774,14 @@ function getJapaneseVoice() {
 
   }
 
+  alert(
+    "使用中の音声\n" +
+    "名前：" +
+    (japaneseVoice ? japaneseVoice.name : "なし") +
+    "\n言語：" +
+    (japaneseVoice ? japaneseVoice.lang : "なし")
+  );
+
 
   return japaneseVoice;
 
