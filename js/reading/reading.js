@@ -567,7 +567,7 @@ function getReadingPhrase(item, index) {
 
     return "ねがいましては、" +
            numberText +
-           "えんなーりー";
+           "えんなり";
 
   }
 
@@ -576,7 +576,7 @@ function getReadingPhrase(item, index) {
 
     return "ひいては、" +
            numberText +
-           "えんなーりー";
+           "えんなり";
 
   }
 
@@ -592,12 +592,12 @@ function getReadingPhrase(item, index) {
 
     return "くわえて、" +
            numberText +
-           "えんなーりー";
+           "えんなり";
 
   }
 
 
-  return numberText + "えんなーりー";
+  return numberText + "えんなり";
 
 }
 
@@ -808,7 +808,7 @@ function speakReadingCondition(callback) {
   /*
      条件説明は一つの文章として読む。
 
-     ここでは数字と「えんなーりー」のような
+     ここでは数字と「えんなり」のような
      競技中の数字読みではないため、
      通常の文章として自然に読ませる。
   */
@@ -855,7 +855,7 @@ function speakReadingSequence(
 
 
     /*
-       最後の数字と「えんでは～」は
+       最後の数字と「えんでは」は
        絶対に分離しない。
     */
 
@@ -912,9 +912,9 @@ function speakReadingSequence(
        ↓
        少し間
        ↓
-       「数字＋えんなーりー」
+       「数字＋えんなり」
 
-       数字と「えんなーりー」は
+       数字と「えんなり」は
        同じUtteranceにする。
     */
 
@@ -926,7 +926,7 @@ function speakReadingSequence(
 
           speakReading(
             numberText +
-            "えんなーーりーー",
+            "えんなり",
 
             () => {
 
@@ -985,7 +985,7 @@ function speakReadingSequence(
 
           speakReading(
             numberText +
-            "えんなーーりーー",
+            "えんなり",
 
             () => {
 
@@ -1050,7 +1050,7 @@ function speakReadingSequence(
 
           speakReading(
             numberText +
-            "えんなーーりーー",
+            "えんなり",
 
             () => {
 
@@ -1099,7 +1099,7 @@ function speakReadingSequence(
 
   speakReading(
     numberText +
-    "えんなーーりーー",
+    "えんなり",
 
     () => {
 
