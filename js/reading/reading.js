@@ -746,7 +746,7 @@ function getReadingPhrase(item, index) {
 
 
 /* =========================================================
-   日本語音声取得
+   日本語音声取得・確認用
 ========================================================= */
 
 function getJapaneseVoice() {
@@ -755,35 +755,33 @@ function getJapaneseVoice() {
     speechSynthesis.getVoices();
 
 
-  let japaneseVoice =
-    voices.find(voice =>
-      voice.lang === "ja-JP" &&
-      (
-        voice.name.includes("Microsoft") ||
-        voice.name.includes("Google")
-      )
+  const japaneseVoices =
+    voices.filter(voice =>
+      voice.lang === "ja-JP" ||
+      voice.lang.startsWith("ja")
     );
 
 
-  if (!japaneseVoice) {
+  console.log("===== 日本語音声一覧 =====");
 
-    japaneseVoice =
-      voices.find(voice =>
-        voice.lang.startsWith("ja")
-      );
+  japaneseVoices.forEach((voice, index) => {
 
-  }
+    console.log(
+      index + " : " +
+      voice.name +
+      " / " +
+      voice.lang
+    );
 
-  alert(
-    "使用中の音声\n" +
-    "名前：" +
-    (japaneseVoice ? japaneseVoice.name : "なし") +
-    "\n言語：" +
-    (japaneseVoice ? japaneseVoice.lang : "なし")
-  );
+  });
 
 
-  return japaneseVoice;
+  /*
+     現在と同じく、
+     最初の日本語音声を使用
+  */
+
+  return japaneseVoices[0] || null;
 
 }
 
