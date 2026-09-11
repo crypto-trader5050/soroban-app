@@ -1761,3 +1761,72 @@ document.addEventListener(
 
   }
 );
+
+/* =========================================================
+   日本語音声一覧・確認用
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const button =
+    document.getElementById("voiceCheckButton");
+
+  if (!button) {
+    return;
+  }
+
+
+  button.addEventListener("click", () => {
+
+    const voices =
+      speechSynthesis.getVoices();
+
+
+    const japaneseVoices =
+      voices.filter(voice =>
+        voice.lang &&
+        voice.lang.toLowerCase().startsWith("ja")
+      );
+
+
+    if (japaneseVoices.length === 0) {
+
+      alert(
+        "日本語音声が見つかりません。\n" +
+        "もう一度ボタンを押してください。"
+      );
+
+      return;
+    }
+
+
+    let message =
+      "このPCで利用できる日本語音声\n\n";
+
+
+    japaneseVoices.forEach(
+      (voice, index) => {
+
+        message +=
+          (index + 1) +
+          ". " +
+          voice.name +
+          "\n" +
+          "   言語：" +
+          voice.lang +
+          "\n" +
+          "   ローカル：" +
+          (voice.localService
+            ? "はい"
+            : "いいえ") +
+          "\n\n";
+
+      }
+    );
+
+
+    alert(message);
+
+  });
+
+});
