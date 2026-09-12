@@ -992,36 +992,12 @@ function speakReadingSequence(
   callback
 ) {
 
-  /*
-     全ての数字を読み終えた
-     → 数字はもう読まない
-     → 「えんでは～」だけ読む
-  */
-
-  if (
-    index >= numbers.length
-  ) {
-
-    speakReading(
-      "えんでは～",
-      callback,
-      {
-        rate: 0.90,
-        pitch: 0.90
-      }
-    );
-
-    return;
-  }
-
-
   const item =
     numbers[index];
 
 
   const numberText =
     numberToJapanese(item.value);
-
 
   const rates = {
 
@@ -1033,9 +1009,33 @@ function speakReadingSequence(
 
   };
 
-
   const baseRate =
     rates[readingState.speed] || 1.0;
+
+  /* =======================================================
+     最後の数字
+     →「数字＋えんでは」で終了
+  ======================================================= */
+
+  if (index === numbers.length - 1) {
+
+    speakReading(
+      numberText +
+      "えんでは",
+
+      callback,
+
+      {
+        rate:
+          baseRate * 0.94,
+
+        pitch:
+          0.90
+      }
+    );
+
+    return;
+  }
 
 
   /* =======================================================
