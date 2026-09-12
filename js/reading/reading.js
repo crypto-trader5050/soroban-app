@@ -426,34 +426,56 @@ function generateReadingQuestion() {
     }
 
 
-    /*
-       加減算
-    */
+    /* 
+      加減算
+      ・引き算は最大2回まで連続
+      ・3回目は必ず加算
+    */ 
+
+    const previous =
+      numbers[i - 1];
+
+    const previousPrevious =
+      numbers[i - 2];
+
+
+    /* 
+      直前と、その前も引き算なら
+      → 3回連続になるので必ず加算
+    */ 
+
+    const mustAdd =
+      previous &&
+      previousPrevious &&
+      previous.operation === "subtract" &&
+      previousPrevious.operation === "subtract";
+
 
     const subtract =
+      !mustAdd &&
       Math.random() < 0.5;
 
 
-    if (subtract && current >= number) {
+    if (subtract && current >= number) { 
 
-      numbers.push({
-        value: number,
-        operation: "subtract"
-      });
+      numbers.push({ 
+        value: number, 
+        operation: "subtract" 
+      }); 
 
-      current -= number;
+      current -= number; 
 
-    } else {
+    } else { 
 
-      numbers.push({
-        value: number,
-        operation: "add"
-      });
+      numbers.push({ 
+        value: number, 
+        operation: "add" 
+      }); 
 
-      current += number;
+      current += number; 
     }
-  }
 
+  }
 
   answer = current;
 
@@ -746,7 +768,7 @@ function getReadingPhrase(item, index) {
 
 
 /* =========================================================
-   日本語音声取得・確認用
+   日本語音声取得
 ========================================================= */
 
 function getJapaneseVoice() {
@@ -760,26 +782,6 @@ function getJapaneseVoice() {
       voice.lang === "ja-JP" ||
       voice.lang.startsWith("ja")
     );
-
-
-  console.log("===== 日本語音声一覧 =====");
-
-  japaneseVoices.forEach((voice, index) => {
-
-    console.log(
-      index + " : " +
-      voice.name +
-      " / " +
-      voice.lang
-    );
-
-  });
-
-
-  /*
-     現在と同じく、
-     最初の日本語音声を使用
-  */
 
   return japaneseVoices[0] || null;
 
@@ -984,7 +986,6 @@ function speakReadingCondition(callback) {
 /* =========================================================
    問題読み上げ
 ========================================================= */
-
 function speakReadingSequence(
   numbers,
   index,
@@ -993,35 +994,22 @@ function speakReadingSequence(
 
   /*
      全ての数字を読み終えた
+     → 数字はもう読まない
+     → 「えんでは～」だけ読む
   */
 
   if (
     index >= numbers.length
   ) {
 
-    const last =
-      numbers[numbers.length - 1];
-
-
-    /*
-       最後の数字と「えんでは」は
-       絶対に分離しない。
-    */
-
-    const finalText =
-      numberToJapanese(last.value) +
-      "えんでは～";
-
-
     speakReading(
-      finalText,
+      "えんでは～",
       callback,
       {
         rate: 0.90,
         pitch: 0.90
       }
     );
-
 
     return;
   }
@@ -1117,14 +1105,24 @@ function speakReadingSequence(
     return;
   }
 
+/* =======================================================
+   引き算
+   → 最初の引き算だけ「ひいては」
+======================================================= */
 
-  /* =======================================================
-     引き算
-  ======================================================= */
+if (
+  item.operation === "subtract"
+) {
 
-  if (
-    item.operation === "subtract"
-  ) {
+  const previous =
+    numbers[index - 1];
+
+  const isFirstSubtract =
+    !previous ||
+    previous.operation !== "subtract";
+
+
+  if (isFirstSubtract) {
 
     speakReading(
       "ひいては",
@@ -1172,10 +1170,42 @@ function speakReadingSequence(
       }
     );
 
+  } else {
 
-    return;
+    /* 引き算が続いている
+       →「ひいては」は読まない */
+
+    speakReading(
+      numberText +
+      "えんなり",
+
+      () => {
+
+        setTimeout(() => {
+
+          speakReadingSequence(
+            numbers,
+            index + 1,
+            callback
+          );
+
+        }, 250);
+
+      },
+
+      {
+        rate:
+          baseRate * 0.94,
+
+        pitch:
+          0.99
+      }
+    );
   }
 
+
+  return;
+}
 
   /* =======================================================
      前の数字が引き算
