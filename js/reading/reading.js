@@ -1639,7 +1639,7 @@ function checkReadingAnswer() {
 
 
     speakReading(
-      "ご名算です！",
+      "ごめいさんです！",
 
       () => {
 
