@@ -17,7 +17,13 @@ let readingState = {
   digit: 7,
   minDigit: 7,
   maxDigit: 10,
+
+  // 1問あたりの口数
   count: 15,
+
+  // 全体の問題数
+  questionCount: 15,
+
   speed: 3,
 
   // 実行用
@@ -1394,7 +1400,7 @@ function startReading() {
 
     info.textContent =
       "全" +
-      String(readingState.count) +
+      String(readingState.questionCount) +
       "問";
 
   }
@@ -1470,7 +1476,7 @@ function startReadingQuestion() {
     info.textContent =
       String(questionIndex) +
       " / " +
-      String(readingState.count);
+      String(readingState.questionCount);
 
   }
 
@@ -1688,7 +1694,7 @@ function nextReadingQuestion() {
 
   if (
     readingState.currentQuestion >=
-    readingState.count
+    readingState.questionCount
   ) {
 
     finishReading();
@@ -1753,7 +1759,7 @@ function finishReading() {
   if (judge) {
 
     judge.textContent =
-      `${score} / ${readingState.count} 正解`;
+      `${score} / ${readingState.questionCount} 正解`;
 
   }
 
