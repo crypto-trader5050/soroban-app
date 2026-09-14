@@ -513,11 +513,11 @@ function generateReadingQuestion() {
     }
 
 
-    /* 
-      加減算
-      ・引き算は最大2回まで連続
-      ・3回目は必ず加算
-    */ 
+    /*
+       加減算
+       ・引き算は最大2回まで連続
+       ・3回目は必ず加算
+    */
 
     const previous =
       numbers[i - 1];
@@ -526,10 +526,10 @@ function generateReadingQuestion() {
       numbers[i - 2];
 
 
-    /* 
-      直前と、その前も引き算なら
-      → 3回連続になるので必ず加算
-    */ 
+    /*
+       直前と、その前も引き算なら
+       → 3回連続になるので必ず加算
+    */
 
     const mustAdd =
       previous &&
@@ -543,26 +543,41 @@ function generateReadingQuestion() {
       Math.random() < 0.5;
 
 
-    if (subtract && current >= number) { 
+    /*
+       マイナスなし
+       → 途中結果がマイナスになる引き算は禁止
 
-      numbers.push({ 
-        value: number, 
-        operation: "subtract" 
-      }); 
+       マイナスあり
+       → 途中結果がマイナスになってもOK
+    */
 
-      current -= number; 
+    if (
+      subtract &&
+      (
+        readingState.negativeAnswer ||
+        current >= number
+      )
+    ) {
 
-    } else { 
+      numbers.push({
+        value: number,
+        operation: "subtract"
+      });
 
-      numbers.push({ 
-        value: number, 
-        operation: "add" 
-      }); 
+      current -= number;
 
-      current += number; 
+    } else {
+
+      numbers.push({
+        value: number,
+        operation: "add"
+      });
+
+      current += number;
     }
 
   }
+
 
   answer = current;
 
