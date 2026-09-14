@@ -137,6 +137,13 @@
     background 0.15s ease;
 }
 
+/* 無効になった選択カード */
+[data-negative-answer].disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .read-choice-card:hover {
   transform: translateY(-2px);
 

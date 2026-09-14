@@ -13,6 +13,7 @@
 let readingState = {
   type: "yomi",
   calculation: "mixed",
+  negativeAnswer: false,
   digitMode: "variable",
   digit: 7,
   minDigit: 7,
@@ -72,15 +73,95 @@ function setupReadingButtons() {
 
     button.addEventListener("click", () => {
 
-      readingState.calculation = button.dataset.calculation;
+      readingState.calculation =
+        button.dataset.calculation;
 
-      setSelected("[data-calculation]", button);
+      setSelected(
+        "[data-calculation]",
+        button
+      );
+
+
+      // -----------------------------------------
+      // マイナス設定の有効 / 無効
+      // -----------------------------------------
+
+      const negativeButtons =
+        document.querySelectorAll(
+          "[data-negative-answer]"
+        );
+
+
+      if (readingState.calculation === "addition") {
+
+        // 加算のみ
+        // → マイナス設定は無効
+
+        negativeButtons.forEach(btn => {
+
+          btn.disabled = true;
+          btn.classList.add("disabled");
+
+        });
+
+
+        // 内部設定も「マイナスなし」に戻す
+        readingState.negativeAnswer = false;
+
+
+        // 「マイナスなし」を選択状態にする
+        const noNegative =
+          document.querySelector(
+            '[data-negative-answer="false"]'
+          );
+
+        if (noNegative) {
+
+          setSelected(
+            "[data-negative-answer]",
+            noNegative
+          );
+
+        }
+
+      } else {
+
+        // 加減算
+        // → マイナス設定を有効
+
+        negativeButtons.forEach(btn => {
+
+          btn.disabled = false;
+          btn.classList.remove("disabled");
+
+        });
+
+      }
+
 
       updateReadingSummary();
+
     });
 
   });
 
+  document.querySelectorAll("[data-negative-answer]").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      readingState.negativeAnswer =
+        button.dataset.negativeAnswer === "true";
+
+      setSelected(
+        "[data-negative-answer]",
+        button
+      );
+
+      updateReadingSummary();
+
+    });
+
+  });
 
   document.querySelectorAll("[data-digit-mode]").forEach(button => {
 
