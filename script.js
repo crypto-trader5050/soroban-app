@@ -785,16 +785,26 @@ document.getElementById("keypad").addEventListener("click", (e) => {
     inputEl.dispatchEvent(new Event("input"));
   }
 
-  if (e.target.id === "clear") {
-    tapSound(); // 🔊
-    inputEl.value = "";
+if (e.target.id === "clear") {
+  tapSound(); // 🔊
+  inputEl.value = "";
+  inputEl.dispatchEvent(new Event("input"));
+}
+
+if (e.target.id === "minus") {
+  tapSound();
+
+  // まだ何も入力していないときだけ「−」を付ける
+  if (inputEl.value === "") {
+    inputEl.value = "-";
     inputEl.dispatchEvent(new Event("input"));
   }
+}
 
-  if (e.target.id === "ok") {
-    tapSound(); // 🔊
-    handleOk();
-  }
+if (e.target.id === "ok") {
+  tapSound(); // 🔊
+  handleOk();
+}
 });
 
 // =====================
