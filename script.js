@@ -764,12 +764,45 @@ document.getElementById("answerInput")
 const inputEl = document.getElementById("answerInput");
 
 inputEl.addEventListener("input", () => {
-  const len = inputEl.value.replace(/,/g, "").length;
 
-  if (len <= 6) inputEl.style.fontSize = "36px";
-  else if (len <= 10) inputEl.style.fontSize = "28px";
-  else if (len <= 14) inputEl.style.fontSize = "22px";
-  else inputEl.style.fontSize = "12px"; // ←17桁対応
+  let value = inputEl.value;
+
+  // カンマを一度すべて削除
+  value = value.replace(/,/g, "");
+
+  // マイナス記号だけの場合はそのまま
+  if (value === "-") {
+    inputEl.value = "-";
+  }
+
+  // 数字が入力されている場合
+  else if (/^-?\d+$/.test(value)) {
+
+    const negative = value.startsWith("-");
+    const digits = negative ? value.slice(1) : value;
+
+    inputEl.value =
+      (negative ? "-" : "") +
+      BigInt(digits).toLocaleString();
+
+  }
+
+  const len =
+    inputEl.value.replace(/[-,]/g, "").length;
+
+  if (len <= 6) {
+    inputEl.style.fontSize = "36px";
+  }
+  else if (len <= 10) {
+    inputEl.style.fontSize = "28px";
+  }
+  else if (len <= 14) {
+    inputEl.style.fontSize = "22px";
+  }
+  else {
+    inputEl.style.fontSize = "12px";
+  }
+
 });
 
 document.getElementById("keypad").addEventListener("click", (e) => {
