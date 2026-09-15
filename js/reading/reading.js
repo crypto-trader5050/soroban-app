@@ -1121,6 +1121,54 @@ function speakReadingSequence(
 
   if (index === numbers.length - 1) {
 
+    if (item.operation === "subtract") {
+
+      const previous =
+        numbers[index - 1];
+
+      if (
+        previous &&
+        previous.operation !== "subtract"
+      ) {
+
+        speakReading(
+          "ひいては",
+          () => {
+
+            setTimeout(() => {
+
+              speakReading(
+                numberText +
+                "えんでは",
+
+                callback,
+
+                {
+                  rate:
+                    baseRate * 0.94,
+
+                  pitch:
+                    0.90
+                }
+              );
+
+            }, 180);
+
+          },
+
+          {
+            rate:
+              baseRate * 0.90,
+
+            pitch:
+              0.98
+          }
+        );
+
+        return;
+      }
+    }
+
     speakReading(
       numberText +
       "えんでは",
