@@ -1705,7 +1705,7 @@ function checkReadingAnswer() {
   try {
 
     correct =
-      BigInt(userAnswer) ===
+      BigInt(userAnswer.replace(/,/g, "")) ===
       readingState.answer;
 
   } catch {
