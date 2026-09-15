@@ -1114,78 +1114,132 @@ function speakReadingSequence(
   const baseRate =
     rates[readingState.speed] || 1.0;
 
-  /* =======================================================
-     最後の数字
-     →「数字＋えんでは」で終了
-  ======================================================= */
+/* =======================================================
+   最後の数字
+   ・直前が引き算 →「くわえて」→ 数字＋えんでは
+   ・直前が足し算で今回が引き算 →「ひいては」→ 数字＋えんでは
+   ・それ以外 → 数字＋えんでは
+======================================================= */
 
-  if (index === numbers.length - 1) {
+if (index === numbers.length - 1) {
 
-    if (item.operation === "subtract") {
+  const previous =
+    numbers[index - 1];
 
-      const previous =
-        numbers[index - 1];
 
-      if (
-        previous &&
-        previous.operation !== "subtract"
-      ) {
+  /* 引き算 → 最後が足し算
+     →「くわえて」 */
 
-        speakReading(
-          "ひいては",
-          () => {
-
-            setTimeout(() => {
-
-              speakReading(
-                numberText +
-                "えんでは",
-
-                callback,
-
-                {
-                  rate:
-                    baseRate * 0.94,
-
-                  pitch:
-                    0.90
-                }
-              );
-
-            }, 180);
-
-          },
-
-          {
-            rate:
-              baseRate * 0.90,
-
-            pitch:
-              0.98
-          }
-        );
-
-        return;
-      }
-    }
+  if (
+    item.operation === "add" &&
+    previous &&
+    previous.operation === "subtract"
+  ) {
 
     speakReading(
-      numberText +
-      "えんでは",
+      "くわえて",
+      () => {
 
-      callback,
+        setTimeout(() => {
+
+          speakReading(
+            numberText +
+            "えんでは",
+
+            callback,
+
+            {
+              rate:
+                baseRate * 0.94,
+
+              pitch:
+                0.90
+            }
+          );
+
+        }, 180);
+
+      },
 
       {
         rate:
-          baseRate * 0.94,
+          baseRate * 0.90,
 
         pitch:
-          0.90
+          1.01
       }
     );
 
     return;
   }
+
+
+  /* 足し算 → 最後が引き算
+     →「ひいては」 */
+
+  if (
+    item.operation === "subtract" &&
+    previous &&
+    previous.operation !== "subtract"
+  ) {
+
+    speakReading(
+      "ひいては",
+      () => {
+
+        setTimeout(() => {
+
+          speakReading(
+            numberText +
+            "えんでは",
+
+            callback,
+
+            {
+              rate:
+                baseRate * 0.94,
+
+              pitch:
+                0.90
+            }
+          );
+
+        }, 180);
+
+      },
+
+      {
+        rate:
+          baseRate * 0.90,
+
+        pitch:
+          0.98
+      }
+    );
+
+    return;
+  }
+
+
+  /* それ以外の最後の数字 */
+
+  speakReading(
+    numberText +
+    "えんでは",
+
+    callback,
+
+    {
+      rate:
+        baseRate * 0.94,
+
+      pitch:
+        0.90
+    }
+  );
+
+  return;
+}
 
 
   /* =======================================================
