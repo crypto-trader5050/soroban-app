@@ -1704,8 +1704,22 @@ function checkReadingAnswer() {
 
   try {
 
+    const cleanAnswer = userAnswer.replace(/,/g, "");
+
+    console.log("===== 読み上げ算 判定 =====");
+    console.log("入力:", userAnswer);
+    console.log("カンマ除去後:", cleanAnswer);
+    console.log("入力BigInt:", BigInt(cleanAnswer));
+    console.log("正解BigInt:", readingState.answer);
+    console.log(
+      "問題:",
+      readingState.numbers.map(n =>
+        (n.operation === "subtract" ? "-" : "+") + n.value
+      )
+    );
+
     correct =
-      BigInt(userAnswer.replace(/,/g, "")) ===
+      BigInt(cleanAnswer) ===
       readingState.answer;
 
   } catch {
