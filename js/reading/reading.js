@@ -1706,16 +1706,16 @@ function checkReadingAnswer() {
 
     const cleanAnswer = userAnswer.replace(/,/g, "");
 
-    console.log("===== 読み上げ算 判定 =====");
-    console.log("入力:", userAnswer);
-    console.log("カンマ除去後:", cleanAnswer);
-    console.log("入力BigInt:", BigInt(cleanAnswer));
-    console.log("正解BigInt:", readingState.answer);
-    console.log(
-      "問題:",
+    alert(
+      "===== 読み上げ算 判定 =====\n" +
+      "入力：" + userAnswer + "\n" +
+      "カンマ除去後：" + cleanAnswer + "\n" +
+      "入力BigInt：" + BigInt(cleanAnswer) + "\n" +
+      "正解BigInt：" + readingState.answer + "\n" +
+      "問題：" +
       readingState.numbers.map(n =>
         (n.operation === "subtract" ? "-" : "+") + n.value
-      )
+      ).join(" ")
     );
 
     correct =
