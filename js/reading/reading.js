@@ -1806,29 +1806,15 @@ function checkReadingAnswer() {
 
   try {
 
-    const cleanAnswer = userAnswer.replace(/,/g, "");
-
-    alert(
-      "===== 読み上げ算 判定 =====\n" +
-      "入力：" + userAnswer + "\n" +
-      "カンマ除去後：" + cleanAnswer + "\n" +
-      "入力BigInt：" + BigInt(cleanAnswer) + "\n" +
-      "正解BigInt：" + readingState.answer + "\n" +
-      "問題：" +
-      readingState.numbers.map(n =>
-        (n.operation === "subtract" ? "-" : "+") + n.value
-      ).join(" ")
-    );
-
     correct =
-      BigInt(cleanAnswer) ===
+      BigInt(userAnswer.replace(/,/g, "")) ===
       readingState.answer;
 
   } catch {
 
-    correct = false;
+      correct = false;
 
-  }
+    }
 
 
   const judge =
