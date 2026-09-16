@@ -1101,18 +1101,52 @@ function speakYomiSequence(
   const numberText =
     numberToJapanese(item.value);
 
-  const rates = {
+  const speedSettings = {
 
-    1: 0.65,
-    2: 0.80,
-    3: 1.00,
-    4: 1.25,
-    5: 1.50
+    1: {
+      rate: 0.75,
+      numberGap: 220,
+      phraseGap: 180
+    },
+
+    2: {
+      rate: 0.95,
+      numberGap: 150,
+      phraseGap: 130
+    },
+
+    3: {
+      rate: 1.15,
+      numberGap: 100,
+      phraseGap: 100
+    },
+
+    4: {
+      rate: 1.40,
+      numberGap: 50,
+      phraseGap: 70
+    },
+
+    5: {
+      rate: 1.80,
+      numberGap: 0,
+      phraseGap: 30
+    }
 
   };
 
+  const settings =
+    speedSettings[readingState.speed] ||
+    speedSettings[3];
+
   const baseRate =
-    rates[readingState.speed] || 1.0;
+    settings.rate;
+
+  const numberGap =
+    settings.numberGap;
+
+  const phraseGap =
+    settings.phraseGap;
 
 /* =======================================================
    最後の数字
@@ -1157,7 +1191,7 @@ if (index === numbers.length - 1) {
             }
           );
 
-        }, 180);
+        }, phraseGap);
 
       },
 
@@ -1204,7 +1238,7 @@ if (index === numbers.length - 1) {
             }
           );
 
-        }, 180);
+        }, phraseGap);
 
       },
 
@@ -1279,7 +1313,7 @@ if (index === numbers.length - 1) {
                   callback
                 );
 
-              }, 260);
+              }, numberGap);
 
             },
 
@@ -1292,7 +1326,7 @@ if (index === numbers.length - 1) {
             }
           );
 
-        }, 380);
+        }, phraseGap);
 
       },
 
@@ -1348,7 +1382,7 @@ if (
                   callback
                 );
 
-              }, 250);
+              }, numberGap);
 
             },
 
@@ -1361,7 +1395,7 @@ if (
             }
           );
 
-        }, 180);
+        }, phraseGap);
 
       },
 
@@ -1393,7 +1427,7 @@ if (
             callback
           );
 
-        }, 250);
+        }, numberGap);
 
       },
 
@@ -1445,7 +1479,7 @@ if (
                   callback
                 );
 
-              }, 250);
+              }, numberGap);
 
             },
 
@@ -1458,7 +1492,7 @@ if (
             }
           );
 
-        }, 180);
+        }, phraseGap);
 
       },
 
@@ -1494,7 +1528,7 @@ if (
           callback
         );
 
-      }, 250);
+      }, numberGap);
 
     },
 
