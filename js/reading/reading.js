@@ -1094,12 +1094,151 @@ function speakYomiSequence(
   callback
 ) {
 
+  /* =======================================================
+     速度4・5
+     → 1問をまとまりで読み上げる
+     → Utteranceの切り替えによる隙間をなくす
+  ======================================================= */
+
+  if (
+    readingState.speed >= 4 &&
+    index === 0
+  ) {
+
+    const speedSettings = {
+
+      4: {
+        rate: 1.40
+      },
+
+      5: {
+        rate: 1.80
+      }
+
+    };
+
+    const settings =
+      speedSettings[readingState.speed] ||
+      speedSettings[4];
+
+    const baseRate =
+      settings.rate;
+
+    let text =
+      "ねがいましては";
+
+
+    /* =====================================================
+       1問分の読み上げ文章を作成
+    ===================================================== */
+
+    for (
+      let i = 0;
+      i < numbers.length;
+      i++
+    ) {
+
+      const item =
+        numbers[i];
+
+      const numberText =
+        numberToJapanese(item.value);
+
+
+      /* =================================================
+         1口目
+      ================================================= */
+
+      if (i === 0) {
+
+        text +=
+          numberText +
+          (
+            i === numbers.length - 1
+              ? "えんでは"
+              : "えんなり"
+          );
+
+        continue;
+      }
+
+
+      /* =================================================
+         引き算へ切り替え
+      ================================================= */
+
+      if (
+        item.operation === "subtract" &&
+        numbers[i - 1].operation !== "subtract"
+      ) {
+
+        text +=
+          "、ひいては、";
+
+      }
+
+
+      /* =================================================
+         引き算 → 足し算へ切り替え
+      ================================================= */
+
+      else if (
+        item.operation === "add" &&
+        numbers[i - 1].operation === "subtract"
+      ) {
+
+        text +=
+          "、くわえて、";
+
+      }
+
+
+      /* =================================================
+         数字
+      ================================================= */
+
+      text +=
+        numberText +
+        (
+          i === numbers.length - 1
+            ? "えんでは"
+            : "えんなり"
+        );
+    }
+
+
+    /* =====================================================
+       1問を1回のUtteranceで読み上げる
+    ===================================================== */
+
+    speakReading(
+      text,
+      callback,
+      {
+        rate:
+          baseRate * 0.94,
+
+        pitch:
+          1.00
+      }
+    );
+
+    return;
+  }
+
+
+  /* =======================================================
+     速度1～3
+     → 従来方式
+  ======================================================= */
+
   const item =
     numbers[index];
 
 
   const numberText =
     numberToJapanese(item.value);
+
 
   const speedSettings = {
 
@@ -1119,25 +1258,15 @@ function speakYomiSequence(
       rate: 1.15,
       numberGap: 100,
       phraseGap: 100
-    },
-
-    4: {
-      rate: 1.40,
-      numberGap: 50,
-      phraseGap: 70
-    },
-
-    5: {
-      rate: 1.80,
-      numberGap: 0,
-      phraseGap: 30
     }
 
   };
 
+
   const settings =
     speedSettings[readingState.speed] ||
     speedSettings[3];
+
 
   const baseRate =
     settings.rate;
@@ -1148,11 +1277,9 @@ function speakYomiSequence(
   const phraseGap =
     settings.phraseGap;
 
+
 /* =======================================================
    最後の数字
-   ・直前が引き算 →「くわえて」→ 数字＋えんでは
-   ・直前が足し算で今回が引き算 →「ひいては」→ 数字＋えんでは
-   ・それ以外 → 数字＋えんでは
 ======================================================= */
 
 if (index === numbers.length - 1) {
@@ -1276,72 +1403,61 @@ if (index === numbers.length - 1) {
 }
 
 
-  /* =======================================================
-     1問目
-  ======================================================= */
+/* =======================================================
+   1問目
+======================================================= */
 
-  if (index === 0) {
+if (index === 0) {
 
-    /*
-       「ねがいましては」
-       ↓
-       少し間
-       ↓
-       「数字＋えんなり」
+  speakReading(
+    "ねがいましては",
+    () => {
 
-       数字と「えんなり」は
-       同じUtteranceにする。
-    */
+      setTimeout(() => {
 
-    speakReading(
-      "ねがいましては",
-      () => {
+        speakReading(
+          numberText +
+          "えんなり",
 
-        setTimeout(() => {
+          () => {
 
-          speakReading(
-            numberText +
-            "えんなり",
+            setTimeout(() => {
 
-            () => {
+              speakYomiSequence(
+                numbers,
+                index + 1,
+                callback
+              );
 
-              setTimeout(() => {
+            }, numberGap);
 
-                speakYomiSequence(
-                  numbers,
-                  index + 1,
-                  callback
-                );
+          },
 
-              }, numberGap);
+          {
+            rate:
+              baseRate * 0.94,
 
-            },
+            pitch:
+              1.00
+          }
+        );
 
-            {
-              rate:
-                baseRate * 0.94,
+      }, phraseGap);
 
-              pitch:
-                1.00
-            }
-          );
+    },
 
-        }, phraseGap);
+    {
+      rate:
+        baseRate * 0.88,
 
-      },
+      pitch:
+        1.02
+    }
+  );
 
-      {
-        rate:
-          baseRate * 0.88,
+  return;
+}
 
-        pitch:
-          1.02
-      }
-    );
-
-
-    return;
-  }
 
 /* =======================================================
    引き算
@@ -1445,101 +1561,101 @@ if (
   return;
 }
 
-  /* =======================================================
-     前の数字が引き算
-     →「くわえて」
-  ======================================================= */
 
-  const previous =
-    numbers[index - 1];
+/* =======================================================
+   前の数字が引き算
+   →「くわえて」
+======================================================= */
 
-
-  if (
-    previous &&
-    previous.operation === "subtract"
-  ) {
-
-    speakReading(
-      "くわえて",
-      () => {
-
-        setTimeout(() => {
-
-          speakReading(
-            numberText +
-            "えんなり",
-
-            () => {
-
-              setTimeout(() => {
-
-                speakYomiSequence(
-                  numbers,
-                  index + 1,
-                  callback
-                );
-
-              }, numberGap);
-
-            },
-
-            {
-              rate:
-                baseRate * 0.94,
-
-              pitch:
-                1.00
-            }
-          );
-
-        }, phraseGap);
-
-      },
-
-      {
-        rate:
-          baseRate * 0.90,
-
-        pitch:
-          1.01
-      }
-    );
+const previous =
+  numbers[index - 1];
 
 
-    return;
-  }
-
-
-  /* =======================================================
-     通常の加算
-  ======================================================= */
+if (
+  previous &&
+  previous.operation === "subtract"
+) {
 
   speakReading(
-    numberText +
-    "えんなり",
-
+    "くわえて",
     () => {
 
       setTimeout(() => {
 
-        speakYomiSequence(
-          numbers,
-          index + 1,
-          callback
+        speakReading(
+          numberText +
+          "えんなり",
+
+          () => {
+
+            setTimeout(() => {
+
+              speakYomiSequence(
+                numbers,
+                index + 1,
+                callback
+              );
+
+            }, numberGap);
+
+          },
+
+          {
+            rate:
+              baseRate * 0.94,
+
+            pitch:
+              1.00
+          }
         );
 
-      }, numberGap);
+      }, phraseGap);
 
     },
 
     {
       rate:
-        baseRate * 0.94,
+        baseRate * 0.90,
 
       pitch:
-        1.00
+        1.01
     }
   );
+
+  return;
+}
+
+
+/* =======================================================
+   通常の加算
+======================================================= */
+
+speakReading(
+  numberText +
+  "えんなり",
+
+  () => {
+
+    setTimeout(() => {
+
+      speakYomiSequence(
+        numbers,
+        index + 1,
+        callback
+      );
+
+    }, numberGap);
+
+  },
+
+  {
+    rate:
+      baseRate * 0.94,
+
+    pitch:
+      1.00
+  }
+);
 
 }
 
