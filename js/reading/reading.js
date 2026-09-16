@@ -1088,7 +1088,7 @@ function speakReadingCondition(callback) {
 /* =========================================================
    問題読み上げ
 ========================================================= */
-function speakReadingSequence(
+function speakYomiSequence(
   numbers,
   index,
   callback
@@ -1273,7 +1273,7 @@ if (index === numbers.length - 1) {
 
               setTimeout(() => {
 
-                speakReadingSequence(
+                speakYomiSequence(
                   numbers,
                   index + 1,
                   callback
@@ -1342,7 +1342,7 @@ if (
 
               setTimeout(() => {
 
-                speakReadingSequence(
+                speakYomiSequence(
                   numbers,
                   index + 1,
                   callback
@@ -1387,7 +1387,7 @@ if (
 
         setTimeout(() => {
 
-          speakReadingSequence(
+          speakYomiSequence(
             numbers,
             index + 1,
             callback
@@ -1439,7 +1439,7 @@ if (
 
               setTimeout(() => {
 
-                speakReadingSequence(
+                speakYomiSequence(
                   numbers,
                   index + 1,
                   callback
@@ -1488,7 +1488,7 @@ if (
 
       setTimeout(() => {
 
-        speakReadingSequence(
+        speakYomiSequence(
           numbers,
           index + 1,
           callback
@@ -1723,7 +1723,7 @@ function startReadingQuestion() {
      問題読み上げ
   */
 
-  speakReadingSequence(
+  speakYomiSequence(
     numbers,
     0,
     () => {
