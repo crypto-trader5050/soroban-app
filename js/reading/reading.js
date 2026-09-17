@@ -841,7 +841,7 @@ function getReadingPhrase(item, index) {
 
   if (item.operation === "subtract") {
 
-    return "ひいては、" +
+    return "ひいては" +
            numberText +
            "えんなり";
 
@@ -857,7 +857,7 @@ function getReadingPhrase(item, index) {
     previous.operation === "subtract"
   ) {
 
-    return "くわえて、" +
+    return "くわえて" +
            numberText +
            "えんなり";
 
@@ -1125,7 +1125,7 @@ function speakYomiSequence(
       settings.rate;
 
     let text =
-      "ねがいましては";
+      "ねがいましては、";
 
 
     /* =====================================================
@@ -1173,7 +1173,7 @@ function speakYomiSequence(
       ) {
 
         text +=
-          "、ひいては、";
+          "、ひいては";
 
       }
 
@@ -1188,7 +1188,7 @@ function speakYomiSequence(
       ) {
 
         text +=
-          "、くわえて、";
+          "、くわえて";
 
       }
 
