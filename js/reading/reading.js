@@ -1173,7 +1173,7 @@ function speakYomiSequence(
       ) {
 
         text +=
-          "、ひいては";
+          "ひいては";
 
       }
 
@@ -1188,7 +1188,7 @@ function speakYomiSequence(
       ) {
 
         text +=
-          "、くわえて";
+          "くわえて";
 
       }
 
