@@ -1,5 +1,5 @@
 // =====================
-// 除算・級段設定
+// わり算・級段設定
 // =====================
 
 const DIV_LEVEL_CONFIG = [
@@ -28,7 +28,7 @@ const DIV_LEVEL_CONFIG = [
 
 
 // =====================
-// 除算・問題生成
+// わり算・問題生成
 // =====================
 
 function startDivision() {
@@ -41,7 +41,7 @@ function startDivision() {
   }
 
   console.log(
-    "除算 現在:",
+    "わり算 現在:",
     state.currentQuestion,
     "/",
     state.questionCount
@@ -52,7 +52,7 @@ function startDivision() {
   );
 
   if (!config) {
-    console.error("除算設定が見つかりません:", state.level);
+    console.error("わり算設定が見つかりません:", state.level);
     return;
   }
 
@@ -119,7 +119,7 @@ function startDivision() {
 
 
 // =====================
-// 除算・問題生成本体
+// わり算・問題生成本体
 // =====================
 
 function generateDivisionProblem(
@@ -200,7 +200,7 @@ function randomBigInt(min, max) {
 
 
 // =====================
-// 除算・ゲーム開始
+// わり算・ゲーム開始
 // =====================
 
 function startDivisionGame() {
@@ -215,13 +215,13 @@ function startDivisionGame() {
 
 
 // =====================
-// 除算・回答チェック
+// わり算・回答チェック
 // =====================
 
 function checkAnswerDivision() {
 
   console.log(
-    "除算 問題番号",
+    "わり算 問題番号",
     state.currentQuestion
   );
 

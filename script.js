@@ -173,21 +173,21 @@ function createLevelButtons() {
   area.innerHTML = "";
 
   // =====================
-  // 見取り算
+  // みとり算
   // =====================
   if (state.type === "mitori") {
 
     levelList = LEVEL_CONFIG.map(item => item.level);
 
   // =====================
-  // 乗算
+  // かけ算
   // =====================
   } else if (state.type === "kake") {
 
     levelList = MUL_LEVEL_CONFIG.map(item => item.level);
 
   // =====================
-  // 除算
+  // わり算
   // =====================
   } else if (state.type === "wari") {
 
@@ -289,7 +289,7 @@ function startSelectedLevel() {
   }
 
   // =====================
-  // 乗算
+  // かけ算
   // =====================
   if (state.type === "kake") {
 
@@ -299,7 +299,7 @@ function startSelectedLevel() {
   }
 
   // =====================
-  // 除算
+  // わり算
   // =====================
   if (state.type === "wari") {
 
@@ -309,7 +309,7 @@ function startSelectedLevel() {
   }
 
   // =====================
-  // 見取り算
+  // みとり算
   // =====================
   document.fonts.ready.then(() => {
 
@@ -373,7 +373,7 @@ function startEngine() {
 
   // 👇ここが超重要
   if (state.type === "kake") {
-    startMultiplication(); // ← 乗算へ
+    startMultiplication(); // ← かけ算へ
     return;
   }
 
@@ -382,7 +382,7 @@ function startEngine() {
     return;
   }
 
-  // デフォルト（見取り算）
+  // デフォルト（みとり算）
   generateQuestion();
 }
 

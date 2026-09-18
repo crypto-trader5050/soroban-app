@@ -1,5 +1,5 @@
 // =====================
-// 乗算・級段設定
+// かけ算・級段設定
 // =====================
 
 const MUL_LEVEL_CONFIG = [
@@ -32,11 +32,11 @@ const MUL_LEVEL_CONFIG = [
 // =====================
 // 状態（共通前提）
 // =====================
-// ※ state は見取り側と共通でOK
+// ※ state はみとり側と共通でOK
 // state = { currentQuestion, questionCount, correctCount, isFinished など }
 
 // =====================
-// 乗算：問題生成
+// かけ算：問題生成
 // =====================
 function startMultiplication() {
 
@@ -60,7 +60,7 @@ function startMultiplication() {
   );
 
   if (!config) {
-    console.error("乗算設定が見つかりません:", state.level);
+    console.error("かけ算設定が見つかりません:", state.level);
     return;
   }
 
@@ -139,7 +139,7 @@ function startMultiplication() {
 }
 
 // =====================
-// 乗算用・ランダム数字生成
+// かけ算用・ランダム数字生成
 // =====================
 function generateMultiplicationNumber(digits) {
 
@@ -152,7 +152,7 @@ function generateMultiplicationNumber(digits) {
 }
 
 // =====================
-// 回答チェック（乗算用）
+// 回答チェック（かけ算用）
 // =====================
 function checkAnswerMultiplication() {
 
@@ -200,7 +200,7 @@ function checkAnswerMultiplication() {
 }
 
 // =====================
-// スタート（乗算用）
+// スタート（かけ算用）
 // =====================
 function startMultiplicationGame() {
 
@@ -214,7 +214,7 @@ function startMultiplicationGame() {
 }
 
 // =====================
-// 乗算：解答開始
+// かけ算：解答開始
 // =====================
 document.getElementById("solveBtn").addEventListener("click", () => {
 
