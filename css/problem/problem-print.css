@@ -1,0 +1,364 @@
+/* =========================================================
+   問題作成
+   problem-print.css
+   ========================================================= */
+
+
+/* =========================================================
+   全体
+   ========================================================= */
+
+#problemPrintSelect {
+  min-height: 100vh;
+  padding: 24px 16px 40px;
+  box-sizing: border-box;
+  background: #f7f9fc;
+}
+
+.problem-print-inner {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   ヘッダー
+   ========================================================= */
+
+.problem-print-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.problem-print-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  font-size: 32px;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.problem-print-header h1 {
+  margin: 0 0 8px;
+
+  font-size: 30px;
+  font-weight: 800;
+
+  color: #222;
+}
+
+.problem-print-header p {
+  margin: 0;
+
+  font-size: 15px;
+  line-height: 1.7;
+
+  color: #666;
+}
+
+
+/* =========================================================
+   問題種類カード
+   ========================================================= */
+
+.problem-type-section {
+  width: 100%;
+}
+
+.problem-type-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+
+/* =========================================================
+   個別カード
+   ========================================================= */
+
+.problem-type-card {
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.08);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.problem-type-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 20px rgba(0, 0, 0, 0.11);
+}
+
+
+/* =========================================================
+   カードボタン
+   ========================================================= */
+
+.problem-type-card-button {
+  width: 100%;
+
+  min-height: 108px;
+
+  padding: 18px 20px;
+
+  display: flex;
+  align-items: center;
+
+  border: none;
+  background: transparent;
+
+  color: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   アイコン
+   ========================================================= */
+
+.problem-type-icon {
+  width: 58px;
+  height: 58px;
+
+  flex: 0 0 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 16px;
+
+  border-radius: 16px;
+
+  background: #f1f5f9;
+
+  font-size: 27px;
+  font-weight: 800;
+
+  color: #334155;
+}
+
+
+/* =========================================================
+   カード文字
+   ========================================================= */
+
+.problem-type-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.problem-type-text h2 {
+  margin: 0 0 5px;
+
+  font-size: 20px;
+  font-weight: 800;
+
+  color: #222;
+}
+
+.problem-type-text p {
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: #777;
+}
+
+
+/* =========================================================
+   矢印
+   ========================================================= */
+
+.problem-type-arrow {
+  flex: 0 0 auto;
+
+  margin-left: 10px;
+
+  font-size: 32px;
+  font-weight: 300;
+
+  line-height: 1;
+
+  color: #999;
+
+  transition:
+    transform 0.18s ease,
+    color 0.18s ease;
+}
+
+.problem-type-card:hover .problem-type-arrow {
+  transform: translateX(3px);
+  color: #555;
+}
+
+
+/* =========================================================
+   選択状態
+   ※ JavaScriptで .selected を付ける
+   ========================================================= */
+
+.problem-type-card.selected {
+  box-shadow:
+    0 0 0 3px #4f8cff,
+    0 7px 22px rgba(79, 140, 255, 0.18);
+}
+
+.problem-type-card.selected .problem-type-icon {
+  background: #eaf2ff;
+  color: #3977e8;
+}
+
+.problem-type-card.selected .problem-type-arrow {
+  color: #3977e8;
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   詳細設定エリア
+   今は空。
+   後からここに各問題の設定を展開する。
+   ========================================================= */
+
+.problem-type-detail {
+  display: none;
+
+  padding: 0 20px 20px;
+
+  border-top: 1px solid #eef1f5;
+}
+
+.problem-type-card.expanded .problem-type-detail {
+  display: block;
+}
+
+
+/* =========================================================
+   ホームへ戻る
+   ========================================================= */
+
+.problem-print-home-button {
+  display: block;
+
+  margin: 30px auto 0;
+
+  padding: 12px 24px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  color: #555;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.07);
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.problem-print-home-button:hover {
+  background: #f1f3f6;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   スマホ
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  #problemPrintSelect {
+    padding: 20px 12px 32px;
+  }
+
+  .problem-print-header {
+    margin-bottom: 22px;
+  }
+
+  .problem-print-icon {
+    width: 58px;
+    height: 58px;
+
+    border-radius: 16px;
+
+    font-size: 29px;
+  }
+
+  .problem-print-header h1 {
+    font-size: 26px;
+  }
+
+  .problem-print-header p {
+    font-size: 14px;
+  }
+
+  .problem-type-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .problem-type-card-button {
+    min-height: 96px;
+    padding: 16px;
+  }
+
+  .problem-type-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-basis: 52px;
+
+    margin-right: 14px;
+
+    border-radius: 14px;
+
+    font-size: 24px;
+  }
+
+  .problem-type-text h2 {
+    font-size: 18px;
+  }
+
+  .problem-type-text p {
+    font-size: 12px;
+  }
+
+  .problem-type-arrow {
+    font-size: 29px;
+  }
+}

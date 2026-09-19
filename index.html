@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="css/flash/flash-app.css">
   <link rel="stylesheet" href="css/flash/flash-result.css">
 
+  <link rel="stylesheet" href="css/problem/problem-print.css">
+
   <link rel="stylesheet" href="css/reading/reading-select.css">
   <link rel="stylesheet" href="css/reading/reading-app.css">
 </head>
@@ -426,6 +428,241 @@
     <button
       type="button"
       class="flash-home-button"
+      onclick="backHome()">
+
+      ← ホームへ戻る
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ==================================================
+     問題作成 メニュー
+================================================== -->
+
+<div id="problemPrintSelect" style="display:none;">
+
+  <div class="problem-print-inner">
+
+    <!-- ヘッダー -->
+    <div class="problem-print-header">
+
+      <div class="problem-print-icon">
+        📝
+      </div>
+
+      <h1>問題作成</h1>
+
+      <p>
+        作りたい問題を選んでください。<br>
+        複数の問題をまとめて作成できます。
+      </p>
+
+    </div>
+
+
+    <!-- ==================================================
+         問題種目
+    ================================================== -->
+
+    <section class="problem-type-section">
+
+      <div class="problem-type-cards">
+
+
+        <!-- みとり算 -->
+        <article
+          class="problem-type-card"
+          data-problem-type="mitori">
+
+          <button
+            type="button"
+            class="problem-type-card-button">
+
+            <div class="problem-type-icon">
+              🧮
+            </div>
+
+            <div class="problem-type-text">
+              <h2>みとり算</h2>
+              <p>そろばんで計算する問題</p>
+            </div>
+
+            <div class="problem-type-arrow">
+              ›
+            </div>
+
+          </button>
+
+          <!-- 詳細設定は後でここに展開 -->
+          <div class="problem-type-detail">
+          </div>
+
+        </article>
+
+
+        <!-- かけ算 -->
+        <article
+          class="problem-type-card"
+          data-problem-type="kake">
+
+          <button
+            type="button"
+            class="problem-type-card-button">
+
+            <div class="problem-type-icon">
+              ×
+            </div>
+
+            <div class="problem-type-text">
+              <h2>かけ算</h2>
+              <p>かけ算の問題</p>
+            </div>
+
+            <div class="problem-type-arrow">
+              ›
+            </div>
+
+          </button>
+
+          <div class="problem-type-detail">
+          </div>
+
+        </article>
+
+
+        <!-- わり算 -->
+        <article
+          class="problem-type-card"
+          data-problem-type="wari">
+
+          <button
+            type="button"
+            class="problem-type-card-button">
+
+            <div class="problem-type-icon">
+              ÷
+            </div>
+
+            <div class="problem-type-text">
+              <h2>わり算</h2>
+              <p>わり算の問題</p>
+            </div>
+
+            <div class="problem-type-arrow">
+              ›
+            </div>
+
+          </button>
+
+          <div class="problem-type-detail">
+          </div>
+
+        </article>
+
+
+        <!-- みとり暗算 -->
+        <article
+          class="problem-type-card"
+          data-problem-type="mitoriAnzan">
+
+          <button
+            type="button"
+            class="problem-type-card-button">
+
+            <div class="problem-type-icon">
+              🧠
+            </div>
+
+            <div class="problem-type-text">
+              <h2>みとり暗算</h2>
+              <p>暗算で計算するみとり算</p>
+            </div>
+
+            <div class="problem-type-arrow">
+              ›
+            </div>
+
+          </button>
+
+          <div class="problem-type-detail">
+          </div>
+
+        </article>
+
+
+        <!-- かけ暗算 -->
+        <article
+          class="problem-type-card"
+          data-problem-type="kakeAnzan">
+
+          <button
+            type="button"
+            class="problem-type-card-button">
+
+            <div class="problem-type-icon">
+              ×
+            </div>
+
+            <div class="problem-type-text">
+              <h2>かけ暗算</h2>
+              <p>暗算で計算するかけ算</p>
+            </div>
+
+            <div class="problem-type-arrow">
+              ›
+            </div>
+
+          </button>
+
+          <div class="problem-type-detail">
+          </div>
+
+        </article>
+
+
+        <!-- わり暗算 -->
+        <article
+          class="problem-type-card"
+          data-problem-type="wariAnzan">
+
+          <button
+            type="button"
+            class="problem-type-card-button">
+
+            <div class="problem-type-icon">
+              ÷
+            </div>
+
+            <div class="problem-type-text">
+              <h2>わり暗算</h2>
+              <p>暗算で計算するわり算</p>
+            </div>
+
+            <div class="problem-type-arrow">
+              ›
+            </div>
+
+          </button>
+
+          <div class="problem-type-detail">
+          </div>
+
+        </article>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- ホームへ戻る -->
+
+    <button
+      type="button"
+      class="problem-print-home-button"
       onclick="backHome()">
 
       ← ホームへ戻る
