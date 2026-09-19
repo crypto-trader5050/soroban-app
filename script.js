@@ -101,6 +101,23 @@ function selectType(type) {
 }
 
 // =====================
+
+// 問題作成画面へ
+
+// =====================
+function goPrint() {
+
+  document.getElementById("home").style.display = "none";
+
+  document.getElementById("flashSelect").style.display = "none";
+
+  document.getElementById("readSelect").style.display = "none";
+
+  document.getElementById("problemPrintSelect").style.display = "block";
+
+}
+
+// =====================
 // 読み上げ画面へ
 // =====================
 
