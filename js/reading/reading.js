@@ -32,7 +32,8 @@ let readingState = {
   answer: 0n,
   currentQuestion: 0,
   correctCount: 0,
-  isRunning: false
+  isRunning: false,
+  cancelled: false
 };
 
 
@@ -899,6 +900,10 @@ function speakReading(
   callback,
   options = {}
 ) {
+
+  if (readingState.cancelled) {
+    return;
+  }
 
   if (!("speechSynthesis" in window)) {
 
@@ -2243,6 +2248,7 @@ speakReading(
 
 function startReading() {
 
+  readingState.cancelled = false;
   readingState.isRunning = true;
 
   readingState.currentQuestion = 0;
@@ -2608,6 +2614,10 @@ function checkReadingAnswer() {
 
 function nextReadingQuestion() {
 
+  if (readingState.cancelled) {
+    return;
+  }
+
   const answerArea =
     document.getElementById(
       "answerArea"
@@ -2647,9 +2657,8 @@ function nextReadingQuestion() {
 
 function finishReading() {
 
-  readingState.isRunning =
-    false;
-
+  readingState.isRunning = false;
+  readingState.cancelled = false;
 
   const answerArea =
     document.getElementById(

@@ -760,15 +760,81 @@ function randDigit(digit) {
 }
 
 function backHome() {
+
+  // ==========================================
+  // 読み上げを完全停止
+  // ==========================================
+  if (typeof readingState !== "undefined") {
+
+    readingState.cancelled = true;
+    readingState.isRunning = false;
+
+    // 音声を完全停止
+    if ("speechSynthesis" in window) {
+      speechSynthesis.cancel();
+    }
+
+    // 読み上げデータをクリア
+    readingState.numbers = [];
+    readingState.answer = 0n;
+    readingState.currentQuestion = 0;
+    readingState.correctCount = 0;
+  }
+
+
+  // ==========================================
+  // フラッシュ・かけ算・わり算を完全停止
+  // ==========================================
+
+  state.isFinished = true;
+
+  // 古いタイマーを無効化
+  state.runId++;
+
+  // 次問題タイマー停止
+  if (state.nextTimer) {
+    clearTimeout(state.nextTimer);
+    state.nextTimer = null;
+  }
+
+  // フラッシュのタイマーを全部停止
+  if (state.timers && state.timers.length > 0) {
+    state.timers.forEach(timer => clearTimeout(timer));
+    state.timers = [];
+  }
+
+  // データをクリア
+  state.numbers = [];
+  state.index = 0;
+  state.answer = 0;
+  state.currentQuestion = 0;
+  state.correctCount = 0;
+
+
+  // ==========================================
+  // 実行画面をクリア
+  // ==========================================
+
+  document.getElementById("display").textContent = "";
+  document.getElementById("judge").textContent = "";
+  document.getElementById("answerInput").value = "";
+
+  document.getElementById("questionInfo").style.display = "none";
+  document.getElementById("questionTitle").style.display = "none";
+  document.getElementById("levelInfo").style.display = "none";
+  document.getElementById("answerArea").style.display = "none";
+  document.getElementById("solveBtn").style.display = "none";
+
+
+  // ==========================================
+  // ホームへ戻る
+  // ==========================================
+
   document.getElementById("home").style.display = "block";
   document.getElementById("flashSelect").style.display = "none";
   document.getElementById("readSelect").style.display = "none";
   document.getElementById("levelSelect").style.display = "none";
   document.getElementById("app").style.display = "none";
-
-  document.getElementById("display").textContent = "";
-  document.getElementById("judge").textContent = "";
-  document.getElementById("answerInput").value = "";
 
   document.getElementById("homeBtn").style.display = "block";
 }
