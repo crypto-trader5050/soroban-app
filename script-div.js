@@ -101,9 +101,6 @@ function startDivision() {
 
   solveBtn.style.display = "inline-block";
 
-  // ホームへ戻るボタンを隠す
-  document.getElementById("homeBtn").style.display = "none";
-
   // 問題番号
   document.getElementById("questionInfo").style.display = "block";
 

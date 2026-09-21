@@ -432,8 +432,6 @@ function generateQuestion() {
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion}問目 / 全${state.questionCount}問`;
 
-  document.getElementById("homeBtn").style.display = "none";
-
   state.numbers = [];
   state.index = 0;
 
