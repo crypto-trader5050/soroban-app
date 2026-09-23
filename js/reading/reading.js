@@ -1044,38 +1044,72 @@ function speakReadingCondition(callback) {
 
     digitText =
       String(readingState.digit) +
-      "桁揃い";
+      "けた";
 
   } else {
 
     digitText =
       String(readingState.minDigit) +
-      "桁から" +
+      "から" +
       String(readingState.maxDigit) +
-      "桁";
+      "けた";
 
   }
 
 
+  const typeText =
+    readingState.type === "yomi"
+      ? "よみあげざん"
+      : "よみあげあんざん";
+
+
   const calculationText =
     readingState.calculation === "addition"
-      ? "加算"
+      ? "かさん"
       : "かげんざん";
 
 
-  /*
-     条件説明は一つの文章として読む。
+  const speedTextMap = {
 
-     ここでは数字と「えんなり」のような
-     競技中の数字読みではないため、
-     通常の文章として自然に読ませる。
+    1: "とてもゆっくり",
+
+    2: "ゆっくり",
+
+    3: "ふつう",
+
+    4: "はやい",
+
+    5: "とてもはやい"
+
+  };
+
+
+  const speedText =
+    speedTextMap[readingState.speed] ||
+    "ふつう";
+
+
+  /*
+     条件説明は、読み間違いを防ぐため
+     ひらがな中心で読む。
+
+     例：
+     よみあげざん、かげんざん。
+     7から10けた、15くち、すぴーどふつう。
   */
 
   const text =
-    digitText +
+    typeText +
     "、" +
     calculationText +
-    "です";
+    "。" +
+    digitText +
+    "、" +
+    String(readingState.count) +
+    "くち、" +
+    "すぴーど" +
+    speedText +
+    "。";
 
 
   speakReading(
@@ -1088,7 +1122,6 @@ function speakReadingCondition(callback) {
   );
 
 }
-
 
 /* =========================================================
    問題読み上げ
@@ -2364,6 +2397,23 @@ function startReading() {
 
   }
 
+  // 読み上げ条件を表示
+  const conditionDisplay =
+    document.getElementById(
+      "readingConditionDisplay"
+    );
+
+  if (conditionDisplay) {
+
+    conditionDisplay.textContent =
+      document.getElementById(
+        "readSettingSummary"
+      )?.textContent || "";
+
+    conditionDisplay.style.display =
+      "block";
+
+  }
 
   /*
      条件説明
@@ -2482,6 +2532,18 @@ function startReadingQuestion() {
 ========================================================= */
 
 function showReadingAnswerArea() {
+
+  const conditionDisplay =
+    document.getElementById(
+      "readingConditionDisplay"
+    );
+
+  if (conditionDisplay) {
+
+    conditionDisplay.style.display =
+      "none";
+
+  }
 
   const answerArea =
     document.getElementById(
