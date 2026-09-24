@@ -2397,7 +2397,6 @@ function startReading() {
 
   }
 
-  // 読み上げ条件を表示
   const conditionDisplay =
     document.getElementById(
       "readingConditionDisplay"
@@ -2405,10 +2404,44 @@ function startReading() {
 
   if (conditionDisplay) {
 
+    const calculationText =
+      readingState.calculation === "addition"
+        ? "加算"
+        : "加減算";
+
+    let digitText;
+
+    if (
+      readingState.digitMode === "same"
+    ) {
+
+      digitText =
+        String(readingState.digit) +
+        "桁";
+
+    } else {
+
+      digitText =
+        String(readingState.minDigit) +
+        "～" +
+        String(readingState.maxDigit) +
+        "桁";
+
+    }
+
+    const speedText =
+      getSpeedText(
+        readingState.speed
+      );
+
     conditionDisplay.textContent =
-      document.getElementById(
-        "readSettingSummary"
-      )?.textContent || "";
+      calculationText +
+      "・" +
+      digitText +
+      "・" +
+      String(readingState.count) +
+      "口・" +
+      speedText;
 
     conditionDisplay.style.display =
       "block";
@@ -2454,10 +2487,46 @@ function startReadingQuestion() {
 
   if (info) {
 
+    info.style.display =
+      "block";
+
     info.textContent =
       String(questionIndex) +
       " / " +
       String(readingState.questionCount);
+
+  }
+
+
+  const title =
+    document.getElementById(
+      "questionTitle"
+    );
+
+
+  if (title) {
+
+    title.style.display =
+      "block";
+
+    title.textContent =
+      readingState.type === "yomi"
+        ? "読み上げ算"
+        : "読み上げ暗算";
+
+  }
+
+
+  const conditionDisplay =
+    document.getElementById(
+      "readingConditionDisplay"
+    );
+
+
+  if (conditionDisplay) {
+
+    conditionDisplay.style.display =
+      "block";
 
   }
 
@@ -2503,29 +2572,36 @@ function startReadingQuestion() {
 
 
   /*
-     問題読み上げ
+     問題を読み上げ
   */
 
   if (readingState.type === "yomi") {
+
     speakYomiSequence(
       numbers,
       0,
       () => {
+
         showReadingAnswerArea();
+
       }
     );
+
   } else {
+
     speakAnzanSequence(
       numbers,
       0,
       () => {
+
         showReadingAnswerArea();
+
       }
     );
+
   }
 
 }
-
 
 /* =========================================================
    解答エリア
@@ -2533,10 +2609,39 @@ function startReadingQuestion() {
 
 function showReadingAnswerArea() {
 
+  const info =
+    document.getElementById(
+      "questionInfo"
+    );
+
+
+  if (info) {
+
+    info.style.display =
+      "none";
+
+  }
+
+
+  const title =
+    document.getElementById(
+      "questionTitle"
+    );
+
+
+  if (title) {
+
+    title.style.display =
+      "none";
+
+  }
+
+
   const conditionDisplay =
     document.getElementById(
       "readingConditionDisplay"
     );
+
 
   if (conditionDisplay) {
 
@@ -2544,6 +2649,7 @@ function showReadingAnswerArea() {
       "none";
 
   }
+
 
   const answerArea =
     document.getElementById(
