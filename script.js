@@ -427,10 +427,13 @@ function generateQuestion() {
   state.timers.forEach(t => clearTimeout(t));
   state.timers = [];
 
-  document.getElementById("questionInfo").style.display = "block";
+  // =====================================================
+  // フラッシュでは読み上げ用表示を出さない
+  // =====================================================
 
-  document.getElementById("questionInfo").textContent =
-    `${state.currentQuestion}問目 / 全${state.questionCount}問`;
+  document.getElementById("questionInfo").style.display = "none";
+  document.getElementById("questionTitle").style.display = "none";
+  document.getElementById("readingConditionDisplay").style.display = "none";
 
   state.numbers = [];
   state.index = 0;
