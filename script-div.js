@@ -105,7 +105,7 @@ function startDivision() {
   document.getElementById("questionInfo").style.display = "block";
 
   document.getElementById("questionInfo").textContent =
-    `${state.currentQuestion}問目 / 全${state.questionCount}問`;
+    `${state.currentQuestion} / ${state.questionCount}`;
 
   // 判定表示をクリア
   document.getElementById("judge").textContent = "";
