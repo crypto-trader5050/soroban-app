@@ -428,10 +428,18 @@ function generateQuestion() {
   state.timers = [];
 
   // =====================================================
+  // フラッシュの問題番号表示
+  // =====================================================
+
+  document.getElementById("questionInfo").style.display = "block";
+
+  document.getElementById("questionInfo").textContent =
+    `${state.currentQuestion} / ${state.questionCount}`;
+
+  // =====================================================
   // フラッシュでは読み上げ用表示を出さない
   // =====================================================
 
-  document.getElementById("questionInfo").style.display = "none";
   document.getElementById("questionTitle").style.display = "none";
   document.getElementById("readingConditionDisplay").style.display = "none";
 
