@@ -2350,22 +2350,32 @@ function startReading() {
     );
 
 
+  /*
+     問題開始前から
+     完成した表示にしておく
+  */
+
+  if (info) {
+
+    info.style.display =
+      "block";
+
+    info.textContent =
+      "1 / " +
+      String(readingState.questionCount);
+
+  }
+
+
   if (title) {
+
+    title.style.display =
+      "block";
 
     title.textContent =
       readingState.type === "yomi"
         ? "読み上げ算"
         : "読み上げ暗算";
-
-  }
-
-
-  if (info) {
-
-    info.textContent =
-      "全" +
-      String(readingState.questionCount) +
-      "問";
 
   }
 
@@ -2397,10 +2407,16 @@ function startReading() {
 
   }
 
+
+  /*
+     条件表示
+  */
+
   const conditionDisplay =
     document.getElementById(
       "readingConditionDisplay"
     );
+
 
   if (conditionDisplay) {
 
@@ -2409,7 +2425,9 @@ function startReading() {
         ? "加算"
         : "加減算";
 
+
     let digitText;
+
 
     if (
       readingState.digitMode === "same"
@@ -2429,10 +2447,12 @@ function startReading() {
 
     }
 
+
     const speedText =
       getSpeedText(
         readingState.speed
       );
+
 
     conditionDisplay.textContent =
       calculationText +
@@ -2443,10 +2463,12 @@ function startReading() {
       "口・" +
       speedText;
 
+
     conditionDisplay.style.display =
       "block";
 
   }
+
 
   /*
      条件説明
