@@ -2785,7 +2785,8 @@ function checkReadingAnswer() {
     if (judge) {
 
       judge.textContent =
-        "不正解";
+        "不正解：正解は " +
+        readingState.answer.toLocaleString();
 
     }
 
