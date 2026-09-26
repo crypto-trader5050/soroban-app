@@ -107,6 +107,8 @@ function startDivision() {
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion} / ${state.questionCount}`;
 
+  document.getElementById("homeBtn").style.display = "block";
+
   // 判定表示をクリア
   document.getElementById("judge").textContent = "";
 
