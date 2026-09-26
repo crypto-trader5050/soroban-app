@@ -122,6 +122,8 @@ function startMultiplication() {
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion} / ${state.questionCount}`;
 
+  document.getElementById("homeBtn").style.display = "block";
+
   // =====================
   // 判定表示をクリア
   // =====================
@@ -221,6 +223,7 @@ document.getElementById("solveBtn").addEventListener("click", () => {
 
   // 回答欄・キーパッドを表示
   document.getElementById("answerArea").style.display = "block";
+  document.getElementById("homeBtn").style.display = "none";
   document.getElementById("questionInfo").style.display = "none";
   document.getElementById("questionTitle").style.display = "none";
   document.getElementById("levelInfo").style.display = "none";
