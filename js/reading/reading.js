@@ -2552,6 +2552,7 @@ function startReadingQuestion() {
 
   }
 
+  document.getElementById("homeBtn").style.display = "block";
 
   const judge =
     document.getElementById(
@@ -2630,6 +2631,8 @@ function startReadingQuestion() {
 ========================================================= */
 
 function showReadingAnswerArea() {
+
+  document.getElementById("homeBtn").style.display = "none";
 
   const info =
     document.getElementById(
