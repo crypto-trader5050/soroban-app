@@ -436,6 +436,8 @@ function generateQuestion() {
   document.getElementById("questionInfo").textContent =
     `${state.currentQuestion} / ${state.questionCount}`;
 
+  document.getElementById("homeBtn").style.display = "block";
+
   // =====================================================
   // フラッシュでは読み上げ用表示を出さない
   // =====================================================
