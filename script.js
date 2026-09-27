@@ -66,17 +66,45 @@ function playCorrectSound() {
 }
 
 // カウントダウン音
+
 function countdownBeep(callback) {
+
   const start = audioCtx.currentTime + 0.2;
 
-  // 2回分予約（完全等間隔）
-  beepAt(start, 600);
-  beepAt(start + 1, 600);
+  const countdown = ["③", "②", "①"];
 
-  // 表示開始タイミングも合わせる
-  const delay = (start + 2 - audioCtx.currentTime) * 1000;
+  // ③②①を音と同時に表示
+  countdown.forEach((mark, i) => {
+
+    const t = start + i;
+
+    // 音を正確に予約
+    beepAt(t, 600);
+
+    // 表示タイミングを音に合わせる
+    const delay =
+      (t - audioCtx.currentTime) * 1000;
+
+    const timer = setTimeout(() => {
+
+      if (state.isFinished) return;
+
+      document.getElementById("display").textContent = mark;
+
+    }, delay);
+
+    state.timers.push(timer);
+
+  });
+
+  // ①の1秒後に問題開始
+  const delay =
+    (start + 3 - audioCtx.currentTime) * 1000;
+
   const timer = setTimeout(callback, delay);
+
   state.timers.push(timer);
+
 }
 
 // =====================
