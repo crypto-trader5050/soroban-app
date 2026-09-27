@@ -93,6 +93,8 @@ function countdownBeep(callback) {
 
       display.textContent = mark;
       display.classList.add("countdown-display");
+      display.style.opacity = 1;
+      display.style.fontSize = "160px";
 
     }, delay);
 
