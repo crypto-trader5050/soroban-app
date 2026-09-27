@@ -89,7 +89,10 @@ function countdownBeep(callback) {
 
       if (state.isFinished) return;
 
-      document.getElementById("display").textContent = mark;
+      const display = document.getElementById("display");
+
+      display.textContent = mark;
+      display.classList.add("countdown-display");
 
     }, delay);
 
