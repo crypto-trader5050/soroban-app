@@ -1,136 +1,274 @@
 /* =========================================================
    問題作成
    problem-print.css
-   ========================================================= */
+
+   ・TOP画面のデザインを基本に統一
+   ・6種類の問題カードを6色で表現
+   ・HTML / JavaScriptは変更しない
+========================================================= */
 
 
 /* =========================================================
    全体
-   ========================================================= */
+========================================================= */
 
 #problemPrintSelect {
   min-height: 100vh;
-  padding: 24px 16px 40px;
+
+  padding: 30px 20px 45px;
+
   box-sizing: border-box;
-  background: #f7f9fc;
+
+  background:
+    radial-gradient(
+      circle at 3% 25%,
+      rgba(93, 185, 242, 0.20) 0 38px,
+      transparent 40px
+    ),
+    radial-gradient(
+      circle at 97% 20%,
+      rgba(255, 255, 255, 0.95) 0 45px,
+      transparent 130px
+    ),
+    linear-gradient(
+      180deg,
+      #d9f4ff 0%,
+      #eefaff 32%,
+      #ffffff 72%,
+      #ffffff 100%
+    );
 }
 
+
+/* =========================================================
+   背景の水・光
+========================================================= */
+
+#problemPrintSelect::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+  z-index: 0;
+
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 17px,
+      rgba(255, 255, 255, 0.42) 18px 27px,
+      transparent 28px 45px
+    ) left top / 360px 220px no-repeat,
+
+    linear-gradient(
+      150deg,
+      transparent 0 38%,
+      rgba(97, 193, 239, 0.10) 38.5% 41%,
+      transparent 41.5% 48%,
+      rgba(255, 255, 255, 0.60) 48.5% 52%,
+      transparent 52.5%
+    ),
+
+    radial-gradient(
+      circle at 4% 57%,
+      rgba(93, 185, 242, 0.18) 0 65px,
+      transparent 67px
+    ),
+
+    radial-gradient(
+      circle at 94% 39%,
+      transparent 0 58px,
+      rgba(91, 187, 239, 0.13) 59px 63px,
+      transparent 64px
+    );
+}
+
+
+/* =========================================================
+   コンテンツを背景より前面へ
+========================================================= */
+
 .problem-print-inner {
+  position: relative;
+  z-index: 1;
+
   width: 100%;
-  max-width: 900px;
+  max-width: 1180px;
+
   margin: 0 auto;
 }
 
 
 /* =========================================================
    ヘッダー
-   ========================================================= */
+========================================================= */
 
 .problem-print-header {
   text-align: center;
+
   margin-bottom: 28px;
 }
 
+
+/* =========================================================
+   ヘッダーアイコン
+========================================================= */
+
 .problem-print-icon {
-  width: 64px;
-  height: 64px;
+  width: 76px;
+  height: 76px;
+
   margin: 0 auto 12px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 18px;
+  border-radius: 50%;
 
-  background: #ffffff;
+  background: #17a86b;
 
-  font-size: 32px;
+  color: #ffffff;
+
+  font-size: 39px;
+  line-height: 1;
 
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.problem-print-header h1 {
-  margin: 0 0 8px;
-
-  font-size: 30px;
-  font-weight: 800;
-
-  color: #222;
-}
-
-.problem-print-header p {
-  margin: 0;
-
-  font-size: 15px;
-  line-height: 1.7;
-
-  color: #666;
+    0 3px 8px rgba(23, 168, 107, 0.20);
 }
 
 
 /* =========================================================
-   問題種類カード
-   ========================================================= */
+   ヘッダー文字
+========================================================= */
+
+.problem-print-header h1 {
+  margin: 0 0 7px;
+
+  color: #102f58;
+
+  font-size: clamp(30px, 3.4vw, 42px);
+
+  font-weight: 900;
+
+  line-height: 1.25;
+
+  letter-spacing: 0.5px;
+}
+
+
+.problem-print-header p {
+  margin: 0;
+
+  color: #17385e;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   ヘッダー下のアクセント
+========================================================= */
+
+.problem-print-header::after {
+  content: "";
+
+  display: block;
+
+  width: 420px;
+  max-width: 80%;
+
+  margin: 13px auto 0;
+
+  border-bottom: 4px dotted #4ca9e9;
+}
+
+
+/* =========================================================
+   問題種類エリア
+========================================================= */
 
 .problem-type-section {
   width: 100%;
 }
 
+
+/* =========================================================
+   6種類カード
+========================================================= */
+
 .problem-type-cards {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 24px;
 }
 
 
 /* =========================================================
    個別カード
-   ========================================================= */
+========================================================= */
 
 .problem-type-card {
-  background: #ffffff;
+  position: relative;
 
-  border-radius: 20px;
+  min-width: 0;
 
-  box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.97);
+
+  border: 2px solid #d5dde4;
+
+  border-radius: 19px;
 
   overflow: hidden;
 
+  box-shadow:
+    0 4px 12px rgba(29, 76, 112, 0.06);
+
   transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
+
 .problem-type-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 
   box-shadow:
-    0 7px 20px rgba(0, 0, 0, 0.11);
+    0 9px 20px rgba(29, 76, 112, 0.13);
 }
 
 
 /* =========================================================
    カードボタン
-   ========================================================= */
+========================================================= */
 
 .problem-type-card-button {
   width: 100%;
 
-  min-height: 108px;
+  min-height: 190px;
 
-  padding: 18px 20px;
+  padding: 22px 22px 20px;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
 
   border: none;
+
   background: transparent;
 
   color: inherit;
 
-  text-align: left;
+  text-align: center;
 
   cursor: pointer;
 }
@@ -138,121 +276,363 @@
 
 /* =========================================================
    アイコン
-   ========================================================= */
+========================================================= */
 
 .problem-type-icon {
-  width: 58px;
-  height: 58px;
+  width: 72px;
+  height: 72px;
 
-  flex: 0 0 58px;
+  flex: 0 0 72px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin-right: 16px;
+  margin: 0 auto 12px;
 
-  border-radius: 16px;
+  border-radius: 50%;
 
-  background: #f1f5f9;
+  background: #17a86b;
 
-  font-size: 27px;
-  font-weight: 800;
+  color: #ffffff;
 
-  color: #334155;
+  font-size: 34px;
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 
 /* =========================================================
    カード文字
-   ========================================================= */
+========================================================= */
 
 .problem-type-text {
+  width: 100%;
+
   flex: 1;
+
   min-width: 0;
 }
 
+
 .problem-type-text h2 {
-  margin: 0 0 5px;
+  margin: 0 0 6px;
 
-  font-size: 20px;
-  font-weight: 800;
+  color: #087d4d;
 
-  color: #222;
+  font-size: 22px;
+
+  font-weight: 900;
+
+  line-height: 1.35;
 }
+
 
 .problem-type-text p {
   margin: 0;
 
-  font-size: 13px;
-  line-height: 1.5;
+  color: #24384c;
 
-  color: #777;
+  font-size: 13px;
+
+  font-weight: 600;
+
+  line-height: 1.55;
 }
 
 
 /* =========================================================
    矢印
-   ========================================================= */
+========================================================= */
 
 .problem-type-arrow {
   flex: 0 0 auto;
 
-  margin-left: 10px;
+  margin-top: 10px;
 
-  font-size: 32px;
+  font-size: 30px;
+
   font-weight: 300;
 
   line-height: 1;
 
-  color: #999;
+  color: #8ba0b2;
 
   transition:
     transform 0.18s ease,
     color 0.18s ease;
 }
 
+
 .problem-type-card:hover .problem-type-arrow {
-  transform: translateX(3px);
-  color: #555;
+  transform: translateY(3px);
+
+  color: #087d4d;
+}
+
+
+/* =========================================================
+   6色
+   TOP画面の色をベースにした統一カラーパレット
+
+   1 = 青
+   2 = 緑
+   3 = オレンジ
+   4 = 紫
+   5 = ピンク
+   6 = 水色
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   1枚目：ブルー
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(1) {
+  border-color: #1683e6;
+}
+
+.problem-type-card:nth-child(1) .problem-type-icon {
+  background: #1683e6;
+}
+
+.problem-type-card:nth-child(1) .problem-type-text h2 {
+  color: #0758a8;
+}
+
+.problem-type-card:nth-child(1) .problem-type-arrow {
+  color: #1683e6;
+}
+
+
+/* ---------------------------------------------------------
+   2枚目：グリーン
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(2) {
+  border-color: #17a86b;
+}
+
+.problem-type-card:nth-child(2) .problem-type-icon {
+  background: #17a86b;
+}
+
+.problem-type-card:nth-child(2) .problem-type-text h2 {
+  color: #087d4d;
+}
+
+.problem-type-card:nth-child(2) .problem-type-arrow {
+  color: #17a86b;
+}
+
+
+/* ---------------------------------------------------------
+   3枚目：オレンジ
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(3) {
+  border-color: #ff8a00;
+}
+
+.problem-type-card:nth-child(3) .problem-type-icon {
+  background: #ff8a00;
+}
+
+.problem-type-card:nth-child(3) .problem-type-text h2 {
+  color: #ef7100;
+}
+
+.problem-type-card:nth-child(3) .problem-type-arrow {
+  color: #ff8a00;
+}
+
+
+/* ---------------------------------------------------------
+   4枚目：パープル
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(4) {
+  border-color: #805ad5;
+}
+
+.problem-type-card:nth-child(4) .problem-type-icon {
+  background: #805ad5;
+}
+
+.problem-type-card:nth-child(4) .problem-type-text h2 {
+  color: #6843b8;
+}
+
+.problem-type-card:nth-child(4) .problem-type-arrow {
+  color: #805ad5;
+}
+
+
+/* ---------------------------------------------------------
+   5枚目：ピンク
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(5) {
+  border-color: #e85d9e;
+}
+
+.problem-type-card:nth-child(5) .problem-type-icon {
+  background: #e85d9e;
+}
+
+.problem-type-card:nth-child(5) .problem-type-text h2 {
+  color: #c63f7d;
+}
+
+.problem-type-card:nth-child(5) .problem-type-arrow {
+  color: #e85d9e;
+}
+
+
+/* ---------------------------------------------------------
+   6枚目：ライトブルー
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(6) {
+  border-color: #20a9c9;
+}
+
+.problem-type-card:nth-child(6) .problem-type-icon {
+  background: #20a9c9;
+}
+
+.problem-type-card:nth-child(6) .problem-type-text h2 {
+  color: #1687a5;
+}
+
+.problem-type-card:nth-child(6) .problem-type-arrow {
+  color: #20a9c9;
+}
+
+
+/* =========================================================
+   ホバー時の矢印
+========================================================= */
+
+.problem-type-card:nth-child(1):hover .problem-type-arrow {
+  color: #0758a8;
+}
+
+.problem-type-card:nth-child(2):hover .problem-type-arrow {
+  color: #087d4d;
+}
+
+.problem-type-card:nth-child(3):hover .problem-type-arrow {
+  color: #ef7100;
+}
+
+.problem-type-card:nth-child(4):hover .problem-type-arrow {
+  color: #6843b8;
+}
+
+.problem-type-card:nth-child(5):hover .problem-type-arrow {
+  color: #c63f7d;
+}
+
+.problem-type-card:nth-child(6):hover .problem-type-arrow {
+  color: #1687a5;
 }
 
 
 /* =========================================================
    選択状態
-   ※ JavaScriptで .selected を付ける
-   ========================================================= */
+   JavaScriptで .selected を付ける
+========================================================= */
 
 .problem-type-card.selected {
+  transform: translateY(-3px);
+}
+
+
+/* ---------------------------------------------------------
+   選択状態：1 青
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(1).selected {
   box-shadow:
-    0 0 0 3px #4f8cff,
-    0 7px 22px rgba(79, 140, 255, 0.18);
+    0 0 0 3px rgba(22, 131, 230, 0.25),
+    0 9px 20px rgba(22, 131, 230, 0.16);
 }
 
-.problem-type-card.selected .problem-type-icon {
-  background: #eaf2ff;
-  color: #3977e8;
+
+/* ---------------------------------------------------------
+   選択状態：2 緑
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(2).selected {
+  box-shadow:
+    0 0 0 3px rgba(23, 168, 107, 0.25),
+    0 9px 20px rgba(23, 168, 107, 0.16);
 }
 
-.problem-type-card.selected .problem-type-arrow {
-  color: #3977e8;
-  transform: translateX(3px);
+
+/* ---------------------------------------------------------
+   選択状態：3 オレンジ
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(3).selected {
+  box-shadow:
+    0 0 0 3px rgba(255, 138, 0, 0.25),
+    0 9px 20px rgba(255, 138, 0, 0.16);
+}
+
+
+/* ---------------------------------------------------------
+   選択状態：4 紫
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(4).selected {
+  box-shadow:
+    0 0 0 3px rgba(128, 90, 213, 0.25),
+    0 9px 20px rgba(128, 90, 213, 0.16);
+}
+
+
+/* ---------------------------------------------------------
+   選択状態：5 ピンク
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(5).selected {
+  box-shadow:
+    0 0 0 3px rgba(232, 93, 158, 0.25),
+    0 9px 20px rgba(232, 93, 158, 0.16);
+}
+
+
+/* ---------------------------------------------------------
+   選択状態：6 水色
+--------------------------------------------------------- */
+
+.problem-type-card:nth-child(6).selected {
+  box-shadow:
+    0 0 0 3px rgba(32, 169, 201, 0.25),
+    0 9px 20px rgba(32, 169, 201, 0.16);
 }
 
 
 /* =========================================================
    詳細設定エリア
-   今は空。
-   後からここに各問題の設定を展開する。
-   ========================================================= */
+   機能維持のため既存構造をそのまま保持
+========================================================= */
 
 .problem-type-detail {
   display: none;
 
   padding: 0 20px 20px;
 
-  border-top: 1px solid #eef1f5;
+  border-top: 1px solid #e6edf2;
 }
+
 
 .problem-type-card.expanded .problem-type-detail {
   display: block;
@@ -261,49 +641,88 @@
 
 /* =========================================================
    ホームへ戻る
-   ========================================================= */
+========================================================= */
 
 .problem-print-home-button {
   display: block;
 
-  margin: 30px auto 0;
+  margin: 28px auto 0;
 
-  padding: 12px 24px;
+  padding: 12px 30px;
 
-  border: none;
-  border-radius: 12px;
+  border: 2px solid #1683e6;
+
+  border-radius: 28px;
 
   background: #ffffff;
 
-  color: #555;
+  color: #0758a8;
 
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+
+  font-weight: 800;
 
   box-shadow:
-    0 3px 10px rgba(0, 0, 0, 0.07);
+    0 3px 10px rgba(29, 76, 112, 0.06);
 
   cursor: pointer;
 
   transition:
     background 0.18s ease,
-    transform 0.18s ease;
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
+
 .problem-print-home-button:hover {
-  background: #f1f3f6;
-  transform: translateY(-1px);
+  background: #eef8ff;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 14px rgba(29, 76, 112, 0.10);
+}
+
+
+.problem-print-home-button:active {
+  transform: scale(0.98);
 }
 
 
 /* =========================================================
-   スマホ
-   ========================================================= */
+   900px以下
+========================================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
 
   #problemPrintSelect {
-    padding: 20px 12px 32px;
+    padding: 25px 16px 40px;
+  }
+
+  .problem-type-cards {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+  }
+
+  .problem-type-card-button {
+    min-height: 180px;
+
+    padding: 20px 18px;
+  }
+
+}
+
+
+/* =========================================================
+   600px以下
+========================================================= */
+
+@media (max-width: 600px) {
+
+  #problemPrintSelect {
+    padding: 22px 12px 32px;
   }
 
   .problem-print-header {
@@ -311,47 +730,63 @@
   }
 
   .problem-print-icon {
-    width: 58px;
-    height: 58px;
+    width: 64px;
+    height: 64px;
 
-    border-radius: 16px;
+    margin-bottom: 10px;
 
-    font-size: 29px;
+    font-size: 32px;
   }
 
   .problem-print-header h1 {
-    font-size: 26px;
+    font-size: 28px;
   }
 
   .problem-print-header p {
     font-size: 14px;
   }
 
+  .problem-print-header::after {
+    width: 280px;
+
+    margin-top: 10px;
+
+    border-bottom-width: 3px;
+  }
+
   .problem-type-cards {
     grid-template-columns: 1fr;
+
     gap: 12px;
   }
 
   .problem-type-card-button {
-    min-height: 96px;
-    padding: 16px;
+    min-height: 125px;
+
+    padding: 16px 18px;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    text-align: left;
   }
 
   .problem-type-icon {
-    width: 52px;
-    height: 52px;
+    width: 58px;
+    height: 58px;
 
-    flex-basis: 52px;
+    flex-basis: 58px;
 
-    margin-right: 14px;
+    margin: 0 16px 0 0;
 
-    border-radius: 14px;
-
-    font-size: 24px;
+    font-size: 28px;
   }
 
   .problem-type-text h2 {
-    font-size: 18px;
+    margin-bottom: 4px;
+
+    font-size: 19px;
   }
 
   .problem-type-text p {
@@ -359,6 +794,16 @@
   }
 
   .problem-type-arrow {
-    font-size: 29px;
+    margin-top: 0;
+    margin-left: 10px;
+
+    font-size: 28px;
   }
+
+  .problem-print-home-button {
+    margin-top: 24px;
+
+    font-size: 15px;
+  }
+
 }
