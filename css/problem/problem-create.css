@@ -1,0 +1,247 @@
+/* =========================================================
+   見取算 設定画面
+========================================================= */
+
+.problem-create-panel {
+  margin-top: 22px;
+  padding: 24px;
+  background: #f8fbff;
+  border: 2px solid #1683e6;
+  border-radius: 16px;
+}
+
+
+/* =========================================================
+   セクション見出し
+========================================================= */
+
+.problem-create-heading {
+  margin: 0 0 18px;
+  color: #123e72;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   問題用紙情報
+========================================================= */
+
+.problem-paper-info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.problem-form-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.problem-form-item.full {
+  grid-column: 1 / -1;
+}
+
+.problem-form-label {
+  color: #23405e;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.problem-form-input,
+.problem-form-select {
+  width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 8px 11px;
+
+  background: #ffffff;
+
+  border: 1px solid #b9c9d8;
+  border-radius: 8px;
+
+  color: #20384f;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.problem-form-input:focus,
+.problem-form-select:focus {
+  outline: none;
+  border-color: #1683e6;
+  box-shadow: 0 0 0 3px rgba(22, 131, 230, 0.12);
+}
+
+
+/* =========================================================
+   問題数
+========================================================= */
+
+.problem-count-area {
+  margin-bottom: 26px;
+}
+
+.problem-count-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.problem-count-button {
+  min-width: 72px;
+  padding: 9px 13px;
+
+  background: #ffffff;
+
+  border: 2px solid #b9c9d8;
+  border-radius: 9px;
+
+  color: #23405e;
+  font-size: 15px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.problem-count-button:hover {
+  border-color: #1683e6;
+}
+
+.problem-count-button.selected {
+  background: #1683e6;
+  border-color: #1683e6;
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   区間設定
+========================================================= */
+
+.problem-section-area {
+  margin-bottom: 24px;
+}
+
+.problem-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.problem-section {
+  padding: 18px;
+
+  background: #ffffff;
+
+  border: 1px solid #c9d7e3;
+  border-radius: 12px;
+}
+
+.problem-section-title {
+  margin: 0 0 14px;
+
+  color: #123e72;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.problem-section-range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   区間設定項目
+========================================================= */
+
+.problem-section-settings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.problem-section-minus {
+  margin-top: 14px;
+}
+
+.problem-section-minus.hidden {
+  display: none;
+}
+
+
+/* =========================================================
+   区間追加
+========================================================= */
+
+.problem-add-section-button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 11px 16px;
+
+  background: #ffffff;
+
+  border: 2px dashed #1683e6;
+  border-radius: 10px;
+
+  color: #1683e6;
+  font-size: 15px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.problem-add-section-button:hover {
+  background: #f0f7ff;
+}
+
+
+/* =========================================================
+   設定状況
+========================================================= */
+
+.problem-section-status {
+  margin-top: 12px;
+
+  color: #587086;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.problem-section-status.warning {
+  color: #d85c00;
+}
+
+
+/* =========================================================
+   スマホ
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .problem-create-panel {
+    padding: 16px;
+  }
+
+  .problem-paper-info {
+    grid-template-columns: 1fr;
+  }
+
+  .problem-form-item.full {
+    grid-column: auto;
+  }
+
+  .problem-section-settings {
+    grid-template-columns: 1fr;
+  }
+
+  .problem-section-range {
+    grid-template-columns: 1fr;
+  }
+
+}
