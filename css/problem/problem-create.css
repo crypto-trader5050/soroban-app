@@ -280,3 +280,25 @@
 .problem-generate-button:active {
   transform: translateY(1px);
 }
+
+/* =========================================================
+   自動計算される問題数
+========================================================= */
+
+.problem-auto-value {
+  width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 8px 11px;
+
+  background: #f1f5f9;
+  border: 1px solid #c9d7e3;
+  border-radius: 8px;
+
+  color: #20384f;
+  font-size: 16px;
+  font-weight: 800;
+
+  display: flex;
+  align-items: center;
+}
