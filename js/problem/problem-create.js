@@ -453,20 +453,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="problem-add-subtract-settings hidden">
 
+          <!-- 加算のみ -->
+
           <div class="problem-form-item">
 
             <label class="problem-form-label">
               加算のみの問題
             </label>
 
-            <select class="problem-form-select addition-only-count-select">
-              <option value="0">
-                0問
-              </option>
+            <select
+              class="problem-form-select addition-only-count-select">
             </select>
 
           </div>
 
+
+          <!-- 引き算を含む問題 -->
 
           <div class="problem-form-item">
 
@@ -474,14 +476,14 @@ document.addEventListener("DOMContentLoaded", () => {
               引き算を含む問題
             </label>
 
-            <select class="problem-form-select subtraction-count-select">
-              <option value="0">
-                0問
-              </option>
-            </select>
+            <div class="problem-auto-value subtraction-count-display">
+              0問
+            </div>
 
           </div>
 
+
+          <!-- マイナスになる問題 -->
 
           <div class="problem-form-item">
 
@@ -489,7 +491,8 @@ document.addEventListener("DOMContentLoaded", () => {
               マイナスになる問題
             </label>
 
-            <select class="problem-form-select negative-count-select">
+            <select
+              class="problem-form-select negative-count-select">
               <option value="0">
                 0問
               </option>
@@ -517,12 +520,97 @@ document.addEventListener("DOMContentLoaded", () => {
       const addSubtractSettings =
         section.querySelector(".problem-add-subtract-settings");
 
+      const additionOnlyCountSelect =
+        section.querySelector(".addition-only-count-select");
+
+      const subtractionCountDisplay =
+        section.querySelector(".subtraction-count-display");
+
+      const negativeCountSelect =
+        section.querySelector(".negative-count-select");
+
+      function updateAddSubtractCounts() {
+
+        const total =
+          Number(endInput.value) -
+          Number(startInput.value) +
+          1;
+
+        if (total <= 0) {
+          return;
+        }
+
+        // 加算のみの選択肢を作る
+        additionOnlyCountSelect.innerHTML = "";
+
+        for (let i = 0; i <= total; i++) {
+
+          const option =
+            document.createElement("option");
+
+          option.value = i;
+          option.textContent = `${i}問`;
+
+          additionOnlyCountSelect.appendChild(option);
+
+        }
+
+        // 初期値
+        additionOnlyCountSelect.value = total;
+
+        updateSubtractionCount();
+
+      }
+
+      function updateSubtractionCount() {
+
+        const total =
+          Number(endInput.value) -
+          Number(startInput.value) +
+          1;
+
+        const additionOnly =
+          Number(additionOnlyCountSelect.value) || 0;
+
+        const subtractionCount =
+          Math.max(
+            0,
+            total - additionOnly
+          );
+
+        subtractionCountDisplay.textContent =
+          `${subtractionCount}問`;
+
+        // マイナスになる問題の選択肢
+        negativeCountSelect.innerHTML = "";
+
+        for (let i = 0; i <= subtractionCount; i++) {
+
+          const option =
+            document.createElement("option");
+
+          option.value = i;
+          option.textContent = `${i}問`;
+
+          negativeCountSelect.appendChild(option);
+
+        }
+
+      }
+
+      additionOnlyCountSelect.addEventListener("change", () => {
+
+        updateSubtractionCount();
+
+      });
 
       calculationSelect.addEventListener("change", () => {
 
         if (calculationSelect.value === "add-subtract") {
 
           addSubtractSettings.classList.remove("hidden");
+
+          updateAddSubtractCounts();
 
         } else {
 
