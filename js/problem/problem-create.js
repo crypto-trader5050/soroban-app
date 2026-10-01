@@ -514,16 +514,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const calculationSelect =
         section.querySelector(".calculation-select");
 
-      const minusArea =
-        section.querySelector(".problem-section-minus");
+      const addSubtractSettings =
+        section.querySelector(".problem-add-subtract-settings");
 
 
       calculationSelect.addEventListener("change", () => {
 
         if (calculationSelect.value === "add-subtract") {
-          minusArea.classList.remove("hidden");
+
+          addSubtractSettings.classList.remove("hidden");
+
         } else {
-          minusArea.classList.add("hidden");
+
+          addSubtractSettings.classList.add("hidden");
+
         }
 
       });
