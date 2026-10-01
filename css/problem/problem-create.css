@@ -245,3 +245,38 @@
   }
 
 }
+
+/* =========================================================
+   問題生成ボタン
+========================================================= */
+
+.problem-generate-area {
+  margin-top: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.problem-generate-button {
+  width: min(100%, 420px);
+  min-height: 56px;
+  padding: 14px 24px;
+
+  background: #1683e6;
+  border: 2px solid #1683e6;
+  border-radius: 12px;
+
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.problem-generate-button:hover {
+  background: #0f6fc5;
+  border-color: #0f6fc5;
+}
+
+.problem-generate-button:active {
+  transform: translateY(1px);
+}
