@@ -386,11 +386,19 @@ document.addEventListener("DOMContentLoaded", () => {
               桁数
             </label>
 
-            <select class="problem-form-select digit-select">
+            <div class="problem-digit-range">
 
-              ${createOptions(1, 10, "桁")}
+              <select class="problem-form-select digit-min-select">
+                ${createOptions(1, 10, "桁")}
+              </select>
 
-            </select>
+              <span class="problem-digit-range-separator">～</span>
+
+              <select class="problem-form-select digit-max-select">
+                ${createOptions(1, 10, "桁")}
+              </select>
+
+            </div>
 
           </div>
 
