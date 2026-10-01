@@ -378,7 +378,11 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
 
+        <!-- 桁数・口数・計算方法 -->
+
         <div class="problem-section-settings">
+
+          <!-- 桁数 -->
 
           <div class="problem-form-item">
 
@@ -392,7 +396,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 ${createOptions(1, 10, "桁")}
               </select>
 
-              <span class="problem-digit-range-separator">～</span>
+              <span class="problem-digit-range-separator">
+                ～
+              </span>
 
               <select class="problem-form-select digit-max-select">
                 ${createOptions(1, 10, "桁")}
@@ -403,6 +409,8 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
 
+          <!-- 口数 -->
+
           <div class="problem-form-item">
 
             <label class="problem-form-label">
@@ -410,13 +418,13 @@ document.addEventListener("DOMContentLoaded", () => {
             </label>
 
             <select class="problem-form-select mouth-select">
-
               ${createOptions(3, 10, "口")}
-
             </select>
 
           </div>
 
+
+          <!-- 計算方法 -->
 
           <div class="problem-form-item">
 
@@ -441,24 +449,50 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
 
-        <div class="problem-section-minus hidden">
+        <!-- 加減算の詳細設定 -->
+
+        <div class="problem-add-subtract-settings hidden">
 
           <div class="problem-form-item">
 
             <label class="problem-form-label">
-              マイナス
+              加算のみの問題
             </label>
 
-            <select class="problem-form-select minus-select">
-
-              <option value="none">
-                マイナスなし
+            <select class="problem-form-select addition-only-count-select">
+              <option value="0">
+                0問
               </option>
+            </select>
 
-              <option value="allow">
-                マイナスあり
+          </div>
+
+
+          <div class="problem-form-item">
+
+            <label class="problem-form-label">
+              引き算を含む問題
+            </label>
+
+            <select class="problem-form-select subtraction-count-select">
+              <option value="0">
+                0問
               </option>
+            </select>
 
+          </div>
+
+
+          <div class="problem-form-item">
+
+            <label class="problem-form-label">
+              マイナスになる問題
+            </label>
+
+            <select class="problem-form-select negative-count-select">
+              <option value="0">
+                0問
+              </option>
             </select>
 
           </div>
