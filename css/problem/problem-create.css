@@ -312,3 +312,187 @@
   font-size: 16px;
   font-weight: 600;
 }
+
+/* =========================================================
+   生成した見取算 問題用紙
+========================================================= */
+
+#problemGeneratedSheet {
+  width: 100%;
+  margin-top: 28px;
+  padding: 28px;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #c9d7e3;
+  border-radius: 12px;
+}
+
+/* 問題用紙タイトル */
+
+.problem-generated-header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.problem-generated-header h2 {
+  margin: 0 0 12px;
+  color: #123e72;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.problem-generated-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  color: #23405e;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.problem-generated-free-text {
+  margin: 16px 0 0;
+  color: #23405e;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   問題一覧
+========================================================= */
+
+.problem-generated-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+/* =========================================================
+   1問分の枠
+========================================================= */
+
+.problem-generated-item {
+  position: relative;
+  min-height: 250px;
+  padding: 34px 18px 18px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border: 2px solid #23405e;
+  border-radius: 4px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   問題番号
+========================================================= */
+
+.problem-generated-number {
+  position: absolute;
+  top: 7px;
+  left: 10px;
+
+  color: #123e72;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+/* =========================================================
+   数字部分
+========================================================= */
+
+.problem-generated-numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+}
+
+/* 1行 */
+
+.problem-generated-row {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+
+  align-items: center;
+
+  min-height: 30px;
+
+  color: #111111;
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ＋／－ */
+
+.problem-generated-operation {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+/* 数字 */
+
+.problem-generated-value {
+  text-align: right;
+  padding-right: 4px;
+  letter-spacing: 0.03em;
+}
+
+/* =========================================================
+   答え
+   ※現在は確認用
+========================================================= */
+
+.problem-generated-answer {
+  margin-top: 14px;
+  padding-top: 8px;
+
+  border-top: 1px dashed #b9c9d8;
+
+  color: #d85c00;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   スマートフォン
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .problem-generated-list {
+    grid-template-columns:
+      repeat(3, minmax(110px, 1fr));
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  #problemGeneratedSheet {
+    padding: 16px;
+  }
+
+  .problem-generated-list {
+    grid-template-columns:
+      repeat(2, minmax(120px, 1fr));
+
+    gap: 12px;
+  }
+
+  .problem-generated-item {
+    min-height: 230px;
+    padding: 32px 12px 14px;
+  }
+
+  .problem-generated-row {
+    grid-template-columns: 22px 1fr;
+    font-size: 18px;
+  }
+
+}
