@@ -766,4 +766,229 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+  /* =====================================================
+     見取算 問題生成
+     第1段階：設定値の取得
+  ===================================================== */
+
+  const problemGenerateButton =
+    document.querySelector("#problemGenerateButton");
+
+  if (problemGenerateButton) {
+
+    problemGenerateButton.addEventListener("click", () => {
+
+      // 見取算カードを探す
+      const mitoriCard =
+        document.querySelector(
+          '.problem-type-card[data-problem-type="mitori"]'
+        );
+
+      if (!mitoriCard) {
+        alert("見取算の設定が見つかりません。");
+        return;
+      }
+
+      // 見取算が開かれているか確認
+      const mitoriPanel =
+        mitoriCard.querySelector(".problem-type-detail");
+
+      if (
+        !mitoriCard.classList.contains("expanded") ||
+        !mitoriPanel ||
+        !mitoriPanel.querySelector(".problem-create-panel")
+      ) {
+        alert("先に見取算の設定を開いてください。");
+        return;
+      }
+
+
+      /* =================================================
+         問題用紙情報
+      ================================================= */
+
+      const paperInputs =
+        mitoriPanel.querySelectorAll(
+          ".problem-paper-info .problem-form-input"
+        );
+
+      const title =
+        paperInputs[0]?.value.trim() || "";
+
+      const time =
+        Number(paperInputs[1]?.value) || 0;
+
+      const grade =
+        paperInputs[2]?.value.trim() || "";
+
+      const round =
+        paperInputs[3]?.value.trim() || "";
+
+      const freeText =
+        paperInputs[5]?.value.trim() || "";
+
+
+      /* =================================================
+         総問題数
+      ================================================= */
+
+      const selectedCountButton =
+        mitoriPanel.querySelector(
+          ".problem-count-button.selected"
+        );
+
+      if (!selectedCountButton) {
+        alert("総問題数を選択してください。");
+        return;
+      }
+
+      const totalQuestions =
+        Number(selectedCountButton.dataset.count);
+
+
+      /* =================================================
+         区間
+      ================================================= */
+
+      const sectionElements =
+        mitoriPanel.querySelectorAll(
+          ".problem-section"
+        );
+
+      if (!sectionElements.length) {
+        alert("問題設定の区間がありません。");
+        return;
+      }
+
+
+      const sections = [];
+
+
+      sectionElements.forEach((section, index) => {
+
+        const start =
+          Number(
+            section.querySelector(".section-start")?.value
+          );
+
+        const end =
+          Number(
+            section.querySelector(".section-end")?.value
+          );
+
+        const digitMin =
+          Number(
+            section.querySelector(".digit-min-select")?.value
+          );
+
+        const digitMax =
+          Number(
+            section.querySelector(".digit-max-select")?.value
+          );
+
+        const mouth =
+          Number(
+            section.querySelector(".mouth-select")?.value
+          );
+
+        const calculation =
+          section.querySelector(
+            ".calculation-select"
+          )?.value || "addition";
+
+
+        let additionOnly = 0;
+        let subtractionCount = 0;
+        let negativeCount = 0;
+
+
+        if (calculation === "add-subtract") {
+
+          additionOnly =
+            Number(
+              section.querySelector(
+                ".addition-only-count-select"
+              )?.value
+            ) || 0;
+
+          subtractionCount =
+            Math.max(
+              0,
+              end - start + 1 - additionOnly
+            );
+
+          negativeCount =
+            Number(
+              section.querySelector(
+                ".negative-count-select"
+              )?.value
+            ) || 0;
+
+        }
+
+
+        sections.push({
+
+          sectionNumber: index + 1,
+
+          start,
+          end,
+
+          digitMin,
+          digitMax,
+
+          mouth,
+
+          calculation,
+
+          additionOnly,
+
+          subtractionCount,
+
+          negativeCount
+
+        });
+
+      });
+
+
+      /* =================================================
+         設定内容を確認
+      ================================================= */
+
+      const settings = {
+
+        paper: {
+
+          title,
+          time,
+          grade,
+          round,
+          freeText
+
+        },
+
+        totalQuestions,
+
+        sections
+
+      };
+
+
+      console.log(
+        "【見取算・取得した設定】",
+        settings
+      );
+
+
+      alert(
+        "見取算の設定を取得しました。\n\n" +
+        `総問題数：${totalQuestions}問\n` +
+        `区間数：${sections.length}区間`
+      );
+
+    });
+
+  }
+
 });
