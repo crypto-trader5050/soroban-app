@@ -1191,13 +1191,711 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
 
+      const generatedProblems =
+        generateMitoriProblems(settings);
+
+      console.log(
+        "【見取算・生成された問題】",
+        generatedProblems
+      );
+
       alert(
-        "見取算の設定を取得しました。\n\n" +
-        `総問題数：${totalQuestions}問\n` +
-        `区間数：${sections.length}区間`
+        `見取算の問題を生成しました。\n\n` +
+        `総問題数：${generatedProblems.length}問`
       );
 
     });
+
+  }
+
+  /* =====================================================
+     見取算 問題生成本体
+  ===================================================== */
+
+  function generateMitoriProblems(settings) {
+
+    const problems = [];
+
+    let problemNumber = 1;
+
+
+    for (const section of settings.sections) {
+
+      const questionCount =
+        section.end - section.start + 1;
+
+
+      /*
+       * この区間の問題タイプを決める
+       *
+       * addition
+       *   加算のみ
+       *
+       * subtraction
+       *   引き算を含む
+       *
+       * negative
+       *   計算途中でマイナスになる
+       */
+
+      const problemTypes = [];
+
+
+      if (section.calculation === "addition") {
+
+        for (let i = 0; i < questionCount; i++) {
+
+          problemTypes.push("addition");
+
+        }
+
+      } else {
+
+        /*
+         * まず全部を加算のみとして作る
+         */
+
+        for (
+          let i = 0;
+          i < section.additionOnly;
+          i++
+        ) {
+
+          problemTypes.push("addition");
+
+        }
+
+
+        /*
+         * 残りを引き算ありにする
+         */
+
+        for (
+          let i = 0;
+          i < section.subtractionCount;
+          i++
+        ) {
+
+          problemTypes.push("subtraction");
+
+        }
+
+
+        /*
+         * 引き算ありの問題の中から
+         * 「マイナスになる問題」を選ぶ
+         */
+
+        const subtractionIndexes = [];
+
+        problemTypes.forEach((type, index) => {
+
+          if (type === "subtraction") {
+            subtractionIndexes.push(index);
+          }
+
+        });
+
+
+        shuffleArray(subtractionIndexes);
+
+
+        for (
+          let i = 0;
+          i < section.negativeCount;
+          i++
+        ) {
+
+          const index =
+            subtractionIndexes[i];
+
+          problemTypes[index] =
+            "negative";
+
+        }
+
+      }
+
+
+      /*
+       * 問題の種類をシャッフル
+       *
+       * 「加算のみ○問」
+       * 「引き算あり○問」
+       *
+       * が同じ並びにならないようにする
+       */
+
+      shuffleArray(problemTypes);
+
+
+      /*
+       * 問題を実際に生成
+       */
+
+      for (
+        let i = 0;
+        i < questionCount;
+        i++
+      ) {
+
+        const type =
+          problemTypes[i];
+
+
+        const problem =
+          generateSingleMitoriProblem(
+            section,
+            type
+          );
+
+
+        problem.number =
+          problemNumber;
+
+
+        problem.sectionNumber =
+          section.sectionNumber;
+
+
+        problems.push(problem);
+
+        problemNumber++;
+
+      }
+
+    }
+
+
+    return problems;
+
+  }
+
+
+  /* =====================================================
+     1問分の見取算を生成
+  ===================================================== */
+
+  function generateSingleMitoriProblem(
+    section,
+    type
+  ) {
+
+    const mouth =
+      section.mouth;
+
+
+    /*
+     * 加算の場合
+     */
+
+    if (type === "addition") {
+
+      return generateAdditionProblem(
+        section,
+        mouth
+      );
+
+    }
+
+
+    /*
+     * 加減算でマイナスにならない問題
+     */
+
+    if (type === "subtraction") {
+
+      return generateAddSubtractProblem(
+        section,
+        mouth,
+        false
+      );
+
+    }
+
+
+    /*
+     * 計算途中でマイナスになる問題
+     */
+
+    return generateAddSubtractProblem(
+      section,
+      mouth,
+      true
+    );
+
+  }
+
+
+  /* =====================================================
+     加算問題
+  ===================================================== */
+
+  function generateAdditionProblem(
+    section,
+    mouth
+  ) {
+
+    const numbers = [];
+
+
+    /*
+     * 最初の数字
+     */
+
+    numbers.push(
+      randomNumberByDigitRange(
+        section.digitMin,
+        section.digitMax
+      )
+    );
+
+
+    /*
+     * 残りはすべて加算
+     */
+
+    for (
+      let i = 1;
+      i < mouth;
+      i++
+    ) {
+
+      numbers.push(
+        randomNumberByDigitRange(
+          section.digitMin,
+          section.digitMax
+        )
+      );
+
+    }
+
+
+    return {
+
+      type: "addition",
+
+      numbers,
+
+      operations:
+        numbers.map(() => "+"),
+
+      answer:
+        numbers.reduce(
+          (sum, value) => sum + value,
+          0n
+        )
+
+    };
+
+  }
+
+
+  /* =====================================================
+     加減算問題
+  ===================================================== */
+
+  function generateAddSubtractProblem(
+    section,
+    mouth,
+    mustBecomeNegative
+  ) {
+
+    /*
+     * 何度も試して条件に合う問題を探す
+     */
+
+    const maxAttempts = 1000;
+
+
+    for (
+      let attempt = 0;
+      attempt < maxAttempts;
+      attempt++
+    ) {
+
+      const numbers = [];
+
+      const operations = [];
+
+
+      /*
+       * 先頭は必ず加算
+       */
+
+      const firstNumber =
+        randomNumberByDigitRange(
+          section.digitMin,
+          section.digitMax
+        );
+
+      numbers.push(firstNumber);
+
+      operations.push("+");
+
+
+      let current =
+        firstNumber;
+
+
+      let becameNegative = false;
+
+
+      /*
+       * 引き算の口数
+       *
+       * 口数の40%
+       */
+
+      const subtractionCount =
+        Math.max(
+          1,
+          Math.round(mouth * 0.4)
+        );
+
+
+      /*
+       * 2口目以降から
+       * 引き算位置を決める
+       */
+
+      const possiblePositions = [];
+
+
+      for (
+        let i = 1;
+        i < mouth;
+        i++
+      ) {
+
+        possiblePositions.push(i);
+
+      }
+
+
+      shuffleArray(possiblePositions);
+
+
+      const subtractionPositions =
+        new Set(
+          possiblePositions.slice(
+            0,
+            subtractionCount
+          )
+        );
+
+
+      /*
+       * 残りの口を生成
+       */
+
+      for (
+        let i = 1;
+        i < mouth;
+        i++
+      ) {
+
+        const number =
+          randomNumberByDigitRange(
+            section.digitMin,
+            section.digitMax
+          );
+
+
+        const isSubtraction =
+          subtractionPositions.has(i);
+
+
+        if (isSubtraction) {
+
+          operations.push("-");
+
+          current -= number;
+
+        } else {
+
+          operations.push("+");
+
+          current += number;
+
+        }
+
+
+        numbers.push(number);
+
+
+        if (current < 0n) {
+
+          becameNegative = true;
+
+        }
+
+      }
+
+
+      /*
+       * 条件確認
+       */
+
+      if (
+        mustBecomeNegative &&
+        !becameNegative
+      ) {
+
+        continue;
+
+      }
+
+
+      if (
+        !mustBecomeNegative &&
+        becameNegative
+      ) {
+
+        continue;
+
+      }
+
+
+      /*
+       * 最終答を計算
+       */
+
+      let answer =
+        numbers[0];
+
+
+      for (
+        let i = 1;
+        i < numbers.length;
+        i++
+      ) {
+
+        if (operations[i] === "+") {
+
+          answer += numbers[i];
+
+        } else {
+
+          answer -= numbers[i];
+
+        }
+
+      }
+
+
+      return {
+
+        type:
+          mustBecomeNegative
+            ? "negative"
+            : "subtraction",
+
+        numbers,
+
+        operations,
+
+        answer
+
+      };
+
+    }
+
+
+    /*
+     * 1000回試しても条件に合わない場合
+     */
+
+    console.warn(
+      "条件に合う加減算問題を生成できなかったため、再試行します。"
+    );
+
+
+    return generateAddSubtractProblem(
+      section,
+      mouth,
+      mustBecomeNegative
+    );
+
+  }
+
+
+  /* =====================================================
+     指定した桁数の数字を作る
+  ===================================================== */
+
+  function randomNumberByDigitRange(
+    minDigit,
+    maxDigit
+  ) {
+
+    const digit =
+      randomInteger(
+        minDigit,
+        maxDigit
+      );
+
+
+    /*
+     * 1桁
+     */
+
+    if (digit === 1) {
+
+      return BigInt(
+        randomInteger(1, 9)
+      );
+
+    }
+
+
+    /*
+     * 2桁以上
+     *
+     * 先頭0は禁止
+     */
+
+    const min =
+      10n ** BigInt(digit - 1);
+
+    const max =
+      (10n ** BigInt(digit)) - 1n;
+
+
+    return randomBigInt(
+      min,
+      max
+    );
+
+  }
+
+
+  /* =====================================================
+     BigIntの乱数
+  ===================================================== */
+
+  function randomBigInt(min, max) {
+
+    const range =
+      max - min + 1n;
+
+
+    /*
+     * rangeがNumberで扱える場合
+     */
+
+    if (
+      range <= BigInt(Number.MAX_SAFE_INTEGER)
+    ) {
+
+      const value =
+        Math.floor(
+          Math.random() *
+          Number(range)
+        );
+
+      return min + BigInt(value);
+
+    }
+
+
+    /*
+     * 大きな数字の場合
+     *
+     * 10桁まで対応
+     */
+
+    const digits =
+      max.toString().length;
+
+
+    while (true) {
+
+      let text = "";
+
+
+      for (
+        let i = 0;
+        i < digits;
+        i++
+      ) {
+
+        text +=
+          Math.floor(
+            Math.random() * 10
+          );
+
+      }
+
+
+      if (text[0] === "0") {
+        continue;
+      }
+
+
+      const value =
+        BigInt(text);
+
+
+      if (
+        value >= min &&
+        value <= max
+      ) {
+
+        return value;
+
+      }
+
+    }
+
+  }
+
+
+  /* =====================================================
+     整数乱数
+  ===================================================== */
+
+  function randomInteger(min, max) {
+
+    return Math.floor(
+      Math.random() *
+      (max - min + 1)
+    ) + min;
+
+  }
+
+
+  /* =====================================================
+     配列シャッフル
+  ===================================================== */
+
+  function shuffleArray(array) {
+
+    for (
+      let i = array.length - 1;
+      i > 0;
+      i--
+    ) {
+
+      const j =
+        Math.floor(
+          Math.random() * (i + 1)
+        );
+
+
+      [
+        array[i],
+        array[j]
+      ] =
+      [
+        array[j],
+        array[i]
+      ];
+
+    }
+
+
+    return array;
 
   }
 
