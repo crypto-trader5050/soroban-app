@@ -1199,9 +1199,9 @@ document.addEventListener("DOMContentLoaded", () => {
         generatedProblems
       );
 
-      alert(
-        `見取算の問題を生成しました。\n\n` +
-        `総問題数：${generatedProblems.length}問`
+      displayGeneratedMitoriProblems(
+        settings,
+        generatedProblems
       );
 
     });
@@ -1896,6 +1896,313 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     return array;
+
+  }
+
+  /* =====================================================
+     生成した見取算問題を画面に表示
+  ===================================================== */
+
+  function displayGeneratedMitoriProblems(
+    settings,
+    problems
+  ) {
+
+    /*
+     * 以前の表示があれば削除
+     */
+
+    const oldSheet =
+      document.querySelector(
+        "#problemGeneratedSheet"
+      );
+
+    if (oldSheet) {
+      oldSheet.remove();
+    }
+
+
+    /*
+     * 問題用紙を作成
+     */
+
+    const sheet =
+      document.createElement("div");
+
+    sheet.id =
+      "problemGeneratedSheet";
+
+
+    /*
+     * 問題用紙情報
+     */
+
+    const header =
+      document.createElement("div");
+
+    header.className =
+      "problem-generated-header";
+
+
+    const title =
+      document.createElement("h2");
+
+    title.textContent =
+      settings.paper.title ||
+      "みとり算";
+
+
+    header.appendChild(title);
+
+
+    /*
+     * 基本情報
+     */
+
+    const info =
+      document.createElement("div");
+
+    info.className =
+      "problem-generated-info";
+
+
+    if (settings.paper.time) {
+
+      info.innerHTML +=
+        `<span>時間：${settings.paper.time}分</span>`;
+
+    }
+
+
+    if (settings.paper.grade) {
+
+      info.innerHTML +=
+        `<span>級・段位：${escapeHtml(
+          settings.paper.grade
+        )}</span>`;
+
+    }
+
+
+    if (settings.paper.round) {
+
+      info.innerHTML +=
+        `<span>${escapeHtml(
+          settings.paper.round
+        )}</span>`;
+
+    }
+
+
+    info.innerHTML +=
+      `<span>全${problems.length}問</span>`;
+
+
+    header.appendChild(info);
+
+
+    /*
+     * 自由文
+     */
+
+    if (settings.paper.freeText) {
+
+      const freeText =
+        document.createElement("p");
+
+      freeText.className =
+        "problem-generated-free-text";
+
+      freeText.textContent =
+        settings.paper.freeText;
+
+      header.appendChild(freeText);
+
+    }
+
+
+    sheet.appendChild(header);
+
+
+    /*
+     * 問題一覧
+     */
+
+    const problemList =
+      document.createElement("div");
+
+    problemList.className =
+      "problem-generated-list";
+
+
+    problems.forEach(problem => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "problem-generated-item";
+
+
+      /*
+       * 問題番号
+       */
+
+      const number =
+        document.createElement("div");
+
+      number.className =
+        "problem-generated-number";
+
+      number.textContent =
+        problem.number;
+
+
+      /*
+       * 数字
+       */
+
+      const numbers =
+        document.createElement("div");
+
+      numbers.className =
+        "problem-generated-numbers";
+
+
+      problem.numbers.forEach(
+        (value, index) => {
+
+          const row =
+            document.createElement("div");
+
+          row.className =
+            "problem-generated-row";
+
+
+          const operation =
+            document.createElement("span");
+
+          operation.className =
+            "problem-generated-operation";
+
+
+          /*
+           * 最初の数字だけ
+           * 「＋」を表示しない
+           */
+
+          if (index === 0) {
+
+            operation.textContent =
+              "";
+
+          } else {
+
+            operation.textContent =
+              problem.operations[index];
+
+          }
+
+
+          const valueElement =
+            document.createElement("span");
+
+          valueElement.className =
+            "problem-generated-value";
+
+          valueElement.textContent =
+            value.toString();
+
+
+          row.appendChild(operation);
+
+          row.appendChild(valueElement);
+
+          numbers.appendChild(row);
+
+        }
+      );
+
+
+      /*
+       * 答え
+       *
+       * 現段階では確認用として表示
+       */
+
+      const answer =
+        document.createElement("div");
+
+      answer.className =
+        "problem-generated-answer";
+
+      answer.textContent =
+        `答え：${problem.answer.toString()}`;
+
+
+      item.appendChild(number);
+
+      item.appendChild(numbers);
+
+      item.appendChild(answer);
+
+
+      problemList.appendChild(item);
+
+    });
+
+
+    sheet.appendChild(problemList);
+
+
+    /*
+     * 画面へ追加
+     */
+
+    const generateButton =
+      document.querySelector(
+        "#problemGenerateButton"
+      );
+
+
+    if (generateButton) {
+
+      generateButton.insertAdjacentElement(
+        "afterend",
+        sheet
+      );
+
+    } else {
+
+      document.body.appendChild(sheet);
+
+    }
+
+
+    /*
+     * 問題用紙の位置まで移動
+     */
+
+    sheet.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+
+  /* =====================================================
+     HTMLエスケープ
+  ===================================================== */
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
 
   }
 
