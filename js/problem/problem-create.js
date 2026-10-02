@@ -974,6 +974,216 @@ document.addEventListener("DOMContentLoaded", () => {
 
       };
 
+      /* =================================================
+         設定チェック
+      ================================================= */
+
+      // 総問題数
+      if (
+        ![10, 15, 20, 30, 40, 50, 60]
+          .includes(totalQuestions)
+      ) {
+
+        alert("総問題数の設定が正しくありません。");
+        return;
+
+      }
+
+
+      // 区間が存在するか
+      if (!sections.length) {
+
+        alert("問題設定の区間がありません。");
+        return;
+
+      }
+
+
+      // 各区間をチェック
+      for (let i = 0; i < sections.length; i++) {
+
+        const section = sections[i];
+
+        const questionCount =
+          section.end - section.start + 1;
+
+
+        // 開始・終了番号
+        if (
+          !Number.isInteger(section.start) ||
+          !Number.isInteger(section.end)
+        ) {
+
+          alert(
+            `区間${section.sectionNumber}の問題番号が正しくありません。`
+          );
+
+          return;
+
+        }
+
+
+        if (section.start > section.end) {
+
+          alert(
+            `区間${section.sectionNumber}の開始問題が終了問題を超えています。`
+          );
+
+          return;
+
+        }
+
+
+        // 問題番号の範囲
+        if (
+          section.start < 1 ||
+          section.end > totalQuestions
+        ) {
+
+          alert(
+            `区間${section.sectionNumber}の問題番号が範囲外です。`
+          );
+
+          return;
+
+        }
+
+
+        // 桁数
+        if (
+          section.digitMin < 1 ||
+          section.digitMin > 10 ||
+          section.digitMax < 1 ||
+          section.digitMax > 10
+        ) {
+
+          alert(
+            `区間${section.sectionNumber}の桁数が正しくありません。`
+          );
+
+          return;
+
+        }
+
+
+        if (section.digitMin > section.digitMax) {
+
+          alert(
+            `区間${section.sectionNumber}の桁数は、最小桁数が最大桁数を超えないようにしてください。`
+          );
+
+          return;
+
+        }
+
+
+        // 口数
+        if (
+          section.mouth < 3 ||
+          section.mouth > 10
+        ) {
+
+          alert(
+            `区間${section.sectionNumber}の口数が正しくありません。`
+          );
+
+          return;
+
+        }
+
+
+        // 加減算
+        if (section.calculation === "add-subtract") {
+
+          if (
+            section.additionOnly < 0 ||
+            section.additionOnly > questionCount
+          ) {
+
+            alert(
+              `区間${section.sectionNumber}の「加算のみの問題」の数が正しくありません。`
+            );
+
+            return;
+
+          }
+
+
+          if (
+            section.subtractionCount !==
+            questionCount - section.additionOnly
+          ) {
+
+            alert(
+              `区間${section.sectionNumber}の「引き算を含む問題」の数が正しくありません。`
+            );
+
+            return;
+
+          }
+
+
+          if (
+            section.negativeCount < 0 ||
+            section.negativeCount >
+            section.subtractionCount
+          ) {
+
+            alert(
+              `区間${section.sectionNumber}の「マイナスになる問題」の数が正しくありません。`
+            );
+
+            return;
+
+          }
+
+        }
+
+      }
+
+
+      /* =================================================
+         区間の連続性をチェック
+      ================================================= */
+
+      let expectedStart = 1;
+
+      for (const section of sections) {
+
+        if (section.start !== expectedStart) {
+
+          alert(
+            `区間の問題番号が連続していません。\n\n` +
+            `第${expectedStart}問から始まる区間が必要です。`
+          );
+
+          return;
+
+        }
+
+        expectedStart =
+          section.end + 1;
+
+      }
+
+
+      // 最後まで設定されているか
+      if (expectedStart !== totalQuestions + 1) {
+
+        alert(
+          `第${expectedStart}問以降の設定がありません。\n\n` +
+          `第1問～第${totalQuestions}問まで設定してください。`
+        );
+
+        return;
+
+      }
+
+
+      console.log(
+        "【見取算・設定チェック】OK",
+        settings
+      );
 
       console.log(
         "【見取算・取得した設定】",
