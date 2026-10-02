@@ -315,47 +315,55 @@
 
 /* =========================================================
    生成した見取算 問題用紙
+   全珠連の見取算問題用紙を基準にしたレイアウト
 ========================================================= */
 
 #problemGeneratedSheet {
   width: 100%;
   margin-top: 28px;
-  padding: 28px;
+  padding: 24px 16px 18px;
   box-sizing: border-box;
+
   background: #ffffff;
-  border: 1px solid #c9d7e3;
-  border-radius: 12px;
+  border: 1px solid #c8c8c8;
 }
 
-/* 問題用紙タイトル */
+/* =========================================================
+   問題用紙ヘッダー
+========================================================= */
 
 .problem-generated-header {
-  margin-bottom: 28px;
+  margin-bottom: 18px;
   text-align: center;
 }
 
 .problem-generated-header h2 {
-  margin: 0 0 12px;
-  color: #123e72;
+  margin: 0 0 10px;
+
+  color: #111111;
   font-size: 26px;
   font-weight: 900;
+  letter-spacing: 0.28em;
 }
 
 .problem-generated-info {
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 18px;
-  color: #23405e;
-  font-size: 15px;
+  gap: 22px;
+
+  color: #111111;
+  font-size: 14px;
   font-weight: 700;
 }
 
 .problem-generated-free-text {
-  margin: 16px 0 0;
-  color: #23405e;
-  font-size: 15px;
-  line-height: 1.7;
+  margin: 12px 0 0;
+
+  color: #111111;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 /* =========================================================
@@ -364,24 +372,33 @@
 
 .problem-generated-list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(120px, 1fr));
-  gap: 18px;
-  align-items: start;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 16px 10px;
+
+  align-items: stretch;
 }
 
 /* =========================================================
-   1問分の枠
+   1問分
 ========================================================= */
 
 .problem-generated-item {
   position: relative;
-  min-height: 250px;
-  padding: 34px 18px 18px;
+
+  min-height: 225px;
+
+  padding: 27px 8px 34px;
+
   box-sizing: border-box;
 
   background: #ffffff;
-  border: 2px solid #23405e;
-  border-radius: 4px;
+
+  border: 1px solid #777777;
+
+  border-radius: 0;
 
   text-align: center;
 }
@@ -392,107 +409,215 @@
 
 .problem-generated-number {
   position: absolute;
-  top: 7px;
-  left: 10px;
 
-  color: #123e72;
-  font-size: 16px;
-  font-weight: 900;
+  top: 3px;
+  left: 0;
+
+  width: 100%;
+
+  color: #111111;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-align: center;
 }
 
 /* =========================================================
-   数字部分
+   数字
 ========================================================= */
 
 .problem-generated-numbers {
   display: flex;
+
   flex-direction: column;
+
   align-items: stretch;
-  gap: 2px;
+
+  gap: 0;
+
+  width: 100%;
 }
 
-/* 1行 */
+/* =========================================================
+   数字1行
+========================================================= */
 
 .problem-generated-row {
   display: grid;
-  grid-template-columns: 24px 1fr;
+
+  grid-template-columns: 22px 1fr;
 
   align-items: center;
 
-  min-height: 30px;
+  min-height: 22px;
 
   color: #111111;
-  font-size: 20px;
-  font-weight: 700;
+
+  font-size: 18px;
+  font-weight: 500;
+
+  line-height: 1.05;
+
   font-variant-numeric: tabular-nums;
 }
 
-/* ＋／－ */
+/* =========================================================
+   ＋／－
+========================================================= */
 
 .problem-generated-operation {
+  display: block;
+
+  color: #111111;
+
+  font-size: 16px;
+  font-weight: 500;
+
   text-align: center;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-/* 数字 */
-
-.problem-generated-value {
-  text-align: right;
-  padding-right: 4px;
-  letter-spacing: 0.03em;
 }
 
 /* =========================================================
-   答え
-   ※現在は確認用
+   数字本体
+========================================================= */
+
+.problem-generated-value {
+  display: block;
+
+  padding-right: 3px;
+
+  color: #111111;
+
+  font-size: 18px;
+  font-weight: 500;
+
+  line-height: 1.05;
+
+  text-align: right;
+
+  white-space: nowrap;
+
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================
+   答え記入欄
 ========================================================= */
 
 .problem-generated-answer {
-  margin-top: 14px;
-  padding-top: 8px;
+  position: absolute;
 
-  border-top: 1px dashed #b9c9d8;
+  left: 0;
+  right: 0;
+  bottom: 0;
 
-  color: #d85c00;
-  font-size: 14px;
-  font-weight: 800;
+  height: 27px;
+
+  box-sizing: border-box;
+
+  border-top: 1px solid #aaaaaa;
+
+  color: transparent;
+
+  font-size: 0;
+
+  background: #ffffff;
 }
 
 /* =========================================================
-   スマートフォン
+   画面幅に応じた問題数配置
 ========================================================= */
 
-@media (max-width: 900px) {
+/* 30問など、通常のPC表示 */
+@media (min-width: 1000px) {
 
   .problem-generated-list {
     grid-template-columns:
-      repeat(3, minmax(110px, 1fr));
+      repeat(5, minmax(0, 1fr));
   }
 
 }
 
-@media (max-width: 600px) {
+/* タブレット */
+@media (max-width: 999px) {
+
+  .problem-generated-list {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+  }
+
+  .problem-generated-item {
+    min-height: 220px;
+  }
+
+}
+
+/* スマートフォン */
+@media (max-width: 700px) {
 
   #problemGeneratedSheet {
-    padding: 16px;
+    padding: 18px 8px 14px;
   }
 
   .problem-generated-list {
     grid-template-columns:
-      repeat(2, minmax(120px, 1fr));
+      repeat(3, minmax(0, 1fr));
 
-    gap: 12px;
+    gap: 10px 6px;
   }
 
   .problem-generated-item {
-    min-height: 230px;
-    padding: 32px 12px 14px;
+    min-height: 210px;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   .problem-generated-row {
-    grid-template-columns: 22px 1fr;
-    font-size: 18px;
+    grid-template-columns: 18px 1fr;
+    min-height: 21px;
+  }
+
+  .problem-generated-operation,
+  .problem-generated-value {
+    font-size: 15px;
+  }
+
+}
+
+/* =========================================================
+   印刷用
+========================================================= */
+
+@media print {
+
+  #problemGeneratedSheet {
+    margin: 0;
+    padding: 8mm 6mm;
+
+    border: none;
+  }
+
+  .problem-generated-list {
+    gap: 4mm 2mm;
+  }
+
+  .problem-generated-item {
+    min-height: 54mm;
+
+    break-inside: avoid;
+  }
+
+  .problem-generated-row {
+    min-height: 5mm;
+  }
+
+  .problem-generated-operation,
+  .problem-generated-value {
+    font-size: 12pt;
+  }
+
+  .problem-generated-number {
+    font-size: 9pt;
   }
 
 }
