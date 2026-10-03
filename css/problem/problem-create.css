@@ -420,14 +420,16 @@
 .problem-generated-grid {
   display: grid;
 
-  /* 1段5問 */
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
 
   /* 横方向は隙間なし */
   column-gap: 0;
 
   /* 段と段の間だけ空ける */
   row-gap: 14px;
+
+  align-items: stretch;
 }
 
 
@@ -449,75 +451,54 @@
 
   /* 基本は細線 */
   border-top: 1px solid #20384f;
-  border-bottom: 1px solid #20384f;
   border-right: 1px solid #20384f;
+  border-bottom: 1px solid #20384f;
 
   break-inside: avoid;
   page-break-inside: avoid;
 }
 
 
-/* ---------------------------------------------------------
-   各段の左端
-   → 外周なので太線
---------------------------------------------------------- */
+/* =========================================================
+   外周
+========================================================= */
 
+/* 左端だけ太線 */
 .problem-generated-question:nth-child(5n + 1) {
   border-left: 3px solid #20384f;
 }
 
-
-/* ---------------------------------------------------------
-   各段の右端
-   → 外周なので太線
---------------------------------------------------------- */
-
+/* 右端だけ太線 */
 .problem-generated-question:nth-child(5n) {
   border-right: 3px solid #20384f;
 }
 
-
-/* ---------------------------------------------------------
-   各段の上端
-   → 外周なので太線
---------------------------------------------------------- */
-
+/* 1段目の上端 */
 .problem-generated-question:nth-child(-n + 5) {
   border-top: 3px solid #20384f;
 }
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    2段目以降の上端
-   → 前の段との間に隙間があるので太線
---------------------------------------------------------- */
+========================================================= */
 
-.problem-generated-question:nth-child(n + 6):nth-child(-n + 10),
-.problem-generated-question:nth-child(n + 11):nth-child(-n + 15),
-.problem-generated-question:nth-child(n + 16):nth-child(-n + 20),
-.problem-generated-question:nth-child(n + 21):nth-child(-n + 25),
-.problem-generated-question:nth-child(n + 26):nth-child(-n + 30),
-.problem-generated-question:nth-child(n + 31):nth-child(-n + 35),
-.problem-generated-question:nth-child(n + 36):nth-child(-n + 40),
-.problem-generated-question:nth-child(n + 41):nth-child(-n + 45),
-.problem-generated-question:nth-child(n + 46):nth-child(-n + 50),
-.problem-generated-question:nth-child(n + 51):nth-child(-n + 55),
-.problem-generated-question:nth-child(n + 56):nth-child(-n + 60) {
+.problem-generated-question:nth-child(n + 6) {
   border-top: 3px solid #20384f;
 }
 
 
 /* =========================================================
    問題番号
-   → 枠内
-   → 直下に細い横線
+   番号の下に細い横線
 ========================================================= */
 
 .problem-generated-question-number {
   width: 100%;
-  box-sizing: border-box;
 
   min-height: 30px;
+
+  box-sizing: border-box;
 
   padding: 5px 8px;
 
@@ -525,8 +506,12 @@
 
   font-size: 15px;
   font-weight: 900;
+
   line-height: 1.2;
 
+  text-align: center;
+
+  /* 番号と計算部分の境界 */
   border-bottom: 1px solid #20384f;
 }
 
@@ -597,10 +582,7 @@
 
 
 /* =========================================================
-   答え欄
-   → 計算の直下
-   → 少し大きめ
-   → 実線のみ
+   答え記入欄
 ========================================================= */
 
 .problem-generated-answer-line {
@@ -608,9 +590,9 @@
 
   margin-top: 8px;
 
+  /* 計算部分と答え欄の境界 */
   border-top: 1px solid #20384f;
 }
-
 
 /* =========================================================
    印刷
