@@ -314,310 +314,393 @@
 }
 
 /* =========================================================
-   生成した見取算 問題用紙
-   全珠連の見取算問題用紙を基準にしたレイアウト
+   生成したみとり算問題用紙
 ========================================================= */
 
 #problemGeneratedSheet {
-  width: 100%;
-  margin-top: 28px;
-  padding: 24px 16px 18px;
+  min-height: 100vh;
+  padding: 24px 20px 40px;
   box-sizing: border-box;
-
-  background: #ffffff;
-  border: 1px solid #c8c8c8;
+  background: #eef7fc;
 }
 
+.problem-generated-inner {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.problem-generated-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.problem-generated-action {
+  min-height: 44px;
+  padding: 9px 20px;
+  background: #ffffff;
+  border: 2px solid #1683e6;
+  border-radius: 9px;
+  color: #0758a8;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.problem-generated-action.primary {
+  background: #1683e6;
+  color: #ffffff;
+}
+
+
 /* =========================================================
-   問題用紙ヘッダー
+   問題用紙
+========================================================= */
+
+.problem-generated-paper {
+  background: #ffffff;
+  padding: 28px;
+  border: 1px solid #c9d7e3;
+  box-shadow: 0 4px 14px rgba(29, 76, 112, 0.10);
+}
+
+
+/* =========================================================
+   ヘッダー
 ========================================================= */
 
 .problem-generated-header {
-  margin-bottom: 18px;
-  text-align: center;
-}
-
-.problem-generated-header h2 {
-  margin: 0 0 10px;
-
-  color: #111111;
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: 0.28em;
-}
-
-.problem-generated-info {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 22px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #20384f;
+}
 
-  color: #111111;
+.problem-generated-header h1 {
+  margin: 0 0 5px;
+  color: #102f58;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.problem-generated-grade,
+.problem-generated-round,
+.problem-generated-header-right {
+  color: #20384f;
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.7;
 }
 
-.problem-generated-free-text {
-  margin: 12px 0 0;
+.problem-generated-score {
+  margin-top: 8px;
+  min-width: 120px;
+  padding: 6px 10px;
+  border: 1px solid #8b9aaa;
+  text-align: left;
+}
 
-  color: #111111;
+.problem-generated-note {
+  margin: 14px 0 18px;
+  color: #20384f;
   font-size: 14px;
-  line-height: 1.6;
+  font-weight: 600;
 }
+
 
 /* =========================================================
    問題一覧
+   5問 × 複数段
 ========================================================= */
 
-.problem-generated-list {
+.problem-generated-grid {
   display: grid;
 
-  grid-template-columns:
-    repeat(5, minmax(0, 1fr));
+  /* 1段5問 */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 
-  gap: 16px 10px;
+  /* 横方向は隙間なし */
+  column-gap: 0;
 
-  align-items: stretch;
+  /* 段と段の間だけ空ける */
+  row-gap: 14px;
 }
 
+
 /* =========================================================
-   1問分
+   各問題
 ========================================================= */
 
-.problem-generated-item {
-  position: relative;
+.problem-generated-question {
+  display: flex;
+  flex-direction: column;
 
-  min-height: 225px;
-
-  padding: 27px 8px 34px;
+  min-height: 205px;
 
   box-sizing: border-box;
 
+  padding: 0;
+
   background: #ffffff;
 
-  border: 1px solid #777777;
+  /* 基本は細線 */
+  border-top: 1px solid #20384f;
+  border-bottom: 1px solid #20384f;
+  border-right: 1px solid #20384f;
 
-  border-radius: 0;
-
-  text-align: center;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
+
+
+/* ---------------------------------------------------------
+   各段の左端
+   → 外周なので太線
+--------------------------------------------------------- */
+
+.problem-generated-question:nth-child(5n + 1) {
+  border-left: 3px solid #20384f;
+}
+
+
+/* ---------------------------------------------------------
+   各段の右端
+   → 外周なので太線
+--------------------------------------------------------- */
+
+.problem-generated-question:nth-child(5n) {
+  border-right: 3px solid #20384f;
+}
+
+
+/* ---------------------------------------------------------
+   各段の上端
+   → 外周なので太線
+--------------------------------------------------------- */
+
+.problem-generated-question:nth-child(-n + 5) {
+  border-top: 3px solid #20384f;
+}
+
+
+/* ---------------------------------------------------------
+   2段目以降の上端
+   → 前の段との間に隙間があるので太線
+--------------------------------------------------------- */
+
+.problem-generated-question:nth-child(n + 6):nth-child(-n + 10),
+.problem-generated-question:nth-child(n + 11):nth-child(-n + 15),
+.problem-generated-question:nth-child(n + 16):nth-child(-n + 20),
+.problem-generated-question:nth-child(n + 21):nth-child(-n + 25),
+.problem-generated-question:nth-child(n + 26):nth-child(-n + 30),
+.problem-generated-question:nth-child(n + 31):nth-child(-n + 35),
+.problem-generated-question:nth-child(n + 36):nth-child(-n + 40),
+.problem-generated-question:nth-child(n + 41):nth-child(-n + 45),
+.problem-generated-question:nth-child(n + 46):nth-child(-n + 50),
+.problem-generated-question:nth-child(n + 51):nth-child(-n + 55),
+.problem-generated-question:nth-child(n + 56):nth-child(-n + 60) {
+  border-top: 3px solid #20384f;
+}
+
 
 /* =========================================================
    問題番号
+   → 枠内
+   → 直下に細い横線
 ========================================================= */
 
-.problem-generated-number {
-  position: absolute;
-
-  top: 3px;
-  left: 0;
-
+.problem-generated-question-number {
   width: 100%;
+  box-sizing: border-box;
 
-  color: #111111;
+  min-height: 30px;
 
-  font-size: 13px;
-  font-weight: 700;
+  padding: 5px 8px;
 
-  text-align: center;
+  color: #20384f;
+
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.2;
+
+  border-bottom: 1px solid #20384f;
 }
+
 
 /* =========================================================
-   数字
+   計算部分
 ========================================================= */
 
-.problem-generated-numbers {
-  display: flex;
+.problem-generated-number-list {
+  flex: 1;
 
-  flex-direction: column;
+  min-width: 0;
 
-  align-items: stretch;
-
-  gap: 0;
-
-  width: 100%;
+  padding: 8px 8px 0;
 }
+
 
 /* =========================================================
    数字1行
 ========================================================= */
 
-.problem-generated-row {
-  display: grid;
+.problem-generated-number {
+  display: flex;
 
-  grid-template-columns: 22px 1fr;
-
-  align-items: center;
+  justify-content: flex-end;
+  align-items: baseline;
 
   min-height: 22px;
 
-  color: #111111;
+  color: #111827;
 
-  font-size: 18px;
-  font-weight: 500;
+  font-family:
+    "Yu Gothic",
+    "Meiryo",
+    sans-serif;
 
-  line-height: 1.05;
+  font-size: 20px;
+  font-weight: 700;
 
-  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
 }
 
+
 /* =========================================================
-   ＋／－
+   マイナス記号
+   加算には表示しない
+   減算だけ表示
 ========================================================= */
 
 .problem-generated-operation {
-  display: block;
-
-  color: #111111;
-
-  font-size: 16px;
-  font-weight: 500;
+  width: 18px;
 
   text-align: center;
 }
 
+
 /* =========================================================
-   数字本体
+   数字
 ========================================================= */
 
 .problem-generated-value {
-  display: block;
-
-  padding-right: 3px;
-
-  color: #111111;
-
-  font-size: 18px;
-  font-weight: 500;
-
-  line-height: 1.05;
+  min-width: 150px;
 
   text-align: right;
 
-  white-space: nowrap;
-
-  letter-spacing: 0.01em;
+  letter-spacing: 0.8px;
 }
 
+
 /* =========================================================
-   答え記入欄
+   答え欄
+   → 計算の直下
+   → 少し大きめ
+   → 実線のみ
 ========================================================= */
 
-.problem-generated-answer {
-  position: absolute;
+.problem-generated-answer-line {
+  min-height: 34px;
 
-  left: 0;
-  right: 0;
-  bottom: 0;
+  margin-top: 8px;
 
-  height: 27px;
-
-  box-sizing: border-box;
-
-  border-top: 1px solid #aaaaaa;
-
-  color: transparent;
-
-  font-size: 0;
-
-  background: #ffffff;
+  border-top: 1px solid #20384f;
 }
+
 
 /* =========================================================
-   画面幅に応じた問題数配置
-========================================================= */
-
-/* 30問など、通常のPC表示 */
-@media (min-width: 1000px) {
-
-  .problem-generated-list {
-    grid-template-columns:
-      repeat(5, minmax(0, 1fr));
-  }
-
-}
-
-/* タブレット */
-@media (max-width: 999px) {
-
-  .problem-generated-list {
-    grid-template-columns:
-      repeat(4, minmax(0, 1fr));
-  }
-
-  .problem-generated-item {
-    min-height: 220px;
-  }
-
-}
-
-/* スマートフォン */
-@media (max-width: 700px) {
-
-  #problemGeneratedSheet {
-    padding: 18px 8px 14px;
-  }
-
-  .problem-generated-list {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
-
-    gap: 10px 6px;
-  }
-
-  .problem-generated-item {
-    min-height: 210px;
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-
-  .problem-generated-row {
-    grid-template-columns: 18px 1fr;
-    min-height: 21px;
-  }
-
-  .problem-generated-operation,
-  .problem-generated-value {
-    font-size: 15px;
-  }
-
-}
-
-/* =========================================================
-   印刷用
+   印刷
 ========================================================= */
 
 @media print {
 
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+
+  body {
+    background: #ffffff !important;
+  }
+
   #problemGeneratedSheet {
-    margin: 0;
-    padding: 8mm 6mm;
+    min-height: auto;
+    padding: 0;
+    background: #ffffff;
+  }
 
+  .problem-generated-inner {
+    max-width: none;
+  }
+
+  .problem-generated-paper {
+    padding: 0;
     border: none;
+    box-shadow: none;
   }
 
-  .problem-generated-list {
-    gap: 4mm 2mm;
+  .problem-generated-actions {
+    display: none !important;
   }
 
-  .problem-generated-item {
-    min-height: 54mm;
+  .problem-generated-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
 
-    break-inside: avoid;
+    column-gap: 0;
+    row-gap: 10px;
   }
 
-  .problem-generated-row {
-    min-height: 5mm;
+  .problem-generated-question {
+    min-height: 175px;
   }
 
-  .problem-generated-operation,
-  .problem-generated-value {
-    font-size: 12pt;
+  .problem-generated-question-number {
+    min-height: 27px;
+
+    padding: 4px 6px;
+
+    font-size: 14px;
+  }
+
+  .problem-generated-number-list {
+    padding: 6px 6px 0;
   }
 
   .problem-generated-number {
-    font-size: 9pt;
+    font-size: 17px;
   }
 
+  .problem-generated-value {
+    min-width: 105px;
+  }
+
+  .problem-generated-answer-line {
+    min-height: 38px;
+
+    margin-top: 7px;
+  }
+}
+
+
+/* =========================================================
+   画面表示
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .problem-generated-paper {
+    padding: 18px;
+  }
+
+  .problem-generated-number {
+    font-size: 17px;
+  }
+
+  .problem-generated-value {
+    min-width: 90px;
+  }
 }
