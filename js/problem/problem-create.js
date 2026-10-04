@@ -1968,7 +1968,7 @@ function calculateMitoriColumns(problems, problemList) {
     problem.numbers.forEach(value => {
 
       const displayValue =
-        Math.abs(value).toLocaleString("en-US");
+        value.toLocaleString("en-US");
 
       const valueWidth =
         context.measureText(displayValue).width;
