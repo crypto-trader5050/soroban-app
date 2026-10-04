@@ -1899,6 +1899,126 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+/* =====================================================
+   見取算 問題用紙の列数を自動決定
+===================================================== */
+
+function calculateMitoriColumns(problems, problemList) {
+
+  if (!problems.length) {
+    return 1;
+  }
+
+  /*
+   * 数字の横幅を取得
+   * Soloburnの「0」を基準にする
+   */
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  context.font = '18px "Soloburn", sans-serif';
+
+  const digitWidth =
+    context.measureText("0").width;
+
+  /*
+   * 問題の最大桁数を調べる
+   */
+  let maxDigits = 1;
+
+  problems.forEach(problem => {
+
+    problem.numbers.forEach(value => {
+
+      const digits =
+        value.toString().length;
+
+      maxDigits =
+        Math.max(maxDigits, digits);
+
+    });
+
+  });
+
+  /*
+   * 「数字の1の左側に最低4桁分」
+   *
+   * 例：5桁
+   *   12345
+   *
+   *     左側4桁分
+   *
+   * マイナスの場合
+   *   −12345
+   *
+   *     左側3桁分 + −
+   *
+   * つまり問題全体として
+   * 「最大桁数 + 4桁分」
+   * の横幅を最低限必要とする。
+   */
+  const requiredWidth =
+    (maxDigits + 4) * digitWidth;
+
+  /*
+   * 問題一覧の実際の横幅
+   */
+  const availableWidth =
+    problemList.clientWidth;
+
+  /*
+   * まず「幅に収まる最大列数」を求める
+   */
+  let maxColumns =
+    Math.floor(
+      availableWidth / requiredWidth
+    );
+
+  /*
+   * 最低1列
+   */
+  maxColumns =
+    Math.max(1, maxColumns);
+
+  /*
+   * 総問題数を完全に割り切れる列数を優先する。
+   *
+   * これにより最後の行が空にならない。
+   */
+  const total =
+    problems.length;
+
+  const candidates = [];
+
+  for (
+    let columns = 1;
+    columns <= Math.min(maxColumns, total);
+    columns++
+  ) {
+
+    if (total % columns === 0) {
+      candidates.push(columns);
+    }
+
+  }
+
+  /*
+   * 一番多くの問題を横に並べられる
+   * 列数を採用する。
+   */
+  if (candidates.length) {
+    return Math.max(...candidates);
+  }
+
+  /*
+   * 完全に割り切れる列数がない場合。
+   *
+   * その場合は、最後の行ができるだけ
+   * 空かない列数を使用する。
+   */
+  return maxColumns;
+}
+
   /* =====================================================
      生成した見取算問題を画面に表示
   ===================================================== */
@@ -2145,6 +2265,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    /*
+    * 桁数と総問題数から列数を自動決定
+    */
+    const columns =
+      calculateMitoriColumns(
+        problems,
+        problemList
+      );
+
+    /*
+    * CSSの5列固定を上書き
+    */
+    problemList.style.gridTemplateColumns =
+      `repeat(${columns}, minmax(0, 1fr))`;
 
     sheet.appendChild(problemList);
 
