@@ -2576,13 +2576,61 @@ function calculateMitoriRows(problems, problemList) {
 
     rows.forEach(row => {
 
+      /* -------------------------------------------------
+        この行の中で一番口数が多い問題を調べる
+      ------------------------------------------------- */
+
+      let maxMouthCount = 0;
+
+      row.forEach(index => {
+
+        const problem =
+          problems[index];
+
+        maxMouthCount =
+          Math.max(
+            maxMouthCount,
+            problem.numbers.length
+          );
+      });
+
+
+      /* -------------------------------------------------
+        この行全体の高さを決める
+
+        上部35px
+        ＋ 数字1口あたり22px
+        ＋ 下部42px
+
+        答え欄は position:absolute なので
+        一番下に固定される
+      ------------------------------------------------- */
+
+      const rowHeight =
+        35
+        + (
+            maxMouthCount * 22
+          )
+        + 42;
+
+
+      /* -------------------------------------------------
+        この行の問題数に合わせて横幅を決める
+      ------------------------------------------------- */
+
       const itemWidth =
         availableWidth / row.length;
+
+
+      /* -------------------------------------------------
+        行内の全問題を同じ高さにする
+      ------------------------------------------------- */
 
       row.forEach(index => {
 
         const item =
           problemItems[index];
+
 
         item.style.flex =
           `0 0 ${itemWidth}px`;
@@ -2593,11 +2641,20 @@ function calculateMitoriRows(problems, problemList) {
         item.style.maxWidth =
           `${itemWidth}px`;
 
+        item.style.height =
+          `${rowHeight}px`;
+
+        item.style.minHeight =
+          `${rowHeight}px`;
+
         item.style.boxSizing =
           "border-box";
 
+
         problemList.appendChild(item);
+
       });
+
     });
 
 
