@@ -1970,7 +1970,10 @@ function calculateMitoriColumns(problems, problemList) {
     (maxDigits + 4) * digitWidth;
 
   const problemWidth =
-    numberWidth + 90;
+    numberWidth
+    + digitWidth       // マイナス記号分
+    + 32               // 左右の余白・罫線
+    + 20;              // 安全余白
 
 
   /*
