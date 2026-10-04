@@ -1900,13 +1900,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 /* =====================================================
-   見取算 問題用紙の列数を自動決定
+   見取算 問題用紙の行数・配置を自動決定
 ===================================================== */
 
 function calculateMitoriRows(problems, problemList) {
+
   if (!problems.length) {
     return [];
   }
+
+
+  /* ---------------------------------------------------
+     Soloburnの数字幅を測定
+  --------------------------------------------------- */
 
   const canvas =
     document.createElement("canvas");
@@ -1920,11 +1926,19 @@ function calculateMitoriRows(problems, problemList) {
   const digitWidth =
     context.measureText("0").width;
 
-  // 左側に最低4桁分を確保
+
+  /* ---------------------------------------------------
+     左側4桁分の予約幅
+  --------------------------------------------------- */
+
   const leftReserveWidth =
     digitWidth * 4;
 
-  // 各問題に必要な幅を計算
+
+  /* ---------------------------------------------------
+     各問題に必要な幅を計算
+  --------------------------------------------------- */
+
   const problemWidths =
     problems.map(problem => {
 
@@ -1954,67 +1968,319 @@ function calculateMitoriRows(problems, problemList) {
       );
     });
 
+
+  /* ---------------------------------------------------
+     問題用紙の実際の横幅
+  --------------------------------------------------- */
+
   const availableWidth =
     problemList.clientWidth;
 
-  const rows = [];
 
-  let currentRow = [];
-  let currentMaxWidth = 0;
+  /* ---------------------------------------------------
+     1行に入れられるか判定
+  --------------------------------------------------- */
 
-  problemWidths.forEach(
-    (requiredWidth, index) => {
+  function canFit(start, end) {
 
-      // 新しい行
-      if (currentRow.length === 0) {
+    const count =
+      end - start + 1;
 
-        currentRow = [index];
-        currentMaxWidth =
-          requiredWidth;
+    let maxWidth = 0;
 
+    for (
+      let i = start;
+      i <= end;
+      i++
+    ) {
+
+      maxWidth =
+        Math.max(
+          maxWidth,
+          problemWidths[i]
+        );
+    }
+
+    const columnWidth =
+      availableWidth / count;
+
+    return columnWidth >= maxWidth;
+  }
+
+
+  /* ---------------------------------------------------
+     まず「最低何行必要か」を求める
+
+     左から順番に、
+     入るだけ入れていった場合の最小行数
+  --------------------------------------------------- */
+
+  let minimumRows = 1;
+
+  while (true) {
+
+    const testRows = [];
+
+    let start = 0;
+
+    while (start < problems.length) {
+
+      let end = start;
+
+      while (
+        end + 1 < problems.length &&
+        canFit(start, end + 1)
+      ) {
+
+        end++;
+      }
+
+      testRows.push({
+        start,
+        end
+      });
+
+      start = end + 1;
+    }
+
+    minimumRows =
+      testRows.length;
+
+    break;
+  }
+
+
+  /* ---------------------------------------------------
+     最小行数の中で、
+     「各行の問題数ができるだけ均等」
+     になる組み合わせを探す
+  --------------------------------------------------- */
+
+  let bestRows = null;
+
+  let bestMaxCount =
+    Infinity;
+
+  let bestMinCount =
+    -Infinity;
+
+  let bestUnusedWidth =
+    Infinity;
+
+
+  function search(
+    rowIndex,
+    startIndex,
+    rows
+  ) {
+
+    /* -----------------------------------------------
+       最後の行
+    ------------------------------------------------ */
+
+    if (
+      rowIndex === minimumRows - 1
+    ) {
+
+      const endIndex =
+        problems.length - 1;
+
+      if (
+        startIndex > endIndex
+        || !canFit(
+          startIndex,
+          endIndex
+        )
+      ) {
         return;
       }
 
-      const newMaxWidth =
-        Math.max(
-          currentMaxWidth,
-          requiredWidth
+
+      const finalRows =
+        [
+          ...rows,
+          {
+            start: startIndex,
+            end: endIndex
+          }
+        ];
+
+
+      const counts =
+        finalRows.map(row =>
+          row.end - row.start + 1
         );
 
-      const newCount =
-        currentRow.length + 1;
 
-      const columnWidth =
-        availableWidth / newCount;
+      const maxCount =
+        Math.max(...counts);
 
-      // この問題を同じ行に入れられるか
-      if (columnWidth >= newMaxWidth) {
+      const minCount =
+        Math.min(...counts);
 
-        currentRow.push(index);
 
-        currentMaxWidth =
-          newMaxWidth;
+      /* ---------------------------------------------
+         各行の余白合計
+      --------------------------------------------- */
 
-      } else {
+      let unusedWidth = 0;
 
-        // 今の行を確定
-        rows.push(currentRow);
+      finalRows.forEach(row => {
 
-        // 次の行を開始
-        currentRow = [index];
+        const count =
+          row.end - row.start + 1;
 
-        currentMaxWidth =
-          requiredWidth;
+        let maxWidth = 0;
+
+        for (
+          let i = row.start;
+          i <= row.end;
+          i++
+        ) {
+
+          maxWidth =
+            Math.max(
+              maxWidth,
+              problemWidths[i]
+            );
+        }
+
+        unusedWidth +=
+          availableWidth
+          - (
+              maxWidth * count
+            );
+      });
+
+
+      /* ---------------------------------------------
+         より良い配置か判定
+
+         ① 最大問題数を小さく
+         ② 最小問題数を大きく
+         ③ 余白を小さく
+      --------------------------------------------- */
+
+      if (
+        maxCount < bestMaxCount
+        ||
+        (
+          maxCount === bestMaxCount
+          &&
+          minCount > bestMinCount
+        )
+        ||
+        (
+          maxCount === bestMaxCount
+          &&
+          minCount === bestMinCount
+          &&
+          unusedWidth < bestUnusedWidth
+        )
+      ) {
+
+        bestRows =
+          finalRows;
+
+        bestMaxCount =
+          maxCount;
+
+        bestMinCount =
+          minCount;
+
+        bestUnusedWidth =
+          unusedWidth;
       }
-    }
-  );
 
-  // 最後の行
-  if (currentRow.length) {
-    rows.push(currentRow);
+      return;
+    }
+
+
+    /* -----------------------------------------------
+       現在の行に入れる問題数を試す
+
+       最後の行を残す必要があるため、
+       最低1問は残す
+    ------------------------------------------------ */
+
+    const remainingRows =
+      minimumRows - rowIndex - 1;
+
+    const maxEnd =
+      problems.length
+      - remainingRows
+      - 1;
+
+
+    for (
+      let endIndex = startIndex;
+      endIndex <= maxEnd;
+      endIndex++
+    ) {
+
+      if (
+        !canFit(
+          startIndex,
+          endIndex
+        )
+      ) {
+        break;
+      }
+
+
+      search(
+        rowIndex + 1,
+        endIndex + 1,
+        [
+          ...rows,
+          {
+            start: startIndex,
+            end: endIndex
+          }
+        ]
+      );
+    }
   }
 
-  return rows;
+
+  search(
+    0,
+    0,
+    []
+  );
+
+
+  /* ---------------------------------------------------
+     万一見つからなかった場合
+  --------------------------------------------------- */
+
+  if (!bestRows) {
+
+    return problems.map(
+      (_, index) => [index]
+    );
+  }
+
+
+  /* ---------------------------------------------------
+     実際の問題番号配列に変換
+  --------------------------------------------------- */
+
+  return bestRows.map(row => {
+
+    const indexes = [];
+
+    for (
+      let i = row.start;
+      i <= row.end;
+      i++
+    ) {
+
+      indexes.push(i);
+    }
+
+    return indexes;
+  });
 }
 
   /* =====================================================
