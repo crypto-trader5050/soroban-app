@@ -2091,16 +2091,10 @@ document.addEventListener("DOMContentLoaded", () => {
            * 「＋」を表示しない
            */
 
-          if (index === 0) {
-
-            operation.textContent =
-              "";
-
+          if (problem.operations[index] === "+") {
+            operation.textContent = "";
           } else {
-
-            operation.textContent =
-              problem.operations[index];
-
+            operation.textContent = "−";
           }
 
 
@@ -2111,7 +2105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "problem-generated-value";
 
           valueElement.textContent =
-            value.toString();
+            value.toLocaleString("en-US");
 
 
           row.appendChild(operation);
