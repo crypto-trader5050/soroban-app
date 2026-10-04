@@ -1909,34 +1909,10 @@ function calculateMitoriColumns(problems, problemList) {
     return 1;
   }
 
-  /*
-   * ---------------------------------------------------
-   * 最大桁数を調べる
-   * ---------------------------------------------------
-   */
-
-  let maxDigits = 1;
-
-  problems.forEach(problem => {
-
-    problem.numbers.forEach(value => {
-
-      const digits =
-        Math.abs(value)
-          .toString()
-          .length;
-
-      maxDigits =
-        Math.max(maxDigits, digits);
-
-    });
-
-  });
-
 
   /*
    * ---------------------------------------------------
-   * 数字の幅を測定
+   * Soloburnの数字幅を測定
    * ---------------------------------------------------
    */
 
@@ -1955,33 +1931,81 @@ function calculateMitoriColumns(problems, problemList) {
 
   /*
    * ---------------------------------------------------
-   * 1問に必要な最低幅
+   * 4桁分の左側予約幅
    *
-   * 最大桁数
-   * ＋ 左側4桁分の余白
-   * ＋ 問題番号・罫線・左右余白など
+   * 正数：
    *
-   * ここでは数字そのものだけでなく、
-   * 「問題1問を置くための実用的な幅」を確保する。
+   *     12345
+   * ←4桁分→
+   *
+   * 負数：
+   *
+   *    −12345
+   * ←3桁→ −
+   *
+   * 「−」も4桁分の予約幅の中に含める。
    * ---------------------------------------------------
    */
 
-  const numberWidth =
-    (maxDigits + 4) * digitWidth;
+  const leftReserveWidth =
+    digitWidth * 4;
 
-  const problemWidth =
-    numberWidth
-    + digitWidth       // マイナス記号分
-    + 32               // 左右の余白・罫線
-    + 20;              // 安全余白
+
+  /*
+   * ---------------------------------------------------
+   * 実際に表示される数字の最大幅を測定
+   *
+   * 画面では toLocaleString("en-US") を使って
+   * カンマ付きで表示しているため、
+   * その表示状態の幅を測る。
+   * ---------------------------------------------------
+   */
+
+  let maxValueWidth = 0;
+
+  problems.forEach(problem => {
+
+    problem.numbers.forEach(value => {
+
+      const displayValue =
+        Math.abs(value).toLocaleString("en-US");
+
+      const valueWidth =
+        context.measureText(displayValue).width;
+
+      maxValueWidth =
+        Math.max(
+          maxValueWidth,
+          valueWidth
+        );
+
+    });
+
+  });
+
+
+  /*
+   * ---------------------------------------------------
+   * 1問に必要な幅
+   *
+   * 左側4桁分
+   * ＋ 実際の数字幅
+   * ＋ 左右の安全余白
+   *
+   * 「−」は左側4桁分の予約幅に含めるので、
+   * ここでさらに1桁分を追加しない。
+   * ---------------------------------------------------
+   */
+
+  const requiredProblemWidth =
+    leftReserveWidth
+    + maxValueWidth
+    + 24;
 
 
   /*
    * ---------------------------------------------------
    * 問題一覧の実際の横幅
-   *
-   * problemList はすでに sheet に追加されているので
-   * clientWidth が取得できる。
    * ---------------------------------------------------
    */
 
@@ -1991,64 +2015,85 @@ function calculateMitoriColumns(problems, problemList) {
 
   /*
    * ---------------------------------------------------
-   * 横に入る最大列数を計算
-   * ---------------------------------------------------
-   */
-
-  let maxColumns =
-    Math.floor(
-      availableWidth / problemWidth
-    );
-
-
-  /*
-   * 最低1列
-   */
-
-  maxColumns =
-    Math.max(1, maxColumns);
-
-
-  /*
-   * 総問題数を超えない
-   */
-
-  maxColumns =
-    Math.min(
-      maxColumns,
-      problems.length
-    );
-
-
-  /*
-   * ---------------------------------------------------
-   * 最後の行を空けない
+   * 問題数を完全に割り切れる列数だけ候補にする。
    *
-   * 問題数を完全に割り切れる列数を優先する。
+   * これにより最後の行を空けない。
    * ---------------------------------------------------
    */
 
   const total =
     problems.length;
 
+  const candidates = [];
+
+
+  /*
+   * 最大で「総問題数」列まで候補にする。
+   */
+
   for (
-    let columns = maxColumns;
-    columns >= 1;
-    columns--
+    let columns = 1;
+    columns <= total;
+    columns++
   ) {
 
-    if (total % columns === 0) {
-      return columns;
+    if (total % columns !== 0) {
+      continue;
+    }
+
+
+    /*
+     * 1列あたりに実際に使える幅
+     */
+
+    const columnWidth =
+      availableWidth / columns;
+
+
+    /*
+     * この列数で問題が入るか確認
+     */
+
+    if (
+      columnWidth >= requiredProblemWidth
+    ) {
+
+      candidates.push(columns);
+
     }
 
   }
 
 
   /*
-   * 通常はここには来ない。
+   * ---------------------------------------------------
+   * 入る中で最大の列数を採用
+   *
+   * つまり、
+   *
+   * 1桁 → 多く並べる
+   * 5桁 → 少なくなる
+   * 8桁 → さらに少なくなる
+   * 10桁 → さらに少なくなる
+   *
+   * という自動レイアウトになる。
+   * ---------------------------------------------------
    */
 
-  return maxColumns;
+  if (candidates.length) {
+
+    return Math.max(...candidates);
+
+  }
+
+
+  /*
+   * ---------------------------------------------------
+   * どうしても1問の幅が大きすぎる場合は1列
+   * ---------------------------------------------------
+   */
+
+  return 1;
 
 }
 
