@@ -621,9 +621,9 @@
 ========================================================= */
 
 .problem-generated-row {
-  display: grid;
+  display: flex;
 
-  grid-template-columns: 22px 1fr;
+  justify-content: flex-end;
 
   align-items: center;
 
@@ -778,8 +778,6 @@
   }
 
   .problem-generated-row {
-    grid-template-columns: 18px 1fr;
-
     min-height: 21px;
   }
 
