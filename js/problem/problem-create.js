@@ -1903,18 +1903,10 @@ document.addEventListener("DOMContentLoaded", () => {
    見取算 問題用紙の列数を自動決定
 ===================================================== */
 
-function calculateMitoriColumns(problems, problemList) {
-
+function calculateMitoriRows(problems, problemList) {
   if (!problems.length) {
-    return 1;
+    return [];
   }
-
-
-  /*
-   * ---------------------------------------------------
-   * Soloburnの数字幅を測定
-   * ---------------------------------------------------
-   */
 
   const canvas =
     document.createElement("canvas");
@@ -1928,173 +1920,101 @@ function calculateMitoriColumns(problems, problemList) {
   const digitWidth =
     context.measureText("0").width;
 
-
-  /*
-   * ---------------------------------------------------
-   * 4桁分の左側予約幅
-   *
-   * 正数：
-   *
-   *     12345
-   * ←4桁分→
-   *
-   * 負数：
-   *
-   *    −12345
-   * ←3桁→ −
-   *
-   * 「−」も4桁分の予約幅の中に含める。
-   * ---------------------------------------------------
-   */
-
+  // 左側に最低4桁分を確保
   const leftReserveWidth =
     digitWidth * 4;
 
+  // 各問題に必要な幅を計算
+  const problemWidths =
+    problems.map(problem => {
 
-  /*
-   * ---------------------------------------------------
-   * 実際に表示される数字の最大幅を測定
-   *
-   * 画面では toLocaleString("en-US") を使って
-   * カンマ付きで表示しているため、
-   * その表示状態の幅を測る。
-   * ---------------------------------------------------
-   */
+      let maxValueWidth = 0;
 
-  let maxValueWidth = 0;
+      problem.numbers.forEach(value => {
 
-  problems.forEach(problem => {
+        const displayValue =
+          value.toLocaleString("en-US");
 
-    problem.numbers.forEach(value => {
+        const valueWidth =
+          context.measureText(
+            displayValue
+          ).width;
 
-      const displayValue =
-        value.toLocaleString("en-US");
+        maxValueWidth =
+          Math.max(
+            maxValueWidth,
+            valueWidth
+          );
+      });
 
-      const valueWidth =
-        context.measureText(displayValue).width;
-
-      maxValueWidth =
-        Math.max(
-          maxValueWidth,
-          valueWidth
-        );
-
+      return (
+        leftReserveWidth
+        + maxValueWidth
+        + 24
+      );
     });
-
-  });
-
-
-  /*
-   * ---------------------------------------------------
-   * 1問に必要な幅
-   *
-   * 左側4桁分
-   * ＋ 実際の数字幅
-   * ＋ 左右の安全余白
-   *
-   * 「−」は左側4桁分の予約幅に含めるので、
-   * ここでさらに1桁分を追加しない。
-   * ---------------------------------------------------
-   */
-
-  const requiredProblemWidth =
-    leftReserveWidth
-    + maxValueWidth
-    + 24;
-
-
-  /*
-   * ---------------------------------------------------
-   * 問題一覧の実際の横幅
-   * ---------------------------------------------------
-   */
 
   const availableWidth =
     problemList.clientWidth;
 
+  const rows = [];
 
-  /*
-   * ---------------------------------------------------
-   * 問題数を完全に割り切れる列数だけ候補にする。
-   *
-   * これにより最後の行を空けない。
-   * ---------------------------------------------------
-   */
+  let currentRow = [];
+  let currentMaxWidth = 0;
 
-  const total =
-    problems.length;
+  problemWidths.forEach(
+    (requiredWidth, index) => {
 
-  const candidates = [];
+      // 新しい行
+      if (currentRow.length === 0) {
 
+        currentRow = [index];
+        currentMaxWidth =
+          requiredWidth;
 
-  /*
-   * 最大で「総問題数」列まで候補にする。
-   */
+        return;
+      }
 
-  for (
-    let columns = 1;
-    columns <= total;
-    columns++
-  ) {
+      const newMaxWidth =
+        Math.max(
+          currentMaxWidth,
+          requiredWidth
+        );
 
-    if (total % columns !== 0) {
-      continue;
+      const newCount =
+        currentRow.length + 1;
+
+      const columnWidth =
+        availableWidth / newCount;
+
+      // この問題を同じ行に入れられるか
+      if (columnWidth >= newMaxWidth) {
+
+        currentRow.push(index);
+
+        currentMaxWidth =
+          newMaxWidth;
+
+      } else {
+
+        // 今の行を確定
+        rows.push(currentRow);
+
+        // 次の行を開始
+        currentRow = [index];
+
+        currentMaxWidth =
+          requiredWidth;
+      }
     }
+  );
 
-
-    /*
-     * 1列あたりに実際に使える幅
-     */
-
-    const columnWidth =
-      availableWidth / columns;
-
-
-    /*
-     * この列数で問題が入るか確認
-     */
-
-    if (
-      columnWidth >= requiredProblemWidth
-    ) {
-
-      candidates.push(columns);
-
-    }
-
+  // 最後の行
+  if (currentRow.length) {
+    rows.push(currentRow);
   }
 
-
-  /*
-   * ---------------------------------------------------
-   * 入る中で最大の列数を採用
-   *
-   * つまり、
-   *
-   * 1桁 → 多く並べる
-   * 5桁 → 少なくなる
-   * 8桁 → さらに少なくなる
-   * 10桁 → さらに少なくなる
-   *
-   * という自動レイアウトになる。
-   * ---------------------------------------------------
-   */
-
-  if (candidates.length) {
-
-    return Math.max(...candidates);
-
-  }
-
-
-  /*
-   * ---------------------------------------------------
-   * どうしても1問の幅が大きすぎる場合は1列
-   * ---------------------------------------------------
-   */
-
-  return 1;
-
+  return rows;
 }
 
   /* =====================================================
@@ -2232,6 +2152,7 @@ function calculateMitoriColumns(problems, problemList) {
     problemList.className =
       "problem-generated-list";
 
+    const problemItems = [];
 
     problems.forEach(problem => {
 
@@ -2339,7 +2260,7 @@ function calculateMitoriColumns(problems, problemList) {
       item.appendChild(answer);
 
 
-      problemList.appendChild(item);
+      problemItems.push(item);
 
     });
 
@@ -2372,17 +2293,46 @@ function calculateMitoriColumns(problems, problemList) {
     * 問題用紙が画面に追加された後で
     * 桁数と総問題数から列数を自動決定
     */
-    const columns =
-      calculateMitoriColumns(
+    problemList.style.display = "flex";
+    problemList.style.flexWrap = "wrap";
+    problemList.style.columnGap = "0";
+    problemList.style.rowGap = "14px";
+    problemList.style.alignItems = "stretch";
+
+    const rows =
+      calculateMitoriRows(
         problems,
         problemList
       );
 
-    /*
-    * CSSの5列固定を上書き
-    */
-    problemList.style.gridTemplateColumns =
-      `repeat(${columns}, minmax(0, 1fr))`;
+    const availableWidth =
+      problemList.clientWidth;
+
+    rows.forEach(row => {
+
+      const itemWidth =
+        availableWidth / row.length;
+
+      row.forEach(index => {
+
+        const item =
+          problemItems[index];
+
+        item.style.flex =
+          `0 0 ${itemWidth}px`;
+
+        item.style.width =
+          `${itemWidth}px`;
+
+        item.style.maxWidth =
+          `${itemWidth}px`;
+
+        item.style.boxSizing =
+          "border-box";
+
+        problemList.appendChild(item);
+      });
+    });
 
 
     /*
