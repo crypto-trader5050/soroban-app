@@ -422,149 +422,24 @@
 }
 
 /* =========================================================
-   左端
-   1列目だけ左側を太線
+   行ごとの外枠
+   実際の行構成はJavaScriptで決定
 ========================================================= */
 
-.problem-generated-item:nth-child(5n + 1) {
+.problem-generated-item.mitori-row-top {
+  border-top: 3px solid #20384f;
+}
+
+.problem-generated-item.mitori-row-bottom {
+  border-bottom: 3px solid #20384f;
+}
+
+.problem-generated-item.mitori-row-left {
   border-left: 3px solid #20384f;
 }
 
-/* =========================================================
-   右端
-   5列目だけ右側を太線
-========================================================= */
-
-.problem-generated-item:nth-child(5n) {
+.problem-generated-item.mitori-row-right {
   border-right: 3px solid #20384f;
-}
-
-/* =========================================================
-   各行の上側を太線
-========================================================= */
-
-/* 1行目 */
-.problem-generated-item:nth-child(-n + 5) {
-  border-top: 3px solid #20384f;
-}
-
-/* 2行目 */
-.problem-generated-item:nth-child(n + 6):nth-child(-n + 10) {
-  border-top: 3px solid #20384f;
-}
-
-/* 3行目 */
-.problem-generated-item:nth-child(n + 11):nth-child(-n + 15) {
-  border-top: 3px solid #20384f;
-}
-
-/* 4行目 */
-.problem-generated-item:nth-child(n + 16):nth-child(-n + 20) {
-  border-top: 3px solid #20384f;
-}
-
-/* 5行目 */
-.problem-generated-item:nth-child(n + 21):nth-child(-n + 25) {
-  border-top: 3px solid #20384f;
-}
-
-/* 6行目 */
-.problem-generated-item:nth-child(n + 26):nth-child(-n + 30) {
-  border-top: 3px solid #20384f;
-}
-
-/* 7行目 */
-.problem-generated-item:nth-child(n + 31):nth-child(-n + 35) {
-  border-top: 3px solid #20384f;
-}
-
-/* 8行目 */
-.problem-generated-item:nth-child(n + 36):nth-child(-n + 40) {
-  border-top: 3px solid #20384f;
-}
-
-/* 9行目 */
-.problem-generated-item:nth-child(n + 41):nth-child(-n + 45) {
-  border-top: 3px solid #20384f;
-}
-
-/* 10行目 */
-.problem-generated-item:nth-child(n + 46):nth-child(-n + 50) {
-  border-top: 3px solid #20384f;
-}
-
-/* 11行目 */
-.problem-generated-item:nth-child(n + 51):nth-child(-n + 55) {
-  border-top: 3px solid #20384f;
-}
-
-/* 12行目 */
-.problem-generated-item:nth-child(n + 56):nth-child(-n + 60) {
-  border-top: 3px solid #20384f;
-}
-
-/* =========================================================
-   各行の下側を太線
-========================================================= */
-
-/* 1行目 */
-.problem-generated-item:nth-child(n + 1):nth-child(-n + 5) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 2行目 */
-.problem-generated-item:nth-child(n + 6):nth-child(-n + 10) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 3行目 */
-.problem-generated-item:nth-child(n + 11):nth-child(-n + 15) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 4行目 */
-.problem-generated-item:nth-child(n + 16):nth-child(-n + 20) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 5行目 */
-.problem-generated-item:nth-child(n + 21):nth-child(-n + 25) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 6行目 */
-.problem-generated-item:nth-child(n + 26):nth-child(-n + 30) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 7行目 */
-.problem-generated-item:nth-child(n + 31):nth-child(-n + 35) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 8行目 */
-.problem-generated-item:nth-child(n + 36):nth-child(-n + 40) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 9行目 */
-.problem-generated-item:nth-child(n + 41):nth-child(-n + 45) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 10行目 */
-.problem-generated-item:nth-child(n + 46):nth-child(-n + 50) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 11行目 */
-.problem-generated-item:nth-child(n + 51):nth-child(-n + 55) {
-  border-bottom: 3px solid #20384f;
-}
-
-/* 12行目 */
-.problem-generated-item:nth-child(n + 56):nth-child(-n + 60) {
-  border-bottom: 3px solid #20384f;
 }
 
 /* =========================================================
