@@ -1910,20 +1910,11 @@ function calculateMitoriColumns(problems, problemList) {
   }
 
   /*
-   * 数字の横幅を取得
-   * Soloburnの「0」を基準にする
+   * ---------------------------------------------------
+   * 最大桁数を調べる
+   * ---------------------------------------------------
    */
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d");
 
-  context.font = '18px "Soloburn", sans-serif';
-
-  const digitWidth =
-    context.measureText("0").width;
-
-  /*
-   * 問題の最大桁数を調べる
-   */
   let maxDigits = 1;
 
   problems.forEach(problem => {
@@ -1931,7 +1922,9 @@ function calculateMitoriColumns(problems, problemList) {
     problem.numbers.forEach(value => {
 
       const digits =
-        value.toString().length;
+        Math.abs(value)
+          .toString()
+          .length;
 
       maxDigits =
         Math.max(maxDigits, digits);
@@ -1940,83 +1933,120 @@ function calculateMitoriColumns(problems, problemList) {
 
   });
 
-  /*
-   * 「数字の1の左側に最低4桁分」
-   *
-   * 例：5桁
-   *   12345
-   *
-   *     左側4桁分
-   *
-   * マイナスの場合
-   *   −12345
-   *
-   *     左側3桁分 + −
-   *
-   * つまり問題全体として
-   * 「最大桁数 + 4桁分」
-   * の横幅を最低限必要とする。
-   */
-  const requiredWidth =
-    (maxDigits + 4) * digitWidth;
 
   /*
-   * 問題一覧の実際の横幅
+   * ---------------------------------------------------
+   * 数字の幅を測定
+   * ---------------------------------------------------
    */
+
+  const canvas =
+    document.createElement("canvas");
+
+  const context =
+    canvas.getContext("2d");
+
+  context.font =
+    '18px "Soloburn", sans-serif';
+
+  const digitWidth =
+    context.measureText("0").width;
+
+
+  /*
+   * ---------------------------------------------------
+   * 1問に必要な最低幅
+   *
+   * 最大桁数
+   * ＋ 左側4桁分の余白
+   * ＋ 問題番号・罫線・左右余白など
+   *
+   * ここでは数字そのものだけでなく、
+   * 「問題1問を置くための実用的な幅」を確保する。
+   * ---------------------------------------------------
+   */
+
+  const numberWidth =
+    (maxDigits + 4) * digitWidth;
+
+  const problemWidth =
+    numberWidth + 90;
+
+
+  /*
+   * ---------------------------------------------------
+   * 問題一覧の実際の横幅
+   *
+   * problemList はすでに sheet に追加されているので
+   * clientWidth が取得できる。
+   * ---------------------------------------------------
+   */
+
   const availableWidth =
     problemList.clientWidth;
 
+
   /*
-   * まず「幅に収まる最大列数」を求める
+   * ---------------------------------------------------
+   * 横に入る最大列数を計算
+   * ---------------------------------------------------
    */
+
   let maxColumns =
     Math.floor(
-      availableWidth / requiredWidth
+      availableWidth / problemWidth
     );
+
 
   /*
    * 最低1列
    */
+
   maxColumns =
     Math.max(1, maxColumns);
 
+
   /*
-   * 総問題数を完全に割り切れる列数を優先する。
-   *
-   * これにより最後の行が空にならない。
+   * 総問題数を超えない
    */
+
+  maxColumns =
+    Math.min(
+      maxColumns,
+      problems.length
+    );
+
+
+  /*
+   * ---------------------------------------------------
+   * 最後の行を空けない
+   *
+   * 問題数を完全に割り切れる列数を優先する。
+   * ---------------------------------------------------
+   */
+
   const total =
     problems.length;
 
-  const candidates = [];
-
   for (
-    let columns = 1;
-    columns <= Math.min(maxColumns, total);
-    columns++
+    let columns = maxColumns;
+    columns >= 1;
+    columns--
   ) {
 
     if (total % columns === 0) {
-      candidates.push(columns);
+      return columns;
     }
 
   }
 
-  /*
-   * 一番多くの問題を横に並べられる
-   * 列数を採用する。
-   */
-  if (candidates.length) {
-    return Math.max(...candidates);
-  }
 
   /*
-   * 完全に割り切れる列数がない場合。
-   *
-   * その場合は、最後の行ができるだけ
-   * 空かない列数を使用する。
+   * 通常はここには来ない。
    */
+
   return maxColumns;
+
 }
 
   /* =====================================================
