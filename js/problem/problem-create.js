@@ -2574,7 +2574,7 @@ function calculateMitoriRows(problems, problemList) {
     const availableWidth =
       problemList.clientWidth;
 
-    rows.forEach(row => {
+    row.forEach((index, position) => {
 
       /* -------------------------------------------------
         この行の中で一番口数が多い問題を調べる
@@ -2650,6 +2650,22 @@ function calculateMitoriRows(problems, problemList) {
         item.style.boxSizing =
           "border-box";
 
+        item.classList.add(
+          "mitori-row-top",
+          "mitori-row-bottom"
+        );
+
+        if (position === 0) {
+          item.classList.add(
+            "mitori-row-left"
+          );
+        }
+
+        if (position === row.length - 1) {
+          item.classList.add(
+            "mitori-row-right"
+          );
+        }
 
         problemList.appendChild(item);
 
