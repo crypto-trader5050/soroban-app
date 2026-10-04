@@ -2265,23 +2265,7 @@ function calculateMitoriColumns(problems, problemList) {
 
     });
 
-    /*
-    * 桁数と総問題数から列数を自動決定
-    */
-    const columns =
-      calculateMitoriColumns(
-        problems,
-        problemList
-      );
-
-    /*
-    * CSSの5列固定を上書き
-    */
-    problemList.style.gridTemplateColumns =
-      `repeat(${columns}, minmax(0, 1fr))`;
-
     sheet.appendChild(problemList);
-
 
     /*
      * 画面へ追加
@@ -2305,6 +2289,22 @@ function calculateMitoriColumns(problems, problemList) {
       document.body.appendChild(sheet);
 
     }
+
+    /*
+    * 問題用紙が画面に追加された後で
+    * 桁数と総問題数から列数を自動決定
+    */
+    const columns =
+      calculateMitoriColumns(
+        problems,
+        problemList
+      );
+
+    /*
+    * CSSの5列固定を上書き
+    */
+    problemList.style.gridTemplateColumns =
+      `repeat(${columns}, minmax(0, 1fr))`;
 
 
     /*
