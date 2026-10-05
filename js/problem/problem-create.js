@@ -2574,7 +2574,7 @@ function calculateMitoriRows(problems, problemList) {
     const availableWidth =
       problemList.clientWidth;
 
-    row.forEach((index, position) => {
+    rows.forEach(row => {
 
       /* -------------------------------------------------
         この行の中で一番口数が多い問題を調べる
@@ -2626,7 +2626,7 @@ function calculateMitoriRows(problems, problemList) {
         行内の全問題を同じ高さにする
       ------------------------------------------------- */
 
-      row.forEach(index => {
+      row.forEach((index, position) => {
 
         const item =
           problemItems[index];
