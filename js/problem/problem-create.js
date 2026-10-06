@@ -60,6 +60,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <div class="problem-create-panel">
 
+        <!-- 作成方法 -->
+        <section class="problem-create-mode-area">
+
+          <h3 class="problem-create-heading">
+            作成方法
+          </h3>
+
+          <div class="problem-create-mode-buttons">
+
+            <button
+              type="button"
+              class="problem-create-mode-button selected"
+              data-create-mode="same">
+              同じ設定で複数作成
+            </button>
+
+            <button
+              type="button"
+              class="problem-create-mode-button"
+              data-create-mode="individual">
+              問題ごとに設定
+            </button>
+
+          </div>
+
+        </section>
+
+        <!-- 作成枚数 -->
+        <section class="problem-count-area">
+
+          <h3 class="problem-create-heading">
+            作成枚数
+          </h3>
+
+          <div class="problem-count-buttons">
+
+            <button type="button"
+                    class="problem-sheet-count-button selected"
+                    data-sheet-count="1">
+              1枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="2">
+              2枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="3">
+              3枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="4">
+              4枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="5">
+              5枚
+            </button>
+
+          </div>
+
+        </section>
+
         <!-- 問題用紙情報 -->
         <section>
 
@@ -211,76 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </section>
 
-        <!-- 作成方法 -->
-        <section class="problem-create-mode-area">
-
-          <h3 class="problem-create-heading">
-            作成方法
-          </h3>
-
-          <div class="problem-create-mode-buttons">
-
-            <button
-              type="button"
-              class="problem-create-mode-button selected"
-              data-create-mode="same">
-              同じ設定で複数作成
-            </button>
-
-            <button
-              type="button"
-              class="problem-create-mode-button"
-              data-create-mode="individual">
-              問題ごとに設定
-            </button>
-
-          </div>
-
-        </section>
-
-        <!-- 作成枚数 -->
-        <section class="problem-count-area">
-
-          <h3 class="problem-create-heading">
-            作成枚数
-          </h3>
-
-          <div class="problem-count-buttons">
-
-            <button type="button"
-                    class="problem-sheet-count-button selected"
-                    data-sheet-count="1">
-              1枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="2">
-              2枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="3">
-              3枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="4">
-              4枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="5">
-              5枚
-            </button>
-
-          </div>
-
-        </section>
-
         <!-- 問題ごとの設定 -->
         <section
           class="problem-individual-settings-area"
@@ -288,8 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
           style="display: none;">
 
         </section>
-
-
 
         <!-- 区間 -->
         <section class="problem-section-area">
