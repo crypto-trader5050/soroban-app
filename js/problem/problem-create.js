@@ -379,6 +379,49 @@ document.addEventListener("DOMContentLoaded", () => {
         "#mitoriIndividualSettings"
       );
 
+    const addPaperButton =
+      container.querySelector(
+        "#mitoriAddPaper"
+      );
+
+    let individualPaperCount = 1;
+
+    if (addPaperButton && individualSettings) {
+
+      addPaperButton.addEventListener(
+        "click",
+        () => {
+
+          if (individualPaperCount >= 5) {
+            return;
+          }
+
+          individualPaperCount++;
+
+          const heading =
+            document.createElement("h3");
+
+          heading.className =
+            "problem-create-heading";
+
+          heading.textContent =
+            `問題${["①", "②", "③", "④", "⑤"][individualPaperCount - 1]}`;
+
+          individualSettings.insertBefore(
+            heading,
+            addPaperButton
+          );
+
+          if (individualPaperCount >= 5) {
+            addPaperButton.style.display =
+              "none";
+          }
+
+        }
+      );
+
+    }
+
     createModeButtons.forEach(button => {
 
       button.addEventListener("click", () => {
