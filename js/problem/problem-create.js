@@ -211,6 +211,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </section>
 
+        <!-- 作成枚数 -->
+        <section class="problem-count-area">
+
+          <h3 class="problem-create-heading">
+            作成枚数
+          </h3>
+
+          <div class="problem-count-buttons">
+
+            <button type="button"
+                    class="problem-sheet-count-button selected"
+                    data-sheet-count="1">
+              1枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="2">
+              2枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="3">
+              3枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="4">
+              4枚
+            </button>
+
+            <button type="button"
+                    class="problem-sheet-count-button"
+                    data-sheet-count="5">
+              5枚
+            </button>
+
+          </div>
+
+        </section>
 
         <!-- 区間 -->
         <section class="problem-section-area">
@@ -254,6 +296,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const countButtons =
       container.querySelectorAll(".problem-count-button");
+
+    const sheetCountButtons =
+      container.querySelectorAll(".problem-sheet-count-button");
+
+    let sheetCount = 1;
+
+    sheetCountButtons.forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        sheetCountButtons.forEach(btn => {
+          btn.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+
+        sheetCount =
+          Number(button.dataset.sheetCount);
+
+      });
+
+    });
 
     const sectionList =
       container.querySelector("#mitoriSectionList");
@@ -845,6 +909,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const totalQuestions =
         Number(selectedCountButton.dataset.count);
 
+      /* =================================================
+         作成枚数
+      ================================================= */
+
+      const selectedSheetCountButton =
+        mitoriPanel.querySelector(
+          ".problem-sheet-count-button.selected"
+        );
+
+      const sheetCount =
+        Number(
+          selectedSheetCountButton?.dataset.sheetCount || 1
+        );
 
       /* =================================================
          区間
@@ -2289,21 +2366,32 @@ function calculateMitoriRows(problems, problemList) {
 
   function displayGeneratedMitoriProblems(
     settings,
-    problems
+    problems,
+    sheetNumber = 1
   ) {
 
     /*
-     * 以前の表示があれば削除
+     * 以前の問題用紙があれば削除
      */
 
-    const oldSheet =
+    const oldSheets =
       document.querySelector(
-        "#problemGeneratedSheet"
+        "#problemGeneratedSheets"
       );
 
-    if (oldSheet) {
-      oldSheet.remove();
+    if (oldSheets) {
+      oldSheets.remove();
     }
+
+    /*
+     * 問題用紙をまとめる親容器
+     */
+
+    const sheetsContainer =
+      document.createElement("div");
+
+    sheetsContainer.id =
+      "problemGeneratedSheets";
 
 
     /*
@@ -2533,6 +2621,13 @@ function calculateMitoriRows(problems, problemList) {
     sheet.appendChild(problemList);
 
     /*
+     * 問題用紙を親容器に追加
+     */
+
+    sheetsContainer.appendChild(sheet);
+
+
+    /*
      * 画面へ追加
      */
 
@@ -2546,12 +2641,14 @@ function calculateMitoriRows(problems, problemList) {
 
       generateButton.insertAdjacentElement(
         "afterend",
-        sheet
+        sheetsContainer
       );
 
     } else {
 
-      document.body.appendChild(sheet);
+      document.body.appendChild(
+        sheetsContainer
+      );
 
     }
 
