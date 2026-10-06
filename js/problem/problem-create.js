@@ -379,43 +379,243 @@ document.addEventListener("DOMContentLoaded", () => {
         "#mitoriIndividualSettings"
       );
 
-    function createIndividualProblemPlaceholders(count) {
+  function createIndividualProblemPlaceholders(count) {
 
-      if (!individualSettings) {
-        return;
-      }
+    if (!individualSettings) {
+      return;
+    }
 
-      individualSettings.innerHTML = "";
+    individualSettings.innerHTML = "";
 
-      const problemNumbers = [
-        "①",
-        "②",
-        "③",
-        "④",
-        "⑤"
-      ];
+    const problemNumbers = [
+      "①",
+      "②",
+      "③",
+      "④",
+      "⑤"
+    ];
 
-      for (let i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
 
-        const problemArea =
-          document.createElement("div");
+      const problemArea =
+        document.createElement("div");
 
-        problemArea.className =
-          "problem-individual-paper";
+      problemArea.className =
+        "problem-individual-paper";
 
-        problemArea.innerHTML = `
+      problemArea.innerHTML = `
+
+        <h3 class="problem-create-heading">
+          問題${problemNumbers[i]}
+        </h3>
+
+        <!-- 問題用紙情報 -->
+
+        <section>
+
           <h3 class="problem-create-heading">
-            問題${problemNumbers[i]}
+            問題用紙情報
           </h3>
-        `;
 
-        individualSettings.appendChild(
-          problemArea
-        );
+          <div class="problem-paper-info">
 
-      }
+            <div class="problem-form-item">
+
+              <label class="problem-form-label">
+                タイトル
+              </label>
+
+              <input
+                type="text"
+                class="problem-form-input individual-title-input"
+                placeholder="例：みとり算"
+              >
+
+            </div>
+
+
+            <div class="problem-form-item">
+
+              <label class="problem-form-label">
+                時間（分）
+              </label>
+
+              <input
+                type="number"
+                class="problem-form-input individual-time-input"
+                min="1"
+                step="1"
+                placeholder="例：7"
+              >
+
+            </div>
+
+
+            <div class="problem-form-item">
+
+              <label class="problem-form-label">
+                級・段位
+              </label>
+
+              <input
+                type="text"
+                class="problem-form-input individual-grade-input"
+                placeholder="例：10級、1級、初段、十段"
+              >
+
+            </div>
+
+
+            <div class="problem-form-item">
+
+              <label class="problem-form-label">
+                回数
+              </label>
+
+              <input
+                type="text"
+                class="problem-form-input individual-round-input"
+                placeholder="例：第12回"
+              >
+
+            </div>
+
+
+            <div class="problem-form-item">
+
+              <label class="problem-form-label">
+                評点
+              </label>
+
+              <input
+                type="text"
+                class="problem-form-input"
+                value=""
+                disabled
+                placeholder="手書き用"
+              >
+
+            </div>
+
+
+            <div class="problem-form-item full">
+
+              <label class="problem-form-label">
+                自由文
+              </label>
+
+              <input
+                type="text"
+                class="problem-form-input individual-free-text-input"
+                maxlength="100"
+                placeholder="必要な場合のみ入力してください"
+              >
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- 総問題数 -->
+
+        <section class="problem-count-area">
+
+          <h3 class="problem-create-heading">
+            総問題数
+          </h3>
+
+          <div class="problem-count-buttons">
+
+            <button
+              type="button"
+              class="problem-count-button individual-count-button"
+              data-count="10">
+              10問
+            </button>
+
+            <button
+              type="button"
+              class="problem-count-button individual-count-button"
+              data-count="15">
+              15問
+            </button>
+
+            <button
+              type="button"
+              class="problem-count-button individual-count-button"
+              data-count="20">
+              20問
+            </button>
+
+            <button
+              type="button"
+              class="problem-count-button individual-count-button"
+              data-count="30">
+              30問
+            </button>
+
+            <button
+              type="button"
+              class="problem-count-button individual-count-button"
+              data-count="40">
+              40問
+            </button>
+
+            <button
+              type="button"
+              class="problem-count-button individual-count-button"
+              data-count="50">
+              50問
+            </button>
+
+            <button
+              type="button"
+              class="problem-count-button individual-count-button"
+              data-count="60">
+              60問
+            </button>
+
+          </div>
+
+        </section>
+
+
+        <!-- 問題設定 -->
+
+        <section class="problem-section-area">
+
+          <h3 class="problem-create-heading">
+            問題設定
+          </h3>
+
+          <div
+            class="problem-section-list individual-section-list">
+          </div>
+
+          <button
+            type="button"
+            class="problem-add-section-button individual-add-section-button">
+            ＋ 区間を追加
+          </button>
+
+          <div
+            class="problem-section-status individual-section-status">
+            総問題数を選択してください。
+          </div>
+
+        </section>
+
+      `;
+
+      individualSettings.appendChild(
+        problemArea
+      );
 
     }
+
+  }
 
     const addPaperButton =
       container.querySelector(
