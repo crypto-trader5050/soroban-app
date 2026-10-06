@@ -281,6 +281,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </section>
 
+        <!-- 問題ごとの設定 -->
+        <section
+          class="problem-individual-settings-area"
+          id="mitoriIndividualSettings"
+          style="display: none;">
+
+          <h3 class="problem-create-heading">
+            問題①
+          </h3>
+
+          <button
+            type="button"
+            class="problem-add-paper-button"
+            id="mitoriAddPaper">
+            ＋ 次の問題用紙を設定
+          </button>
+
+        </section>
+
+
+
         <!-- 区間 -->
         <section class="problem-section-area">
 
@@ -353,6 +374,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ".problem-create-mode-button"
       );
 
+    const individualSettings =
+      container.querySelector(
+        "#mitoriIndividualSettings"
+      );
+
     createModeButtons.forEach(button => {
 
       button.addEventListener("click", () => {
@@ -365,6 +391,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
         createMode =
           button.dataset.createMode;
+
+        /*
+        * 問題ごとに設定
+        */
+        if (createMode === "individual") {
+
+          if (individualSettings) {
+            individualSettings.style.display =
+              "block";
+          }
+
+        }
+
+        /*
+        * 同じ設定で複数作成
+        */
+        else {
+
+          if (individualSettings) {
+            individualSettings.style.display =
+              "none";
+          }
+
+        }
 
         console.log(
           "【作成方法】",
@@ -1104,6 +1154,8 @@ document.addEventListener("DOMContentLoaded", () => {
         totalQuestions,
 
         sheetCount,
+
+        createMode,
 
         sections
 
