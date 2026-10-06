@@ -1155,7 +1155,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         sheetCount,
 
-        createMode,
+        createMode:
+          mitoriPanel.querySelector(
+            ".problem-create-mode-button.selected"
+          )?.dataset.createMode || "same",
 
         sections
 
