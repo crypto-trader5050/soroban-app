@@ -287,17 +287,6 @@ document.addEventListener("DOMContentLoaded", () => {
           id="mitoriIndividualSettings"
           style="display: none;">
 
-          <h3 class="problem-create-heading">
-            問題①
-          </h3>
-
-          <button
-            type="button"
-            class="problem-add-paper-button"
-            id="mitoriAddPaper">
-            ＋ 次の問題用紙を設定
-          </button>
-
         </section>
 
 
@@ -365,6 +354,17 @@ document.addEventListener("DOMContentLoaded", () => {
         sheetCount =
           Number(button.dataset.sheetCount);
 
+        /*
+         * 問題ごとに設定
+         */
+        if (createMode === "individual") {
+
+          createIndividualProblemPlaceholders(
+            sheetCount
+          );
+
+        }
+
       });
 
     });
@@ -378,6 +378,44 @@ document.addEventListener("DOMContentLoaded", () => {
       container.querySelector(
         "#mitoriIndividualSettings"
       );
+
+    function createIndividualProblemPlaceholders(count) {
+
+      if (!individualSettings) {
+        return;
+      }
+
+      individualSettings.innerHTML = "";
+
+      const problemNumbers = [
+        "①",
+        "②",
+        "③",
+        "④",
+        "⑤"
+      ];
+
+      for (let i = 0; i < count; i++) {
+
+        const problemArea =
+          document.createElement("div");
+
+        problemArea.className =
+          "problem-individual-paper";
+
+        problemArea.innerHTML = `
+          <h3 class="problem-create-heading">
+            問題${problemNumbers[i]}
+          </h3>
+        `;
+
+        individualSettings.appendChild(
+          problemArea
+        );
+
+      }
+
+    }
 
     const addPaperButton =
       container.querySelector(
@@ -441,8 +479,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (createMode === "individual") {
 
           if (individualSettings) {
+
             individualSettings.style.display =
               "block";
+
+            createIndividualProblemPlaceholders(
+              sheetCount
+            );
+
           }
 
         }
