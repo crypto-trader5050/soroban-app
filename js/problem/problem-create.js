@@ -211,6 +211,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         </section>
 
+        <!-- 作成方法 -->
+        <section class="problem-create-mode-area">
+
+          <h3 class="problem-create-heading">
+            作成方法
+          </h3>
+
+          <div class="problem-create-mode-buttons">
+
+            <button
+              type="button"
+              class="problem-create-mode-button selected"
+              data-create-mode="same">
+              同じ設定で複数作成
+            </button>
+
+            <button
+              type="button"
+              class="problem-create-mode-button"
+              data-create-mode="individual">
+              問題ごとに設定
+            </button>
+
+          </div>
+
+        </section>
+
         <!-- 作成枚数 -->
         <section class="problem-count-area">
 
@@ -302,6 +329,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let sheetCount = 1;
 
+    let createMode = "same";
+
     sheetCountButtons.forEach(button => {
 
       button.addEventListener("click", () => {
@@ -314,6 +343,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         sheetCount =
           Number(button.dataset.sheetCount);
+
+      });
+
+    });
+
+    const createModeButtons =
+      container.querySelectorAll(
+        ".problem-create-mode-button"
+      );
+
+    createModeButtons.forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        createModeButtons.forEach(btn => {
+          btn.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+
+        createMode =
+          button.dataset.createMode;
+
+        console.log(
+          "【作成方法】",
+          createMode
+        );
 
       });
 
