@@ -1047,6 +1047,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         totalQuestions,
 
+        sheetCount,
+
         sections
 
       };
@@ -1268,18 +1270,31 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
 
-      const generatedProblems =
-        generateMitoriProblems(settings);
+      /*
+      * 作成枚数分の問題用紙を生成
+      */
 
-      console.log(
-        "【見取算・生成された問題】",
-        generatedProblems
-      );
+      for (
+        let sheetNumber = 1;
+        sheetNumber <= settings.sheetCount;
+        sheetNumber++
+      ) {
 
-      displayGeneratedMitoriProblems(
-        settings,
-        generatedProblems
-      );
+        const generatedProblems =
+          generateMitoriProblems(settings);
+
+        console.log(
+          `【見取算・${sheetNumber}枚目・生成された問題】`,
+          generatedProblems
+        );
+
+        displayGeneratedMitoriProblems(
+          settings,
+          generatedProblems,
+          sheetNumber
+        );
+
+      }
 
     });
 
@@ -2371,27 +2386,47 @@ function calculateMitoriRows(problems, problemList) {
   ) {
 
     /*
-     * 以前の問題用紙があれば削除
-     */
+    * 1枚目を生成するときだけ
+    * 以前の問題用紙を削除
+    */
 
-    const oldSheets =
+    if (sheetNumber === 1) {
+
+      const oldSheets =
+        document.querySelector(
+          "#problemGeneratedSheets"
+        );
+
+      if (oldSheets) {
+        oldSheets.remove();
+      }
+
+    }
+
+
+    /*
+    * 問題用紙をまとめる親容器
+    */
+
+    let sheetsContainer =
       document.querySelector(
         "#problemGeneratedSheets"
       );
 
-    if (oldSheets) {
-      oldSheets.remove();
-    }
 
     /*
-     * 問題用紙をまとめる親容器
-     */
+    * 親容器がまだ無ければ作成
+    */
 
-    const sheetsContainer =
-      document.createElement("div");
+    if (!sheetsContainer) {
 
-    sheetsContainer.id =
-      "problemGeneratedSheets";
+      sheetsContainer =
+        document.createElement("div");
+
+      sheetsContainer.id =
+        "problemGeneratedSheets";
+
+    }
 
 
     /*
