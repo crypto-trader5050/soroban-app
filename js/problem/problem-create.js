@@ -1697,24 +1697,17 @@ function createMitoriSettings(container) {
      作成枚数
   ===================================================== */
 
-  sheetCountButtons.forEach(
-    button => {
+  sheetCountButtons.forEach(button => {
 
-      button.addEventListener(
-        "click",
-        () => {
+      button.addEventListener("click", () => {
 
-          setSelected(
-            sheetCountButtons,
+          setSelected(sheetCountButtons,
             button
           );
 
 
-          sheetCount =
-            Number(
-              button.dataset.sheetCount
+          sheetCount = Number(button.dataset.sheetCount
             );
-
 
           if (
             createMode ===
