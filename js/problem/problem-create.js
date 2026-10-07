@@ -377,6 +377,21 @@ document.addEventListener("DOMContentLoaded", () => {
         "#mitoriIndividualSettings"
       );
 
+    const sharedPaperInfo =
+      container.querySelector(
+        "#mitoriSharedPaperInfo"
+      );
+
+    const sharedQuestionCount =
+      container.querySelector(
+        "#mitoriSharedQuestionCount"
+      );
+
+    const sharedProblemSettings =
+      container.querySelector(
+        "#mitoriSharedProblemSettings"
+      );
+
   function createIndividualProblemPlaceholders(count) {
 
     if (!individualSettings) {
@@ -409,7 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- 問題用紙情報 -->
 
-        <section>
+        <section id="mitoriSharedPaperInfo">
 
           <h3 class="problem-create-heading">
             問題用紙情報
@@ -518,7 +533,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- 総問題数 -->
 
-        <section class="problem-count-area">
+        <section
+          class="problem-count-area"
+          id="mitoriSharedQuestionCount">
 
           <h3 class="problem-create-heading">
             総問題数
@@ -582,7 +599,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- 問題設定 -->
 
-        <section class="problem-section-area">
+        <!-- 区間 -->
+        <section
+          class="problem-section-area"
+          id="mitoriSharedProblemSettings">
+
 
           <h3 class="problem-create-heading">
             問題設定
@@ -676,6 +697,18 @@ document.addEventListener("DOMContentLoaded", () => {
         */
         if (createMode === "individual") {
 
+          if (sharedPaperInfo) {
+            sharedPaperInfo.style.display = "none";
+          }
+
+          if (sharedQuestionCount) {
+            sharedQuestionCount.style.display = "none";
+          }
+
+          if (sharedProblemSettings) {
+            sharedProblemSettings.style.display = "none";
+          }
+
           if (individualSettings) {
 
             individualSettings.style.display =
@@ -693,6 +726,18 @@ document.addEventListener("DOMContentLoaded", () => {
         * 同じ設定で複数作成
         */
         else {
+
+          if (sharedPaperInfo) {
+            sharedPaperInfo.style.display = "block";
+          }
+
+          if (sharedQuestionCount) {
+            sharedQuestionCount.style.display = "block";
+          }
+
+          if (sharedProblemSettings) {
+            sharedProblemSettings.style.display = "block";
+          }
 
           if (individualSettings) {
             individualSettings.style.display =
