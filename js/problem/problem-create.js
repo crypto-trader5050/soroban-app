@@ -54,377 +54,101 @@ document.addEventListener("DOMContentLoaded", () => {
      見取算 設定画面
   ===================================================== */
 
-  function createMitoriSettings(container) {
+function createMitoriSettings(container) {
 
-    container.innerHTML = `
+  container.innerHTML = `
+    <div class="problem-create-panel">
 
-      <div class="problem-create-panel">
+      <!-- =================================================
+           作成方法
+      ================================================== -->
 
-        <!-- 作成方法 -->
-        <section class="problem-create-mode-area">
+      <section class="problem-create-mode-area">
 
-          <h3 class="problem-create-heading">
-            作成方法
-          </h3>
+        <h3 class="problem-create-heading">
+          作成方法
+        </h3>
 
-          <div class="problem-create-mode-buttons">
-
-            <button
-              type="button"
-              class="problem-create-mode-button selected"
-              data-create-mode="same">
-              同じ設定で複数作成
-            </button>
-
-            <button
-              type="button"
-              class="problem-create-mode-button"
-              data-create-mode="individual">
-              問題ごとに設定
-            </button>
-
-          </div>
-
-        </section>
-
-        <!-- 作成枚数 -->
-        <section class="problem-count-area">
-
-          <h3 class="problem-create-heading">
-            作成枚数
-          </h3>
-
-          <div class="problem-count-buttons">
-
-            <button type="button"
-                    class="problem-sheet-count-button selected"
-                    data-sheet-count="1">
-              1枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="2">
-              2枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="3">
-              3枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="4">
-              4枚
-            </button>
-
-            <button type="button"
-                    class="problem-sheet-count-button"
-                    data-sheet-count="5">
-              5枚
-            </button>
-
-          </div>
-
-        </section>
-
-        <!-- 問題用紙情報 -->
-        <section>
-
-          <h3 class="problem-create-heading">
-            問題用紙情報
-          </h3>
-
-          <div class="problem-paper-info">
-
-            <div class="problem-form-item">
-              <label class="problem-form-label">
-                タイトル
-              </label>
-
-              <input
-                type="text"
-                class="problem-form-input"
-                placeholder="例：みとり算"
-              >
-            </div>
-
-
-            <div class="problem-form-item">
-              <label class="problem-form-label">
-                時間（分）
-              </label>
-
-              <input
-                type="number"
-                class="problem-form-input"
-                min="1"
-                step="1"
-                placeholder="例：7"
-              >
-            </div>
-
-
-            <div class="problem-form-item">
-              <label class="problem-form-label">
-                級・段位
-              </label>
-
-              <input
-                type="text"
-                class="problem-form-input"
-                placeholder="例：10級、1級、初段、十段"
-              >
-            </div>
-
-
-            <div class="problem-form-item">
-              <label class="problem-form-label">
-                回数
-              </label>
-
-              <input
-                type="text"
-                class="problem-form-input"
-                placeholder="例：第12回"
-              >
-            </div>
-
-
-            <div class="problem-form-item">
-              <label class="problem-form-label">
-                評点
-              </label>
-
-              <input
-                type="text"
-                class="problem-form-input"
-                value=""
-                disabled
-                placeholder="手書き用"
-              >
-            </div>
-
-
-            <div class="problem-form-item full">
-              <label class="problem-form-label">
-                自由文
-              </label>
-
-              <input
-                type="text"
-                class="problem-form-input"
-                maxlength="100"
-                placeholder="必要な場合のみ入力してください"
-              >
-            </div>
-
-          </div>
-
-        </section>
-
-
-        <!-- 総問題数 -->
-        <section class="problem-count-area">
-
-          <h3 class="problem-create-heading">
-            総問題数
-          </h3>
-
-          <div class="problem-count-buttons">
-
-            <button type="button"
-                    class="problem-count-button"
-                    data-count="10">
-              10問
-            </button>
-
-            <button type="button"
-                    class="problem-count-button"
-                    data-count="15">
-              15問
-            </button>
-
-            <button type="button"
-                    class="problem-count-button"
-                    data-count="20">
-              20問
-            </button>
-
-            <button type="button"
-                    class="problem-count-button"
-                    data-count="30">
-              30問
-            </button>
-
-            <button type="button"
-                    class="problem-count-button"
-                    data-count="40">
-              40問
-            </button>
-
-            <button type="button"
-                    class="problem-count-button"
-                    data-count="50">
-              50問
-            </button>
-
-            <button type="button"
-                    class="problem-count-button"
-                    data-count="60">
-              60問
-            </button>
-
-          </div>
-
-        </section>
-
-        <!-- 問題ごとの設定 -->
-        <section
-          class="problem-individual-settings-area"
-          id="mitoriIndividualSettings"
-          style="display: none;">
-
-        </section>
-
-        <!-- 区間 -->
-        <section class="problem-section-area">
-
-          <h3 class="problem-create-heading">
-            問題設定
-          </h3>
-
-          <div class="problem-section-list"
-               id="mitoriSectionList">
-
-          </div>
-
+        <div class="problem-create-mode-buttons">
 
           <button
             type="button"
-            class="problem-add-section-button"
-            id="mitoriAddSection">
-            ＋ 区間を追加
+            class="problem-create-mode-button selected"
+            data-create-mode="same">
+            同じ設定で複数作成
           </button>
 
+          <button
+            type="button"
+            class="problem-create-mode-button"
+            data-create-mode="individual">
+            問題ごとに設定
+          </button>
 
-          <div
-            class="problem-section-status"
-            id="mitoriSectionStatus">
-            総問題数を選択してください。
-          </div>
+        </div>
 
-        </section>
-
-      </div>
-    `;
+      </section>
 
 
-    /* ===================================================
-       総問題数
-    =================================================== */
+      <!-- =================================================
+           作成枚数
+      ================================================== -->
 
-    let totalQuestions = 0;
-    let sectionNumber = 0;
-
-    const countButtons =
-      container.querySelectorAll(".problem-count-button");
-
-    const sheetCountButtons =
-      container.querySelectorAll(".problem-sheet-count-button");
-
-    let sheetCount = 1;
-
-    let createMode = "same";
-
-    sheetCountButtons.forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        sheetCountButtons.forEach(btn => {
-          btn.classList.remove("selected");
-        });
-
-        button.classList.add("selected");
-
-        sheetCount =
-          Number(button.dataset.sheetCount);
-
-        /*
-         * 問題ごとに設定
-         */
-        if (createMode === "individual") {
-
-          createIndividualProblemPlaceholders(
-            sheetCount
-          );
-
-        }
-
-      });
-
-    });
-
-    const createModeButtons =
-      container.querySelectorAll(
-        ".problem-create-mode-button"
-      );
-
-    const individualSettings =
-      container.querySelector(
-        "#mitoriIndividualSettings"
-      );
-
-    const sharedPaperInfo =
-      container.querySelector(
-        "#mitoriSharedPaperInfo"
-      );
-
-    const sharedQuestionCount =
-      container.querySelector(
-        "#mitoriSharedQuestionCount"
-      );
-
-    const sharedProblemSettings =
-      container.querySelector(
-        "#mitoriSharedProblemSettings"
-      );
-
-  function createIndividualProblemPlaceholders(count) {
-
-    if (!individualSettings) {
-      return;
-    }
-
-    individualSettings.innerHTML = "";
-
-    const problemNumbers = [
-      "①",
-      "②",
-      "③",
-      "④",
-      "⑤"
-    ];
-
-    for (let i = 0; i < count; i++) {
-
-      const problemArea =
-        document.createElement("div");
-
-      problemArea.className =
-        "problem-individual-paper";
-
-      problemArea.innerHTML = `
+      <section class="problem-count-area">
 
         <h3 class="problem-create-heading">
-          問題${problemNumbers[i]}
+          作成枚数
         </h3>
 
-        <!-- 問題用紙情報 -->
+        <div class="problem-count-buttons">
 
-        <section id="mitoriSharedPaperInfo">
+          <button
+            type="button"
+            class="problem-sheet-count-button selected"
+            data-sheet-count="1">
+            1枚
+          </button>
+
+          <button
+            type="button"
+            class="problem-sheet-count-button"
+            data-sheet-count="2">
+            2枚
+          </button>
+
+          <button
+            type="button"
+            class="problem-sheet-count-button"
+            data-sheet-count="3">
+            3枚
+          </button>
+
+          <button
+            type="button"
+            class="problem-sheet-count-button"
+            data-sheet-count="4">
+            4枚
+          </button>
+
+          <button
+            type="button"
+            class="problem-sheet-count-button"
+            data-sheet-count="5">
+            5枚
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           同じ設定で複数作成
+      ================================================== -->
+
+      <div id="mitoriSharedSettings">
+
+        <section class="mitori-paper-settings">
 
           <h3 class="problem-create-heading">
             問題用紙情報
@@ -433,69 +157,56 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="problem-paper-info">
 
             <div class="problem-form-item">
-
               <label class="problem-form-label">
                 タイトル
               </label>
 
               <input
                 type="text"
-                class="problem-form-input individual-title-input"
-                placeholder="例：みとり算"
-              >
-
+                class="problem-form-input"
+                placeholder="例：みとり算">
             </div>
 
 
             <div class="problem-form-item">
-
               <label class="problem-form-label">
                 時間（分）
               </label>
 
               <input
                 type="number"
-                class="problem-form-input individual-time-input"
+                class="problem-form-input"
                 min="1"
                 step="1"
-                placeholder="例：7"
-              >
-
+                placeholder="例：7">
             </div>
 
 
             <div class="problem-form-item">
-
               <label class="problem-form-label">
                 級・段位
               </label>
 
               <input
                 type="text"
-                class="problem-form-input individual-grade-input"
-                placeholder="例：10級、1級、初段、十段"
-              >
-
+                class="problem-form-input"
+                placeholder="例：10級、1級、初段、十段">
             </div>
 
 
             <div class="problem-form-item">
-
               <label class="problem-form-label">
                 回数
               </label>
 
               <input
                 type="text"
-                class="problem-form-input individual-round-input"
-                placeholder="例：第12回"
-              >
-
+                class="problem-form-input"
+                placeholder="例：第12回">
             </div>
 
 
             <div class="problem-form-item">
-
               <label class="problem-form-label">
                 評点
               </label>
@@ -505,25 +216,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 class="problem-form-input"
                 value=""
                 disabled
-                placeholder="手書き用"
-              >
-
+                placeholder="手書き用">
             </div>
 
 
             <div class="problem-form-item full">
-
               <label class="problem-form-label">
                 自由文
               </label>
 
               <input
                 type="text"
-                class="problem-form-input individual-free-text-input"
+                class="problem-form-input"
                 maxlength="100"
-                placeholder="必要な場合のみ入力してください"
-              >
-
+                placeholder="必要な場合のみ入力してください">
             </div>
 
           </div>
@@ -533,9 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- 総問題数 -->
 
-        <section
-          class="problem-count-area"
-          id="mitoriSharedQuestionCount">
+        <section class="problem-count-area">
 
           <h3 class="problem-create-heading">
             総問題数
@@ -545,49 +249,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <button
               type="button"
-              class="problem-count-button individual-count-button"
+              class="problem-count-button"
               data-count="10">
               10問
             </button>
 
             <button
               type="button"
-              class="problem-count-button individual-count-button"
+              class="problem-count-button"
               data-count="15">
               15問
             </button>
 
             <button
               type="button"
-              class="problem-count-button individual-count-button"
+              class="problem-count-button"
               data-count="20">
               20問
             </button>
 
             <button
               type="button"
-              class="problem-count-button individual-count-button"
+              class="problem-count-button"
               data-count="30">
               30問
             </button>
 
             <button
               type="button"
-              class="problem-count-button individual-count-button"
+              class="problem-count-button"
               data-count="40">
               40問
             </button>
 
             <button
               type="button"
-              class="problem-count-button individual-count-button"
+              class="problem-count-button"
               data-count="50">
               50問
-            </button>
+              </button>
 
             <button
               type="button"
-              class="problem-count-button individual-count-button"
+              class="problem-count-button"
               data-count="60">
               60問
             </button>
@@ -599,241 +303,540 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- 問題設定 -->
 
-        <!-- 区間 -->
-        <section
-          class="problem-section-area"
-          id="mitoriSharedProblemSettings">
-
+        <section class="problem-section-area">
 
           <h3 class="problem-create-heading">
             問題設定
           </h3>
 
           <div
-            class="problem-section-list individual-section-list">
+            class="problem-section-list"
+            id="mitoriSectionList">
           </div>
 
           <button
             type="button"
-            class="problem-add-section-button individual-add-section-button">
+            class="problem-add-section-button"
+            id="mitoriAddSection">
             ＋ 区間を追加
           </button>
 
           <div
-            class="problem-section-status individual-section-status">
+            class="problem-section-status"
+            id="mitoriSectionStatus">
             総問題数を選択してください。
           </div>
 
         </section>
 
+      </div>
+
+
+      <!-- =================================================
+           問題ごとに設定
+      ================================================== -->
+
+      <section
+        class="problem-individual-settings-area"
+        id="mitoriIndividualSettings"
+        style="display: none;">
+      </section>
+
+    </div>
+  `;
+
+
+  /* =====================================================
+     共通状態
+  ===================================================== */
+
+  let sheetCount = 1;
+  let createMode = "same";
+
+
+  const sharedSettings =
+    container.querySelector(
+      "#mitoriSharedSettings"
+    );
+
+  const individualSettings =
+    container.querySelector(
+      "#mitoriIndividualSettings"
+    );
+
+
+  const createModeButtons =
+    container.querySelectorAll(
+      ".problem-create-mode-button"
+    );
+
+
+  const sheetCountButtons =
+    container.querySelectorAll(
+      ".problem-sheet-count-button"
+    );
+
+
+  /* =====================================================
+     共通：選択状態
+  ===================================================== */
+
+  function setSelected(buttons, selectedButton) {
+
+    buttons.forEach(button => {
+      button.classList.remove("selected");
+    });
+
+    selectedButton.classList.add("selected");
+
+  }
+
+
+  /* =====================================================
+     共通：select option生成
+  ===================================================== */
+
+  function createOptions(min, max, suffix) {
+
+    let html = "";
+
+    for (let i = min; i <= max; i++) {
+
+      html += `
+        <option value="${i}">
+          ${i}${suffix}
+        </option>
       `;
 
+    }
+
+    return html;
+
+  }
+
+
+  /* =====================================================
+     問題①〜⑤の丸数字
+  ===================================================== */
+
+  function getProblemLabel(number) {
+
+    return [
+      "①",
+      "②",
+      "③",
+      "④",
+      "⑤"
+    ][number - 1] || number;
+
+  }
+
+
+  /* =====================================================
+     問題ごとの設定フォームを作成
+  ===================================================== */
+
+  function createIndividualProblemPlaceholders(count) {
+
+    individualSettings.innerHTML = "";
+
+
+    for (let i = 1; i <= count; i++) {
+
+      const problemBlock =
+        document.createElement("div");
+
+      problemBlock.className =
+        "individual-problem-block";
+
+      problemBlock.dataset.problemNumber =
+        i;
+
+
+      problemBlock.innerHTML = `
+
+        <section class="individual-problem-settings">
+
+          <h3 class="problem-create-heading">
+            問題${getProblemLabel(i)}
+          </h3>
+
+
+          <!-- 問題用紙情報 -->
+
+          <section class="mitori-paper-settings">
+
+            <h3 class="problem-create-heading">
+              問題用紙情報
+            </h3>
+
+            <div class="problem-paper-info">
+
+              <div class="problem-form-item">
+                <label class="problem-form-label">
+                  タイトル
+                </label>
+
+                <input
+                  type="text"
+                  class="problem-form-input individual-paper-input"
+                  data-field="title"
+                  placeholder="例：みとり算">
+              </div>
+
+
+              <div class="problem-form-item">
+                <label class="problem-form-label">
+                  時間（分）
+                </label>
+
+                <input
+                  type="number"
+                  class="problem-form-input individual-paper-input"
+                  data-field="time"
+                  min="1"
+                  step="1"
+                  placeholder="例：7">
+              </div>
+
+
+              <div class="problem-form-item">
+                <label class="problem-form-label">
+                  級・段位
+                </label>
+
+                <input
+                  type="text"
+                  class="problem-form-input individual-paper-input"
+                  data-field="grade"
+                  placeholder="例：10級、1級、初段、十段">
+              </div>
+
+
+              <div class="problem-form-item">
+                <label class="problem-form-label">
+                  回数
+                </label>
+
+                <input
+                  type="text"
+                  class="problem-form-input individual-paper-input"
+                  data-field="round"
+                  placeholder="例：第12回">
+              </div>
+
+
+              <div class="problem-form-item">
+                <label class="problem-form-label">
+                  評点
+                </label>
+
+                <input
+                  type="text"
+                  class="problem-form-input individual-paper-input"
+                  data-field="score"
+                  value=""
+                  disabled
+                  placeholder="手書き用">
+              </div>
+
+
+              <div class="problem-form-item full">
+                <label class="problem-form-label">
+                  自由文
+                </label>
+
+                <input
+                  type="text"
+                  class="problem-form-input individual-paper-input"
+                  data-field="freeText"
+                  maxlength="100"
+                  placeholder="必要な場合のみ入力してください">
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- 総問題数 -->
+
+          <section class="problem-count-area">
+
+            <h3 class="problem-create-heading">
+              総問題数
+            </h3>
+
+            <div class="problem-count-buttons">
+
+              <button
+                type="button"
+                class="problem-count-button individual-count-button"
+                data-count="10">
+                10問
+              </button>
+
+              <button
+                type="button"
+                class="problem-count-button individual-count-button"
+                data-count="15">
+                15問
+              </button>
+
+              <button
+                type="button"
+                class="problem-count-button individual-count-button"
+                data-count="20">
+                20問
+              </button>
+
+              <button
+                type="button"
+                class="problem-count-button individual-count-button"
+                data-count="30">
+                30問
+              </button>
+
+              <button
+                type="button"
+                class="problem-count-button individual-count-button"
+                data-count="40">
+                40問
+              </button>
+
+              <button
+                type="button"
+                class="problem-count-button individual-count-button"
+                data-count="50">
+                50問
+              </button>
+
+              <button
+                type="button"
+                class="problem-count-button individual-count-button"
+                data-count="60">
+                60問
+              </button>
+
+            </div>
+
+          </section>
+
+
+          <!-- 問題設定 -->
+
+          <section class="problem-section-area">
+
+            <h3 class="problem-create-heading">
+              問題設定
+            </h3>
+
+            <div
+              class="problem-section-list individual-section-list">
+            </div>
+
+            <button
+              type="button"
+              class="problem-add-section-button individual-add-section-button">
+              ＋ 区間を追加
+            </button>
+
+            <div
+              class="problem-section-status individual-section-status">
+              総問題数を選択してください。
+            </div>
+
+          </section>
+
+        </section>
+
+      `;
+
+
       individualSettings.appendChild(
-        problemArea
+        problemBlock
       );
+
+
+      initializeIndividualProblem(
+        problemBlock,
+        i
+      );
+
+    }
+
+
+    /*
+     * 問題②以降は直前の問題の設定をコピー
+     */
+
+    for (let i = 2; i <= count; i++) {
+
+      const previousBlock =
+        individualSettings.querySelector(
+          `.individual-problem-block[data-problem-number="${i - 1}"]`
+        );
+
+      const currentBlock =
+        individualSettings.querySelector(
+          `.individual-problem-block[data-problem-number="${i}"]`
+        );
+
+      if (
+        previousBlock &&
+        currentBlock
+      ) {
+
+        copyProblemSettings(
+          previousBlock,
+          currentBlock
+        );
+
+      }
 
     }
 
   }
 
-    const addPaperButton =
-      container.querySelector(
-        "#mitoriAddPaper"
+
+  /* =====================================================
+     個別問題を初期化
+  ===================================================== */
+
+  function initializeIndividualProblem(
+    problemBlock,
+    problemNumber
+  ) {
+
+    const countButtons =
+      problemBlock.querySelectorAll(
+        ".individual-count-button"
       );
-
-    let individualPaperCount = 1;
-
-    if (addPaperButton && individualSettings) {
-
-      addPaperButton.addEventListener(
-        "click",
-        () => {
-
-          if (individualPaperCount >= 5) {
-            return;
-          }
-
-          individualPaperCount++;
-
-          const heading =
-            document.createElement("h3");
-
-          heading.className =
-            "problem-create-heading";
-
-          heading.textContent =
-            `問題${["①", "②", "③", "④", "⑤"][individualPaperCount - 1]}`;
-
-          individualSettings.insertBefore(
-            heading,
-            addPaperButton
-          );
-
-          if (individualPaperCount >= 5) {
-            addPaperButton.style.display =
-              "none";
-          }
-
-        }
-      );
-
-    }
-
-    createModeButtons.forEach(button => {
-
-      button.addEventListener("click", () => {
-
-        createModeButtons.forEach(btn => {
-          btn.classList.remove("selected");
-        });
-
-        button.classList.add("selected");
-
-        createMode =
-          button.dataset.createMode;
-
-        /*
-        * 問題ごとに設定
-        */
-        if (createMode === "individual") {
-
-          if (sharedPaperInfo) {
-            sharedPaperInfo.style.display = "none";
-          }
-
-          if (sharedQuestionCount) {
-            sharedQuestionCount.style.display = "none";
-          }
-
-          if (sharedProblemSettings) {
-            sharedProblemSettings.style.display = "none";
-          }
-
-          if (individualSettings) {
-
-            individualSettings.style.display =
-              "block";
-
-            createIndividualProblemPlaceholders(
-              sheetCount
-            );
-
-          }
-
-        }
-
-        /*
-        * 同じ設定で複数作成
-        */
-        else {
-
-          if (sharedPaperInfo) {
-            sharedPaperInfo.style.display = "block";
-          }
-
-          if (sharedQuestionCount) {
-            sharedQuestionCount.style.display = "block";
-          }
-
-          if (sharedProblemSettings) {
-            sharedProblemSettings.style.display = "block";
-          }
-
-          if (individualSettings) {
-            individualSettings.style.display =
-              "none";
-          }
-
-        }
-
-        console.log(
-          "【作成方法】",
-          createMode
-        );
-
-      });
-
-    });
 
     const sectionList =
-      container.querySelector("#mitoriSectionList");
+      problemBlock.querySelector(
+        ".individual-section-list"
+      );
 
     const addSectionButton =
-      container.querySelector("#mitoriAddSection");
+      problemBlock.querySelector(
+        ".individual-add-section-button"
+      );
 
     const status =
-      container.querySelector("#mitoriSectionStatus");
+      problemBlock.querySelector(
+        ".individual-section-status"
+      );
 
+
+    let totalQuestions = 0;
+    let sectionNumber = 0;
+
+
+    /* -----------------------------------------------
+       総問題数
+    ------------------------------------------------ */
 
     countButtons.forEach(button => {
 
-      button.addEventListener("click", () => {
+      button.addEventListener(
+        "click",
+        () => {
 
-        countButtons.forEach(btn => {
-          btn.classList.remove("selected");
-        });
+          setSelected(
+            countButtons,
+            button
+          );
 
-        button.classList.add("selected");
+          totalQuestions =
+            Number(button.dataset.count);
 
-        totalQuestions =
-          Number(button.dataset.count);
+          sectionList.innerHTML = "";
 
-        sectionList.innerHTML = "";
-        sectionNumber = 0;
+          sectionNumber = 0;
+
+          addSection();
+
+          updateStatus();
+
+        }
+      );
+
+    });
+
+
+    /* -----------------------------------------------
+       区間追加
+    ------------------------------------------------ */
+
+    addSectionButton.addEventListener(
+      "click",
+      () => {
+
+        if (!totalQuestions) {
+
+          alert(
+            `問題${getProblemLabel(problemNumber)}の総問題数を選択してください。`
+          );
+
+          return;
+
+        }
+
+
+        const currentEnd =
+          getLastSectionEnd(
+            sectionList
+          );
+
+
+        if (
+          currentEnd >=
+          totalQuestions
+        ) {
+
+          alert(
+            "すべての問題が設定されています。"
+          );
+
+          return;
+
+        }
+
 
         addSection();
 
         updateStatus();
 
-      });
-
-    });
-
-
-    /* ===================================================
-       区間追加
-    =================================================== */
-
-    addSectionButton.addEventListener("click", () => {
-
-      if (!totalQuestions) {
-        alert("先に総問題数を選択してください。");
-        return;
       }
-
-      const currentEnd =
-        getLastSectionEnd();
-
-      if (currentEnd >= totalQuestions) {
-        alert("すべての問題が設定されています。");
-        return;
-      }
-
-      addSection();
-
-      updateStatus();
-
-    });
+    );
 
 
-    /* ===================================================
-       区間を作る
-    =================================================== */
+    /* -----------------------------------------------
+       区間作成
+    ------------------------------------------------ */
 
     function addSection() {
 
       sectionNumber++;
 
+
       const previousEnd =
-        getLastSectionEnd();
+        getLastSectionEnd(
+          sectionList
+        );
+
 
       const startNumber =
         previousEnd + 1;
 
-      const section = document.createElement("div");
+
+      const section =
+        document.createElement("div");
 
       section.className =
         "problem-section";
+
 
       section.innerHTML = `
 
@@ -854,9 +857,7 @@ document.addEventListener("DOMContentLoaded", () => {
               type="number"
               class="problem-form-input section-start"
               min="1"
-              value="${startNumber}"
-            >
-
+              value="${startNumber}">
           </div>
 
 
@@ -870,19 +871,13 @@ document.addEventListener("DOMContentLoaded", () => {
               type="number"
               class="problem-form-input section-end"
               min="1"
-              value="${totalQuestions || ""}"
-            >
-
+              value="${totalQuestions || ""}">
           </div>
 
         </div>
 
 
-        <!-- 桁数・口数・計算方法 -->
-
         <div class="problem-section-settings">
-
-          <!-- 桁数 -->
 
           <div class="problem-form-item">
 
@@ -909,8 +904,6 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
 
-          <!-- 口数 -->
-
           <div class="problem-form-item">
 
             <label class="problem-form-label">
@@ -923,8 +916,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           </div>
 
-
-          <!-- 計算方法 -->
 
           <div class="problem-form-item">
 
@@ -949,11 +940,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
 
-        <!-- 加減算の詳細設定 -->
-
         <div class="problem-add-subtract-settings hidden">
-
-          <!-- 加算のみ -->
 
           <div class="problem-form-item">
 
@@ -968,8 +955,6 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
 
-          <!-- 引き算を含む問題 -->
-
           <div class="problem-form-item">
 
             <label class="problem-form-label">
@@ -983,8 +968,6 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
 
-          <!-- マイナスになる問題 -->
-
           <div class="problem-form-item">
 
             <label class="problem-form-label">
@@ -993,9 +976,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             <select
               class="problem-form-select negative-count-select">
+
               <option value="0">
                 0問
               </option>
+
             </select>
 
           </div>
@@ -1005,29 +990,46 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
 
-      sectionList.appendChild(section);
+      sectionList.appendChild(
+        section
+      );
 
 
       const startInput =
-        section.querySelector(".section-start");
+        section.querySelector(
+          ".section-start"
+        );
 
       const endInput =
-        section.querySelector(".section-end");
+        section.querySelector(
+          ".section-end"
+        );
 
       const calculationSelect =
-        section.querySelector(".calculation-select");
+        section.querySelector(
+          ".calculation-select"
+        );
 
       const addSubtractSettings =
-        section.querySelector(".problem-add-subtract-settings");
+        section.querySelector(
+          ".problem-add-subtract-settings"
+        );
 
       const additionOnlyCountSelect =
-        section.querySelector(".addition-only-count-select");
+        section.querySelector(
+          ".addition-only-count-select"
+        );
 
       const subtractionCountDisplay =
-        section.querySelector(".subtraction-count-display");
+        section.querySelector(
+          ".subtraction-count-display"
+        );
 
       const negativeCountSelect =
-        section.querySelector(".negative-count-select");
+        section.querySelector(
+          ".negative-count-select"
+        );
+
 
       function updateAddSubtractCounts() {
 
@@ -1036,31 +1038,47 @@ document.addEventListener("DOMContentLoaded", () => {
           Number(startInput.value) +
           1;
 
+
         if (total <= 0) {
           return;
         }
 
-        // 加算のみの選択肢を作る
-        additionOnlyCountSelect.innerHTML = "";
 
-        for (let i = 0; i <= total; i++) {
+        additionOnlyCountSelect.innerHTML =
+          "";
+
+
+        for (
+          let i = 0;
+          i <= total;
+          i++
+        ) {
 
           const option =
-            document.createElement("option");
+            document.createElement(
+              "option"
+            );
 
           option.value = i;
-          option.textContent = `${i}問`;
 
-          additionOnlyCountSelect.appendChild(option);
+          option.textContent =
+            `${i}問`;
+
+          additionOnlyCountSelect.appendChild(
+            option
+          );
 
         }
 
-        // 初期値
-        additionOnlyCountSelect.value = total;
+
+        additionOnlyCountSelect.value =
+          total;
+
 
         updateSubtractionCount();
 
       }
+
 
       function updateSubtractionCount() {
 
@@ -1069,8 +1087,12 @@ document.addEventListener("DOMContentLoaded", () => {
           Number(startInput.value) +
           1;
 
+
         const additionOnly =
-          Number(additionOnlyCountSelect.value) || 0;
+          Number(
+            additionOnlyCountSelect.value
+          ) || 0;
+
 
         const subtractionCount =
           Math.max(
@@ -1078,193 +1100,1215 @@ document.addEventListener("DOMContentLoaded", () => {
             total - additionOnly
           );
 
+
         subtractionCountDisplay.textContent =
           `${subtractionCount}問`;
 
-        // マイナスになる問題の選択肢
-        negativeCountSelect.innerHTML = "";
 
-        for (let i = 0; i <= subtractionCount; i++) {
+        negativeCountSelect.innerHTML =
+          "";
+
+
+        for (
+          let i = 0;
+          i <= subtractionCount;
+          i++
+        ) {
 
           const option =
-            document.createElement("option");
+            document.createElement(
+              "option"
+            );
 
           option.value = i;
-          option.textContent = `${i}問`;
 
-          negativeCountSelect.appendChild(option);
+          option.textContent =
+            `${i}問`;
+
+          negativeCountSelect.appendChild(
+            option
+          );
 
         }
 
       }
 
-      additionOnlyCountSelect.addEventListener("change", () => {
 
-        updateSubtractionCount();
+      additionOnlyCountSelect.addEventListener(
+        "change",
+        () => {
 
-      });
+          updateSubtractionCount();
 
-      calculationSelect.addEventListener("change", () => {
+        }
+      );
 
-        if (calculationSelect.value === "add-subtract") {
 
-          addSubtractSettings.classList.remove("hidden");
+      calculationSelect.addEventListener(
+        "change",
+        () => {
+
+          if (
+            calculationSelect.value ===
+            "add-subtract"
+          ) {
+
+            addSubtractSettings.classList.remove(
+              "hidden"
+            );
+
+            updateAddSubtractCounts();
+
+          } else {
+
+            addSubtractSettings.classList.add(
+              "hidden"
+            );
+
+          }
+
+        }
+      );
+
+
+      endInput.addEventListener(
+        "change",
+        () => {
+
+          updateFollowingSectionStarts(
+            sectionList
+          );
+
+          updateStatus();
+
+        }
+      );
+
+
+      startInput.addEventListener(
+        "change",
+        () => {
+
+          updateStatus();
+
+        }
+      );
+
+    }
+
+
+    /*
+     * 問題設定を1つ作った直後に
+     * 総問題数が未選択なら何もしない
+     */
+
+    updateStatus();
+
+  }
+
+
+  /* =====================================================
+     区間の最後の終了番号
+  ===================================================== */
+
+  function getLastSectionEnd(
+    sectionList
+  ) {
+
+    const ends =
+      sectionList.querySelectorAll(
+        ".section-end"
+      );
+
+
+    if (!ends.length) {
+      return 0;
+    }
+
+
+    const last =
+      ends[ends.length - 1];
+
+
+    return Number(last.value) || 0;
+
+  }
+
+
+  /* =====================================================
+     次の区間の開始番号を更新
+  ===================================================== */
+
+  function updateFollowingSectionStarts(
+    sectionList
+  ) {
+
+    const sections =
+      sectionList.querySelectorAll(
+        ".problem-section"
+      );
+
+
+    let previousEnd = 0;
+
+
+    sections.forEach(section => {
+
+      const start =
+        section.querySelector(
+          ".section-start"
+        );
+
+      const end =
+        section.querySelector(
+          ".section-end"
+        );
+
+
+      start.value =
+        previousEnd + 1;
+
+
+      previousEnd =
+        Number(end.value) ||
+        previousEnd;
+
+    });
+
+  }
+
+
+  /* =====================================================
+     状態表示
+  ===================================================== */
+
+  function updateStatusForList(
+    sectionList,
+    status,
+    totalQuestions
+  ) {
+
+    if (!totalQuestions) {
+
+      status.textContent =
+        "総問題数を選択してください。";
+
+      status.classList.remove(
+        "warning"
+      );
+
+      return;
+
+    }
+
+
+    const sections =
+      sectionList.querySelectorAll(
+        ".problem-section"
+      );
+
+
+    if (!sections.length) {
+
+      status.textContent =
+        "区間を設定してください。";
+
+      status.classList.add(
+        "warning"
+      );
+
+      return;
+
+    }
+
+
+    const lastEnd =
+      getLastSectionEnd(
+        sectionList
+      );
+
+
+    if (
+      lastEnd ===
+      totalQuestions
+    ) {
+
+      status.textContent =
+        `第1問～第${totalQuestions}問まで設定されています。`;
+
+      status.classList.remove(
+        "warning"
+      );
+
+    } else {
+
+      status.textContent =
+        `未設定の問題があります。現在は第${lastEnd}問まで設定されています。`;
+
+      status.classList.add(
+        "warning"
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     個別問題の設定コピー
+  ===================================================== */
+
+  function copyProblemSettings(
+    sourceBlock,
+    targetBlock
+  ) {
+
+    /*
+     * 問題用紙情報
+     */
+
+    const sourceInputs =
+      sourceBlock.querySelectorAll(
+        ".individual-paper-input"
+      );
+
+    const targetInputs =
+      targetBlock.querySelectorAll(
+        ".individual-paper-input"
+      );
+
+
+    sourceInputs.forEach(
+      (sourceInput, index) => {
+
+        const targetInput =
+          targetInputs[index];
+
+        if (
+          targetInput &&
+          !targetInput.disabled
+        ) {
+
+          targetInput.value =
+            sourceInput.value;
+
+        }
+
+      }
+    );
+
+
+    /*
+     * 総問題数
+     */
+
+    const sourceCount =
+      sourceBlock.querySelector(
+        ".individual-count-button.selected"
+      );
+
+    const targetCountButtons =
+      targetBlock.querySelectorAll(
+        ".individual-count-button"
+      );
+
+
+    if (sourceCount) {
+
+      const matchingButton =
+        Array.from(
+          targetCountButtons
+        ).find(
+          button =>
+            button.dataset.count ===
+            sourceCount.dataset.count
+        );
+
+
+      if (matchingButton) {
+
+        matchingButton.click();
+
+      }
+
+    }
+
+
+    /*
+     * 区間
+     */
+
+    const sourceSections =
+      sourceBlock.querySelectorAll(
+        ".individual-section-list .problem-section"
+      );
+
+    const targetSectionList =
+      targetBlock.querySelector(
+        ".individual-section-list"
+      );
+
+
+    if (
+      !sourceSections.length ||
+      !targetSectionList
+    ) {
+
+      return;
+
+    }
+
+
+    const targetAddButton =
+      targetBlock.querySelector(
+        ".individual-add-section-button"
+      );
+
+
+    /*
+     * まず最初の区間は
+     * 総問題数選択時に自動生成されている
+     */
+
+    sourceSections.forEach(
+      (sourceSection, index) => {
+
+        let targetSections =
+          targetSectionList.querySelectorAll(
+            ".problem-section"
+          );
+
+
+        if (
+          index > 0 &&
+          targetAddButton
+        ) {
+
+          targetAddButton.click();
+
+          targetSections =
+            targetSectionList.querySelectorAll(
+              ".problem-section"
+            );
+
+        }
+
+
+        const targetSection =
+          targetSections[index];
+
+
+        if (!targetSection) {
+          return;
+        }
+
+
+        const sourceStart =
+          sourceSection.querySelector(
+            ".section-start"
+          );
+
+        const sourceEnd =
+          sourceSection.querySelector(
+            ".section-end"
+          );
+
+        const targetStart =
+          targetSection.querySelector(
+            ".section-start"
+          );
+
+        const targetEnd =
+          targetSection.querySelector(
+            ".section-end"
+          );
+
+
+        if (
+          sourceStart &&
+          targetStart
+        ) {
+
+          targetStart.value =
+            sourceStart.value;
+
+        }
+
+
+        if (
+          sourceEnd &&
+          targetEnd
+        ) {
+
+          targetEnd.value =
+            sourceEnd.value;
+
+          targetEnd.dispatchEvent(
+            new Event("change")
+          );
+
+        }
+
+
+        const sourceDigitMin =
+          sourceSection.querySelector(
+            ".digit-min-select"
+          );
+
+        const sourceDigitMax =
+          sourceSection.querySelector(
+            ".digit-max-select"
+          );
+
+        const sourceMouth =
+          sourceSection.querySelector(
+            ".mouth-select"
+          );
+
+        const sourceCalculation =
+          sourceSection.querySelector(
+            ".calculation-select"
+          );
+
+
+        const targetDigitMin =
+          targetSection.querySelector(
+            ".digit-min-select"
+          );
+
+        const targetDigitMax =
+          targetSection.querySelector(
+            ".digit-max-select"
+          );
+
+        const targetMouth =
+          targetSection.querySelector(
+            ".mouth-select"
+          );
+
+        const targetCalculation =
+          targetSection.querySelector(
+            ".calculation-select"
+          );
+
+
+        if (
+          sourceDigitMin &&
+          targetDigitMin
+        ) {
+
+          targetDigitMin.value =
+            sourceDigitMin.value;
+
+        }
+
+
+        if (
+          sourceDigitMax &&
+          targetDigitMax
+        ) {
+
+          targetDigitMax.value =
+            sourceDigitMax.value;
+
+        }
+
+
+        if (
+          sourceMouth &&
+          targetMouth
+        ) {
+
+          targetMouth.value =
+            sourceMouth.value;
+
+        }
+
+
+        if (
+          sourceCalculation &&
+          targetCalculation
+        ) {
+
+          targetCalculation.value =
+            sourceCalculation.value;
+
+          targetCalculation.dispatchEvent(
+            new Event("change")
+          );
+
+        }
+
+
+        const sourceAdditionOnly =
+          sourceSection.querySelector(
+            ".addition-only-count-select"
+          );
+
+        const targetAdditionOnly =
+          targetSection.querySelector(
+            ".addition-only-count-select"
+          );
+
+
+        if (
+          sourceAdditionOnly &&
+          targetAdditionOnly
+        ) {
+
+          targetAdditionOnly.value =
+            sourceAdditionOnly.value;
+
+          targetAdditionOnly.dispatchEvent(
+            new Event("change")
+          );
+
+        }
+
+
+        const sourceNegative =
+          sourceSection.querySelector(
+            ".negative-count-select"
+          );
+
+        const targetNegative =
+          targetSection.querySelector(
+            ".negative-count-select"
+          );
+
+
+        if (
+          sourceNegative &&
+          targetNegative
+        ) {
+
+          targetNegative.value =
+            sourceNegative.value;
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =====================================================
+     作成枚数
+  ===================================================== */
+
+  sheetCountButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          setSelected(
+            sheetCountButtons,
+            button
+          );
+
+
+          sheetCount =
+            Number(
+              button.dataset.sheetCount
+            );
+
+
+          if (
+            createMode ===
+            "individual"
+          ) {
+
+            createIndividualProblemPlaceholders(
+              sheetCount
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     作成方法
+  ===================================================== */
+
+  createModeButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          setSelected(
+            createModeButtons,
+            button
+          );
+
+
+          createMode =
+            button.dataset.createMode;
+
+
+          if (
+            createMode ===
+            "individual"
+          ) {
+
+            sharedSettings.style.display =
+              "none";
+
+            individualSettings.style.display =
+              "block";
+
+
+            createIndividualProblemPlaceholders(
+              sheetCount
+            );
+
+          } else {
+
+            sharedSettings.style.display =
+              "block";
+
+            individualSettings.style.display =
+              "none";
+
+          }
+
+
+          console.log(
+            "【作成方法】",
+            createMode
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     同じ設定：総問題数
+  ===================================================== */
+
+  let sharedTotalQuestions = 0;
+  let sharedSectionNumber = 0;
+
+
+  const sharedCountButtons =
+    sharedSettings.querySelectorAll(
+      ".problem-count-button"
+    );
+
+
+  const sharedSectionList =
+    sharedSettings.querySelector(
+      "#mitoriSectionList"
+    );
+
+
+  const sharedAddSectionButton =
+    sharedSettings.querySelector(
+      "#mitoriAddSection"
+    );
+
+
+  const sharedStatus =
+    sharedSettings.querySelector(
+      "#mitoriSectionStatus"
+    );
+
+
+  sharedCountButtons.forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          setSelected(
+            sharedCountButtons,
+            button
+          );
+
+
+          sharedTotalQuestions =
+            Number(
+              button.dataset.count
+            );
+
+
+          sharedSectionList.innerHTML =
+            "";
+
+          sharedSectionNumber =
+            0;
+
+
+          addSharedSection();
+
+          updateStatusForList(
+            sharedSectionList,
+            sharedStatus,
+            sharedTotalQuestions
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     同じ設定：区間追加
+  ===================================================== */
+
+  sharedAddSectionButton.addEventListener(
+    "click",
+    () => {
+
+      if (!sharedTotalQuestions) {
+
+        alert(
+          "先に総問題数を選択してください。"
+        );
+
+        return;
+
+      }
+
+
+      const currentEnd =
+        getLastSectionEnd(
+          sharedSectionList
+        );
+
+
+      if (
+        currentEnd >=
+        sharedTotalQuestions
+      ) {
+
+        alert(
+          "すべての問題が設定されています。"
+        );
+
+        return;
+
+      }
+
+
+      addSharedSection();
+
+
+      updateStatusForList(
+        sharedSectionList,
+        sharedStatus,
+        sharedTotalQuestions
+      );
+
+    }
+  );
+
+
+  /* =====================================================
+     同じ設定：区間作成
+  ===================================================== */
+
+  function addSharedSection() {
+
+    sharedSectionNumber++;
+
+
+    const previousEnd =
+      getLastSectionEnd(
+        sharedSectionList
+      );
+
+
+    const startNumber =
+      previousEnd + 1;
+
+
+    const section =
+      document.createElement("div");
+
+
+    section.className =
+      "problem-section";
+
+
+    section.innerHTML = `
+
+      <h4 class="problem-section-title">
+        区間 ${sharedSectionNumber}
+      </h4>
+
+
+      <div class="problem-section-range">
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            開始問題
+          </label>
+
+          <input
+            type="number"
+            class="problem-form-input section-start"
+            min="1"
+            value="${startNumber}">
+        </div>
+
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            終了問題
+          </label>
+
+          <input
+            type="number"
+            class="problem-form-input section-end"
+            min="1"
+            value="${sharedTotalQuestions || ""}">
+        </div>
+
+      </div>
+
+
+      <div class="problem-section-settings">
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            桁数
+          </label>
+
+          <div class="problem-digit-range">
+
+            <select class="problem-form-select digit-min-select">
+              ${createOptions(1, 10, "桁")}
+            </select>
+
+            <span class="problem-digit-range-separator">
+              ～
+            </span>
+
+            <select class="problem-form-select digit-max-select">
+              ${createOptions(1, 10, "桁")}
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            口数
+          </label>
+
+          <select class="problem-form-select mouth-select">
+            ${createOptions(3, 10, "口")}
+          </select>
+
+        </div>
+
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            計算方法
+          </label>
+
+          <select class="problem-form-select calculation-select">
+
+            <option value="addition">
+              加算
+            </option>
+
+            <option value="add-subtract">
+              加減算
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <div class="problem-add-subtract-settings hidden">
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            加算のみの問題
+          </label>
+
+          <select
+            class="problem-form-select addition-only-count-select">
+          </select>
+
+        </div>
+
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            引き算を含む問題
+          </label>
+
+          <div class="problem-auto-value subtraction-count-display">
+            0問
+          </div>
+
+        </div>
+
+
+        <div class="problem-form-item">
+
+          <label class="problem-form-label">
+            マイナスになる問題
+          </label>
+
+          <select
+            class="problem-form-select negative-count-select">
+
+            <option value="0">
+              0問
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    `;
+
+
+    sharedSectionList.appendChild(
+      section
+    );
+
+
+    const startInput =
+      section.querySelector(
+        ".section-start"
+      );
+
+    const endInput =
+      section.querySelector(
+        ".section-end"
+      );
+
+    const calculationSelect =
+      section.querySelector(
+        ".calculation-select"
+      );
+
+    const addSubtractSettings =
+      section.querySelector(
+        ".problem-add-subtract-settings"
+      );
+
+    const additionOnlyCountSelect =
+      section.querySelector(
+        ".addition-only-count-select"
+      );
+
+    const subtractionCountDisplay =
+      section.querySelector(
+        ".subtraction-count-display"
+      );
+
+    const negativeCountSelect =
+      section.querySelector(
+        ".negative-count-select"
+      );
+
+
+    function updateAddSubtractCounts() {
+
+      const total =
+        Number(endInput.value) -
+        Number(startInput.value) +
+        1;
+
+
+      if (total <= 0) {
+        return;
+      }
+
+
+      additionOnlyCountSelect.innerHTML =
+        "";
+
+
+      for (
+        let i = 0;
+        i <= total;
+        i++
+      ) {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value = i;
+
+        option.textContent =
+          `${i}問`;
+
+        additionOnlyCountSelect.appendChild(
+          option
+        );
+
+      }
+
+
+      additionOnlyCountSelect.value =
+        total;
+
+
+      updateSubtractionCount();
+
+    }
+
+
+    function updateSubtractionCount() {
+
+      const total =
+        Number(endInput.value) -
+        Number(startInput.value) +
+        1;
+
+
+      const additionOnly =
+        Number(
+          additionOnlyCountSelect.value
+        ) || 0;
+
+
+      const subtractionCount =
+        Math.max(
+          0,
+          total - additionOnly
+        );
+
+
+      subtractionCountDisplay.textContent =
+        `${subtractionCount}問`;
+
+
+      negativeCountSelect.innerHTML =
+        "";
+
+
+      for (
+        let i = 0;
+        i <= subtractionCount;
+        i++
+      ) {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value = i;
+
+        option.textContent =
+          `${i}問`;
+
+        negativeCountSelect.appendChild(
+          option
+        );
+
+      }
+
+    }
+
+
+    additionOnlyCountSelect.addEventListener(
+      "change",
+      updateSubtractionCount
+    );
+
+
+    calculationSelect.addEventListener(
+      "change",
+      () => {
+
+        if (
+          calculationSelect.value ===
+          "add-subtract"
+        ) {
+
+          addSubtractSettings.classList.remove(
+            "hidden"
+          );
 
           updateAddSubtractCounts();
 
         } else {
 
-          addSubtractSettings.classList.add("hidden");
+          addSubtractSettings.classList.add(
+            "hidden"
+          );
 
         }
 
-      });
-
-
-      endInput.addEventListener("change", () => {
-
-        updateFollowingSectionStarts();
-        updateStatus();
-
-      });
-
-
-      startInput.addEventListener("change", () => {
-        updateStatus();
-      });
-
-    }
-
-
-    /* ===================================================
-       最後の区間の終了番号
-    =================================================== */
-
-    function getLastSectionEnd() {
-
-      const ends =
-        sectionList.querySelectorAll(".section-end");
-
-      if (!ends.length) {
-        return 0;
       }
-
-      const last =
-        ends[ends.length - 1];
-
-      return Number(last.value) || 0;
-
-    }
+    );
 
 
-    /* ===================================================
-       次の区間の開始番号を更新
-    =================================================== */
+    endInput.addEventListener(
+      "change",
+      () => {
 
-    function updateFollowingSectionStarts() {
+        updateFollowingSectionStarts(
+          sharedSectionList
+        );
 
-      const sections =
-        sectionList.querySelectorAll(".problem-section");
-
-      let previousEnd = 0;
-
-      sections.forEach(section => {
-
-        const start =
-          section.querySelector(".section-start");
-
-        const end =
-          section.querySelector(".section-end");
-
-        start.value =
-          previousEnd + 1;
-
-        previousEnd =
-          Number(end.value) || previousEnd;
-
-      });
-
-    }
-
-
-    /* ===================================================
-       状態表示
-    =================================================== */
-
-    function updateStatus() {
-
-      if (!totalQuestions) {
-
-        status.textContent =
-          "総問題数を選択してください。";
-
-        status.classList.remove("warning");
-
-        return;
-      }
-
-
-      const sections =
-        sectionList.querySelectorAll(".problem-section");
-
-
-      if (!sections.length) {
-
-        status.textContent =
-          "区間を設定してください。";
-
-        status.classList.add("warning");
-
-        return;
-      }
-
-
-      const lastEnd =
-        getLastSectionEnd();
-
-
-      if (lastEnd === totalQuestions) {
-
-        status.textContent =
-          `第1問～第${totalQuestions}問まで設定されています。`;
-
-        status.classList.remove("warning");
-
-      } else {
-
-        status.textContent =
-          `未設定の問題があります。現在は第${lastEnd}問まで設定されています。`;
-
-        status.classList.add("warning");
+        updateStatusForList(
+          sharedSectionList,
+          sharedStatus,
+          sharedTotalQuestions
+        );
 
       }
+    );
 
-    }
 
+    startInput.addEventListener(
+      "change",
+      () => {
 
-    /* ===================================================
-       select option生成
-    =================================================== */
-
-    function createOptions(min, max, suffix) {
-
-      let html = "";
-
-      for (let i = min; i <= max; i++) {
-
-        html += `
-          <option value="${i}">
-            ${i}${suffix}
-          </option>
-        `;
+        updateStatusForList(
+          sharedSectionList,
+          sharedStatus,
+          sharedTotalQuestions
+        );
 
       }
-
-      return html;
-
-    }
+    );
 
   }
+
+}
 
   /* =====================================================
      見取算 問題生成
