@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     button.addEventListener("click", () => {
 
+      alert("★★★ 問題タイプのボタンがクリックされました ★★★");
+
       // 他のカードを閉じる
       cards.forEach(otherCard => {
 
