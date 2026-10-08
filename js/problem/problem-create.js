@@ -67,6 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function createMitoriSettings(container) {
 
+  alert("★★★★ createMitoriSettings 本体に入りました ★★★★");
+
   container.innerHTML = `
     <div class="problem-create-panel">
 
