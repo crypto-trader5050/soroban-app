@@ -1624,14 +1624,15 @@ function createMitoriSettings(container) {
                 ".individual-count-button.selected"
               );
 
+              if (!selectedCountButton) {
 
-            if (!selectedCountButton) {
+                alert(
+                  `問題${getProblemLabel(problemNumber)}の総問題数を選択してください。`
+                );
 
-              throw new Error(
-                `問題${getProblemLabel(problemNumber)}の総問題数が選択されていません。`
-              );
+                return;
 
-            }
+              }
 
 
             const totalQuestions =
@@ -1652,9 +1653,11 @@ function createMitoriSettings(container) {
 
             if (!sectionElements.length) {
 
-              throw new Error(
-                `問題${getProblemLabel(problemNumber)}の問題設定の区間がありません。`
+              alert(
+                `問題${getProblemLabel(problemNumber)}の問題設定の区間を設定してください。`
               );
+
+              return;
 
             }
 
