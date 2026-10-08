@@ -46,10 +46,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       card.classList.add("expanded");
 
+      alert("★ここまで来ています★");
 
-      alert("★ dataset.problemType = " + card.dataset.problemType);
+      alert("★ dataset.problemType = [" + card.dataset.problemType + "] ★");
+
       // 見取算だけ設定画面を表示
       if (card.dataset.problemType === "mitori") {
+        alert("★ mitori 条件に入りました ★");
         createMitoriSettings(detail);
       }
 
