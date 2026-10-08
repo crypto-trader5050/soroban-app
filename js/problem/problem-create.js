@@ -56,8 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function createMitoriSettings(container) {
 
-  alert("★★★★ createMitoriSettings 本体に入りました ★★★★");
-
   container.innerHTML = `
     <div class="problem-create-panel">
 
@@ -123,10 +121,6 @@ function createMitoriSettings(container) {
 
     </div>
   `;
-
-  alert("★★★★★ innerHTML の設定が完了しました ★★★★★");
-
-
 
   /* =====================================================
      共通状態
@@ -467,6 +461,8 @@ function createMitoriSettings(container) {
   }
 
   createIndividualProblemPlaceholders(sheetCount);
+
+  alert("★★★★ 問題用紙の作成処理が完了しました ★★★★");
 
   /* =====================================================
      個別問題を初期化
