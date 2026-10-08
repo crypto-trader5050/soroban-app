@@ -1493,6 +1493,7 @@ function createMitoriSettings(container) {
       "#problemGenerateButton"
     );
 
+    console.log("★問題生成ボタン取得:", problemGenerateButton);
 
   if (problemGenerateButton) {
 
