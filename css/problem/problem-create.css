@@ -10,6 +10,26 @@
   border-radius: 16px;
 }
 
+/* =========================================================
+   問題用紙ごとのカード
+========================================================= */
+
+.individual-problem-block {
+  margin-top: 20px;
+  padding: 20px;
+  background: #ffffff;
+  border: 2px solid #c9d7e3;
+  border-radius: 14px;
+  box-sizing: border-box;
+}
+
+.individual-problem-block:first-child {
+  margin-top: 0;
+}
+
+.individual-problem-settings {
+  margin: 0;
+}
 
 /* =========================================================
    セクション見出し
