@@ -1480,13 +1480,6 @@ function createMitoriSettings(container) {
             sheetCount
           );
 
-          alert(
-            "作成された問題用紙数：" +
-            individualSettings.querySelectorAll(
-              ".individual-problem-block"
-            ).length
-          );
-
         }
       );
 
