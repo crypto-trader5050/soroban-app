@@ -2,6 +2,8 @@ alert("★★★ problem-create.js が読み込まれました ★★★");
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    alert("★★★ DOMContentLoaded が実行されました ★★★");
+
   const cards = document.querySelectorAll(".problem-type-card");
 
   cards.forEach(card => {
