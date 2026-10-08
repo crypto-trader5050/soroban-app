@@ -1488,6 +1488,8 @@ function createMitoriSettings(container) {
      新方式：問題用紙ごとに設定を取得
   ===================================================== */
 
+  alert("① createMitoriSettings が実行されました");
+
   const problemGenerateButton =
     document.querySelector(
       "#problemGenerateButton"
