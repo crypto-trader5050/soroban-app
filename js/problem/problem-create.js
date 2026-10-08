@@ -1,8 +1,4 @@
-alert("★★★ problem-create.js が読み込まれました ★★★");
-
 document.addEventListener("DOMContentLoaded", () => {
-
-    alert("★★★ DOMContentLoaded が実行されました ★★★");
 
   const cards = document.querySelectorAll(".problem-type-card");
 
@@ -14,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!button || !detail) return;
 
     button.addEventListener("click", () => {
-
-      alert("★★★ 問題タイプのボタンがクリックされました ★★★");
 
       // 他のカードを閉じる
       cards.forEach(otherCard => {
@@ -46,13 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       card.classList.add("expanded");
 
-      alert("★ここまで来ています★");
-
-      alert("★ dataset.problemType = [" + card.dataset.problemType + "] ★");
-
       // 見取算だけ設定画面を表示
       if (card.dataset.problemType === "mitori") {
-        alert("★ mitori 条件に入りました ★");
         createMitoriSettings(detail);
       }
 
@@ -66,8 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ===================================================== */
 
 function createMitoriSettings(container) {
-
-  alert("★★★★ createMitoriSettings 本体に入りました ★★★★");
 
   container.innerHTML = `
     <div class="problem-create-panel">
