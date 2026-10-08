@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       card.classList.add("expanded");
 
+
+      alert("★ dataset.problemType = " + card.dataset.problemType);
       // 見取算だけ設定画面を表示
       if (card.dataset.problemType === "mitori") {
         createMitoriSettings(detail);
