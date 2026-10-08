@@ -1,3 +1,5 @@
+alert("★★★ problem-create.js が読み込まれました ★★★");
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const cards = document.querySelectorAll(".problem-type-card");
