@@ -1480,6 +1480,13 @@ function createMitoriSettings(container) {
             sheetCount
           );
 
+          alert(
+            "作成された問題用紙数：" +
+            individualSettings.querySelectorAll(
+              ".individual-problem-block"
+            ).length
+          );
+
         }
       );
 
@@ -1491,14 +1498,10 @@ function createMitoriSettings(container) {
      新方式：問題用紙ごとに設定を取得
   ===================================================== */
 
-  alert("① createMitoriSettings が実行されました");
-
   const problemGenerateButton =
     document.querySelector(
       "#problemGenerateButton"
     );
-
-    console.log("★問題生成ボタン取得:", problemGenerateButton);
 
   if (problemGenerateButton) {
 
