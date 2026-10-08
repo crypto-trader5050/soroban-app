@@ -460,9 +460,20 @@ function createMitoriSettings(container) {
 
   }
 
-  createIndividualProblemPlaceholders(sheetCount);
+  try {
 
-  alert("★★★★ 問題用紙の作成処理が完了しました ★★★★");
+    createIndividualProblemPlaceholders(sheetCount);
+
+    alert("★★★★ 問題用紙の作成処理が完了しました ★★★★");
+
+  } catch (error) {
+
+    alert(
+      "問題用紙作成中にエラーが発生しました。\n\n" +
+      error.message
+    );
+
+  }
 
   /* =====================================================
      個別問題を初期化
