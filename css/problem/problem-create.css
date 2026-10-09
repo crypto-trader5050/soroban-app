@@ -728,3 +728,36 @@
   }
 
 }
+
+/* =========================================================
+   問題設定コピー按钮
+========================================================= */
+
+.problem-copy-settings-area {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.problem-copy-settings-button {
+  display: inline-block;
+  width: 100%;
+  max-width: 420px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #2463a6;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background 0.2s ease;
+}
+
+.problem-copy-settings-button:hover {
+  background: #174b83;
+}
+
+.problem-copy-settings-button:active {
+  transform: translateY(1px);
+}

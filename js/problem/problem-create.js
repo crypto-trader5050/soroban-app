@@ -214,6 +214,10 @@ function createMitoriSettings(container) {
       problemBlock.dataset.problemNumber =
         i;
 
+      const copyButtonLabel =
+        count === 2
+          ? "問題用紙②に設定をコピー"
+          : `問題用紙②～${getProblemLabel(count)}に設定をコピー`;
 
       problemBlock.innerHTML = `
 
@@ -410,6 +414,16 @@ function createMitoriSettings(container) {
 
           </section>
 
+          ${i === 1 && count >= 2 ? `
+            <div class="problem-copy-settings-area">
+              <button
+                type="button"
+                class="problem-copy-settings-button individual-copy-settings-button">
+                ${copyButtonLabel}
+              </button>
+            </div>
+          ` : ""}
+
         </section>
 
       `;
@@ -427,34 +441,53 @@ function createMitoriSettings(container) {
 
     }
 
-
     /*
-     * 問題②以降は直前の問題の設定をコピー
+     * 問題①の設定を問題②以降へコピー
      */
+    const copyButton =
+      individualSettings.querySelector(
+        ".individual-copy-settings-button"
+      );
 
-    for (let i = 2; i <= count; i++) {
+    if (copyButton) {
 
-      const previousBlock =
-        individualSettings.querySelector(
-          `.individual-problem-block[data-problem-number="${i - 1}"]`
-        );
+      copyButton.addEventListener(
+        "click",
+        () => {
 
-      const currentBlock =
-        individualSettings.querySelector(
-          `.individual-problem-block[data-problem-number="${i}"]`
-        );
+          const sourceBlock =
+            individualSettings.querySelector(
+              '.individual-problem-block[data-problem-number="1"]'
+            );
 
-      if (
-        previousBlock &&
-        currentBlock
-      ) {
+          if (!sourceBlock) {
+            return;
+          }
 
-        copyProblemSettings(
-          previousBlock,
-          currentBlock
-        );
+          for (let i = 2; i <= count; i++) {
 
-      }
+            const targetBlock =
+              individualSettings.querySelector(
+                `.individual-problem-block[data-problem-number="${i}"]`
+              );
+
+            if (targetBlock) {
+
+              copyProblemSettings(
+                sourceBlock,
+                targetBlock
+              );
+
+            }
+
+          }
+
+          alert(
+            "問題①の設定を、問題②以降にコピーしました。"
+          );
+
+        }
+      );
 
     }
 
@@ -1172,8 +1205,49 @@ function createMitoriSettings(container) {
           !targetInput.disabled
         ) {
 
-          targetInput.value =
-            sourceInput.value;
+          if (
+            sourceInput.dataset.field === "round"
+          ) {
+
+            const sourceNumber =
+              Number(
+                sourceBlock.dataset.problemNumber
+              );
+
+            const targetNumber =
+              Number(
+                targetBlock.dataset.problemNumber
+              );
+
+            const roundMatch =
+              sourceInput.value.match(
+                /^(.*?)(\d+)(回)$/
+              );
+
+            if (roundMatch) {
+
+              targetInput.value =
+                roundMatch[1] +
+                (
+                  Number(roundMatch[2]) +
+                  targetNumber -
+                  sourceNumber
+                ) +
+                roundMatch[3];
+
+            } else {
+
+              targetInput.value =
+                sourceInput.value;
+
+            }
+
+          } else {
+
+            targetInput.value =
+              sourceInput.value;
+
+          }
 
         }
 
