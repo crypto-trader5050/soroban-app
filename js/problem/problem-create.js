@@ -520,7 +520,11 @@ function createMitoriSettings(container) {
 
           addSection();
 
-          updateStatus();
+          updateStatusForList(
+            sectionList,
+            status,
+            totalQuestions
+          );
 
         }
       );
@@ -569,7 +573,11 @@ function createMitoriSettings(container) {
 
         addSection();
 
-        updateStatus();
+        updateStatusForList(
+          sectionList,
+          status,
+          totalQuestions
+        );
 
       }
     );
@@ -942,7 +950,11 @@ function createMitoriSettings(container) {
             sectionList
           );
 
-          updateStatus();
+          updateStatusForList(
+            sectionList,
+            status,
+            totalQuestions
+          );
 
         }
       );
@@ -952,7 +964,11 @@ function createMitoriSettings(container) {
         "change",
         () => {
 
-          updateStatus();
+          updateStatusForList(
+            sectionList,
+            status,
+            totalQuestions
+          );
 
         }
       );
