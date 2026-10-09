@@ -1,0 +1,143 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>問題用紙 | そろばんトレーニング</title>
+
+  <link rel="preload"
+        href="assets/fonts/Soloburn.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/problem/problem-create.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f3f7fb;
+      color: #20384f;
+    }
+
+    .problem-sheet-toolbar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 0 auto 24px;
+    }
+
+    .problem-sheet-toolbar button {
+      padding: 12px 22px;
+      border: 0;
+      border-radius: 10px;
+      background: #1683e6;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .problem-sheet-toolbar button:hover {
+      opacity: 0.85;
+    }
+
+    #problemSheetOutput {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .problem-sheet-message {
+      padding: 24px;
+      border-radius: 12px;
+      background: #fff;
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        margin: 0;
+        padding: 0;
+        background: #fff;
+      }
+
+      .problem-sheet-toolbar,
+      .problem-sheet-message {
+        display: none !important;
+      }
+
+      #problemSheetOutput {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="problem-sheet-toolbar">
+    <button type="button" id="backToSettings">
+      ← 設定画面に戻る
+    </button>
+
+    <button type="button" id="printProblemSheets">
+      印刷・PDF保存
+    </button>
+  </div>
+
+  <main id="problemSheetOutput"></main>
+
+  <script>
+    (() => {
+      const output =
+        document.getElementById("problemSheetOutput");
+
+      const html =
+        sessionStorage.getItem(
+          "generatedProblemSheets"
+        );
+
+      if (!html) {
+        const message =
+          document.createElement("p");
+
+        message.className =
+          "problem-sheet-message";
+
+        message.textContent =
+          "問題用紙がありません。設定画面に戻って問題を生成してください。";
+
+        output.appendChild(message);
+      } else {
+        output.innerHTML = html;
+      }
+
+      document
+        .getElementById("backToSettings")
+        .addEventListener("click", () => {
+          if (history.length > 1) {
+            history.back();
+          } else {
+            window.location.href = "index.html";
+          }
+        });
+
+      document
+        .getElementById("printProblemSheets")
+        .addEventListener("click", () => {
+          window.print();
+        });
+    })();
+  </script>
+
+</body>
+</html>
+```

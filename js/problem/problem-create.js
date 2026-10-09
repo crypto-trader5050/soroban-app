@@ -2233,6 +2233,35 @@ function createMitoriSettings(container) {
           }
         );
 
+        /* =========================================
+           生成した問題用紙を別ページへ渡す
+        ========================================= */
+
+        const generatedSheets =
+          document.querySelector(
+            "#problemGeneratedSheets"
+          );
+
+        if (!generatedSheets) {
+          alert("問題用紙を生成できませんでした。");
+          return;
+        }
+
+        try {
+          sessionStorage.setItem(
+            "generatedProblemSheets",
+            generatedSheets.outerHTML
+          );
+        } catch (error) {
+          alert(
+            "問題用紙を保存できませんでした。\n" +
+            "問題数を減らして、もう一度お試しください。"
+          );
+          return;
+        }
+
+        window.location.href = "problem-sheet.html";
+
       }
     );
 
@@ -3641,20 +3670,29 @@ function calculateMitoriRows(problems, problemList) {
 
     sheetsContainer.appendChild(sheet);
 
-
     /*
-     * 設定カードの外に問題用紙を表示
+     * 画面へ追加
      */
 
-    const outputArea =
+    const generateButton =
       document.querySelector(
-        "#problemGeneratedArea"
+        "#problemGenerateButton"
       );
 
-    if (outputArea) {
-      outputArea.appendChild(
+
+    if (generateButton) {
+
+      generateButton.insertAdjacentElement(
+        "afterend",
         sheetsContainer
       );
+
+    } else {
+
+      document.body.appendChild(
+        sheetsContainer
+      );
+
     }
 
     /*
