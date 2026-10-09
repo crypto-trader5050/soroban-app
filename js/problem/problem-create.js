@@ -3643,28 +3643,18 @@ function calculateMitoriRows(problems, problemList) {
 
 
     /*
-     * 画面へ追加
+     * 設定カードの外に問題用紙を表示
      */
 
-    const generateButton =
+    const outputArea =
       document.querySelector(
-        "#problemGenerateButton"
+        "#problemGeneratedArea"
       );
 
-
-    if (generateButton) {
-
-      generateButton.insertAdjacentElement(
-        "afterend",
+    if (outputArea) {
+      outputArea.appendChild(
         sheetsContainer
       );
-
-    } else {
-
-      document.body.appendChild(
-        sheetsContainer
-      );
-
     }
 
     /*
