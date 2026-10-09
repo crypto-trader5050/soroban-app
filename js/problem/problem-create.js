@@ -3390,15 +3390,6 @@ function calculateMitoriRows(problems, problemList) {
     header.className =
       "problem-generated-header";
 
-    // タイトルと評点欄を横並びにする
-    const headerTop =
-      document.createElement("div");
-
-    headerTop.style.display = "flex";
-    headerTop.style.justifyContent = "space-between";
-    headerTop.style.alignItems = "center";
-    headerTop.style.gap = "12px";
-    headerTop.style.marginBottom = "8px";
 
     // 問題用紙のタイトル
     const title =
@@ -3408,41 +3399,7 @@ function calculateMitoriRows(problems, problemList) {
       settings.paper.title ||
       "みとり算";
 
-    title.style.margin = "0";
-    title.style.flex = "1";
-    title.style.minWidth = "0";
-
-    headerTop.appendChild(title);
-
-    // 手書き用の評点欄
-    const scoreBox =
-      document.createElement("div");
-
-    scoreBox.style.display = "flex";
-    scoreBox.style.alignItems = "center";
-    scoreBox.style.gap = "6px";
-    scoreBox.style.flexShrink = "0";
-
-    const scoreLabel =
-      document.createElement("span");
-
-    scoreLabel.textContent = "評点";
-
-    const scoreBlank =
-      document.createElement("span");
-
-    scoreBlank.style.display = "inline-block";
-    scoreBlank.style.width = "64px";
-    scoreBlank.style.height = "30px";
-    scoreBlank.style.border = "1px solid #000";
-    scoreBlank.style.boxSizing = "border-box";
-
-    scoreBox.appendChild(scoreLabel);
-    scoreBox.appendChild(scoreBlank);
-
-    headerTop.appendChild(scoreBox);
-    header.appendChild(headerTop);
-
+    header.appendChild(title);
 
     /*
      * 基本情報
@@ -3489,6 +3446,40 @@ function calculateMitoriRows(problems, problemList) {
 
     header.appendChild(info);
 
+
+    // 基本情報の右端に評点欄を配置
+    info.style.display = "flex";
+    info.style.alignItems = "center";
+    info.style.flexWrap = "wrap";
+    info.style.gap = "8px";
+
+    const scoreBox =
+      document.createElement("div");
+
+    scoreBox.style.display = "flex";
+    scoreBox.style.alignItems = "center";
+    scoreBox.style.gap = "6px";
+    scoreBox.style.marginLeft = "auto";
+    scoreBox.style.flexShrink = "0";
+
+    const scoreLabel =
+      document.createElement("span");
+
+    scoreLabel.textContent = "評点";
+
+    const scoreBlank =
+      document.createElement("span");
+
+    scoreBlank.style.display = "inline-block";
+    scoreBlank.style.width = "64px";
+    scoreBlank.style.height = "30px";
+    scoreBlank.style.border = "1px solid #000";
+    scoreBlank.style.boxSizing = "border-box";
+
+    scoreBox.appendChild(scoreLabel);
+    scoreBox.appendChild(scoreBlank);
+
+    info.appendChild(scoreBox);
 
     /*
      * 自由文
