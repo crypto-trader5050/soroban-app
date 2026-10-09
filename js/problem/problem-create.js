@@ -291,22 +291,6 @@ function createMitoriSettings(container) {
                   placeholder="例：第12回">
               </div>
 
-
-              <div class="problem-form-item">
-                <label class="problem-form-label">
-                  評点
-                </label>
-
-                <input
-                  type="text"
-                  class="problem-form-input individual-paper-input"
-                  data-field="score"
-                  value=""
-                  disabled
-                  placeholder="手書き用">
-              </div>
-
-
               <div class="problem-form-item full">
                 <label class="problem-form-label">
                   自由文
@@ -1704,7 +1688,9 @@ function createMitoriSettings(container) {
 
 
             const freeText =
-              paperInputs[5]?.value.trim() || "";
+              problemBlock.querySelector(
+                '[data-field="freeText"]'
+              )?.value.trim() || "";
 
 
             /* ---------------------------------------------
