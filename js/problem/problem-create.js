@@ -3450,8 +3450,12 @@ function calculateMitoriRows(problems, problemList) {
     // 基本情報の右端に評点欄を配置
     info.style.display = "flex";
     info.style.alignItems = "center";
+    info.style.justifyContent = "center";
     info.style.flexWrap = "wrap";
     info.style.gap = "8px";
+    info.style.position = "relative";
+    info.style.width = "100%";
+    info.style.boxSizing = "border-box";
 
     const scoreBox =
       document.createElement("div");
@@ -3459,7 +3463,10 @@ function calculateMitoriRows(problems, problemList) {
     scoreBox.style.display = "flex";
     scoreBox.style.alignItems = "center";
     scoreBox.style.gap = "6px";
-    scoreBox.style.marginLeft = "auto";
+    scoreBox.style.position = "absolute";
+    scoreBox.style.right = "0";
+    scoreBox.style.top = "50%";
+    scoreBox.style.transform = "translateY(-50%)";
     scoreBox.style.flexShrink = "0";
 
     const scoreLabel =
