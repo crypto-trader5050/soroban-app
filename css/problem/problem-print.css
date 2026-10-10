@@ -451,70 +451,6 @@
   color: #ff8a00;
 }
 
-
-/* ---------------------------------------------------------
-   4枚目：パープル
---------------------------------------------------------- */
-
-.problem-type-card:nth-child(4) {
-  border-color: #805ad5;
-}
-
-.problem-type-card:nth-child(4) .problem-type-icon {
-  background: #805ad5;
-}
-
-.problem-type-card:nth-child(4) .problem-type-text h2 {
-  color: #6843b8;
-}
-
-.problem-type-card:nth-child(4) .problem-type-arrow {
-  color: #805ad5;
-}
-
-
-/* ---------------------------------------------------------
-   5枚目：ピンク
---------------------------------------------------------- */
-
-.problem-type-card:nth-child(5) {
-  border-color: #e85d9e;
-}
-
-.problem-type-card:nth-child(5) .problem-type-icon {
-  background: #e85d9e;
-}
-
-.problem-type-card:nth-child(5) .problem-type-text h2 {
-  color: #c63f7d;
-}
-
-.problem-type-card:nth-child(5) .problem-type-arrow {
-  color: #e85d9e;
-}
-
-
-/* ---------------------------------------------------------
-   6枚目：ライトブルー
---------------------------------------------------------- */
-
-.problem-type-card:nth-child(6) {
-  border-color: #20a9c9;
-}
-
-.problem-type-card:nth-child(6) .problem-type-icon {
-  background: #20a9c9;
-}
-
-.problem-type-card:nth-child(6) .problem-type-text h2 {
-  color: #1687a5;
-}
-
-.problem-type-card:nth-child(6) .problem-type-arrow {
-  color: #20a9c9;
-}
-
-
 /* =========================================================
    ホバー時の矢印
 ========================================================= */
@@ -530,19 +466,6 @@
 .problem-type-card:nth-child(3):hover .problem-type-arrow {
   color: #ef7100;
 }
-
-.problem-type-card:nth-child(4):hover .problem-type-arrow {
-  color: #6843b8;
-}
-
-.problem-type-card:nth-child(5):hover .problem-type-arrow {
-  color: #c63f7d;
-}
-
-.problem-type-card:nth-child(6):hover .problem-type-arrow {
-  color: #1687a5;
-}
-
 
 /* =========================================================
    選択状態
@@ -585,40 +508,6 @@
     0 0 0 3px rgba(255, 138, 0, 0.25),
     0 9px 20px rgba(255, 138, 0, 0.16);
 }
-
-
-/* ---------------------------------------------------------
-   選択状態：4 紫
---------------------------------------------------------- */
-
-.problem-type-card:nth-child(4).selected {
-  box-shadow:
-    0 0 0 3px rgba(128, 90, 213, 0.25),
-    0 9px 20px rgba(128, 90, 213, 0.16);
-}
-
-
-/* ---------------------------------------------------------
-   選択状態：5 ピンク
---------------------------------------------------------- */
-
-.problem-type-card:nth-child(5).selected {
-  box-shadow:
-    0 0 0 3px rgba(232, 93, 158, 0.25),
-    0 9px 20px rgba(232, 93, 158, 0.16);
-}
-
-
-/* ---------------------------------------------------------
-   選択状態：6 水色
---------------------------------------------------------- */
-
-.problem-type-card:nth-child(6).selected {
-  box-shadow:
-    0 0 0 3px rgba(32, 169, 201, 0.25),
-    0 9px 20px rgba(32, 169, 201, 0.16);
-}
-
 
 /* =========================================================
    詳細設定エリア
