@@ -2260,6 +2260,8 @@ function createMitoriSettings(container) {
           return;
         }
 
+        generatedSheets.remove();
+
         window.location.href = "problem-sheet.html";
 
       }
