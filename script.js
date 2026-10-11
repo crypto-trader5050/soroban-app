@@ -880,6 +880,7 @@ function backHome() {
   document.getElementById("readSelect").style.display = "none";
   document.getElementById("levelSelect").style.display = "none";
   document.getElementById("app").style.display = "none";
+  document.getElementById("problemPrintSelect").style.display = "none";
 
   document.getElementById("homeBtn").style.display = "block";
 }
