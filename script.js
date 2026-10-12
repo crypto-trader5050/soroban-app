@@ -486,6 +486,8 @@ function generateQuestion() {
 
   document.getElementById("answerArea").style.display = "none";
   document.getElementById("judge").textContent = "";
+  const correctResult = document.getElementById("correctResult");
+  if (correctResult) correctResult.style.display = "none";
   document.getElementById("answerInput").value = "";
 
   const config = getConfig(state.level);
@@ -670,12 +672,18 @@ function checkAnswer() {
     return;
   }
 
+
   // =====================
   // 正解の場合
   // =====================
   if (BigInt(clean) === BigInt(state.answer)) {
 
-    judge.textContent = "正解！";
+    judge.textContent = "";
+
+    if (correctResult) {
+      correctResult.style.display = "block";
+    }
+
     state.correctCount++;
 
     playCorrectSound();
@@ -707,6 +715,7 @@ function checkAnswer() {
     }, 300);
 
   } else {
+
 
     // =====================
     // 不正解の場合
@@ -791,6 +800,7 @@ function showResult() {
 
   const display = document.getElementById("display");
   const judge = document.getElementById("judge");
+  const correctResult = document.getElementById("correctResult");
 
   display.style.opacity = 1;
 

@@ -1081,7 +1081,16 @@
 
   </div>
 
-  <!-- 判定メッセージ（正解・未入力時に使用） -->
+  <!-- 正解時の専用表示 -->
+  <div id="correctResult" style="display: none;">
+    <div class="correct-result-icon">✓</div>
+    <div class="correct-result-title">正解！</div>
+    <div class="correct-result-message">
+      その調子！ 次の問題へ進もう
+    </div>
+  </div>
+
+  <!-- 判定メッセージ（未入力・結果表示に使用） -->
   <p id="judge"></p>
 
   <!-- 不正解時の進行バー -->
