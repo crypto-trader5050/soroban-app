@@ -626,13 +626,14 @@ function checkAnswer() {
   }
 
   const inputEl = document.getElementById("answerInput");
+  const judge = document.getElementById("judge");
+  const progress = document.getElementById("answerProgress");
+  const progressBar = document.getElementById("answerProgressBar");
 
   const input = inputEl.value;
-  const judge = document.getElementById("judge");
-
   const clean = input.replace(/,/g, "");
 
-  // 👇 ★ここに追加！！
+  // 未入力の場合
   if (clean === "") {
     judge.textContent = "未入力";
 
@@ -646,49 +647,96 @@ function checkAnswer() {
         state.currentQuestion++;
         generateQuestion();
       } else {
-
-        console.log("★15問終了処理へ", state.currentQuestion);
         showResult();
       }
+
     }, 300);
 
     return;
   }
 
-  // ↓ ここから元の処理
+  // 正解の場合
   if (BigInt(clean) === BigInt(state.answer)) {
+
     judge.textContent = "正解！";
     state.correctCount++;
 
     playCorrectSound();
     inputEl.style.background = "#003300";
 
+    if (progress) progress.style.display = "none";
+
+    setTimeout(() => {
+
+      if (state.isFinished) return;
+
+      inputEl.style.background = "black";
+      inputEl.value = "";
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+
+        state.nextTimer = setTimeout(() => {
+
+          if (state.isFinished) return;
+
+          generateQuestion();
+
+        }, 800);
+
+      } else {
+        showResult();
+      }
+
+    }, 300);
+
   } else {
+
+    // 不正解：正解を3秒間表示
     judge.textContent = "不正解：正解は " + state.answer;
-  }
 
-  setTimeout(() => {
+    if (progress && progressBar) {
 
-    if (state.isFinished) return;
+      progress.style.display = "block";
 
-    inputEl.style.background = "black";
-    inputEl.value = "";
+      // バーをいったんリセット
+      progressBar.style.transition = "none";
+      progressBar.style.width = "0%";
 
-    if (state.currentQuestion < state.questionCount) {
-      state.currentQuestion++;
+      // リセットを画面に反映してからアニメーション開始
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          progressBar.style.transition = "width 3s linear";
+          progressBar.style.width = "100%";
+        });
+      });
 
-      state.nextTimer = setTimeout(() => {
-
-        if (state.isFinished) return;
-
-        generateQuestion();
-      }, 800);
-
-    } else {
-      showResult();
     }
 
-  }, 300);
+    state.nextTimer = setTimeout(() => {
+
+      if (state.isFinished) return;
+
+      inputEl.style.background = "black";
+      inputEl.value = "";
+
+      if (progress) progress.style.display = "none";
+
+      if (progressBar) {
+        progressBar.style.transition = "none";
+        progressBar.style.width = "0%";
+      }
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+        generateQuestion();
+      } else {
+        showResult();
+      }
+
+    }, 3000);
+
+  }
 }
 
 // =====================

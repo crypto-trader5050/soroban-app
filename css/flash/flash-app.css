@@ -417,3 +417,29 @@
   }
 
 }
+
+
+/* 不正解時の正解表示 */
+#judge {
+  margin-top: 12px;
+  font-size: 22px;
+}
+
+/* 不正解時の進行バー */
+#answerProgress {
+  width: 100%;
+  height: 6px;
+  margin-top: 12px;
+  background: #374151;
+  border-radius: 999px;
+  overflow: hidden;
+  display: none;
+}
+
+/* 左から右へ伸びる緑色のバー */
+#answerProgressBar {
+  width: 0;
+  height: 100%;
+  background: #4ade80;
+  border-radius: 999px;
+}
