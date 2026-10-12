@@ -627,14 +627,29 @@ function checkAnswer() {
 
   const inputEl = document.getElementById("answerInput");
   const judge = document.getElementById("judge");
+  const result = document.getElementById("answerResult");
+  const yourAnswer = document.getElementById("yourAnswer");
+  const correctAnswer = document.getElementById("correctAnswer");
   const progress = document.getElementById("answerProgress");
   const progressBar = document.getElementById("answerProgressBar");
 
   const input = inputEl.value;
   const clean = input.replace(/,/g, "");
 
+  // 前回の表示をリセット
+  if (result) result.style.display = "none";
+  if (progress) progress.style.display = "none";
+
+  if (progressBar) {
+    progressBar.style.transition = "none";
+    progressBar.style.width = "0%";
+  }
+
+  // =====================
   // 未入力の場合
+  // =====================
   if (clean === "") {
+
     judge.textContent = "未入力";
 
     setTimeout(() => {
@@ -655,7 +670,9 @@ function checkAnswer() {
     return;
   }
 
+  // =====================
   // 正解の場合
+  // =====================
   if (BigInt(clean) === BigInt(state.answer)) {
 
     judge.textContent = "正解！";
@@ -663,8 +680,6 @@ function checkAnswer() {
 
     playCorrectSound();
     inputEl.style.background = "#003300";
-
-    if (progress) progress.style.display = "none";
 
     setTimeout(() => {
 
@@ -674,6 +689,7 @@ function checkAnswer() {
       inputEl.value = "";
 
       if (state.currentQuestion < state.questionCount) {
+
         state.currentQuestion++;
 
         state.nextTimer = setTimeout(() => {
@@ -692,27 +708,37 @@ function checkAnswer() {
 
   } else {
 
-    // 不正解：正解を3秒間表示
-    judge.textContent = "不正解：正解は " + state.answer;
+    // =====================
+    // 不正解の場合
+    // =====================
 
+    // 判定文ではなく、左右のカードを表示
+    judge.textContent = "";
+
+    if (result && yourAnswer && correctAnswer) {
+
+      yourAnswer.textContent = input;
+      correctAnswer.textContent = state.answer;
+
+      result.style.display = "block";
+    }
+
+    // 緑色の進行バーを3秒で伸ばす
     if (progress && progressBar) {
 
       progress.style.display = "block";
 
-      // バーをいったんリセット
-      progressBar.style.transition = "none";
-      progressBar.style.width = "0%";
-
-      // リセットを画面に反映してからアニメーション開始
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
+
           progressBar.style.transition = "width 3s linear";
           progressBar.style.width = "100%";
+
         });
       });
-
     }
 
+    // 3秒後に自動で次の問題へ
     state.nextTimer = setTimeout(() => {
 
       if (state.isFinished) return;
@@ -720,6 +746,7 @@ function checkAnswer() {
       inputEl.style.background = "black";
       inputEl.value = "";
 
+      if (result) result.style.display = "none";
       if (progress) progress.style.display = "none";
 
       if (progressBar) {
@@ -728,8 +755,10 @@ function checkAnswer() {
       }
 
       if (state.currentQuestion < state.questionCount) {
+
         state.currentQuestion++;
         generateQuestion();
+
       } else {
         showResult();
       }

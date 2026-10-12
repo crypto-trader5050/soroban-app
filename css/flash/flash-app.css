@@ -418,8 +418,64 @@
 
 }
 
+/* ========================================
+   不正解時の回答・正解カード
+======================================== */
 
-/* 不正解時の正解表示 */
+#answerResult {
+  width: 100%;
+  max-width: 480px;
+  margin: 12px auto 0;
+}
+
+.answer-result-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.answer-result-card {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 14px 8px 12px;
+  border: 1px solid;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.answer-wrong {
+  color: #ff647c;
+  background: #29171c;
+  border-color: #71333d;
+}
+
+.answer-correct {
+  color: #4ade80;
+  background: #10291f;
+  border-color: #28734b;
+}
+
+.answer-result-label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.answer-result-number {
+  font-size: clamp(22px, 5vw, 34px);
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+
+.answer-result-status {
+  margin-top: 8px;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+/* 判定メッセージ */
 #judge {
   margin-top: 12px;
   font-size: 22px;
@@ -427,19 +483,38 @@
 
 /* 不正解時の進行バー */
 #answerProgress {
+  display: none;
   width: 100%;
+  max-width: 480px;
   height: 6px;
-  margin-top: 12px;
+  margin: 12px auto 0;
   background: #374151;
   border-radius: 999px;
   overflow: hidden;
-  display: none;
 }
 
-/* 左から右へ伸びる緑色のバー */
 #answerProgressBar {
   width: 0;
   height: 100%;
   background: #4ade80;
   border-radius: 999px;
+}
+
+/* スマホ対応 */
+@media (max-width: 480px) {
+  .answer-result-cards {
+    gap: 8px;
+  }
+
+  .answer-result-card {
+    padding: 12px 5px 10px;
+  }
+
+  .answer-result-label {
+    font-size: 12px;
+  }
+
+  .answer-result-status {
+    font-size: 10px;
+  }
 }

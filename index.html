@@ -1058,8 +1058,30 @@
 
   </div>
 
+  <!-- 判定結果 -->
+  <div id="answerResult" style="display: none;">
 
-  <!-- 判定 -->
+    <div class="answer-result-cards">
+
+      <!-- あなたの回答 -->
+      <div class="answer-result-card answer-wrong">
+        <div class="answer-result-label">あなたの回答</div>
+        <div id="yourAnswer" class="answer-result-number"></div>
+        <div class="answer-result-status">不正解</div>
+      </div>
+
+      <!-- 正解 -->
+      <div class="answer-result-card answer-correct">
+        <div class="answer-result-label">正解</div>
+        <div id="correctAnswer" class="answer-result-number"></div>
+        <div class="answer-result-status">正しい答え</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- 判定メッセージ（正解・未入力時に使用） -->
   <p id="judge"></p>
 
   <!-- 不正解時の進行バー -->
