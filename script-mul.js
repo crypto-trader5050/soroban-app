@@ -155,45 +155,116 @@ function checkAnswerMultiplication() {
 
   const inputEl = document.getElementById("answerInput");
   const judge = document.getElementById("judge");
+  const correctResult = document.getElementById("correctResult");
+  const result = document.getElementById("answerResult");
+  const yourAnswer = document.getElementById("yourAnswer");
+  const correctAnswer = document.getElementById("correctAnswer");
+  const progress = document.getElementById("answerProgress");
+  const progressBar = document.getElementById("answerProgressBar");
 
-  const clean = inputEl.value.replace(/,/g, "");
+  const input = inputEl.value;
+  const clean = input.replace(/,/g, "");
+
+  // 前回の表示をリセット
+  if (correctResult) correctResult.style.display = "none";
+  if (result) result.style.display = "none";
+  if (progress) progress.style.display = "none";
+
+  if (progressBar) {
+    progressBar.style.transition = "none";
+    progressBar.style.width = "0%";
+  }
 
   // 未入力
   if (clean === "") {
     judge.textContent = "未入力";
+
+    setTimeout(() => {
+      if (state.isFinished) return;
+
+      inputEl.value = "";
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+        startMultiplication();
+      } else {
+        showResult();
+      }
+    }, 300);
+
     return;
   }
 
-  // 判定
+  // 正解
   if (BigInt(clean) === state.answer) {
-    judge.textContent = "正解！";
-    state.correctCount++;
+    judge.textContent = "";
 
-    // ★正解音
+    if (correctResult) correctResult.style.display = "block";
+
+    state.correctCount++;
     playCorrectSound();
+    inputEl.style.background = "#003300";
+
+    setTimeout(() => {
+      if (state.isFinished) return;
+
+      inputEl.style.background = "black";
+      inputEl.value = "";
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+
+        state.nextTimer = setTimeout(() => {
+          if (state.isFinished) return;
+          startMultiplication();
+        }, 800);
+      } else {
+        showResult();
+      }
+    }, 300);
 
   } else {
-    judge.textContent =
-      "不正解：正解は " + state.answer.toLocaleString();
-  }
+    // 不正解
+    judge.textContent = "";
 
-  setTimeout(() => {
+    if (yourAnswer) yourAnswer.textContent = input;
+    if (correctAnswer) correctAnswer.textContent = state.answer.toLocaleString();
+    if (result) result.style.display = "block";
 
-    if (state.isFinished) return;
+    if (progress && progressBar) {
+      progress.style.display = "block";
 
-    inputEl.value = "";
-
-    // ★進行管理（最重要）
-    if (state.currentQuestion < state.questionCount) {
-
-      state.currentQuestion++;
-      startMultiplication();
-
-    } else {
-      showResult();
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          progressBar.style.transition = "width 3s linear";
+          progressBar.style.width = "100%";
+        });
+      });
     }
 
-  }, 500);
+    state.nextTimer = setTimeout(() => {
+      if (state.isFinished) return;
+
+      inputEl.style.background = "black";
+      inputEl.value = "";
+
+      if (correctResult) correctResult.style.display = "none";
+      if (result) result.style.display = "none";
+      if (progress) progress.style.display = "none";
+
+      if (progressBar) {
+        progressBar.style.transition = "none";
+        progressBar.style.width = "0%";
+      }
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+        startMultiplication();
+      } else {
+        showResult();
+      }
+    }, 3000);
+  }
 }
 
 // =====================

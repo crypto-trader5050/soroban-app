@@ -212,109 +212,130 @@ function startDivisionGame() {
   startDivision();
 }
 
-
 // =====================
 // わり算・回答チェック
 // =====================
-
 function checkAnswerDivision() {
-
-  console.log(
-    "わり算 問題番号",
-    state.currentQuestion
-  );
 
   if (state.nextTimer) {
     clearTimeout(state.nextTimer);
     state.nextTimer = null;
   }
 
-  const inputEl =
-    document.getElementById("answerInput");
+  const inputEl = document.getElementById("answerInput");
+  const judge = document.getElementById("judge");
+  const correctResult = document.getElementById("correctResult");
+  const result = document.getElementById("answerResult");
+  const yourAnswer = document.getElementById("yourAnswer");
+  const correctAnswer = document.getElementById("correctAnswer");
+  const progress = document.getElementById("answerProgress");
+  const progressBar = document.getElementById("answerProgressBar");
 
-  const judge =
-    document.getElementById("judge");
+  const input = inputEl.value;
+  const clean = input.replace(/,/g, "");
 
-  const clean =
-    inputEl.value.replace(/,/g, "");
+  // 前回の表示をリセット
+  if (correctResult) correctResult.style.display = "none";
+  if (result) result.style.display = "none";
+  if (progress) progress.style.display = "none";
+
+  if (progressBar) {
+    progressBar.style.transition = "none";
+    progressBar.style.width = "0%";
+  }
 
   // 未入力
   if (clean === "") {
-
     judge.textContent = "未入力";
 
     setTimeout(() => {
-
       if (state.isFinished) return;
 
       inputEl.value = "";
 
-      if (
-        state.currentQuestion <
-        state.questionCount
-      ) {
-
+      if (state.currentQuestion < state.questionCount) {
         state.currentQuestion++;
-
         startDivision();
-
       } else {
-
         showResult();
-
       }
-
     }, 300);
 
     return;
   }
 
-  // 正解判定
+  // 正解
   if (BigInt(clean) === state.answer) {
+    judge.textContent = "";
 
-    judge.textContent = "正解！";
+    if (correctResult) correctResult.style.display = "block";
 
     state.correctCount++;
-
     playCorrectSound();
-
     inputEl.style.background = "#003300";
 
+    setTimeout(() => {
+      if (state.isFinished) return;
+
+      inputEl.style.background = "black";
+      inputEl.value = "";
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+
+        state.nextTimer = setTimeout(() => {
+          if (state.isFinished) return;
+          startDivision();
+        }, 800);
+      } else {
+        showResult();
+      }
+    }, 300);
+
   } else {
+    // 不正解
+    judge.textContent = "";
 
-    judge.textContent =
-      "不正解：正解は " +
-      state.answer.toLocaleString();
+    if (yourAnswer) yourAnswer.textContent = input;
+    if (correctAnswer) correctAnswer.textContent = state.answer.toLocaleString();
+    if (result) result.style.display = "block";
 
-  }
+    if (progress && progressBar) {
+      progress.style.display = "block";
 
-  setTimeout(() => {
-
-    if (state.isFinished) return;
-
-    inputEl.style.background = "black";
-    inputEl.value = "";
-
-    if (
-      state.currentQuestion <
-      state.questionCount
-    ) {
-
-      state.currentQuestion++;
-
-      state.nextTimer = setTimeout(() => {
-
-        if (state.isFinished) return;
-
-        startDivision();
-
-      }, 800);
-
-    } else {
-
-      showResult();
-
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          progressBar.style.transition = "width 3s linear";
+          progressBar.style.width = "100%";
+        });
+      });
     }
 
-  }, 300);
+    state.nextTimer = setTimeout(() => {
+      if (state.isFinished) return;
+
+      inputEl.style.background = "black";
+      inputEl.value = "";
+
+      if (correctResult) correctResult.style.display = "none";
+      if (result) result.style.display = "none";
+      if (progress) progress.style.display = "none";
+
+      if (progressBar) {
+        progressBar.style.transition = "none";
+        progressBar.style.width = "0%";
+      }
+
+      if (state.currentQuestion < state.questionCount) {
+        state.currentQuestion++;
+
+        state.nextTimer = setTimeout(() => {
+          if (state.isFinished) return;
+          startDivision();
+        }, 800);
+      } else {
+        showResult();
+      }
+    }, 3000);
+  }
 }
