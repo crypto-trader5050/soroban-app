@@ -519,7 +519,6 @@
   }
 }
 
-
 /* ========================================
    正解時の表示カード
 ======================================== */
@@ -529,38 +528,48 @@
   width: 100%;
   max-width: 480px;
   margin: 12px auto 0;
-  padding: 20px 16px;
+  padding: 18px 16px;
   border: 1px solid #28734b;
   border-radius: 12px;
-  background: #10291f;
+  background: linear-gradient(135deg, #10291f, #153a2a);
   color: #4ade80;
   text-align: center;
-}
-
-.correct-result-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  margin: 0 auto 10px;
-  border: 2px solid #4ade80;
-  border-radius: 50%;
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1;
+  box-shadow: 0 0 18px rgba(74, 222, 128, 0.08);
+  animation: correctResultIn 0.25s ease-out;
 }
 
 .correct-result-title {
+  display: inline-block;
+  margin: 0;
+  padding: 5px 20px;
+  border: 1px solid rgba(74, 222, 128, 0.45);
+  border-radius: 8px;
+  background: rgba(74, 222, 128, 0.10);
+  color: #86efac;
   font-size: 28px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
 }
 
 .correct-result-message {
-  margin-top: 8px;
+  margin-top: 10px;
   color: #bbf7d0;
   font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+@keyframes correctResultIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 480px) {
@@ -574,11 +583,5 @@
 
   .correct-result-message {
     font-size: 12px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .correct-result-icon {
-    display: none !important;
   }
 }
