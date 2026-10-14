@@ -439,14 +439,22 @@
   }
 
   #keypad {
-    grid-template-columns: repeat(3, 52px);
+    grid-template-columns: repeat(3, 48px) 64px;
+    grid-template-rows: repeat(4, auto);
     gap: 5px;
   }
 
   #keypad button {
     font-size: 16px;
-    padding: 6px;
+    padding: 5px;
     border-radius: 7px;
+  }
+
+  #keypad #ok {
+    grid-column: 4;
+    grid-row: 1 / 5;
+    font-size: 15px;
+    padding: 5px;
   }
 
   #judge {
