@@ -103,50 +103,45 @@
     0 0 10px #00ff00;
 }
 
-
-/* =====================================================
+/* ========================================
    テンキー
-===================================================== */
+======================================== */
 
 #keypad {
   display: grid;
-
-  grid-template-columns:
-    repeat(3, 80px);
-
-  gap: 12px;
-
+  grid-template-columns: repeat(3, 80px) 80px;
+  grid-template-rows: repeat(4, auto);
+  gap: 8px;
   justify-content: center;
-
+  align-items: stretch;
   position: relative;
-
   z-index: 10;
 }
 
-
 #keypad button {
   font-size: 24px;
-
-  padding: 18px;
-
+  padding: 12px 8px;
   border-radius: 10px;
-
   background: black;
-
   color: #00ff00;
-
   border: 1px solid #00ff00;
-
   transition: 0.1s;
-
   position: relative;
-
   z-index: 11;
 }
 
+/* 決定ボタンを右側の縦長にする */
 #keypad #ok {
-  grid-column: 1 / 4;
+  grid-column: 4;
+  grid-row: 1 / 5;
+  background: #10351f;
+  color: #4ade80;
+  border: 1px solid #4ade80;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 8px;
 }
+
 
 
 /* ホバー */
@@ -463,15 +458,8 @@
   #correctResult,
   #answerProgress {
     max-width: 360px;
-    margin-top: 4px;
+    margin-top: 6px;
   }
-
-  #answerProgress {
-    height: 5px;
-    position: relative;
-    z-index: 20;
-  }
-
   .answer-result-card {
     padding: 8px 5px;
   }
