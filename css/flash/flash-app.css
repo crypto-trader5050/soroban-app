@@ -463,7 +463,13 @@
   #correctResult,
   #answerProgress {
     max-width: 360px;
-    margin-top: 6px;
+    margin-top: 4px;
+  }
+
+  #answerProgress {
+    height: 5px;
+    position: relative;
+    z-index: 20;
   }
 
   .answer-result-card {
