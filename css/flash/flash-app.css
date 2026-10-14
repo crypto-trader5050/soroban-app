@@ -671,3 +671,25 @@
     font-size: 12px;
   }
 }
+
+
+/* ========================================
+   問題表示中：問題番号を上部に固定
+======================================== */
+
+#questionInfo {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  width: max-content;
+  max-width: 95%;
+  margin: 0;
+  padding: 4px 12px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.4;
+  background: #000;
+}
