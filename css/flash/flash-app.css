@@ -399,11 +399,49 @@
 
 }
 
-/* =====================================================
-   スマホ横向き：キーパッド縮小
-===================================================== */
+
+/* ========================================
+   スマホ横向き：画面内に収める調整
+======================================== */
 
 @media screen and (orientation: landscape) and (max-width: 1200px) {
+
+  #app {
+    min-height: 100svh;
+    box-sizing: border-box;
+    padding: 8px;
+  }
+
+  #problemArea {
+    gap: 10px;
+  }
+
+  #questionTitle {
+    margin-top: 0;
+    font-size: 22px;
+  }
+
+  #levelInfo {
+    margin-bottom: 4px;
+    font-size: 16px;
+  }
+
+  #questionInfo {
+    font-size: 14px;
+  }
+
+  .countdown-display {
+    font-size: 80px;
+  }
+
+  #answerInput {
+    box-sizing: border-box;
+    width: 90%;
+    max-width: 360px;
+    font-size: 24px;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+  }
 
   #keypad {
     grid-template-columns: repeat(3, 52px);
@@ -412,11 +450,59 @@
 
   #keypad button {
     font-size: 16px;
-    padding: 8px;
+    padding: 6px;
     border-radius: 7px;
   }
 
+  #judge {
+    margin-top: 4px;
+    font-size: 16px;
+  }
+
+  #answerResult,
+  #correctResult,
+  #answerProgress {
+    max-width: 360px;
+    margin-top: 6px;
+  }
+
+  .answer-result-card {
+    padding: 8px 5px;
+  }
+
+  .answer-result-label {
+    margin-bottom: 4px;
+    font-size: 11px;
+  }
+
+  .answer-result-number {
+    font-size: 22px;
+  }
+
+  .answer-result-status {
+    margin-top: 4px;
+    font-size: 10px;
+  }
+
+  #correctResult {
+    padding: 8px;
+  }
+
+  .correct-result-title {
+    font-size: 20px;
+    padding: 3px 14px;
+  }
+
+  .correct-result-message {
+    margin-top: 5px;
+    font-size: 11px;
+  }
+
+  #homeBtn {
+    bottom: 4px;
+  }
 }
+
 
 /* ========================================
    不正解時の回答・正解カード
