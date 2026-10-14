@@ -576,3 +576,10 @@
     font-size: 12px;
   }
 }
+
+/* スマホだけ正解マークを非表示 */
+@media screen and (max-width: 600px) {
+  .correct-result-icon {
+    display: none;
+  }
+}
