@@ -780,13 +780,13 @@ function checkAnswer() {
 // =====================
 // 結果表示
 // =====================
+
 function showResult() {
 
   console.log("★結果表示開始");
   console.log("正解数:", state.correctCount);
 
   state.isFinished = true;
-
   state.currentQuestion = state.questionCount + 1;
 
   if (state.nextTimer) {
@@ -803,7 +803,6 @@ function showResult() {
   const correctResult = document.getElementById("correctResult");
 
   display.style.opacity = 1;
-
   document.getElementById("printArea").style.display = "none";
 
   const isPass = state.correctCount >= PASS_SCORE;
@@ -811,53 +810,71 @@ function showResult() {
     (state.correctCount / state.questionCount) * 100
   );
 
-  if (isPass) playCorrectSound();
+  if (correctResult) {
+    correctResult.style.display = "none";
+  }
 
-  // 問題表示を結果に変更
-  display.innerHTML = `
-    <div style="
-      font-family:sans-serif;
-      font-size:28px;
-      color:#00ff00;
-      white-space:normal;
-    ">
-      結果<br>
-      ${state.questionCount}問中 ${state.correctCount}問正解<br>
-      正答率：${rate}%
-    </div>
-  `;
-
-  judge.innerHTML = "";
-
-  // 合否表示
-  judge.innerHTML = isPass
-    ? `🎉 ${levelList[currentLevelIndex]} 合格！`
-    : "❌ 不合格";
-
-  // ボタン表示切り替え
   const answerArea = document.getElementById("answerArea");
   answerArea.style.display = "none";
 
-  const homeBtn = document.getElementById("homeBtn");
-  homeBtn.style.display = "block";
+  // 結果画面を表示する処理
+  const renderResult = () => {
 
-  // 追加ボタン（動的に出す）
-  const extraBtn = document.createElement("button");
+    // 問題表示を結果に変更
+    display.innerHTML = `
+      <div style="
+        font-family:sans-serif;
+        font-size:28px;
+        color:#00ff00;
+        white-space:normal;
+      ">
+        結果<br>
+        ${state.questionCount}問中 ${state.correctCount}問正解<br>
+        正答率：${rate}%
+      </div>
+    `;
 
-  if (isPass) {
-    extraBtn.textContent = "次の級へ ▶";
-    extraBtn.onclick = nextLevel;
+    judge.innerHTML = "";
+
+    // 合否表示
+    judge.innerHTML = isPass
+      ? `🎉 ${levelList[currentLevelIndex]} 合格！`
+      : "❌ 不合格";
+
+    // ホームボタン
+    const homeBtn = document.getElementById("homeBtn");
+    homeBtn.style.display = "block";
+
+    // 追加ボタン
+    const extraBtn = document.createElement("button");
+
+    if (isPass) {
+      extraBtn.textContent = "次の級へ ▶";
+      extraBtn.onclick = nextLevel;
+    } else {
+      extraBtn.textContent = "もう一度挑戦";
+      extraBtn.onclick = retry;
+    }
+
+    judge.appendChild(document.createElement("br"));
+    judge.appendChild(extraBtn);
+
+    // 問題データをクリア
+    state.numbers = [];
+    state.index = 0;
+  };
+
+  // 合格時だけ演出を表示
+  if (isPass && typeof showPassCelebration === "function") {
+    playCorrectSound();
+    showPassCelebration(
+      levelList[currentLevelIndex],
+      renderResult
+    );
   } else {
-    extraBtn.textContent = "もう一度挑戦";
-    extraBtn.onclick = retry;
+    // 不合格時は演出なしで結果表示
+    renderResult();
   }
-
-  judge.appendChild(document.createElement("br"));
-  judge.appendChild(extraBtn);
-
-  // ★ 完全停止
-  state.numbers = [];
-  state.index = 0;
 }
 
 function nextLevel() {

@@ -209,11 +209,25 @@ function checkAnswerMultiplication() {
     return;
   }
 
+
   // 正解
   if (BigInt(clean) === state.answer) {
     judge.textContent = "";
 
-    if (correctResult) correctResult.style.display = "block";
+    if (correctResult) {
+      const message = correctResult.querySelector(
+        ".correct-result-message"
+      );
+
+      if (message) {
+        message.textContent =
+          state.currentQuestion >= state.questionCount
+            ? "その調子！"
+            : "その調子！ 次の問題へ進もう";
+      }
+
+      correctResult.style.display = "block";
+    }
 
     state.correctCount++;
     playCorrectSound();

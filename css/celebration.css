@@ -1,0 +1,192 @@
+
+/* =========================================================
+   合格演出
+========================================================= */
+
+.pass-celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: #fff8d6;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at center,
+      #8b6415 0%,
+      #3c2608 48%,
+      #100b03 100%);
+  animation: celebrationAppear 0.6s ease-out both;
+}
+
+.pass-celebration.is-active {
+  display: flex !important;
+}
+
+.celebration-glow {
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 223, 110, 0.12) 15deg,
+    transparent 30deg,
+    rgba(255, 246, 190, 0.18) 45deg,
+    transparent 60deg,
+    rgba(255, 223, 110, 0.12) 75deg,
+    transparent 90deg
+  );
+  animation: celebrationRotate 18s linear infinite;
+}
+
+.celebration-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+  animation: celebrationRise 0.8s ease-out both;
+}
+
+.celebration-crown {
+  margin-bottom: 12px;
+  font-size: clamp(64px, 15vw, 110px);
+  line-height: 1.1;
+  filter: drop-shadow(0 0 18px rgba(255, 218, 91, 0.8));
+  animation: crownShine 1.5s ease-in-out infinite alternate;
+}
+
+.celebration-level {
+  margin-bottom: 8px;
+  color: #ffe8a0;
+  font-size: clamp(20px, 5vw, 32px);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-shadow: 0 2px 12px rgba(255, 204, 64, 0.5);
+}
+
+.celebration-title {
+  color: #fff1a8;
+  font-size: clamp(64px, 17vw, 112px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-shadow:
+    0 0 8px rgba(255, 245, 190, 0.9),
+    0 0 24px rgba(255, 198, 50, 0.85),
+    0 5px 0 #9b5b08;
+  animation: titlePop 0.7s cubic-bezier(.2, 1.5, .5, 1) both;
+}
+
+.celebration-message {
+  margin-top: 22px;
+  color: #fff8df;
+  font-size: clamp(17px, 4.5vw, 25px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.celebration-confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.celebration-piece {
+  position: absolute;
+  top: -12%;
+  width: 10px;
+  height: 18px;
+  border-radius: 2px;
+  background: #ffd700;
+  animation: confettiFall var(--fall-duration, 3s) linear var(--fall-delay, 0s) forwards;
+}
+
+.celebration-piece:nth-child(3n) {
+  background: #fff3b0;
+  width: 7px;
+  height: 14px;
+}
+
+.celebration-piece:nth-child(3n + 1) {
+  background: #f59e0b;
+  border-radius: 50%;
+  width: 9px;
+  height: 9px;
+}
+
+.celebration-piece:nth-child(3n + 2) {
+  background: #fefefe;
+  width: 6px;
+  height: 16px;
+}
+
+@keyframes celebrationAppear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes celebrationRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes celebrationRise {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes crownShine {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-5px) scale(1.06);
+  }
+}
+
+@keyframes titlePop {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translate3d(0, -5vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 40px), 115vh, 0) rotate(720deg);
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .celebration-glow,
+  .celebration-crown,
+  .celebration-title,
+  .celebration-content,
+  .celebration-piece {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
