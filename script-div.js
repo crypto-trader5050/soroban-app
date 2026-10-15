@@ -109,8 +109,24 @@ function startDivision() {
 
   document.getElementById("homeBtn").style.display = "block";
 
-  // 判定表示をクリア
+  // =====================
+  // 判定表示をリセット
+  // =====================
   document.getElementById("judge").textContent = "";
+
+  const correctResult = document.getElementById("correctResult");
+  const answerResult = document.getElementById("answerResult");
+  const answerProgress = document.getElementById("answerProgress");
+  const answerProgressBar = document.getElementById("answerProgressBar");
+
+  if (correctResult) correctResult.style.display = "none";
+  if (answerResult) answerResult.style.display = "none";
+  if (answerProgress) answerProgress.style.display = "none";
+
+  if (answerProgressBar) {
+    answerProgressBar.style.transition = "none";
+    answerProgressBar.style.width = "0%";
+  }
 
   // 入力欄をクリア
   document.getElementById("answerInput").value = "";
