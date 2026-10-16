@@ -634,6 +634,7 @@ function checkAnswer() {
   const correctAnswer = document.getElementById("correctAnswer");
   const progress = document.getElementById("answerProgress");
   const progressBar = document.getElementById("answerProgressBar");
+  const correctResult = document.getElementById("correctResult");
 
   const input = inputEl.value;
   const clean = input.replace(/,/g, "");
@@ -680,9 +681,18 @@ function checkAnswer() {
 
     judge.textContent = "";
 
-    if (correctResult) {
-      correctResult.style.display = "block";
+  if (correctResult) {
+    const message = correctResult.querySelector(".correct-result-message");
+
+    if (message) {
+      message.textContent =
+        state.currentQuestion === state.questionCount
+          ? "その調子！"
+          : "その調子！ 次の問題へ進もう";
     }
+
+    correctResult.style.display = "block";
+  }
 
     state.correctCount++;
 
