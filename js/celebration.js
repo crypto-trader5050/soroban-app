@@ -38,7 +38,7 @@ function showPassCelebration(levelText, onComplete) {
   for (let i = 0; i < 90; i++) {
     const piece = document.createElement("span");
 
-    piece.className = "confetti-piece";
+    piece.className = "celebration-piece";
     piece.style.left = `${Math.random() * 100}%`;
     piece.style.backgroundColor =
       colors[Math.floor(Math.random() * colors.length)];
@@ -63,13 +63,13 @@ function showPassCelebration(levelText, onComplete) {
   overlay.setAttribute("aria-hidden", "false");
 
   // CSSアニメーションを再スタート
-  overlay.classList.remove("is-celebrating");
+  overlay.classList.remove("is-active");
   void overlay.offsetWidth;
-  overlay.classList.add("is-celebrating");
+  overlay.classList.add("is-active");
 
   // 演出終了後、通常の結果画面へ
   window.setTimeout(() => {
-    overlay.classList.remove("is-celebrating");
+    overlay.classList.remove("is-active");
     overlay.style.display = "none";
     overlay.setAttribute("aria-hidden", "true");
     confettiElement.replaceChildren();
