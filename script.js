@@ -717,16 +717,6 @@ function checkAnswer() {
   // =====================
   if (BigInt(clean) === BigInt(state.answer)) {
 
-
-    if (window.sorobanDebugLog) {
-      window.sorobanDebugLog(
-        "① 正解判定",
-        `問題=${state.currentQuestion}/${state.questionCount}` +
-        ` 正解数=${state.correctCount + 1}`
-      );
-    }
-
-
     judge.textContent = "";
 
   if (correctResult) {
