@@ -1,3 +1,41 @@
+
+/* ===== 合格演出の調査ログ（調査後に削除） ===== */
+window.sorobanDebugLog = function (message, details = "") {
+  let panel = document.getElementById("sorobanDebugPanel");
+
+  if (!panel) {
+    panel = document.createElement("div");
+    panel.id = "sorobanDebugPanel";
+
+    Object.assign(panel.style, {
+      position: "fixed",
+      top: "8px",
+      left: "8px",
+      right: "8px",
+      zIndex: "100001",
+      maxHeight: "35vh",
+      overflowY: "auto",
+      padding: "10px",
+      background: "#111827",
+      color: "#ffffff",
+      border: "2px solid #facc15",
+      borderRadius: "8px",
+      fontSize: "12px",
+      lineHeight: "1.5",
+      whiteSpace: "pre-wrap",
+      overflowWrap: "anywhere",
+      pointerEvents: "none"
+    });
+
+    document.body.appendChild(panel);
+  }
+
+  const time = performance.now().toFixed(1);
+  panel.textContent +=
+    `[${time}ms] ${message}` +
+    (details ? ` ${details}` : "") + "\n";
+};
+
 // =====================
 // 状態管理
 // =====================
@@ -679,6 +717,16 @@ function checkAnswer() {
   // =====================
   if (BigInt(clean) === BigInt(state.answer)) {
 
+
+    if (window.sorobanDebugLog) {
+      window.sorobanDebugLog(
+        "① 正解判定",
+        `問題=${state.currentQuestion}/${state.questionCount}` +
+        ` 正解数=${state.correctCount + 1}`
+      );
+    }
+
+
     judge.textContent = "";
 
   if (correctResult) {
@@ -793,8 +841,20 @@ function checkAnswer() {
 
 function showResult() {
 
+  if (window.sorobanDebugLog) {
+    window.sorobanDebugLog(
+      "② 結果処理に到達",
+      `問題=${state.currentQuestion}` +
+      ` 正解数=${state.correctCount}` +
+      ` 終了済み=${state.isFinished}`
+    );
+  }
+
   // 結果画面の二重表示を防ぐ
-  if (state.isFinished) return;
+  if (state.isFinished) {
+    console.log("[調査② 終了済みのため処理中止");
+    return;
+  }
 
   console.log("★結果表示開始");
   console.log("正解数:", state.correctCount);

@@ -7,9 +7,28 @@
 ================================================== */
 
 function showPassCelebration(levelText, onComplete) {
+
+
+  if (window.sorobanDebugLog) {
+    window.sorobanDebugLog(
+      "③ 合格演出開始",
+      `級=${levelText}`
+    );
+  }
+
   const overlay = document.getElementById("passCelebration");
   const levelElement = document.getElementById("celebrationLevel");
   const confettiElement = document.getElementById("celebrationConfetti");
+
+    if (window.sorobanDebugLog) {
+      window.sorobanDebugLog(
+        "④ 演出用要素の取得",
+        `overlay=${!!overlay}` +
+        ` level=${!!levelElement}` +
+        ` confetti=${!!confettiElement}`
+      );
+    }
+
 
   // 演出用HTMLが見つからない場合は、通常の結果表示へ進む
   if (!overlay || !levelElement || !confettiElement) {
