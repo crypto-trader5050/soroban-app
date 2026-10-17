@@ -815,6 +815,9 @@ function showResult() {
   const judge = document.getElementById("judge");
   const correctResult = document.getElementById("correctResult");
 
+  // 合格演出中に問題の「？」を消す
+  display.textContent = "";
+
   display.style.opacity = 1;
   document.getElementById("printArea").style.display = "none";
 
