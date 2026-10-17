@@ -793,6 +793,9 @@ function checkAnswer() {
 
 function showResult() {
 
+  // 結果画面の二重表示を防ぐ
+  if (state.isFinished) return;
+
   console.log("★結果表示開始");
   console.log("正解数:", state.correctCount);
 
