@@ -1107,17 +1107,53 @@
 </div>
 
 <!-- ==================================================
-     合格演出
+     合格演出・最終結果画面
 ================================================== -->
-<div id="passCelebration" class="pass-celebration" style="display:none;">
+<div id="passCelebration"
+     class="pass-celebration"
+     style="display:none;"
+     aria-hidden="true">
+
   <div class="celebration-glow"></div>
   <div id="celebrationConfetti" class="celebration-confetti"></div>
 
   <div class="celebration-content">
+
     <div class="celebration-crown">👑</div>
+
     <div class="celebration-level" id="celebrationLevel"></div>
+
     <div class="celebration-title">合格！</div>
-    <div class="celebration-message">おめでとうございます！</div>
+
+    <div class="celebration-message">
+      よく頑張りました！
+    </div>
+
+    <!-- 合格結果 -->
+    <div class="celebration-result">
+
+      <div class="celebration-result-item">
+        <div class="celebration-result-value"
+             id="celebrationCorrectCount">15 / 15</div>
+        <div class="celebration-result-label">正解数</div>
+      </div>
+
+      <div class="celebration-result-item">
+        <div class="celebration-result-value"
+             id="celebrationAccuracy">100%</div>
+        <div class="celebration-result-label">正答率</div>
+      </div>
+
+    </div>
+
+    <!-- ホームへ戻る -->
+    <button type="button"
+            id="celebrationHomeBtn"
+            class="celebration-home-btn"
+            onclick="closePassCelebration()">
+      🏠 ホームに戻る
+    </button>
+
   </div>
 </div>
 

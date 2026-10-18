@@ -1,30 +1,43 @@
 
 /* ==================================================
-   合格演出
-   ・全画面の合格アニメーション
+   合格演出・最終結果画面
    ・金色の光と紙吹雪
-   ・一定時間後に通常の結果表示へ移行
+   ・合格結果を表示
+   ・ホームボタンを押すまで画面を維持
 ================================================== */
 
-function showPassCelebration(levelText, onComplete) {
+function showPassCelebration(levelText, result = {}) {
 
   const overlay = document.getElementById("passCelebration");
   const levelElement = document.getElementById("celebrationLevel");
   const confettiElement = document.getElementById("celebrationConfetti");
+  const correctCountElement = document.getElementById("celebrationCorrectCount");
+  const accuracyElement = document.getElementById("celebrationAccuracy");
 
-  // 演出用HTMLが見つからない場合は、通常の結果表示へ進む
-  if (!overlay || !levelElement || !confettiElement) {
-    if (typeof onComplete === "function") {
-      onComplete();
-    }
+  // 必要なHTMLが見つからない場合は、エラーを記録して終了
+  if (
+    !overlay ||
+    !levelElement ||
+    !confettiElement ||
+    !correctCountElement ||
+    !accuracyElement
+  ) {
+    console.error("合格演出に必要なHTML要素が見つかりません。");
     return;
   }
 
   // 前回の紙吹雪を削除
   confettiElement.replaceChildren();
 
-  // 級・段などの表示
+  // 級・段の表示
   levelElement.textContent = levelText || "";
+
+  // 正解数・正答率
+  correctCountElement.textContent =
+    `${result.correctCount ?? 0} / ${result.questionCount ?? 15}`;
+
+  accuracyElement.textContent =
+    `${result.rate ?? 0}%`;
 
   // 紙吹雪を生成
   const colors = [
@@ -44,17 +57,25 @@ function showPassCelebration(levelText, onComplete) {
     piece.style.backgroundColor =
       colors[Math.floor(Math.random() * colors.length)];
 
-    piece.style.animationDelay = `${Math.random() * 1.5}s`;
-    piece.style.animationDuration = `${2.5 + Math.random() * 2}s`;
+    // CSS側のアニメーション変数に設定
+    piece.style.setProperty(
+      "--fall-delay",
+      `${Math.random() * 1.5}s`
+    );
+
+    piece.style.setProperty(
+      "--fall-duration",
+      `${2.5 + Math.random() * 2}s`
+    );
+
+    piece.style.setProperty(
+      "--drift",
+      `${Math.random() * 240 - 120}px`
+    );
 
     const size = 5 + Math.random() * 8;
     piece.style.width = `${size}px`;
     piece.style.height = `${size * (1 + Math.random())}px`;
-
-    piece.style.setProperty(
-      "--confetti-drift",
-      `${Math.random() * 240 - 120}px`
-    );
 
     confettiElement.appendChild(piece);
   }
@@ -67,16 +88,32 @@ function showPassCelebration(levelText, onComplete) {
   overlay.classList.remove("is-active");
   void overlay.offsetWidth;
   overlay.classList.add("is-active");
+}
 
-  // 演出終了後、通常の結果画面へ
-  window.setTimeout(() => {
+
+/* ==================================================
+   合格画面のホームボタン
+================================================== */
+
+function closePassCelebration() {
+
+  const overlay = document.getElementById("passCelebration");
+  const confettiElement = document.getElementById("celebrationConfetti");
+
+  // 合格演出を閉じる
+  if (overlay) {
     overlay.classList.remove("is-active");
     overlay.style.display = "none";
     overlay.setAttribute("aria-hidden", "true");
-    confettiElement.replaceChildren();
+  }
 
-    if (typeof onComplete === "function") {
-      onComplete();
-    }
-  }, 3500);
+  // 紙吹雪を片付ける
+  if (confettiElement) {
+    confettiElement.replaceChildren();
+  }
+
+  // 既存のホーム処理を利用
+  if (typeof backHome === "function") {
+    backHome();
+  }
 }
