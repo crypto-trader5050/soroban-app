@@ -84,6 +84,20 @@ function showPassCelebration(levelText, onComplete) {
     );
   }
 
+  if (window.sorobanDebugLog) {
+    const style = window.getComputedStyle(overlay);
+
+    window.sorobanDebugLog(
+      "⑥ CSS適用状況",
+      `position=${style.position}` +
+      ` inset=${style.inset}` +
+      ` top=${style.top}` +
+      ` bottom=${style.bottom}` +
+      ` flexDirection=${style.flexDirection}` +
+      ` background=${style.backgroundColor}`
+    );
+  }
+
   // 演出終了後、通常の結果画面へ
   window.setTimeout(() => {
     overlay.classList.remove("is-active");
