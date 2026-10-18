@@ -98,6 +98,27 @@ function showPassCelebration(levelText, onComplete) {
     );
   }
 
+  if (window.sorobanDebugLog) {
+    const sheets = Array.from(document.styleSheets);
+    const cssFiles = sheets.map(sheet => {
+      try {
+        const rules = Array.from(sheet.cssRules);
+        const found = rules.some(rule =>
+          rule.selectorText === ".pass-celebration"
+        );
+
+        return `${sheet.href || "inline"}: rule=${found}`;
+      } catch (e) {
+        return `${sheet.href || "inline"}: 読取不可`;
+      }
+    });
+
+    window.sorobanDebugLog(
+      "⑦ CSSファイル確認",
+      cssFiles.join(" | ")
+    );
+  }
+
   // 演出終了後、通常の結果画面へ
   window.setTimeout(() => {
     overlay.classList.remove("is-active");
