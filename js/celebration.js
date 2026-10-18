@@ -68,57 +68,6 @@ function showPassCelebration(levelText, onComplete) {
   void overlay.offsetWidth;
   overlay.classList.add("is-active");
 
-  if (window.sorobanDebugLog) {
-    const style = window.getComputedStyle(overlay);
-    const rect = overlay.getBoundingClientRect();
-
-    window.sorobanDebugLog(
-      "⑤ 演出画面の表示状態",
-      `class=${overlay.className}` +
-      ` display=${style.display}` +
-      ` visibility=${style.visibility}` +
-      ` opacity=${style.opacity}` +
-      ` zIndex=${style.zIndex}` +
-      ` width=${Math.round(rect.width)}` +
-      ` height=${Math.round(rect.height)}`
-    );
-  }
-
-  if (window.sorobanDebugLog) {
-    const style = window.getComputedStyle(overlay);
-
-    window.sorobanDebugLog(
-      "⑥ CSS適用状況",
-      `position=${style.position}` +
-      ` inset=${style.inset}` +
-      ` top=${style.top}` +
-      ` bottom=${style.bottom}` +
-      ` flexDirection=${style.flexDirection}` +
-      ` background=${style.backgroundColor}`
-    );
-  }
-
-  if (window.sorobanDebugLog) {
-    const sheets = Array.from(document.styleSheets);
-    const cssFiles = sheets.map(sheet => {
-      try {
-        const rules = Array.from(sheet.cssRules);
-        const found = rules.some(rule =>
-          rule.selectorText === ".pass-celebration"
-        );
-
-        return `${sheet.href || "inline"}: rule=${found}`;
-      } catch (e) {
-        return `${sheet.href || "inline"}: 読取不可`;
-      }
-    });
-
-    window.sorobanDebugLog(
-      "⑦ CSSファイル確認",
-      cssFiles.join(" | ")
-    );
-  }
-
   // 演出終了後、通常の結果画面へ
   window.setTimeout(() => {
     overlay.classList.remove("is-active");
