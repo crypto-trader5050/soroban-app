@@ -52,11 +52,18 @@
 }
 
 .celebration-crown {
-  margin-bottom: 12px;
-  font-size: clamp(64px, 15vw, 110px);
-  line-height: 1.1;
-  filter: drop-shadow(0 0 18px rgba(255, 218, 91, 0.8));
+  width: min(100%, 360px);
+  margin: 0 auto 12px;
+  line-height: 1;
+  filter: drop-shadow(0 0 18px rgba(255, 218, 91, 0.45));
   animation: crownShine 1.5s ease-in-out infinite alternate;
+}
+
+.celebration-wreath {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
 }
 
 .celebration-level {
@@ -103,7 +110,13 @@
   height: 18px;
   border-radius: 2px;
   background: #ffd700;
-  animation: confettiFall var(--fall-duration, 3s) linear var(--fall-delay, 0s) forwards;
+  animation:
+    confettiFall
+    var(--fall-duration, 3s)
+    linear
+    var(--fall-delay, 0s)
+    infinite;
+  will-change: transform, opacity;
 }
 
 .celebration-piece:nth-child(3n) {

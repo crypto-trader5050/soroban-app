@@ -833,21 +833,19 @@ function showResult() {
 
   // 結果画面の二重表示を防ぐ
   if (state.isFinished) {
-    console.log("[調査② 終了済みのため処理中止");
     return;
   }
-
-  console.log("★結果表示開始");
-  console.log("正解数:", state.correctCount);
 
   state.isFinished = true;
   state.currentQuestion = state.questionCount + 1;
 
+  // 次の問題へのタイマーを停止
   if (state.nextTimer) {
     clearTimeout(state.nextTimer);
     state.nextTimer = null;
   }
 
+  // 実行中のタイマーをすべて停止
   state.runId++;
   state.timers.forEach(t => clearTimeout(t));
   state.timers = [];
@@ -855,83 +853,84 @@ function showResult() {
   const display = document.getElementById("display");
   const judge = document.getElementById("judge");
   const correctResult = document.getElementById("correctResult");
+  const answerArea = document.getElementById("answerArea");
 
   // 合格演出中に問題の「？」を消す
   display.textContent = "";
-
   display.style.opacity = 1;
+
+  // 印刷エリアを非表示
   document.getElementById("printArea").style.display = "none";
 
+  // 合否判定と正答率計算
   const isPass = state.correctCount >= PASS_SCORE;
-  const rate = Math.round(
-    (state.correctCount / state.questionCount) * 100
-  );
 
+  const rate = state.questionCount > 0
+    ? Math.round(
+        (state.correctCount / state.questionCount) * 100
+      )
+    : 0;
+
+  // 解答表示を非表示
   if (correctResult) {
     correctResult.style.display = "none";
   }
 
-  const answerArea = document.getElementById("answerArea");
   answerArea.style.display = "none";
 
-  // 結果画面を表示する処理
-  const renderResult = () => {
+  // 問題データをクリア
+  state.numbers = [];
+  state.index = 0;
 
-    // 問題表示を結果に変更
-    display.innerHTML = `
-      <div style="
-        font-family:sans-serif;
-        font-size:28px;
-        color:#00ff00;
-        white-space:normal;
-      ">
-        結果<br>
-        ${state.questionCount}問中 ${state.correctCount}問正解<br>
-        正答率：${rate}%
-      </div>
-    `;
-
-    judge.innerHTML = "";
-
-    // 合否表示
-    judge.innerHTML = isPass
-      ? `🎉 ${levelList[currentLevelIndex]} 合格！`
-      : "❌ 不合格";
-
-    // ホームボタン
-    const homeBtn = document.getElementById("homeBtn");
-    homeBtn.style.display = "block";
-
-    // 追加ボタン
-    const extraBtn = document.createElement("button");
-
-    if (isPass) {
-      extraBtn.textContent = "次の級へ ▶";
-      extraBtn.onclick = nextLevel;
-    } else {
-      extraBtn.textContent = "もう一度挑戦";
-      extraBtn.onclick = retry;
-    }
-
-    judge.appendChild(document.createElement("br"));
-    judge.appendChild(extraBtn);
-
-    // 問題データをクリア
-    state.numbers = [];
-    state.index = 0;
-  };
-
-  // 合格時だけ演出を表示
+  // =========================================
+  // 合格時：最終結果画面を表示して維持
+  // =========================================
   if (isPass && typeof showPassCelebration === "function") {
+
     playCorrectSound();
+
     showPassCelebration(
-      levelList[currentLevelIndex],
-      renderResult
+      `${levelList[currentLevelIndex]} 合格！`,
+      {
+        correctCount: state.correctCount,
+        questionCount: state.questionCount,
+        rate: rate
+      }
     );
-  } else {
-    // 不合格時は演出なしで結果表示
-    renderResult();
+
+    // 通常の結果画面へ移行しない
+    return;
   }
+
+  // =========================================
+  // 不合格時：従来の結果画面を表示
+  // =========================================
+  display.innerHTML = `
+    <div style="
+      font-family:sans-serif;
+      font-size:28px;
+      color:#00ff00;
+      white-space:normal;
+    ">
+      結果<br>
+      ${state.questionCount}問中 ${state.correctCount}問正解<br>
+      正答率：${rate}%
+    </div>
+  `;
+
+  judge.innerHTML = "❌ 不合格";
+
+  // ホームボタンを表示
+  const homeBtn = document.getElementById("homeBtn");
+  homeBtn.style.display = "block";
+
+  // 再挑戦ボタンを表示
+  const retryBtn = document.createElement("button");
+  retryBtn.textContent = "もう一度挑戦";
+  retryBtn.onclick = retry;
+
+  judge.appendChild(document.createElement("br"));
+  judge.appendChild(retryBtn);
 }
 
 function nextLevel() {
