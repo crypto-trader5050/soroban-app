@@ -831,15 +831,6 @@ function checkAnswer() {
 
 function showResult() {
 
-  if (window.sorobanDebugLog) {
-    window.sorobanDebugLog(
-      "② 結果処理に到達",
-      `問題=${state.currentQuestion}` +
-      ` 正解数=${state.correctCount}` +
-      ` 終了済み=${state.isFinished}`
-    );
-  }
-
   // 結果画面の二重表示を防ぐ
   if (state.isFinished) {
     console.log("[調査② 終了済みのため処理中止");

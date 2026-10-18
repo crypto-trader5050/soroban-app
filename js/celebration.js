@@ -8,27 +8,9 @@
 
 function showPassCelebration(levelText, onComplete) {
 
-
-  if (window.sorobanDebugLog) {
-    window.sorobanDebugLog(
-      "③ 合格演出開始",
-      `級=${levelText}`
-    );
-  }
-
   const overlay = document.getElementById("passCelebration");
   const levelElement = document.getElementById("celebrationLevel");
   const confettiElement = document.getElementById("celebrationConfetti");
-
-    if (window.sorobanDebugLog) {
-      window.sorobanDebugLog(
-        "④ 演出用要素の取得",
-        `overlay=${!!overlay}` +
-        ` level=${!!levelElement}` +
-        ` confetti=${!!confettiElement}`
-      );
-    }
-
 
   // 演出用HTMLが見つからない場合は、通常の結果表示へ進む
   if (!overlay || !levelElement || !confettiElement) {
@@ -85,6 +67,22 @@ function showPassCelebration(levelText, onComplete) {
   overlay.classList.remove("is-active");
   void overlay.offsetWidth;
   overlay.classList.add("is-active");
+
+  if (window.sorobanDebugLog) {
+    const style = window.getComputedStyle(overlay);
+    const rect = overlay.getBoundingClientRect();
+
+    window.sorobanDebugLog(
+      "⑤ 演出画面の表示状態",
+      `class=${overlay.className}` +
+      ` display=${style.display}` +
+      ` visibility=${style.visibility}` +
+      ` opacity=${style.opacity}` +
+      ` zIndex=${style.zIndex}` +
+      ` width=${Math.round(rect.width)}` +
+      ` height=${Math.round(rect.height)}`
+    );
+  }
 
   // 演出終了後、通常の結果画面へ
   window.setTimeout(() => {
