@@ -890,7 +890,7 @@ function showResult() {
     playCorrectSound();
 
     showPassCelebration(
-      `${levelList[currentLevelIndex]} 合格！`,
+      `${state.level || levelList[currentLevelIndex]} 合格！`,
       {
         correctCount: state.correctCount,
         questionCount: state.questionCount,
