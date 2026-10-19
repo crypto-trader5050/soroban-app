@@ -1276,6 +1276,34 @@
 </div>
 
 
+<!-- 読み上げ専用・最終結果画面 -->
+<div id="readingCelebration" class="reading-celebration" style="display:none;" aria-hidden="true">
+  <div class="reading-celebration-glow"></div>
+  <div id="readingCelebrationParticles" class="reading-celebration-particles"></div>
+
+  <div class="reading-celebration-content">
+    <div id="readingCelebrationIcon" class="reading-celebration-icon">👑</div>
+    <div id="readingCelebrationTitle" class="reading-celebration-title">パーフェクト！</div>
+    <div id="readingCelebrationMessage" class="reading-celebration-message">すばらしい挑戦です！</div>
+
+    <div class="reading-celebration-results">
+      <div class="reading-celebration-result">
+        <div id="readingCelebrationScore" class="reading-celebration-value">15 / 15</div>
+        <div class="reading-celebration-label">正解数</div>
+      </div>
+      <div class="reading-celebration-result">
+        <div id="readingCelebrationRate" class="reading-celebration-value">100%</div>
+        <div class="reading-celebration-label">正答率</div>
+      </div>
+    </div>
+
+    <button type="button" class="reading-celebration-home" onclick="closeReadingCelebration()">
+      🏠 ホームに戻る
+    </button>
+  </div>
+</div>
+
+
 <!-- ==================================================
      JavaScript
      ※ここは変更しない

@@ -2849,75 +2849,141 @@ function nextReadingQuestion() {
 ========================================================= */
 
 function finishReading() {
-
   readingState.isRunning = false;
   readingState.cancelled = false;
 
-  const answerArea =
-    document.getElementById(
-      "answerArea"
-    );
+  const answerArea = document.getElementById("answerArea");
+  if (answerArea) answerArea.style.display = "none";
 
+  const display = document.getElementById("display");
+  if (display) display.textContent = "終了";
 
-  if (answerArea) {
+  const score = readingState.correctCount;
+  const total = readingState.questionCount;
+  const rate = total > 0 ? Math.round(score / total * 100) : 0;
 
-    answerArea.style.display =
-      "none";
+  const judge = document.getElementById("judge");
+  if (judge) judge.textContent = `${score} / ${total} 正解`;
 
-  }
+  let title;
+  let message;
+  let icon;
+  let tier;
 
-
-  const display =
-    document.getElementById(
-      "display"
-    );
-
-
-  if (display) {
-
-    display.textContent =
-      "終了";
-
-  }
-
-
-  const judge =
-    document.getElementById(
-      "judge"
-    );
-
-
-  const score =
-    readingState.correctCount;
-
-
-  if (judge) {
-
-    judge.textContent =
-      `${score} / ${readingState.questionCount} 正解`;
-
-  }
-
-
-  /*
-     合格判定
-  */
-
-  if (score >= 10) {
-
-    speakReading(
-      "合格です。おめでとうございます！"
-    );
-
+  if (score === total) {
+    title = "パーフェクト！";
+    message = "すばらしい挑戦です！";
+    icon = "👑";
+    tier = "is-perfect";
+  } else if (score >= 10) {
+    title = "クリア！";
+    message = "チャレンジ成功！";
+    icon = "🌟";
+    tier = "is-clear";
   } else {
-
-    speakReading(
-      "終了です。もう一度挑戦しましょう。"
-    );
-
+    title = "チャレンジ完了！";
+    message = "最後まで挑戦しました！";
+    icon = "✨";
+    tier = "is-complete";
   }
 
+  showReadingCelebration({
+    title,
+    message,
+    icon,
+    tier,
+    score,
+    total,
+    rate
+  });
+
+  if (score === total) {
+    speakReading("パーフェクト！おめでとうございます！");
+  } else if (score >= 10) {
+    speakReading("クリア！チャレンジ成功です！");
+  } else {
+    speakReading("チャレンジ完了！最後まで挑戦しました！");
+  }
 }
+
+
+/* ==================================================
+   読み上げ専用・結果演出
+================================================== */
+
+function showReadingCelebration(result) {
+  const overlay = document.getElementById("readingCelebration");
+  const particles = document.getElementById("readingCelebrationParticles");
+
+  if (!overlay || !particles) {
+    console.error("読み上げ結果画面のHTMLが見つかりません。");
+    return;
+  }
+
+  document.getElementById("readingCelebrationTitle").textContent = result.title;
+  document.getElementById("readingCelebrationMessage").textContent = result.message;
+  document.getElementById("readingCelebrationIcon").textContent = result.icon;
+  document.getElementById("readingCelebrationScore").textContent =
+    `${result.score} / ${result.total}`;
+  document.getElementById("readingCelebrationRate").textContent =
+    `${result.rate}%`;
+
+  particles.replaceChildren();
+
+  overlay.classList.remove("is-perfect", "is-clear", "is-complete", "is-active");
+  overlay.classList.add(result.tier);
+
+  const colors = result.tier === "is-perfect"
+    ? ["#ffd700", "#fff2a8", "#ffffff", "#f59e0b"]
+    : result.tier === "is-clear"
+      ? ["#a3e635", "#fde68a", "#ffffff"]
+      : ["#93c5fd", "#c4b5fd", "#ffffff"];
+
+  const count = result.tier === "is-perfect" ? 90
+    : result.tier === "is-clear" ? 45
+    : 18;
+
+  for (let i = 0; i < count; i++) {
+    const particle = document.createElement("span");
+    particle.className = "reading-celebration-particle";
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+    particle.style.width = `${5 + Math.random() * 7}px`;
+    particle.style.height = `${8 + Math.random() * 10}px`;
+    particle.style.setProperty("--delay", `${Math.random() * 1.5}s`);
+    particle.style.setProperty("--duration", `${2.5 + Math.random() * 2}s`);
+    particle.style.setProperty("--drift", `${Math.random() * 180 - 90}px`);
+    particles.appendChild(particle);
+  }
+
+  overlay.style.display = "flex";
+  overlay.setAttribute("aria-hidden", "false");
+
+  void overlay.offsetWidth;
+  overlay.classList.add("is-active");
+}
+
+
+/* ==================================================
+   読み上げ結果からホームへ
+================================================== */
+
+function closeReadingCelebration() {
+  const overlay = document.getElementById("readingCelebration");
+  const particles = document.getElementById("readingCelebrationParticles");
+
+  if (overlay) {
+    overlay.classList.remove("is-active", "is-perfect", "is-clear", "is-complete");
+    overlay.style.display = "none";
+    overlay.setAttribute("aria-hidden", "true");
+  }
+
+  if (particles) particles.replaceChildren();
+
+  if (typeof backHome === "function") backHome();
+}
+
 
 
 /* =========================================================
