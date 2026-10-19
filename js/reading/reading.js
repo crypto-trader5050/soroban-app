@@ -2911,107 +2911,128 @@ function finishReading() {
    読み上げ専用・結果演出
 ================================================== */
 
+
 function showReadingCelebration(result) {
   const overlay = document.getElementById("readingCelebration");
   const particles = document.getElementById("readingCelebrationParticles");
+  const title = document.getElementById("readingCelebrationTitle");
+  const message = document.getElementById("readingCelebrationMessage");
+  const icon = document.getElementById("readingCelebrationIcon");
+  const score = document.getElementById("readingCelebrationScore");
+  const rate = document.getElementById("readingCelebrationRate");
 
-  if (!overlay || !particles) {
+  if (!overlay || !particles || !title || !message ||
+      !icon || !score || !rate) {
     console.error("読み上げ結果画面のHTMLが見つかりません。");
     return;
   }
 
-  document.getElementById("readingCelebrationTitle").textContent = result.title;
-  document.getElementById("readingCelebrationMessage").textContent = result.message;
-  const icon = document.getElementById("readingCelebrationIcon");
+  title.textContent = result.title;
+  message.textContent = result.message;
+  score.textContent = `${result.score} / ${result.total}`;
+  rate.textContent = `${result.rate}%`;
 
+  // 全問正解：金色の王冠と月桂冠
   if (result.tier === "is-perfect") {
     icon.innerHTML = `
-      <svg class="reading-laurel" viewBox="0 0 320 180"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="金色の月桂冠">
+      <svg class="reading-laurel" viewBox="0 0 320 200"
+           xmlns="http://www.w3.org/2000/svg"
+           role="img" aria-label="金色の王冠と月桂冠">
         <defs>
-          <linearGradient id="laurelGold" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#fff5b5"/>
-            <stop offset="45%" stop-color="#e9bd48"/>
-            <stop offset="100%" stop-color="#98651a"/>
+          <linearGradient id="readingGold" x1="0" y1="0" x2="0.8" y2="1">
+            <stop offset="0%" stop-color="#fff9cc"/>
+            <stop offset="35%" stop-color="#ffd54a"/>
+            <stop offset="70%" stop-color="#e6a817"/>
+            <stop offset="100%" stop-color="#98600d"/>
           </linearGradient>
+          <filter id="readingGoldGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
         </defs>
 
-        <g fill="none" stroke="url(#laurelGold)"
-          stroke-width="2.5" stroke-linecap="round">
-          <path d="M160 157 C95 165 37 116 35 48"/>
-          <path d="M160 157 C225 165 283 116 285 48"/>
+        <!-- 月桂冠 -->
+        <g fill="none" stroke="url(#readingGold)"
+           stroke-width="3" stroke-linecap="round">
+          <path d="M160 177 C88 184 30 125 34 54"/>
+          <path d="M160 177 C232 184 290 125 286 54"/>
         </g>
 
-        <g fill="url(#laurelGold)" stroke="#fff0a0" stroke-width=".7">
-          <ellipse cx="49" cy="65" rx="7" ry="19" transform="rotate(-38 49 65)"/>
-          <ellipse cx="61" cy="89" rx="7" ry="19" transform="rotate(-52 61 89)"/>
-          <ellipse cx="79" cy="110" rx="7" ry="19" transform="rotate(-57 79 110)"/>
-          <ellipse cx="101" cy="128" rx="7" ry="19" transform="rotate(-62 101 128)"/>
-          <ellipse cx="126" cy="143" rx="7" ry="19" transform="rotate(-69 126 143)"/>
+        <g fill="url(#readingGold)" stroke="#fff2b0" stroke-width="1">
+          <ellipse cx="43" cy="68" rx="7" ry="18" transform="rotate(-35 43 68)"/>
+          <ellipse cx="53" cy="91" rx="7" ry="18" transform="rotate(-48 53 91)"/>
+          <ellipse cx="71" cy="113" rx="7" ry="18" transform="rotate(-53 71 113)"/>
+          <ellipse cx="93" cy="132" rx="7" ry="18" transform="rotate(-60 93 132)"/>
+          <ellipse cx="119" cy="150" rx="7" ry="18" transform="rotate(-68 119 150)"/>
+          <ellipse cx="146" cy="164" rx="6" ry="15" transform="rotate(-78 146 164)"/>
 
-          <ellipse cx="271" cy="65" rx="7" ry="19" transform="rotate(38 271 65)"/>
-          <ellipse cx="259" cy="89" rx="7" ry="19" transform="rotate(52 259 89)"/>
-          <ellipse cx="241" cy="110" rx="7" ry="19" transform="rotate(57 241 110)"/>
-          <ellipse cx="219" cy="128" rx="7" ry="19" transform="rotate(62 219 128)"/>
-          <ellipse cx="194" cy="143" rx="7" ry="19" transform="rotate(69 194 143)"/>
+          <ellipse cx="277" cy="68" rx="7" ry="18" transform="rotate(35 277 68)"/>
+          <ellipse cx="267" cy="91" rx="7" ry="18" transform="rotate(48 267 91)"/>
+          <ellipse cx="249" cy="113" rx="7" ry="18" transform="rotate(53 249 113)"/>
+          <ellipse cx="227" cy="132" rx="7" ry="18" transform="rotate(60 227 132)"/>
+          <ellipse cx="201" cy="150" rx="7" ry="18" transform="rotate(68 201 150)"/>
+          <ellipse cx="174" cy="164" rx="6" ry="15" transform="rotate(78 174 164)"/>
         </g>
 
-        <path d="M146 158 L160 145 L174 158 L160 171 Z"
-              fill="#fff0a0" stroke="#d9a52d" stroke-width="2"/>
+        <!-- 王冠 -->
+        <g filter="url(#readingGoldGlow)" stroke="#fff0a0"
+           stroke-width="2" stroke-linejoin="round">
+          <path d="M112 83 L96 43 L131 62 L160 23 L189 62 L224 43 L208 83 Z"
+                fill="url(#readingGold)"/>
+          <path d="M112 83 L208 83 L202 111 L118 111 Z"
+                fill="url(#readingGold)"/>
+          <path d="M118 96 L202 96" fill="none" stroke="#fff5c4"/>
+          <circle cx="96" cy="42" r="5" fill="#fff4b0"/>
+          <circle cx="160" cy="22" r="6" fill="#fff8d6"/>
+          <circle cx="224" cy="42" r="5" fill="#fff4b0"/>
+          <path d="M142 72 L160 55 L178 72 L160 88 Z"
+                fill="#fff4b0" stroke="#d69b17"/>
+        </g>
       </svg>`;
   } else {
     icon.textContent = result.icon;
   }
-  document.getElementById("readingCelebrationScore").textContent =
-    `${result.score} / ${result.total}`;
-  document.getElementById("readingCelebrationRate").textContent =
-    `${result.rate}%`;
 
+  // 古い紙吹雪とクラスをリセット
   particles.replaceChildren();
+  overlay.classList.remove(
+    "is-perfect", "is-clear", "is-complete", "is-active"
+  );
 
-  overlay.classList.remove("is-perfect", "is-clear", "is-complete", "is-active");
   overlay.classList.add(result.tier);
 
-  const colors = result.tier === "is-perfect"
-    ? ["#ffd700", "#fff2a8", "#ffffff", "#f59e0b"]
-    : result.tier === "is-clear"
+  const isPerfect = result.tier === "is-perfect";
+  const isClear = result.tier === "is-clear";
+  const count = isPerfect ? 110 : isClear ? 55 : 22;
+
+  const colors = isPerfect
+    ? ["#ffd700", "#fff2a8", "#ffffff", "#f59e0b", "#ffdf70"]
+    : isClear
       ? ["#a3e635", "#fde68a", "#ffffff"]
       : ["#93c5fd", "#c4b5fd", "#ffffff"];
 
-  const count = result.tier === "is-perfect" ? 90
-    : result.tier === "is-clear" ? 45
-    : 18;
-
   for (let i = 0; i < count; i++) {
     const particle = document.createElement("span");
-
     particle.className = "reading-celebration-particle";
 
-    const isPerfect = result.tier === "is-perfect";
-    const isClear = result.tier === "is-clear";
-
-    const colors = isPerfect
-      ? ["#ffd700", "#fff2a8", "#ffffff", "#f59e0b", "#ffdf70"]
-      : isClear
-        ? ["#a3e635", "#fde68a", "#ffffff"]
-        : ["#93c5fd", "#c4b5fd", "#ffffff"];
-
     particle.style.left = `${Math.random() * 100}%`;
-    particle.style.top = `${-10 - Math.random() * 90}%`;
+    particle.style.top = `${-15 - Math.random() * 70}%`;
     particle.style.backgroundColor =
       colors[Math.floor(Math.random() * colors.length)];
 
     particle.style.width = `${5 + Math.random() * 7}px`;
     particle.style.height = `${8 + Math.random() * 12}px`;
-
-    particle.style.setProperty("--delay", `${Math.random() * 1.2}s`);
-    particle.style.setProperty("--duration", `${3 + Math.random() * 2.5}s`);
-    particle.style.setProperty("--drift", `${Math.random() * 240 - 120}px`);
+    particle.style.setProperty("--delay", `${Math.random() * 0.8}s`);
+    particle.style.setProperty("--duration", `${4 + Math.random() * 2}s`);
+    particle.style.setProperty("--drift", `${Math.random() * 300 - 150}px`);
 
     particles.appendChild(particle);
   }
 
+  // 表示を確実に再スタート
   overlay.style.display = "flex";
   overlay.setAttribute("aria-hidden", "false");
 
