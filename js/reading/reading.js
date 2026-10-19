@@ -2922,7 +2922,47 @@ function showReadingCelebration(result) {
 
   document.getElementById("readingCelebrationTitle").textContent = result.title;
   document.getElementById("readingCelebrationMessage").textContent = result.message;
-  document.getElementById("readingCelebrationIcon").textContent = result.icon;
+  const icon = document.getElementById("readingCelebrationIcon");
+
+  if (result.tier === "is-perfect") {
+    icon.innerHTML = `
+      <svg class="reading-laurel" viewBox="0 0 320 180"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="金色の月桂冠">
+        <defs>
+          <linearGradient id="laurelGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#fff5b5"/>
+            <stop offset="45%" stop-color="#e9bd48"/>
+            <stop offset="100%" stop-color="#98651a"/>
+          </linearGradient>
+        </defs>
+
+        <g fill="none" stroke="url(#laurelGold)"
+          stroke-width="2.5" stroke-linecap="round">
+          <path d="M160 157 C95 165 37 116 35 48"/>
+          <path d="M160 157 C225 165 283 116 285 48"/>
+        </g>
+
+        <g fill="url(#laurelGold)" stroke="#fff0a0" stroke-width=".7">
+          <ellipse cx="49" cy="65" rx="7" ry="19" transform="rotate(-38 49 65)"/>
+          <ellipse cx="61" cy="89" rx="7" ry="19" transform="rotate(-52 61 89)"/>
+          <ellipse cx="79" cy="110" rx="7" ry="19" transform="rotate(-57 79 110)"/>
+          <ellipse cx="101" cy="128" rx="7" ry="19" transform="rotate(-62 101 128)"/>
+          <ellipse cx="126" cy="143" rx="7" ry="19" transform="rotate(-69 126 143)"/>
+
+          <ellipse cx="271" cy="65" rx="7" ry="19" transform="rotate(38 271 65)"/>
+          <ellipse cx="259" cy="89" rx="7" ry="19" transform="rotate(52 259 89)"/>
+          <ellipse cx="241" cy="110" rx="7" ry="19" transform="rotate(57 241 110)"/>
+          <ellipse cx="219" cy="128" rx="7" ry="19" transform="rotate(62 219 128)"/>
+          <ellipse cx="194" cy="143" rx="7" ry="19" transform="rotate(69 194 143)"/>
+        </g>
+
+        <path d="M146 158 L160 145 L174 158 L160 171 Z"
+              fill="#fff0a0" stroke="#d9a52d" stroke-width="2"/>
+      </svg>`;
+  } else {
+    icon.textContent = result.icon;
+  }
   document.getElementById("readingCelebrationScore").textContent =
     `${result.score} / ${result.total}`;
   document.getElementById("readingCelebrationRate").textContent =
@@ -2945,15 +2985,30 @@ function showReadingCelebration(result) {
 
   for (let i = 0; i < count; i++) {
     const particle = document.createElement("span");
+
     particle.className = "reading-celebration-particle";
+
+    const isPerfect = result.tier === "is-perfect";
+    const isClear = result.tier === "is-clear";
+
+    const colors = isPerfect
+      ? ["#ffd700", "#fff2a8", "#ffffff", "#f59e0b", "#ffdf70"]
+      : isClear
+        ? ["#a3e635", "#fde68a", "#ffffff"]
+        : ["#93c5fd", "#c4b5fd", "#ffffff"];
+
     particle.style.left = `${Math.random() * 100}%`;
+    particle.style.top = `${-10 - Math.random() * 90}%`;
     particle.style.backgroundColor =
       colors[Math.floor(Math.random() * colors.length)];
+
     particle.style.width = `${5 + Math.random() * 7}px`;
-    particle.style.height = `${8 + Math.random() * 10}px`;
-    particle.style.setProperty("--delay", `${Math.random() * 1.5}s`);
-    particle.style.setProperty("--duration", `${2.5 + Math.random() * 2}s`);
-    particle.style.setProperty("--drift", `${Math.random() * 180 - 90}px`);
+    particle.style.height = `${8 + Math.random() * 12}px`;
+
+    particle.style.setProperty("--delay", `${Math.random() * 1.2}s`);
+    particle.style.setProperty("--duration", `${3 + Math.random() * 2.5}s`);
+    particle.style.setProperty("--drift", `${Math.random() * 240 - 120}px`);
+
     particles.appendChild(particle);
   }
 
