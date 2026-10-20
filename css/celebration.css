@@ -595,3 +595,173 @@
     animation: none;
   }
 }
+
+/* =========================================
+   満点画面：豪華なアリーナ・ステージ
+========================================= */
+
+.pass-celebration--perfect {
+  background:
+    radial-gradient(ellipse at 50% 34%,
+      rgba(255, 218, 95, 0.48) 0%,
+      rgba(173, 99, 4, 0.18) 28%,
+      transparent 58%),
+    radial-gradient(ellipse at 50% 100%,
+      #a66b08 0%,
+      #382000 27%,
+      #090501 70%);
+}
+
+/* 観客席のような光の列とスタジアムの段差 */
+.pass-celebration--perfect::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 100%,
+      transparent 0 25%,
+      rgba(255, 197, 45, 0.55) 25.5%,
+      transparent 26.5% 32%,
+      rgba(255, 184, 30, 0.35) 32.5%,
+      transparent 33.5%),
+    radial-gradient(circle, rgba(255, 223, 112, 0.95) 0 1px,
+      transparent 2px),
+    radial-gradient(circle, rgba(255, 166, 25, 0.8) 0 1px,
+      transparent 2px),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 8%,
+      rgba(255, 190, 40, 0.15) 8.2% 8.5%,
+      transparent 9% 13%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 160, 20, 0.18),
+      transparent 25% 75%,
+      rgba(255, 160, 20, 0.18)
+    );
+  background-size:
+    100% 100%,
+    17px 23px,
+    29px 31px,
+    100% 100%,
+    100% 100%;
+  background-position:
+    center,
+    0 0,
+    9px 12px,
+    center,
+    center;
+  opacity: 0.8;
+}
+
+/* 光の列をコンテンツの後ろに配置 */
+.pass-celebration--perfect .celebration-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* 王冠を大きく、豪華に */
+.pass-celebration--perfect .celebration-crown {
+  width: min(92vw, 440px);
+  margin-bottom: 4px;
+  filter:
+    drop-shadow(0 0 8px rgba(255, 244, 180, 0.95))
+    drop-shadow(0 0 24px rgba(255, 190, 20, 0.85))
+    drop-shadow(0 0 44px rgba(255, 140, 0, 0.5));
+}
+
+/* 赤い祝福リボン */
+.pass-celebration--perfect .celebration-message {
+  display: table;
+  position: relative;
+  margin: 18px auto 22px;
+  padding: 12px 30px;
+  max-width: 90%;
+  box-sizing: border-box;
+  color: #fff9e9;
+  background: linear-gradient(
+    180deg,
+    #ff5151 0%,
+    #c90017 48%,
+    #8c0010 100%
+  );
+  border: 2px solid #ffdc72;
+  border-radius: 8px;
+  box-shadow:
+    0 4px 0 #69000b,
+    0 0 22px rgba(255, 44, 30, 0.45);
+  text-shadow: 0 2px 3px rgba(60, 0, 0, 0.8);
+}
+
+/* 結果パネルを金色の額縁風に */
+.pass-celebration--perfect .celebration-result {
+  gap: 14px;
+  padding: 12px;
+  border: 2px solid #ffdc72;
+  border-radius: 18px;
+  background: linear-gradient(
+    145deg,
+    rgba(35, 23, 4, 0.96),
+    rgba(3, 3, 2, 0.97)
+  );
+  box-shadow:
+    inset 0 0 20px rgba(255, 195, 30, 0.14),
+    0 0 25px rgba(255, 190, 20, 0.35);
+}
+
+/* パネル内の各項目 */
+.pass-celebration--perfect .celebration-result-item {
+  min-width: 0;
+  flex: 1;
+  padding: 10px 8px;
+  border: 0;
+  border-right: 1px solid rgba(255, 218, 105, 0.65);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.pass-celebration--perfect .celebration-result-item:last-child {
+  border-right: 0;
+}
+
+/* ホームボタンを輝かせる */
+.pass-celebration--perfect .celebration-home-btn {
+  border: 2px solid #fff4bd;
+  border-radius: 40px;
+  background: linear-gradient(
+    180deg,
+    #fff8bd 0%,
+    #ffdb45 45%,
+    #e99a00 100%
+  );
+  box-shadow:
+    0 5px 0 #875000,
+    0 0 25px rgba(255, 213, 60, 0.65);
+}
+
+/* スマホ向け調整 */
+@media (max-width: 600px) {
+  .pass-celebration--perfect .celebration-crown {
+    width: min(82vw, 340px);
+  }
+
+  .pass-celebration--perfect .celebration-message {
+    margin: 12px auto 16px;
+    padding: 9px 12px;
+    font-size: clamp(14px, 3.8vw, 20px);
+  }
+
+  .pass-celebration--perfect .celebration-result {
+    gap: 4px;
+    padding: 7px;
+    margin: 14px auto 18px;
+  }
+
+  .pass-celebration--perfect .celebration-result-value {
+    font-size: clamp(19px, 5vw, 30px);
+  }
+}
