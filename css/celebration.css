@@ -765,3 +765,36 @@
     font-size: clamp(19px, 5vw, 30px);
   }
 }
+
+/* 満点画面：豪華な観客席とステージ */
+.pass-celebration--perfect {
+  background-color: #080400;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.08) 0%,
+      rgba(0, 0, 0, 0.12) 55%,
+      rgba(0, 0, 0, 0.55) 100%
+    ),
+    url("../images/celebration-arena.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+/* 既存の成績表示を背景より前面に */
+.pass-celebration--perfect .celebration-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* 王冠と月桂冠は背景と重複させない */
+.pass-celebration--perfect .celebration-crown {
+  position: relative;
+  z-index: 2;
+}
+
+/* 満点画面：背景画像の王冠を使い、HTMLの王冠は隠す */
+.pass-celebration--perfect .celebration-crown {
+  display: none;
+}
