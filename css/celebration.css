@@ -342,3 +342,137 @@
   background: linear-gradient(135deg, #ffe082, #d49a00);
   color: #241900;
 }
+
+
+/* =====================================================
+   結果画面の演出強化
+   既存の3種類の切り替えは変更しない
+===================================================== */
+
+/* 共通：背景の光をゆっくり動かす */
+.pass-celebration {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.pass-celebration::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  z-index: -1;
+  pointer-events: none;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 255, 255, 0.055) 0deg 3deg,
+    transparent 3deg 12deg
+  );
+  animation: celebration-rays 24s linear infinite;
+}
+
+/* 満点：豪華な金色の光 */
+.pass-celebration--perfect::before {
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 215, 0, 0.15) 0deg 2deg,
+    transparent 2deg 12deg
+  );
+  animation-duration: 30s;
+}
+
+.pass-celebration--perfect {
+  box-shadow: inset 0 0 100px rgba(255, 190, 0, 0.2);
+}
+
+.pass-celebration--perfect .celebration-crown {
+  filter:
+    drop-shadow(0 0 12px rgba(255, 215, 0, 0.9))
+    drop-shadow(0 0 28px rgba(255, 180, 0, 0.65));
+  animation: crown-glow 2s ease-in-out infinite alternate;
+}
+
+.pass-celebration--perfect .celebration-title {
+  animation: perfect-title-glow 2s ease-in-out infinite alternate;
+}
+
+/* 合格：緑と金の祝福の光 */
+.pass-celebration--pass::before {
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 215, 0, 0.09) 0deg 2deg,
+    transparent 2deg 14deg
+  );
+}
+
+.pass-celebration--pass .celebration-title {
+  text-shadow:
+    0 0 10px rgba(255, 215, 0, 0.35),
+    0 0 24px rgba(255, 215, 0, 0.2);
+}
+
+/* 不合格：青と白の落ち着いた光 */
+.pass-celebration--retry::before {
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(150, 200, 255, 0.10) 0deg 2deg,
+    transparent 2deg 14deg
+  );
+}
+
+/* 結果画面のボタンを見やすくする */
+.pass-celebration--perfect .celebration-home-btn,
+.pass-celebration--pass .celebration-home-btn,
+.pass-celebration--retry .celebration-home-btn {
+  position: relative;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.pass-celebration--perfect .celebration-home-btn:hover,
+.pass-celebration--pass .celebration-home-btn:hover,
+.pass-celebration--retry .celebration-home-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.12);
+}
+
+/* アニメーション */
+@keyframes celebration-rays {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes crown-glow {
+  from {
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.65));
+  }
+  to {
+    filter:
+      drop-shadow(0 0 16px rgba(255, 215, 0, 1))
+      drop-shadow(0 0 30px rgba(255, 180, 0, 0.75));
+  }
+}
+
+@keyframes perfect-title-glow {
+  from {
+    text-shadow: 0 0 12px rgba(255, 215, 0, 0.55);
+  }
+  to {
+    text-shadow:
+      0 0 18px rgba(255, 215, 0, 1),
+      0 0 36px rgba(255, 180, 0, 0.55);
+  }
+}
+
+/* 動きを減らす設定の端末ではアニメーションを抑える */
+@media (prefers-reduced-motion: reduce) {
+  .pass-celebration::before,
+  .pass-celebration--perfect .celebration-crown,
+  .pass-celebration--perfect .celebration-title {
+    animation: none;
+  }
+}
