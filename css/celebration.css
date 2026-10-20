@@ -298,3 +298,47 @@
     font-size: 17px;
   }
 }
+
+/* 満点：黒と金 */
+.pass-celebration--perfect {
+  background: radial-gradient(circle, #5b4100 0%, #171000 50%, #000 100%);
+}
+
+.pass-celebration--perfect .celebration-title {
+  color: #ffd700;
+  text-shadow: 0 0 18px rgba(255, 215, 0, 0.9);
+}
+
+/* 合格：緑と金 */
+.pass-celebration--pass {
+  background: radial-gradient(circle, #164b2b 0%, #071b10 65%, #020805 100%);
+}
+
+.pass-celebration--pass .celebration-title {
+  color: #ffe082;
+}
+
+/* 不合格：青と白 */
+.pass-celebration--retry {
+  background: radial-gradient(circle, #173d70 0%, #07172e 65%, #020814 100%);
+}
+
+.pass-celebration--retry .celebration-title {
+  color: #fff;
+  text-shadow: 0 0 16px rgba(130, 190, 255, 0.8);
+}
+
+.pass-celebration--retry .celebration-home-btn {
+  background: #2878d0;
+  color: #fff;
+}
+
+.pass-celebration--pass .celebration-home-btn {
+  background: #16864b;
+  color: #fff;
+}
+
+.pass-celebration--perfect .celebration-home-btn {
+  background: linear-gradient(135deg, #ffe082, #d49a00);
+  color: #241900;
+}

@@ -883,27 +883,33 @@ function showResult() {
   state.index = 0;
 
   // =========================================
-  // 合格時：最終結果画面を表示して維持
+  // 結果画面：満点・合格・不合格の3種類
   // =========================================
-  if (isPass && typeof showPassCelebration === "function") {
+  if (typeof showPassCelebration === "function") {
 
-    playCorrectSound();
+    const resultType =
+      state.correctCount === state.questionCount
+        ? "perfect"
+        : isPass
+          ? "pass"
+          : "retry";
 
-    showPassCelebration(
-      `${state.level || levelList[currentLevelIndex]} 合格！`,
-      {
-        correctCount: state.correctCount,
-        questionCount: state.questionCount,
-        rate: rate
-      }
-    );
+    const levelText =
+      state.level || levelList[currentLevelIndex] || "";
+
+    showPassCelebration(levelText, {
+      correctCount: state.correctCount,
+      questionCount: state.questionCount,
+      rate: rate,
+      resultType: resultType
+    });
 
     // 通常の結果画面へ移行しない
     return;
   }
 
   // =========================================
-  // 不合格時：従来の結果画面を表示
+  // 演出が動作しない場合の予備表示
   // =========================================
   display.innerHTML = `
     <div style="
@@ -918,7 +924,7 @@ function showResult() {
     </div>
   `;
 
-  judge.innerHTML = "❌ 不合格";
+  judge.innerHTML = isPass ? "合格！" : "❌ 不合格";
 
   // ホームボタンを表示
   const homeBtn = document.getElementById("homeBtn");
