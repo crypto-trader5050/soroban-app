@@ -476,3 +476,122 @@
     animation: none;
   }
 }
+
+/* =========================================
+   満点演出：プレミアムな金色の結果画面
+========================================= */
+
+.pass-celebration--perfect {
+  position: fixed;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 50% 35%,
+      rgba(255, 190, 35, 0.55) 0%,
+      rgba(100, 54, 0, 0.55) 32%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse at 50% 100%,
+      #8b5700 0%,
+      #211000 38%,
+      #030201 100%
+    ) !important;
+  box-shadow: inset 0 0 100px rgba(255, 190, 0, 0.3);
+}
+
+/* 放射状の光 */
+.pass-celebration--perfect::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(255, 218, 100, 0.18) 0deg 2deg,
+    transparent 2deg 12deg
+  );
+  animation: premium-rays 35s linear infinite;
+}
+
+/* 中央コンテンツを光より前面に */
+.pass-celebration--perfect .celebration-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* 王冠と月桂冠 */
+.pass-celebration--perfect .celebration-crown {
+  width: min(100%, 440px);
+  margin: 0 auto 10px;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 225, 100, 0.95))
+    drop-shadow(0 0 30px rgba(255, 165, 0, 0.75));
+  animation: premium-crown 2.2s ease-in-out infinite alternate;
+}
+
+/* タイトルを金色に */
+.pass-celebration--perfect .celebration-title {
+  color: #fff4b0;
+  text-shadow:
+    0 0 8px #fff3a0,
+    0 0 22px rgba(255, 190, 0, 1),
+    0 4px 0 #7a3900,
+    0 8px 18px rgba(0, 0, 0, 0.8);
+}
+
+/* 結果パネル */
+.pass-celebration--perfect .celebration-result-item {
+  border: 1px solid #ffdc65;
+  border-radius: 10px;
+  background: linear-gradient(
+    145deg,
+    rgba(40, 25, 3, 0.96),
+    rgba(5, 4, 2, 0.98)
+  );
+  box-shadow:
+    inset 0 0 15px rgba(255, 196, 0, 0.15),
+    0 0 18px rgba(255, 190, 0, 0.25);
+}
+
+/* ホームボタン */
+.pass-celebration--perfect .celebration-home-btn {
+  border: 2px solid #fff0a0;
+  border-radius: 40px;
+  background: linear-gradient(
+    180deg,
+    #fff4a8 0%,
+    #ffd438 45%,
+    #e69a00 100%
+  );
+  color: #2b1700;
+  box-shadow:
+    0 5px 0 #875000,
+    0 0 25px rgba(255, 210, 40, 0.7);
+}
+
+/* アニメーション */
+@keyframes premium-rays {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes premium-crown {
+  from {
+    transform: translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  to {
+    transform: translateY(-4px) scale(1.035);
+    filter: brightness(1.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pass-celebration--perfect::before,
+  .pass-celebration--perfect .celebration-crown {
+    animation: none;
+  }
+}
