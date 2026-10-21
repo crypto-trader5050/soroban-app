@@ -219,15 +219,21 @@
   position: fixed;
   background-color: #080400;
   background-image:
-    radial-gradient(ellipse at 50% 42%,
+    radial-gradient(
+      ellipse at 50% 42%,
       rgba(255, 211, 91, 0.22) 0%,
-      transparent 48%),
-    linear-gradient(180deg,
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
       transparent 0%,
       rgba(0, 0, 0, 0.15) 48%,
-      rgba(0, 0, 0, 0.92) 100%);
-  background-size: cover;
-  background-position: center;
+      rgba(0, 0, 0, 0.92) 100%
+    ),
+    url("../assets/images/celebration-arena.png");
+  background-size: 100% 100%, 100% 100%, cover;
+  background-position: center, center, center;
+  background-repeat: no-repeat;
   box-shadow: inset 0 0 100px rgba(255, 190, 0, 0.3);
 }
 
