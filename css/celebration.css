@@ -156,6 +156,8 @@
   align-items: stretch;
   gap: 14px;
   margin: 24px auto 28px;
+  width: min(100%, 760px);
+  box-sizing: border-box;
 }
 
 .celebration-result-item {
@@ -165,6 +167,8 @@
   border-radius: 16px;
   background: rgba(0, 0, 0, 0.28);
   box-shadow: 0 0 22px rgba(255, 198, 50, 0.12);
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .celebration-result-value {
@@ -210,21 +214,105 @@
   transform: translateY(2px);
 }
 
-/* ---------- 1. 全問正解：黒・金、アリーナ背景 ---------- */
+/* ---------- 1. 全問正解：観客席のある黒金ステージ ---------- */
 .pass-celebration--perfect {
+  position: fixed;
   background-color: #080400;
   background-image:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.12) 55%, rgba(0, 0, 0, 0.55) 100%),
-    url("../images/celebration-arena.png");
+    radial-gradient(ellipse at 50% 42%,
+      rgba(255, 211, 91, 0.22) 0%,
+      transparent 48%),
+    linear-gradient(180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.15) 48%,
+      rgba(0, 0, 0, 0.92) 100%);
   background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background-position: center;
   box-shadow: inset 0 0 100px rgba(255, 190, 0, 0.3);
 }
 
+/* 放射状の金色の照明 */
 .pass-celebration--perfect::before {
-  background: repeating-conic-gradient(from 0deg at 50% 50%, rgba(255, 218, 100, 0.18) 0deg 2deg, transparent 2deg 12deg);
+  background: repeating-conic-gradient(
+    from 0deg at 50% 45%,
+    rgba(255, 218, 100, 0.17) 0deg 2deg,
+    transparent 2deg 12deg
+  );
   animation-duration: 35s;
+}
+
+/* 観客席・照明・ステージの光 */
+.pass-celebration--perfect::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-image:
+    /* ステージ中央のスポットライト */
+    radial-gradient(
+      ellipse at 50% 28%,
+      rgba(255, 232, 150, 0.32),
+      transparent 42%
+    ),
+
+    /* 観客席の人影：上段 */
+    radial-gradient(
+      ellipse at 50% 0%,
+      transparent 0 20%,
+      rgba(12, 8, 4, 0.95) 21% 100%
+    ),
+
+    /* 観客席の小さなライト */
+    radial-gradient(
+      circle,
+      #ffd66b 0 1px,
+      transparent 2px
+    ),
+
+    radial-gradient(
+      circle,
+      rgba(255, 245, 205, 0.9) 0 1px,
+      transparent 2px
+    ),
+
+    /* 左右の観客席 */
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.88) 0%,
+      rgba(20, 13, 5, 0.62) 17%,
+      transparent 35% 65%,
+      rgba(20, 13, 5, 0.62) 83%,
+      rgba(0, 0, 0, 0.88) 100%
+    ),
+
+    /* ステージの縁 */
+    radial-gradient(
+      ellipse at 50% 108%,
+      transparent 0 27%,
+      rgba(255, 196, 42, 0.75) 28%,
+      rgba(255, 150, 15, 0.22) 30%,
+      transparent 35%
+    );
+
+  background-size:
+    100% 100%,
+    100% 100%,
+    19px 23px,
+    31px 29px,
+    100% 100%,
+    100% 100%;
+
+  background-position:
+    center,
+    center,
+    0 0,
+    8px 12px,
+    center,
+    center;
+
+  opacity: 0.9;
 }
 
 /* 観客席の照明とステージの段差 */
@@ -293,6 +381,13 @@
 
 .pass-celebration--perfect .celebration-result-item:last-child {
   border-right: 0;
+}
+
+/* 満点・合格では級・段位の表示に「合格」を添える */
+.pass-celebration--perfect .celebration-level::after,
+.pass-celebration--pass .celebration-level::after {
+  content: " 合格";
+  white-space: nowrap;
 }
 
 .pass-celebration--perfect .celebration-home-btn {
@@ -388,8 +483,9 @@
 /* ---------- スマートフォン ---------- */
 @media (max-width: 600px) {
   .celebration-content { padding: 18px 16px; }
-  .celebration-result { gap: 12px; margin: 18px auto 20px; }
-  .celebration-result-item { flex: 1; min-width: 0; padding: 12px 8px; }
+  .celebration-result { width: 100%; gap: 12px; margin: 18px auto 20px; }
+  .celebration-result-item { flex: 1 1 0; min-width: 0; padding: 12px 4px; }
+  .celebration-result-value { overflow-wrap: anywhere; }
   .celebration-result-label { font-size: 12px; }
   .celebration-home-btn { font-size: 17px; }
   .pass-celebration--perfect .celebration-crown { width: min(82vw, 340px); }
