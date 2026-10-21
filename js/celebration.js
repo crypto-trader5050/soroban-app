@@ -13,6 +13,8 @@ function showPassCelebration(levelText, result = {}) {
   const confettiElement = document.getElementById("celebrationConfetti");
   const correctCountElement = document.getElementById("celebrationCorrectCount");
   const accuracyElement = document.getElementById("celebrationAccuracy");
+  const crownElement = document.getElementById("celebrationCrown");
+  const trophyElement = document.getElementById("celebrationTrophy");
 
   if (!overlay) {
     console.error("結果画面 #passCelebration が見つかりません。");
@@ -40,6 +42,17 @@ function showPassCelebration(levelText, result = {}) {
 
   // 結果の種類を判定
   const resultType = result.resultType || "pass";
+
+  // 結果に応じて王冠・トロフィーを切り替える
+  if (crownElement) {
+    crownElement.style.display =
+      resultType === "perfect" ? "block" : "none";
+  }
+
+  if (trophyElement) {
+    trophyElement.style.display =
+      resultType === "pass" ? "block" : "none";
+  }
 
   // 前回の結果クラスを削除
   overlay.classList.remove(
