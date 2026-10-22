@@ -95,36 +95,8 @@ function showPassCelebration(levelText, result = {}) {
 
   const colors = colorsByResult[resultType] || colorsByResult.pass;
 
-  for (let i = 0; i < 90; i++) {
-    const piece = document.createElement("span");
-
-    piece.className = "celebration-piece";
-    piece.style.left = `${Math.random() * 100}%`;
-    piece.style.backgroundColor =
-      colors[Math.floor(Math.random() * colors.length)];
-
-    // CSS側のアニメーション変数に設定
-    piece.style.setProperty(
-      "--fall-delay",
-      `${Math.random() * 1.5}s`
-    );
-
-    piece.style.setProperty(
-      "--fall-duration",
-      `${2.5 + Math.random() * 2}s`
-    );
-
-    piece.style.setProperty(
-      "--drift",
-      `${Math.random() * 240 - 120}px`
-    );
-
-    const size = 5 + Math.random() * 8;
-    piece.style.width = `${size}px`;
-    piece.style.height = `${size * (1 + Math.random())}px`;
-
-    confettiElement.appendChild(piece);
-  }
+  // 共通関数で紙吹雪を生成
+  createCelebrationConfetti(confettiElement, colors, 90);
 
   // 全画面表示
   overlay.style.display = "flex";
@@ -161,5 +133,33 @@ function closePassCelebration() {
   // 既存のホーム処理を利用
   if (typeof backHome === "function") {
     backHome();
+  }
+}
+
+/* ==================================================
+   共通：紙吹雪を生成する
+================================================== */
+function createCelebrationConfetti(container, colors, count = 90) {
+  if (!container) return;
+
+  container.replaceChildren();
+
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement("span");
+
+    piece.className = "celebration-piece";
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+
+    piece.style.setProperty("--fall-delay", `${Math.random() * 1.5}s`);
+    piece.style.setProperty("--fall-duration", `${2.5 + Math.random() * 2}s`);
+    piece.style.setProperty("--drift", `${Math.random() * 240 - 120}px`);
+
+    const size = 5 + Math.random() * 8;
+    piece.style.width = `${size}px`;
+    piece.style.height = `${size * (1 + Math.random())}px`;
+
+    container.appendChild(piece);
   }
 }

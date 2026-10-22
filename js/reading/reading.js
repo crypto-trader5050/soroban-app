@@ -2917,12 +2917,13 @@ function showReadingCelebration(result) {
   const particles = document.getElementById("readingCelebrationParticles");
   const title = document.getElementById("readingCelebrationTitle");
   const message = document.getElementById("readingCelebrationMessage");
-  const icon = document.getElementById("readingCelebrationIcon");
+  const crown = document.getElementById("readingCelebrationCrown");
+  const trophy = document.getElementById("readingCelebrationTrophy");
   const score = document.getElementById("readingCelebrationScore");
   const rate = document.getElementById("readingCelebrationRate");
 
   if (!overlay || !particles || !title || !message ||
-      !icon || !score || !rate) {
+      !score || !rate) {
     console.error("読み上げ結果画面のHTMLが見つかりません。");
     return;
   }
@@ -2932,68 +2933,15 @@ function showReadingCelebration(result) {
   score.textContent = `${result.score} / ${result.total}`;
   rate.textContent = `${result.rate}%`;
 
-  // 全問正解：金色の王冠と月桂冠
-  if (result.tier === "is-perfect") {
-    icon.innerHTML = `
-      <svg class="reading-laurel" viewBox="0 0 320 200"
-           xmlns="http://www.w3.org/2000/svg"
-           role="img" aria-label="金色の王冠と月桂冠">
-        <defs>
-          <linearGradient id="readingGold" x1="0" y1="0" x2="0.8" y2="1">
-            <stop offset="0%" stop-color="#fff9cc"/>
-            <stop offset="35%" stop-color="#ffd54a"/>
-            <stop offset="70%" stop-color="#e6a817"/>
-            <stop offset="100%" stop-color="#98600d"/>
-          </linearGradient>
-          <filter id="readingGoldGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feMerge>
-              <feMergeNode in="blur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
+  // 結果に応じて王冠・トロフィーを切り替える
+  if (crown) {
+    crown.style.display =
+      result.tier === "is-perfect" ? "block" : "none";
+  }
 
-        <!-- 月桂冠 -->
-        <g fill="none" stroke="url(#readingGold)"
-           stroke-width="3" stroke-linecap="round">
-          <path d="M160 177 C88 184 30 125 34 54"/>
-          <path d="M160 177 C232 184 290 125 286 54"/>
-        </g>
-
-        <g fill="url(#readingGold)" stroke="#fff2b0" stroke-width="1">
-          <ellipse cx="43" cy="68" rx="7" ry="18" transform="rotate(-35 43 68)"/>
-          <ellipse cx="53" cy="91" rx="7" ry="18" transform="rotate(-48 53 91)"/>
-          <ellipse cx="71" cy="113" rx="7" ry="18" transform="rotate(-53 71 113)"/>
-          <ellipse cx="93" cy="132" rx="7" ry="18" transform="rotate(-60 93 132)"/>
-          <ellipse cx="119" cy="150" rx="7" ry="18" transform="rotate(-68 119 150)"/>
-          <ellipse cx="146" cy="164" rx="6" ry="15" transform="rotate(-78 146 164)"/>
-
-          <ellipse cx="277" cy="68" rx="7" ry="18" transform="rotate(35 277 68)"/>
-          <ellipse cx="267" cy="91" rx="7" ry="18" transform="rotate(48 267 91)"/>
-          <ellipse cx="249" cy="113" rx="7" ry="18" transform="rotate(53 249 113)"/>
-          <ellipse cx="227" cy="132" rx="7" ry="18" transform="rotate(60 227 132)"/>
-          <ellipse cx="201" cy="150" rx="7" ry="18" transform="rotate(68 201 150)"/>
-          <ellipse cx="174" cy="164" rx="6" ry="15" transform="rotate(78 174 164)"/>
-        </g>
-
-        <!-- 王冠 -->
-        <g filter="url(#readingGoldGlow)" stroke="#fff0a0"
-           stroke-width="2" stroke-linejoin="round">
-          <path d="M112 83 L96 43 L131 62 L160 23 L189 62 L224 43 L208 83 Z"
-                fill="url(#readingGold)"/>
-          <path d="M112 83 L208 83 L202 111 L118 111 Z"
-                fill="url(#readingGold)"/>
-          <path d="M118 96 L202 96" fill="none" stroke="#fff5c4"/>
-          <circle cx="96" cy="42" r="5" fill="#fff4b0"/>
-          <circle cx="160" cy="22" r="6" fill="#fff8d6"/>
-          <circle cx="224" cy="42" r="5" fill="#fff4b0"/>
-          <path d="M142 72 L160 55 L178 72 L160 88 Z"
-                fill="#fff4b0" stroke="#d69b17"/>
-        </g>
-      </svg>`;
-  } else {
-    icon.textContent = result.icon;
+  if (trophy) {
+    trophy.style.display =
+      result.tier === "is-clear" ? "block" : "none";
   }
 
   // 古い紙吹雪とクラスをリセット
