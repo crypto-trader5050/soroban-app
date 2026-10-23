@@ -2964,32 +2964,6 @@ function showReadingCelebration(result) {
 
     particles.appendChild(particle);
   }
-  const isClear = result.tier === "is-clear";
-  const count = isPerfect ? 110 : isClear ? 55 : 22;
-
-  const colors = isPerfect
-    ? ["#ffd700", "#fff2a8", "#ffffff", "#f59e0b", "#ffdf70"]
-    : isClear
-      ? ["#a3e635", "#fde68a", "#ffffff"]
-      : ["#93c5fd", "#c4b5fd", "#ffffff"];
-
-  for (let i = 0; i < count; i++) {
-    const particle = document.createElement("span");
-    particle.className = "reading-celebration-particle";
-
-    particle.style.left = `${Math.random() * 100}%`;
-    particle.style.top = `${-15 - Math.random() * 70}%`;
-    particle.style.backgroundColor =
-      colors[Math.floor(Math.random() * colors.length)];
-
-    particle.style.width = `${5 + Math.random() * 7}px`;
-    particle.style.height = `${8 + Math.random() * 12}px`;
-    particle.style.setProperty("--delay", `${Math.random() * 0.8}s`);
-    particle.style.setProperty("--duration", `${4 + Math.random() * 2}s`);
-    particle.style.setProperty("--drift", `${Math.random() * 300 - 150}px`);
-
-    particles.appendChild(particle);
-  }
 
   // 表示を確実に再スタート
   overlay.style.display = "flex";
