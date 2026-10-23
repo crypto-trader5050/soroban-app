@@ -44,22 +44,6 @@
   pointer-events: none;
 }
 
-.reading-celebration-particle {
-  position: absolute;
-  display: block;
-  top: -12%;
-  border-radius: 2px;
-  opacity: 0;
-  pointer-events: none;
-  animation:
-    readingParticleFall
-    var(--duration, 3s)
-    cubic-bezier(.25, .45, .5, 1)
-    var(--delay, 0s)
-    forwards;
-  will-change: transform, opacity;
-}
-
 .reading-celebration-content {
   position: relative;
   z-index: 2;
@@ -155,22 +139,6 @@
 @keyframes readingCrownShine {
   from { transform: translateY(0) scale(1); }
   to { transform: translateY(-6px) scale(1.08); }
-}
-
-@keyframes readingParticleFall {
-  0% {
-    transform: translate3d(0, -5vh, 0) rotate(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  100% {
-    transform: translate3d(var(--drift, 30px), 115vh, 0) rotate(720deg);
-    opacity: .95;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -374,31 +342,6 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-}
-
-#readingCelebrationParticles .reading-celebration-particle {
-  position: absolute;
-  display: block;
-  opacity: 0;
-  border-radius: 2px;
-  pointer-events: none;
-  animation: readingParticleFall var(--duration, 4s)
-    linear var(--delay, 0s) forwards;
-  will-change: transform, opacity;
-}
-
-@keyframes readingParticleFall {
-  0% {
-    transform: translate3d(0, -5vh, 0) rotate(0deg);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(var(--drift, 30px), 115vh, 0) rotate(720deg);
-    opacity: 1;
-  }
 }
 
 @keyframes readingLaurelAppear {

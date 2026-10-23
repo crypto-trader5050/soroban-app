@@ -2953,29 +2953,15 @@ function showReadingCelebration(result) {
   overlay.classList.add(result.tier);
 
   // フラッシュ暗算と同じ仕様の紙吹雪を90個生成
-  const colorsByTier = {
-    "is-perfect": ["#ffd700", "#fff1a8", "#ffb700", "#ffffff", "#f5c542"],
-    "is-clear": ["#4ade80", "#22c55e", "#ffd700", "#ffffff", "#bbf7d0"],
-    "is-complete": ["#60a5fa", "#bfdbfe", "#ffffff", "#93c5fd", "#dbeafe"]
-  };
-
-  const colors = colorsByTier[result.tier] || colorsByTier["is-clear"];
-
   for (let i = 0; i < 90; i++) {
     const particle = document.createElement("span");
-    particle.className = "reading-celebration-particle";
+    particle.className = "celebration-piece";
 
     particle.style.left = `${Math.random() * 100}%`;
-    particle.style.backgroundColor =
-      colors[Math.floor(Math.random() * colors.length)];
 
     particle.style.setProperty("--fall-delay", `${Math.random() * 1.5}s`);
     particle.style.setProperty("--fall-duration", `${2.5 + Math.random() * 2}s`);
     particle.style.setProperty("--drift", `${Math.random() * 240 - 120}px`);
-
-    const size = 5 + Math.random() * 8;
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size * (1 + Math.random())}px`;
 
     particles.appendChild(particle);
   }
