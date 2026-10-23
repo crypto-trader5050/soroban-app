@@ -2882,7 +2882,7 @@ function finishReading() {
     tier = "is-clear";
   } else {
     title = "チャレンジ完了！";
-    message = "最後まで挑戦しました！";
+    message = "最後までよく頑張りました。";
     icon = "✨";
     tier = "is-complete";
   }
@@ -2902,7 +2902,7 @@ function finishReading() {
   } else if (score >= 10) {
     speakReading("クリア！チャレンジ成功です！");
   } else {
-    speakReading("チャレンジ完了！最後まで挑戦しました！");
+    speakReading("チャレンジ完了！最後までよく頑張りました。");
   }
 }
 
