@@ -502,18 +502,35 @@
   pointer-events: none;
 }
 
+/* 読み上げ側もフラッシュと同じ紙吹雪を使用 */
 .reading-celebration-particle {
   position: absolute;
-  top: -10%;
+  top: -12%;
+  width: 10px;
+  height: 18px;
   border-radius: 2px;
-  opacity: 0;
-  animation:
-    readingConfettiFall
-    var(--duration, 4s)
-    linear
-    var(--delay, 0s)
-    infinite;
+  background: #ffd700;
+  animation: confettiFall var(--fall-duration, 3s) linear var(--fall-delay, 0s) infinite;
   will-change: transform, opacity;
+}
+
+.reading-celebration-particle:nth-child(3n) {
+  width: 7px;
+  height: 14px;
+  background: #fff3b0;
+}
+
+.reading-celebration-particle:nth-child(3n + 1) {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.reading-celebration-particle:nth-child(3n + 2) {
+  width: 6px;
+  height: 16px;
+  background: #fefefe;
 }
 
 /* 結果内容 */
@@ -783,19 +800,6 @@
     transform: translateY(-4px) scale(1.035);
     filter: brightness(1.15)
       drop-shadow(0 0 22px rgba(255, 190, 30, 0.7));
-  }
-}
-
-@keyframes readingConfettiFall {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, -5vh, 0) rotate(0deg);
-  }
-  10% { opacity: 1; }
-  100% {
-    opacity: 0.9;
-    transform: translate3d(var(--drift, 40px), 115vh, 0)
-      rotate(720deg);
   }
 }
 

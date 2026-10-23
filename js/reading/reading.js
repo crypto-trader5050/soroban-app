@@ -2952,7 +2952,18 @@ function showReadingCelebration(result) {
 
   overlay.classList.add(result.tier);
 
-  const isPerfect = result.tier === "is-perfect";
+  // フラッシュと同じ仕様の紙吹雪を90個生成
+  for (let i = 0; i < 90; i++) {
+    const particle = document.createElement("span");
+    particle.className = "reading-celebration-particle";
+
+    particle.style.left = `${Math.random() * 100}%`;
+    particle.style.setProperty("--fall-delay", `${Math.random() * 1.5}s`);
+    particle.style.setProperty("--fall-duration", `${2.5 + Math.random() * 2}s`);
+    particle.style.setProperty("--drift", `${Math.random() * 240 - 120}px`);
+
+    particles.appendChild(particle);
+  }
   const isClear = result.tier === "is-clear";
   const count = isPerfect ? 110 : isClear ? 55 : 22;
 
