@@ -2871,13 +2871,13 @@ function finishReading() {
   let tier;
 
   if (score === total) {
-    title = "パーフェクト！";
-    message = "すばらしい挑戦です！";
+    title = "パーフェクト！ 全問正解！";
+    message = "最高の結果です！";
     icon = "👑";
     tier = "is-perfect";
   } else if (score >= 10) {
-    title = "クリア！";
-    message = "チャレンジ成功！";
+    title = "クリアしました！";
+    message = "チャレンジ成功です！";
     icon = "🌟";
     tier = "is-clear";
   } else {
@@ -2898,9 +2898,9 @@ function finishReading() {
   });
 
   if (score === total) {
-    speakReading("パーフェクト！おめでとうございます！");
+    speakReading("パーフェクト！全問正解！最高の結果です！");
   } else if (score >= 10) {
-    speakReading("クリア！チャレンジ成功です！");
+    speakReading("クリアしました！チャレンジ成功です！");
   } else {
     speakReading("チャレンジ完了！最後までよく頑張りました。");
   }
