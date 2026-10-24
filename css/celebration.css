@@ -550,7 +550,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(72vw, 330px);
+  width: min(92vw, 440px);
   margin: 0 auto 8px;
   line-height: 1;
 }
@@ -814,7 +814,7 @@
   }
 
   .reading-celebration .celebration-crown {
-    width: min(64vw, 250px);
+    width: min(82vw, 340px);
     margin-bottom: 4px;
   }
 
