@@ -354,3 +354,25 @@
     transform: scale(1);
   }
 }
+
+/* 読み上げ：王冠と月桂冠のサイズ */
+.reading-celebration .celebration-crown {
+  width: min(92vw, 440px);
+  max-width: 100%;
+  margin: 0 auto 8px;
+}
+
+.reading-celebration .celebration-wreath {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+  .reading-celebration .celebration-crown {
+    width: min(82vw, 340px);
+  }
+}
