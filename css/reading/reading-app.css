@@ -189,42 +189,6 @@
   overflow: hidden;
 }
 
-/* 月桂冠 */
-.reading-laurel {
-  display: block;
-  width: min(440px, 92vw);
-  height: auto;
-  margin: 0 auto 2px;
-  overflow: visible;
-  filter:
-    drop-shadow(0 0 5px rgba(255, 215, 0, .65))
-    drop-shadow(0 0 18px rgba(255, 190, 30, .3));
-  animation: laurelEntrance 1.2s cubic-bezier(.2, .9, .25, 1.2) both,
-             laurelShine 2.8s ease-in-out 1.2s infinite;
-}
-
-@keyframes laurelEntrance {
-  from {
-    opacity: 0;
-    transform: scale(.55) translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes laurelShine {
-  0%, 100% {
-    filter: drop-shadow(0 0 5px rgba(255, 215, 0, .55));
-  }
-  50% {
-    filter:
-      drop-shadow(0 0 12px rgba(255, 230, 120, .95))
-      drop-shadow(0 0 28px rgba(255, 190, 30, .55));
-  }
-}
-
 /* 全問正解のタイトル */
 .reading-celebration.is-perfect .reading-celebration-title {
   color: #fff1a6;
@@ -284,10 +248,6 @@
     padding: 12px 4px;
   }
 
-  .reading-celebration.is-perfect .reading-laurel {
-    width: min(340px, 82vw);
-  }
-
   .reading-celebration-results {
     gap: 10px;
   }
@@ -325,34 +285,6 @@
   margin: 0 auto;
   overflow: visible;
   animation: readingLaurelAppear 0.8s ease-out both;
-}
-
-/* パーフェクトを必ず1行にする */
-.reading-celebration.is-perfect .reading-celebration-title {
-  white-space: nowrap;
-  font-size: clamp(25px, 7vw, 44px);
-  letter-spacing: 0;
-  width: 100%;
-  text-align: center;
-}
-
-/* 紙吹雪を画面の下まで動かす */
-#readingCelebrationParticles {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-@keyframes readingLaurelAppear {
-  from {
-    opacity: 0;
-    transform: scale(.7);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
 }
 
 /* 読み上げ：王冠と月桂冠のサイズ */
