@@ -2750,54 +2750,108 @@ function checkReadingAnswer() {
 
     }
 
+const judge = document.getElementById("judge");
 
-  const judge =
-    document.getElementById(
-      "judge"
+const result = document.getElementById("answerResult");
+const yourAnswer = document.getElementById("yourAnswer");
+const correctAnswer = document.getElementById("correctAnswer");
+const correctResult = document.getElementById("correctResult");
+const progress = document.getElementById("answerProgress");
+const progressBar = document.getElementById("answerProgressBar");
+
+// 前回の判定表示をリセット
+if (judge) {
+  judge.textContent = "";
+}
+
+if (result) {
+  result.style.display = "none";
+}
+
+if (correctResult) {
+  correctResult.style.display = "none";
+}
+
+if (progress) {
+  progress.style.display = "none";
+}
+
+if (progressBar) {
+  progressBar.style.transition = "none";
+  progressBar.style.width = "0%";
+}
+
+// 正解の場合
+if (correct) {
+  readingState.correctCount++;
+
+  // フラッシュ暗算と同じ正解パネルを表示
+  if (correctResult) {
+    const message = correctResult.querySelector(
+      ".correct-result-message"
     );
 
-
-  if (correct) {
-
-    readingState.correctCount++;
-
-
-    if (judge) {
-
-      judge.textContent =
-        "正解！";
-
+    if (message) {
+      message.textContent = "その調子！";
     }
 
-
-    speakReading(
-      "ごめいさんです！",
-
-      () => {
-
-        nextReadingQuestion();
-
-      }
-    );
-
-  } else {
-
-    if (judge) {
-
-      judge.textContent =
-        "不正解：正解は " +
-        readingState.answer.toLocaleString();
-
-    }
-
-
-    setTimeout(() => {
-
-      nextReadingQuestion();
-
-    }, 1000);
-
+    correctResult.style.display = "block";
   }
+
+  // 現在の正解音声を維持し、音声終了後に次の問題へ
+  speakReading("ごめいさんです！", () => {
+    if (correctResult) {
+      correctResult.style.display = "none";
+    }
+
+    nextReadingQuestion();
+  });
+
+} else {
+  // 不正解の場合：左右のカードを表示
+  if (yourAnswer) {
+    yourAnswer.textContent = userAnswer;
+  }
+
+  if (correctAnswer) {
+    correctAnswer.textContent =
+      readingState.answer.toLocaleString();
+  }
+
+  if (result) {
+    result.style.display = "block";
+  }
+
+  // フラッシュ暗算と同じ3秒の進行バー
+  if (progress && progressBar) {
+    progress.style.display = "block";
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        progressBar.style.transition = "width 3s linear";
+        progressBar.style.width = "100%";
+      });
+    });
+  }
+
+  // 3秒後に次の問題へ
+  setTimeout(() => {
+    if (result) {
+      result.style.display = "none";
+    }
+
+    if (progress) {
+      progress.style.display = "none";
+    }
+
+    if (progressBar) {
+      progressBar.style.transition = "none";
+      progressBar.style.width = "0%";
+    }
+
+    nextReadingQuestion();
+  }, 3000);
+}
 
 }
 
