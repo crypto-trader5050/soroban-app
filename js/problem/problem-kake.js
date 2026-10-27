@@ -126,6 +126,16 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </section>
 
+            <section class="problem-count-area">
+              <h3 class="problem-create-heading">小数を含む問題数</h3>
+              <select class="problem-form-select decimal-question-count">
+                <option value="0">0問</option>
+              </select>
+              <p class="problem-section-status">
+                総問題数を選択すると、選べる問題数が表示されます。
+              </p>
+            </section>
+
             <section class="problem-section-area">
               <h3 class="problem-create-heading">問題設定</h3>
               <div class="problem-section-list individual-section-list"></div>
@@ -181,12 +191,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let totalQuestions = 0;
 
+      const decimalCountSelect = block.querySelector(".decimal-question-count");
+
+      function updateDecimalCountOptions() {
+        const previous = Number(decimalCountSelect.value) || 0;
+
+        decimalCountSelect.innerHTML = Array.from(
+          { length: totalQuestions + 1 },
+          (_, n) => `<option value="${n}">${n}問</option>`
+        ).join("");
+
+        decimalCountSelect.value = String(
+          Math.min(previous, totalQuestions)
+        );
+      }
+
       countButtons.forEach(button => {
         button.addEventListener("click", () => {
           countButtons.forEach(b => b.classList.remove("selected"));
           button.classList.add("selected");
 
           totalQuestions = Number(button.dataset.count);
+          updateDecimalCountOptions();
           sectionList.innerHTML = "";
           addSection();
           updateStatus();
@@ -243,11 +269,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="problem-section-settings">
 
             <div class="problem-form-item">
-              <label class="problem-form-label">かけられる数・整数部分</label>
-              <select class="problem-form-select a-int-min">
-                ${options(1, 10, "桁")}
-              </select>
+              <label class="problem-form-label">かけられる数・総桁数</label>
               <div class="problem-digit-range">
+                <select class="problem-form-select a-int-min">
+                  ${options(1, 10, "桁")}
+                </select>
+                <span>～</span>
                 <select class="problem-form-select a-int-max">
                   ${options(1, 10, "桁")}
                 </select>
@@ -255,11 +282,12 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="problem-form-item">
-              <label class="problem-form-label">かける数・整数部分</label>
-              <select class="problem-form-select b-int-min">
-                ${options(1, 10, "桁")}
-              </select>
+              <label class="problem-form-label">かける数・総桁数</label>
               <div class="problem-digit-range">
+                <select class="problem-form-select b-int-min">
+                  ${options(1, 10, "桁")}
+                </select>
+                <span>～</span>
                 <select class="problem-form-select b-int-max">
                   ${options(1, 10, "桁")}
                 </select>
@@ -271,61 +299,36 @@ document.addEventListener("DOMContentLoaded", () => {
               <select class="problem-form-select decimal-mode">
                 <option value="none">整数のみ</option>
                 <option value="optional" selected>整数・小数を含める</option>
-                <option value="required">小数を必ず含める</option>
               </select>
             </div>
 
             <div class="problem-form-item">
-              <label class="problem-form-label">かけられる数・小数桁数</label>
-              <div class="problem-digit-range">
-                <select class="problem-form-select a-dec-min">
-                  ${options(0, 4, "桁")}
-                </select>
-                <span>～</span>
-                <select class="problem-form-select a-dec-max">
-                  ${options(0, 4, "桁")}
-                </select>
-              </div>
-            </div>
-
-            <div class="problem-form-item">
-              <label class="problem-form-label">かける数・小数桁数</label>
-              <div class="problem-digit-range">
-                <select class="problem-form-select b-dec-min">
-                  ${options(0, 4, "桁")}
-                </select>
-                <span>～</span>
-                <select class="problem-form-select b-dec-max">
-                  ${options(0, 4, "桁")}
-                </select>
-              </div>
-            </div>
-
-            <div class="problem-form-item">
-              <label class="problem-form-label">0から始まる小数</label>
+              <label class="problem-form-label">小数の表記</label>
               <select class="problem-form-select leading-zero">
-                <option value="yes" selected>含める（0.3、0.05、0.008）</option>
-                <option value="no">含めない</option>
+                <option value="no" selected>先頭の0を付けない</option>
+                <option value="point-zero">0. の形式を含める</option>
+                <option value="point-zero-one">0.0 の形式を含める</option>
+                <option value="point-zero-two">0.00 の形式を含める</option>
               </select>
             </div>
 
             <div class="problem-form-item">
               <label class="problem-form-label">答えの処理方法</label>
               <select class="problem-form-select rounding-mode">
-                <option value="exact">正確に答える</option>
-                <option value="round">四捨五入</option>
+                <option value="round" selected>四捨五入</option>
                 <option value="truncate">切り捨て</option>
               </select>
             </div>
 
             <div class="problem-form-item rounding-place-area">
-              <label class="problem-form-label">答えを求める位</label>
+              <label class="problem-form-label">処理する位</label>
               <select class="problem-form-select rounding-place">
-                <option value="0">一の位まで</option>
-                <option value="1">小数第1位まで</option>
-                <option value="2" selected>小数第2位まで</option>
-                <option value="3">小数第3位まで</option>
-                <option value="4">小数第4位まで</option>
+                <option value="-1">整数未満</option>
+                <option value="1">小数第1位未満</option>
+                <option value="2" selected>小数第2位未満</option>
+                <option value="3">小数第3位未満</option>
+                <option value="4">小数第4位未満</option>
+                <option value="5">小数第5位未満</option>
               </select>
             </div>
 
@@ -467,6 +470,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      const decimalQuestionCount = Number(
+        block.querySelector(".decimal-question-count").value
+      );
+
       const ranges = sections.map(section => ({
         start: Number(section.querySelector(".section-start").value),
         end: Number(section.querySelector(".section-end").value),
@@ -475,10 +482,6 @@ document.addEventListener("DOMContentLoaded", () => {
         bIntMin: Number(section.querySelector(".b-int-min").value),
         bIntMax: Number(section.querySelector(".b-int-max").value),
         decimalMode: section.querySelector(".decimal-mode").value,
-        aDecMin: Number(section.querySelector(".a-dec-min").value),
-        aDecMax: Number(section.querySelector(".a-dec-max").value),
-        bDecMin: Number(section.querySelector(".b-dec-min").value),
-        bDecMax: Number(section.querySelector(".b-dec-max").value),
         leadingZero: section.querySelector(".leading-zero").value,
         roundingMode: section.querySelector(".rounding-mode").value,
         roundingPlace: Number(section.querySelector(".rounding-place").value)
@@ -500,9 +503,11 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        if (r.aIntMin > r.aIntMax || r.bIntMin > r.bIntMax ||
-            r.aDecMin > r.aDecMax || r.bDecMin > r.bDecMax) {
-          alert("桁数の最小値と最大値を確認してください。");
+        if (
+          r.aIntMin > r.aIntMax ||
+          r.bIntMin > r.bIntMax
+        ) {
+          alert("総桁数の最小値と最大値を確認してください。");
           return;
         }
 
@@ -519,13 +524,72 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const problems = [];
 
+      // 小数を含められる問題番号を抽出する
+      const decimalEligible = [];
+
       for (let q = 1; q <= total; q++) {
         const r = ranges.find(x => q >= x.start && q <= x.end);
-        const a = makeOperand(r, "a");
-        const b = makeOperand(r, "b");
+
+        if (r && r.decimalMode !== "none") {
+          decimalEligible.push(q);
+        }
+      }
+
+      // 指定された小数問題数を実現できるか確認
+      if (
+        !Number.isInteger(decimalQuestionCount) ||
+        decimalQuestionCount < 0 ||
+        decimalQuestionCount > total
+      ) {
+        alert("小数を含む問題数を確認してください。");
+        return;
+      }
+
+      if (decimalQuestionCount > decimalEligible.length) {
+        alert(
+          `小数を含む問題数は最大${decimalEligible.length}問です。` +
+          "区間の「小数点」設定を確認してください。"
+        );
+        return;
+      }
+
+      // 小数を含める問題番号をランダムに選ぶ
+      for (let i = decimalEligible.length - 1; i > 0; i--) {
+        const j = randomInt(0, i);
+        [decimalEligible[i], decimalEligible[j]] =
+          [decimalEligible[j], decimalEligible[i]];
+      }
+
+      const decimalQuestionNumbers = new Set(
+        decimalEligible.slice(0, decimalQuestionCount)
+      );
+
+      // 問題を生成する
+      for (let q = 1; q <= total; q++) {
+        const r = ranges.find(x => q >= x.start && q <= x.end);
+        const useDecimal = decimalQuestionNumbers.has(q);
+
+        // 小数問題では、少なくとも片方を小数にする
+        const decimalSide = Math.random() < 0.5 ? "a" : "b";
+
+        const a = makeOperand(
+          r,
+          "a",
+          useDecimal && decimalSide === "a"
+        );
+
+        const b = makeOperand(
+          r,
+          "b",
+          useDecimal && decimalSide === "b"
+        );
 
         const rawAnswer = a.value * b.value;
-        const answer = processAnswer(rawAnswer, r.roundingMode, r.roundingPlace);
+        const answer = processAnswer(
+          rawAnswer,
+          r.roundingMode,
+          r.roundingPlace
+        );
 
         problems.push({
           number: q,
@@ -556,41 +620,102 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function makeOperand(r, side) {
-    const intMin = r[`${side}IntMin`];
-    const intMax = r[`${side}IntMax`];
-    const decMin = r[`${side}DecMin`];
-    const decMax = r[`${side}DecMax`];
 
-    let decimals = r.decimalMode === "none"
-      ? 0
-      : randomInt(decMin, decMax);
+  function makeOperand(r, side, useDecimal = false) {
+    const minDigits = r[`${side}IntMin`];
+    const maxDigits = r[`${side}IntMax`];
+    const totalDigits = randomInt(minDigits, maxDigits);
 
-    if (r.decimalMode === "required" && decimals === 0) {
-      const maxPossible = Math.max(r.aDecMax, r.bDecMax);
-      if (maxPossible === 0) {
-        throw new Error("小数を必ず含める設定では、小数桁数を1桁以上にしてください。");
+    // 整数問題、または小数を使用しない設定
+    if (!useDecimal || r.decimalMode === "none") {
+      const min = totalDigits === 1 ? 1 : 10 ** (totalDigits - 1);
+      const max = 10 ** totalDigits - 1;
+      const value = randomInt(min, max);
+      return { text: String(value), value };
+    }
+
+    const style = r.leadingZero || "no";
+
+    // 小数点より前に表示する0の有無・個数を決める
+    const prefixZeros = {
+      "no": 0,
+      "point-zero": 1,
+      "point-zero-one": 1,
+      "point-zero-two": 1
+    };
+
+    // 0.0、0.00の形式では、小数部の先頭にも0を付ける
+    const fractionZeros = {
+      "no": 0,
+      "point-zero": 0,
+      "point-zero-one": 1,
+      "point-zero-two": 2
+    };
+
+    const beforeCount = prefixZeros[style] ?? 0;
+    const afterCount = fractionZeros[style] ?? 0;
+
+    // 表示される数字の総数を守れるか確認
+    const minimumDigits = beforeCount + afterCount + 1;
+
+    if (totalDigits < minimumDigits) {
+      throw new Error(
+        `小数の総桁数が不足しています。設定された桁数：${totalDigits}桁`
+      );
+    }
+
+    // 整数部が0の場合、小数部の桁数を計算
+    const useZeroInteger = Math.random() < 0.35;
+
+    if (useZeroInteger) {
+      const fractionDigits = totalDigits - beforeCount;
+
+      let fraction;
+
+      if (style === "point-zero-two") {
+        const tailDigits = fractionDigits - 2;
+        const tail = randomInt(1, 10 ** tailDigits - 1)
+          .toString()
+          .padStart(tailDigits, "0");
+        fraction = `00${tail}`;
+      } else if (style === "point-zero-one") {
+        const tailDigits = fractionDigits - 1;
+        const tail = randomInt(1, 10 ** tailDigits - 1)
+          .toString()
+          .padStart(tailDigits, "0");
+        fraction = `0${tail}`;
+      } else {
+        fraction = randomInt(1, 10 ** fractionDigits - 1)
+          .toString()
+          .padStart(fractionDigits, "0");
       }
-      decimals = randomInt(1, maxPossible);
+
+      const textValue = style === "no"
+        ? `.${fraction}`
+        : `0.${fraction}`;
+
+      return {
+        text: textValue,
+        value: Number(textValue)
+      };
     }
 
-    const intDigits = randomInt(intMin, intMax);
-    let integerPart = randomInt(
-      intDigits === 1 ? 1 : 10 ** (intDigits - 1),
-      10 ** intDigits - 1
-    );
-
-    if (r.leadingZero === "yes" && decimals > 0 && Math.random() < 0.35) {
-      integerPart = 0;
+    // 整数部が0ではない小数
+    // 整数部と小数部を合わせて総桁数を維持する
+    if (totalDigits < 2) {
+      const value = randomInt(1, 9);
+      return { text: String(value), value };
     }
 
-    const fraction = decimals > 0
-      ? randomInt(0, 10 ** decimals - 1).toString().padStart(decimals, "0")
-      : "";
+    const integerDigits = totalDigits - 1;
+    const integerMin = integerDigits === 1
+      ? 1
+      : 10 ** (integerDigits - 1);
+    const integerMax = 10 ** integerDigits - 1;
 
-    const textValue = decimals > 0
-      ? `${integerPart}.${fraction}`
-      : String(integerPart);
+    const integerPart = randomInt(integerMin, integerMax);
+    const fraction = String(randomInt(0, 9));
+    const textValue = `${integerPart}.${fraction}`;
 
     return {
       text: textValue,
@@ -598,10 +723,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  function processAnswer(value, mode, places) {
-    if (mode === "exact") return formatNumber(value);
 
-    const factor = 10 ** places;
+
+  function processAnswer(value, mode, places) {
+    const digits = Math.max(0, places);
+    const factor = 10 ** digits;
+
     const adjusted = mode === "round"
       ? Math.round((value + Number.EPSILON) * factor)
       : Math.trunc(value * factor);
@@ -609,27 +736,24 @@ document.addEventListener("DOMContentLoaded", () => {
     return formatNumber(adjusted / factor);
   }
 
+
   function formatNumber(value) {
     return Number(value.toPrecision(12)).toString();
   }
 
+
   function makeInstruction(r) {
-    if (r.roundingMode === "exact") {
-      return "答えは正確に求めなさい。";
-    }
+    const place = r.roundingPlace === -1
+      ? "整数未満"
+      : `小数第${r.roundingPlace}位未満`;
 
-    const place = r.roundingPlace === 0
-      ? "一の位"
-      : `小数第${r.roundingPlace}位`;
+    const method = r.roundingMode === "round"
+      ? "四捨五入"
+      : "切り捨て";
 
-    const discarded = r.roundingPlace === 0
-      ? "一の位未満"
-      : `小数第${r.roundingPlace + 1}位未満`;
-
-    const method = r.roundingMode === "round" ? "四捨五入" : "切り捨て";
-
-    return `答えは${place}まで求め、${discarded}を${method}しなさい。`;
+    return `答えは${place}を${method}して答えなさい。`;
   }
+
 
   function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, c => ({
@@ -657,7 +781,9 @@ document.addEventListener("DOMContentLoaded", () => {
             <span>回数：${escapeHtml(sheet.round || "　　　　　　")}</span>
           </div>
           ${sheet.freeText ? `<p>${escapeHtml(sheet.freeText)}</p>` : ""}
-          <p style="margin:10px 0 0;">${escapeHtml(sheet.problems[0]?.instruction || "")}</p>
+          ${[...new Set(sheet.problems.map(p => p.instruction).filter(Boolean))]
+            .map(instruction => `<p style="margin:10px 0 0;">${escapeHtml(instruction)}</p>`)
+            .join("")}
           <p style="margin:8px 0 0;">氏名：________________________________</p>
         </header>
 
