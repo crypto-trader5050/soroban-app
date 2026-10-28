@@ -727,20 +727,29 @@ document.addEventListener("DOMContentLoaded", () => {
       textValue = `0.${fraction}`;
     } else {
       // 整数部が1以上の小数
-      // 小数点を除いた総桁数を維持する
       if (totalDigits < 2) {
         const value = randomInt(1, 9);
         return { text: String(value), value };
       }
 
-      const integerDigits = totalDigits - 1;
+      // 総桁数を維持したまま、小数点以下の桁数を決める
+      const decimalDigits = randomInt(1, totalDigits - 1);
+      const integerDigits = totalDigits - decimalDigits;
+
       const integerMin = integerDigits === 1
         ? 1
         : 10 ** (integerDigits - 1);
-      const integerMax = 10 ** integerDigits - 1;
 
+      const integerMax = 10 ** integerDigits - 1;
       const integerPart = randomInt(integerMin, integerMax);
-      const fraction = String(randomInt(1, 9));
+
+      // 小数部は指定桁数で生成し、最後の桁は0以外にする
+      const fractionPrefix = decimalDigits > 1
+        ? String(randomInt(0, 10 ** (decimalDigits - 1) - 1))
+            .padStart(decimalDigits - 1, "0")
+        : "";
+
+      const fraction = fractionPrefix + randomInt(1, 9);
 
       textValue = `${integerPart}.${fraction}`;
     }
