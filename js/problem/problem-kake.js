@@ -295,14 +295,6 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
 
             <div class="problem-form-item">
-              <label class="problem-form-label">小数点</label>
-              <select class="problem-form-select decimal-mode">
-                <option value="none">整数のみ</option>
-                <option value="optional" selected>整数・小数を含める</option>
-              </select>
-            </div>
-
-            <div class="problem-form-item">
               <label class="problem-form-label">小数の表記</label>
               <select class="problem-form-select leading-zero">
                 <option value="no" selected>先頭の0を付けない</option>
@@ -481,7 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
         aIntMax: Number(section.querySelector(".a-int-max").value),
         bIntMin: Number(section.querySelector(".b-int-min").value),
         bIntMax: Number(section.querySelector(".b-int-max").value),
-        decimalMode: section.querySelector(".decimal-mode").value,
         leadingZero: section.querySelector(".leading-zero").value,
         roundingMode: section.querySelector(".rounding-mode").value,
         roundingPlace: Number(section.querySelector(".rounding-place").value)
@@ -524,16 +515,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const problems = [];
 
-      // 小数を含められる問題番号を抽出する
-      const decimalEligible = [];
-
-      for (let q = 1; q <= total; q++) {
-        const r = ranges.find(x => q >= x.start && q <= x.end);
-
-        if (r && r.decimalMode !== "none") {
-          decimalEligible.push(q);
-        }
-      }
+      // 全問題を小数問題の候補にする
+      const decimalEligible = Array.from(
+        { length: total },
+        (_, index) => index + 1
+      );
 
       // 指定された小数問題数を実現できるか確認
       if (
@@ -542,14 +528,6 @@ document.addEventListener("DOMContentLoaded", () => {
         decimalQuestionCount > total
       ) {
         alert("小数を含む問題数を確認してください。");
-        return;
-      }
-
-      if (decimalQuestionCount > decimalEligible.length) {
-        alert(
-          `小数を含む問題数は最大${decimalEligible.length}問です。` +
-          "区間の「小数点」設定を確認してください。"
-        );
         return;
       }
 
@@ -627,7 +605,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalDigits = randomInt(minDigits, maxDigits);
 
     // 整数問題、または小数を使用しない設定
-    if (!useDecimal || r.decimalMode === "none") {
+    if (!useDecimal) {
       const min = totalDigits === 1 ? 1 : 10 ** (totalDigits - 1);
       const max = 10 ** totalDigits - 1;
       const value = randomInt(min, max);
