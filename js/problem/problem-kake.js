@@ -675,7 +675,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const value = Number(textValue);
 
       // 小数部の末尾にある不要な0だけを削除する
-      let display = textValue;
+      let display = String(value);
 
       if (display.includes(".")) {
         display = display.replace(/0+$/, "");
