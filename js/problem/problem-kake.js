@@ -367,43 +367,99 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+
     function copySettings(source, target) {
-      source.querySelectorAll("input, select").forEach((input, i) => {
-        const targets = target.querySelectorAll("input, select");
-        if (!targets[i]) return;
-
-        targets[i].value = input.value;
-        targets[i].dispatchEvent(new Event("change", { bubbles: true }));
-      });
-
+      // ① 総問題数を先にコピーする
       const selectedCount = source.querySelector(
         ".individual-count-button.selected"
       );
 
       if (selectedCount) {
-        const targetCount = [...target.querySelectorAll(".individual-count-button")]
-          .find(b => b.dataset.count === selectedCount.dataset.count);
+        const targetCount = [
+          ...target.querySelectorAll(".individual-count-button")
+        ].find(
+          button => button.dataset.count === selectedCount.dataset.count
+        );
+
         if (targetCount) targetCount.click();
       }
 
-      const sourceSections = [...source.querySelectorAll(".problem-section")];
-      const targetList = target.querySelector(".individual-section-list");
-      const targetAdd = target.querySelector(".individual-add-section-button");
+      // ② 問題用紙情報をコピーする
+      source.querySelectorAll(".individual-paper-input").forEach(input => {
+        const field = input.dataset.field;
+        const targetInput = target.querySelector(
+          `.individual-paper-input[data-field="${field}"]`
+        );
 
-      sourceSections.forEach((section, index) => {
-        if (index > 0) targetAdd.click();
+        if (targetInput) {
+          targetInput.value = input.value;
+          targetInput.dispatchEvent(
+            new Event("change", { bubbles: true })
+          );
+        }
+      });
+
+      // ③ 小数問題数をコピーする
+      const sourceDecimal = source.querySelector(".decimal-question-count");
+      const targetDecimal = target.querySelector(".decimal-question-count");
+
+      if (sourceDecimal && targetDecimal) {
+        targetDecimal.value = sourceDecimal.value;
+        targetDecimal.dispatchEvent(
+          new Event("change", { bubbles: true })
+        );
+      }
+
+      // ④ 区間を作り直す
+      const sourceSections = [
+        ...source.querySelectorAll(".problem-section")
+      ];
+
+      const targetList = target.querySelector(".individual-section-list");
+      const targetAdd = target.querySelector(
+        ".individual-add-section-button"
+      );
+
+      targetList.innerHTML = "";
+
+      sourceSections.forEach((sourceSection, index) => {
+        if (index > 0) {
+          // 直前の区間の終了番号を設定してから次の区間を追加する
+          const previousTarget = targetList.querySelector(
+            ".problem-section:last-child"
+          );
+          const previousSource = sourceSections[index - 1];
+
+          if (previousTarget && previousSource) {
+            const targetEnd = previousTarget.querySelector(".section-end");
+            const sourceEnd = previousSource.querySelector(".section-end");
+
+            targetEnd.value = sourceEnd.value;
+            targetEnd.dispatchEvent(
+              new Event("change", { bubbles: true })
+            );
+          }
+
+          targetAdd.click();
+        }
 
         const targetSection = targetList.querySelectorAll(".problem-section")[index];
         if (!targetSection) return;
 
-        section.querySelectorAll("input, select").forEach((input, j) => {
-          const targetInputs = targetSection.querySelectorAll("input, select");
+        const sourceInputs = sourceSection.querySelectorAll("input, select");
+        const targetInputs = targetSection.querySelectorAll("input, select");
+
+        sourceInputs.forEach((input, j) => {
           if (!targetInputs[j]) return;
+
           targetInputs[j].value = input.value;
-          targetInputs[j].dispatchEvent(new Event("change", { bubbles: true }));
+          targetInputs[j].dispatchEvent(
+            new Event("change", { bubbles: true })
+          );
         });
       });
     }
+
 
     detail.querySelectorAll("[data-sheets]").forEach(button => {
       button.addEventListener("click", () => {
@@ -606,7 +662,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-
   function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
     const minDigits = r[`${side}IntMin`];
     const maxDigits = r[`${side}IntMax`];
@@ -620,84 +675,93 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const style = r.leadingZero || "no";
-    const useZeroInteger = forceZeroInteger ||
-      (style !== "no" && Math.random() < 0.35);
+
+    // 「先頭の0を付けない」場合は、整数部が1以上の小数にする
+    // それ以外は、選択した形式まで段階的に0.xxx形式を含める
+    const maxLeadingFractionZeros = {
+      "no": -1,
+      "point-zero": 0,
+      "point-zero-one": 1,
+      "point-zero-two": 2
+    }[style] ?? -1;
 
     let textValue;
 
+    const canUseZeroInteger =
+      maxLeadingFractionZeros >= 0 &&
+      totalDigits >= 2;
+
+    const useZeroInteger =
+      canUseZeroInteger &&
+      (forceZeroInteger || Math.random() < 0.35);
+
     if (useZeroInteger) {
-      // 小数部の先頭に必要な0の数
-      const leadingFractionZeros = {
-        "no": 0,
-        "point-zero": 0,
-        "point-zero-one": 1,
-        "point-zero-two": 2
-      }[style] ?? 0;
+      // 選択した形式までの範囲から、小数部の先頭の0の数を選ぶ
+      const leadingFractionZeros = randomInt(
+        0,
+        Math.min(maxLeadingFractionZeros, totalDigits - 2)
+      );
 
-      // 0も1桁として数える表示形式
-      const integerZeroDigits = style === "no" ? 0 : 1;
-      const minFractionDigits = integerZeroDigits + leadingFractionZeros + 1;
+      // 整数部の0と小数部の先頭の0を含めて総桁数を計算
+      const significantDigits =
+        totalDigits - 1 - leadingFractionZeros;
 
-      if (totalDigits < minFractionDigits) {
-        // 指定桁数で0.xx形式が作れない場合は通常の小数にする
-        return makeOperand(r, side, true, false);
-      }
+      // 最後の桁は必ず0以外にする
+      const prefix = randomInt(
+        1,
+        10 ** significantDigits - 1
+      ).toString().padStart(significantDigits, "0");
 
-      const fractionDigits = totalDigits - integerZeroDigits;
-      const significantDigits = fractionDigits - leadingFractionZeros;
+      const fraction =
+        "0".repeat(leadingFractionZeros) + prefix;
 
-      const tail = randomInt(1, 10 ** significantDigits - 1)
-        .toString()
-        .padStart(significantDigits, "0");
-
-      const fraction = "0".repeat(leadingFractionZeros) + tail;
-
-      textValue = style === "no"
-        ? `.${fraction}`
-        : `0.${fraction}`;
+      textValue = `0.${fraction}`;
     } else {
-      // 整数部と小数部を合わせて指定総桁数にする
+      // 整数部が1以上の小数
+      // 小数点を除いた総桁数を維持する
       if (totalDigits < 2) {
         const value = randomInt(1, 9);
         return { text: String(value), value };
       }
 
       const integerDigits = totalDigits - 1;
-      const integerMin = integerDigits === 1 ? 1 : 10 ** (integerDigits - 1);
+      const integerMin = integerDigits === 1
+        ? 1
+        : 10 ** (integerDigits - 1);
       const integerMax = 10 ** integerDigits - 1;
+
       const integerPart = randomInt(integerMin, integerMax);
       const fraction = String(randomInt(1, 9));
 
       textValue = `${integerPart}.${fraction}`;
     }
 
+    const value = Number(textValue);
 
-      const value = Number(textValue);
+    // 小数部の末尾にある不要な0だけを削除する
+    let display = String(value);
 
-      // 小数部の末尾にある不要な0だけを削除する
-      let display = String(value);
+    if (display.includes(".")) {
+      display = display.replace(/0+$/, "");
+      display = display.replace(/\.$/, "");
+    }
 
-      if (display.includes(".")) {
-        display = display.replace(/0+$/, "");
-        display = display.replace(/\.$/, "");
-      }
+    // 先頭の0を必ず補う
+    if (display.startsWith(".")) {
+      display = "0" + display;
+    }
 
-      // 先頭の0を必ず補う
-      if (display.startsWith(".")) {
-        display = "0" + display;
-      }
+    // カンマは整数部にだけ付ける
+    const parts = display.split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    display = parts.join(".");
 
-      // カンマは整数部にだけ付ける
-      const parts = display.split(".");
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      display = parts.join(".");
-
-      return {
-        text: display,
-        value
-      };
-
+    return {
+      text: display,
+      value
+    };
   }
+
 
 
   function processAnswer(value, mode, places) {
