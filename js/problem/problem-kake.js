@@ -367,7 +367,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-
     function copySettings(source, target) {
       // ① 総問題数を先にコピーする
       const selectedCount = source.querySelector(
@@ -410,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
 
-      // ④ 区間を作り直す
+      // ④ コピー先の区間を作り直す
       const sourceSections = [
         ...source.querySelectorAll(".problem-section")
       ];
@@ -420,14 +419,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ".individual-add-section-button"
       );
 
+      if (!targetList || !targetAdd) return;
+
       targetList.innerHTML = "";
 
       sourceSections.forEach((sourceSection, index) => {
+        // 2区間目以降は、直前の区間の終了番号を設定してから追加する
         if (index > 0) {
-          // 直前の区間の終了番号を設定してから次の区間を追加する
           const previousTarget = targetList.querySelector(
             ".problem-section:last-child"
           );
+
           const previousSource = sourceSections[index - 1];
 
           if (previousTarget && previousSource) {
@@ -440,25 +442,34 @@ document.addEventListener("DOMContentLoaded", () => {
             );
           }
 
+          // 区間追加ボタンの制限を通して次の区間を作成
           targetAdd.click();
         }
 
-        const targetSection = targetList.querySelectorAll(".problem-section")[index];
+        // ⑤ 各区間の設定をすべてコピーする
+        const targetSection =
+          targetList.querySelectorAll(".problem-section")[index];
+
         if (!targetSection) return;
 
-        const sourceInputs = sourceSection.querySelectorAll("input, select");
-        const targetInputs = targetSection.querySelectorAll("input, select");
+        const sourceInputs =
+          sourceSection.querySelectorAll("input, select");
+
+        const targetInputs =
+          targetSection.querySelectorAll("input, select");
 
         sourceInputs.forEach((input, j) => {
           if (!targetInputs[j]) return;
 
           targetInputs[j].value = input.value;
+
           targetInputs[j].dispatchEvent(
             new Event("change", { bubbles: true })
           );
         });
       });
     }
+
 
 
     detail.querySelectorAll("[data-sheets]").forEach(button => {
