@@ -554,19 +554,20 @@ document.addEventListener("DOMContentLoaded", () => {
           q === Math.min(...decimalQuestionNumbers);
 
         const decimalSide = Math.random() < 0.5 ? "a" : "b";
+        const bothDecimal = useDecimal && Math.random() < 0.25;
 
         const a = makeOperand(
           r,
           "a",
-          useDecimal && decimalSide === "a",
-          firstDecimalQuestion && decimalSide === "a"
+          useDecimal && (bothDecimal || decimalSide === "a"),
+          firstDecimalQuestion && (bothDecimal || decimalSide === "a")
         );
 
         const b = makeOperand(
           r,
           "b",
-          useDecimal && decimalSide === "b",
-          firstDecimalQuestion && decimalSide === "b"
+          useDecimal && (bothDecimal || decimalSide === "b"),
+          firstDecimalQuestion && (bothDecimal || decimalSide === "b")
         );
 
         const rawAnswer = a.value * b.value;
@@ -670,19 +671,32 @@ document.addEventListener("DOMContentLoaded", () => {
       textValue = `${integerPart}.${fraction}`;
     }
 
-    // 末尾の0と不要な小数点を取り除く
-    const value = Number(textValue);
-    const cleaned = textValue.replace(/0+$/, "").replace(/\.$/, "");
 
-    // 整数部が0の形式は、指定された表記を維持する
-    const display = cleaned === "" || cleaned === "."
-      ? "0"
-      : cleaned;
+      const value = Number(textValue);
 
-    return {
-      text: display,
-      value
-    };
+      // 小数部の末尾にある不要な0だけを削除する
+      let display = textValue;
+
+      if (display.includes(".")) {
+        display = display.replace(/0+$/, "");
+        display = display.replace(/\.$/, "");
+      }
+
+      // 先頭の0を必ず補う
+      if (display.startsWith(".")) {
+        display = "0" + display;
+      }
+
+      // カンマは整数部にだけ付ける
+      const parts = display.split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      display = parts.join(".");
+
+      return {
+        text: display,
+        value
+      };
+
   }
 
 
@@ -697,15 +711,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return formatNumber(adjusted / factor);
   }
 
-
   function formatNumber(value) {
     if (!Number.isFinite(Number(value))) return String(value);
 
-    // 小数末尾の不要な0と小数点を取り除く
-    const normalized = Number(Number(value).toPrecision(12)).toString();
+    let text = Number(Number(value).toPrecision(12)).toString();
 
-    // 整数部に3桁ごとのカンマを付ける
-    const parts = normalized.split(".");
+    if (text.includes(".")) {
+      text = text.replace(/0+$/, "");
+      text = text.replace(/\.$/, "");
+    }
+
+    const parts = text.split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     return parts.join(".");
