@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function copySettings(source, target) {
-      // ① 総問題数を先にコピーする
+      // ① 総問題数を先に選択し、コピー先の区間を初期化する
       const selectedCount = source.querySelector(
         ".individual-count-button.selected"
       );
@@ -383,12 +383,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (targetCount) targetCount.click();
       }
 
-      // ② 問題用紙情報をコピーする
-      source.querySelectorAll(".individual-paper-input").forEach(input => {
-        const field = input.dataset.field;
-        const targetInput = target.querySelector(
-          `.individual-paper-input[data-field="${field}"]`
+      // ② 区間以外の設定をコピーする
+      source.querySelectorAll("input, select").forEach(input => {
+        if (input.closest(".problem-section")) return;
+        if (input.closest(".individual-count-button")) return;
+
+        const inputs = [
+          ...target.querySelectorAll("input, select")
+        ].filter(el =>
+          !el.closest(".problem-section") &&
+          !el.closest(".individual-count-button")
         );
+
+        const index = [
+          ...source.querySelectorAll("input, select")
+        ].filter(el =>
+          !el.closest(".problem-section") &&
+          !el.closest(".individual-count-button")
+        ).indexOf(input);
+
+        const targetInput = inputs[index];
 
         if (targetInput) {
           targetInput.value = input.value;
@@ -398,18 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // ③ 小数問題数をコピーする
-      const sourceDecimal = source.querySelector(".decimal-question-count");
-      const targetDecimal = target.querySelector(".decimal-question-count");
-
-      if (sourceDecimal && targetDecimal) {
-        targetDecimal.value = sourceDecimal.value;
-        targetDecimal.dispatchEvent(
-          new Event("change", { bubbles: true })
-        );
-      }
-
-      // ④ コピー先の区間を作り直す
+      // ③ 元の区間を取得する
       const sourceSections = [
         ...source.querySelectorAll(".problem-section")
       ];
@@ -421,54 +424,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!targetList || !targetAdd) return;
 
-      targetList.innerHTML = "";
+      // 総問題数の選択によって、コピー先には最初の区間が作成済み
 
+      // ④ 各区間を順番に作成して設定をコピーする
       sourceSections.forEach((sourceSection, index) => {
-        // 2区間目以降は、直前の区間の終了番号を設定してから追加する
         if (index > 0) {
           const previousTarget = targetList.querySelector(
             ".problem-section:last-child"
           );
-
           const previousSource = sourceSections[index - 1];
 
-          if (previousTarget && previousSource) {
-            const targetEnd = previousTarget.querySelector(".section-end");
-            const sourceEnd = previousSource.querySelector(".section-end");
+          if (!previousTarget || !previousSource) return;
 
-            targetEnd.value = sourceEnd.value;
-            targetEnd.dispatchEvent(
-              new Event("change", { bubbles: true })
-            );
-          }
+          // 次の区間を追加できるよう、直前の終了問題を設定
+          const targetEnd = previousTarget.querySelector(".section-end");
+          const sourceEnd = previousSource.querySelector(".section-end");
 
-          // 区間追加ボタンの制限を通して次の区間を作成
+          targetEnd.value = sourceEnd.value;
+          targetEnd.dispatchEvent(
+            new Event("change", { bubbles: true })
+          );
+
           targetAdd.click();
         }
 
-        // ⑤ 各区間の設定をすべてコピーする
-        const targetSection =
-          targetList.querySelectorAll(".problem-section")[index];
+        const targetSections = targetList.querySelectorAll(".problem-section");
+        const targetSection = targetSections[index];
 
         if (!targetSection) return;
 
-        const sourceInputs =
-          sourceSection.querySelectorAll("input, select");
-
-        const targetInputs =
-          targetSection.querySelectorAll("input, select");
+        const sourceInputs = sourceSection.querySelectorAll("input, select");
+        const targetInputs = targetSection.querySelectorAll("input, select");
 
         sourceInputs.forEach((input, j) => {
           if (!targetInputs[j]) return;
 
           targetInputs[j].value = input.value;
-
           targetInputs[j].dispatchEvent(
             new Event("change", { bubbles: true })
           );
         });
       });
     }
+
 
 
 
