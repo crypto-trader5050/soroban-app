@@ -125,11 +125,27 @@
   cursor: pointer;
 }
 
-.problem-count-button:hover {
+
+.problem-count-button,
+.problem-sheet-count-button {
+  min-width: 72px;
+  padding: 9px 13px;
+  background: #ffffff;
+  border: 2px solid #b9c9d8;
+  border-radius: 9px;
+  color: #23405e;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.problem-count-button:hover,
+.problem-sheet-count-button:hover {
   border-color: #1683e6;
 }
 
-.problem-count-button.selected {
+.problem-count-button.selected,
+.problem-sheet-count-button.selected {
   background: #1683e6;
   border-color: #1683e6;
   color: #ffffff;
