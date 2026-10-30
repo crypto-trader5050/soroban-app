@@ -907,43 +907,152 @@ document.addEventListener("DOMContentLoaded", () => {
     })[c]);
   }
 
+
   function renderSheet(sheet) {
     return `
       <section class="kake-print-sheet" style="
-        background:#fff; color:#111; max-width:1000px; margin:0 auto 24px;
-        padding:28px; box-sizing:border-box; page-break-after:always;
-        font-family: sans-serif;">
-        <header style="border-bottom:2px solid #222; padding-bottom:10px; margin-bottom:14px;">
-          <h1 style="text-align:center; margin:0 0 10px;">
+        background:#fff;
+        color:#111;
+        max-width:1000px;
+        margin:0 auto 24px;
+        padding:28px;
+        box-sizing:border-box;
+        page-break-after:always;
+        font-family:sans-serif;
+      ">
+
+        <header style="
+          border-bottom:2px solid #222;
+          padding-bottom:10px;
+          margin-bottom:18px;
+        ">
+          <h1 style="
+            text-align:center;
+            margin:0 0 14px;
+            font-size:26px;
+          ">
             ${escapeHtml(sheet.title)}
           </h1>
-          <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:space-between;">
+
+          <div style="
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
+            justify-content:space-between;
+            font-size:14px;
+          ">
             <span>時間：${escapeHtml(sheet.time || "　　　　")} 分</span>
             <span>級・段位：${escapeHtml(sheet.grade || "　　　　　　")}</span>
             <span>回数：${escapeHtml(sheet.round || "　　　　　　")}</span>
           </div>
-          ${sheet.freeText ? `<p>${escapeHtml(sheet.freeText)}</p>` : ""}
+
+          ${sheet.freeText
+            ? `<p style="margin:10px 0 0;">${escapeHtml(sheet.freeText)}</p>`
+            : ""}
+
           ${[...new Set(sheet.problems.map(p => p.instruction).filter(Boolean))]
-            .map(instruction => `<p style="margin:10px 0 0;">${escapeHtml(instruction)}</p>`)
-            .join("")}
-          <p style="margin:8px 0 0;">氏名：________________________________</p>
+            .map(instruction => `
+              <p style="margin:10px 0 0;">
+                ${escapeHtml(instruction)}
+              </p>
+            `).join("")}
+
+          <p style="margin:12px 0 0;">
+            氏名：________________________________
+          </p>
         </header>
 
-        <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px;">
+        <div style="
+          border:2px solid #222;
+          width:100%;
+          box-sizing:border-box;
+        ">
+
           ${sheet.problems.map(p => `
-            <div style="border:1px solid #999; min-height:74px; padding:10px 12px; break-inside:avoid;">
-              <div style="font-size:12px; color:#555;">${p.number}問</div>
-              <div style="font-size:22px; font-weight:600; text-align:center; padding:5px 0;">
-                ${escapeHtml(p.a)} × ${escapeHtml(p.b)} ＝
+            <div style="
+              display:grid;
+              grid-template-columns:60px minmax(0,1fr);
+              min-height:48px;
+              border-bottom:1px solid #777;
+              box-sizing:border-box;
+              break-inside:avoid;
+            ">
+
+              <div style="
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                border-right:1px solid #777;
+                font-size:15px;
+                font-weight:600;
+              ">
+                ${p.number}
               </div>
-              <div style="height:20px; border-bottom:1px solid #aaa;"></div>
+
+              <div style="
+                display:flex;
+                align-items:center;
+                justify-content:flex-start;
+                padding:5px 18px;
+                box-sizing:border-box;
+                font-size:21px;
+                font-weight:600;
+                font-variant-numeric:tabular-nums;
+                white-space:nowrap;
+              ">
+
+                <span style="
+                  display:inline-block;
+                  min-width:180px;
+                  text-align:right;
+                ">
+                  ${escapeHtml(p.a)}
+                </span>
+
+                <span style="
+                  display:inline-block;
+                  width:42px;
+                  text-align:center;
+                  font-weight:400;
+                ">×</span>
+
+                <span style="
+                  display:inline-block;
+                  min-width:180px;
+                  text-align:right;
+                ">
+                  ${escapeHtml(p.b)}
+                </span>
+
+                <span style="
+                  display:inline-block;
+                  width:42px;
+                  text-align:center;
+                  font-weight:400;
+                ">＝</span>
+
+                <span style="
+                  display:inline-block;
+                  min-width:150px;
+                  height:28px;
+                  border-bottom:1px solid #999;
+                "></span>
+
+              </div>
             </div>
           `).join("")}
+
         </div>
 
         <details style="margin-top:20px;">
           <summary>答え（印刷時は必要に応じて開いてください）</summary>
-          <div style="display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin-top:10px;">
+
+          <div style="
+            display:grid;
+            grid-template-columns:repeat(5,minmax(0,1fr));
+            gap:8px;
+            margin-top:10px;
+          ">
             ${sheet.problems.map(p => `
               <div style="border:1px solid #ddd; padding:6px;">
                 ${p.number}. ${escapeHtml(p.answer)}
@@ -951,7 +1060,9 @@ document.addEventListener("DOMContentLoaded", () => {
             `).join("")}
           </div>
         </details>
+
       </section>
     `;
   }
+
 });
