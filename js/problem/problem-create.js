@@ -11,22 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     button.addEventListener("click", () => {
 
-      // 他のカードを閉じる
-      cards.forEach(otherCard => {
-
-        if (otherCard !== card) {
-          otherCard.classList.remove("expanded");
-
-          const otherDetail =
-            otherCard.querySelector(".problem-type-detail");
-
-          if (otherDetail) {
-            otherDetail.innerHTML = "";
-          }
-        }
-
-      });
-
       // クリックしたカードを開閉
       const isOpen = card.classList.contains("expanded");
 
@@ -1572,9 +1556,7 @@ function createMitoriSettings(container) {
 
   if (problemGenerateButton) {
 
-    problemGenerateButton.addEventListener(
-      "click",
-      () => {
+    window.generateMitoriSheets = () => {
 
         /* =================================================
            見取算カードを確認
@@ -2247,25 +2229,13 @@ function createMitoriSettings(container) {
           return;
         }
 
-        try {
-          sessionStorage.setItem(
-            "generatedProblemSheets",
-            generatedSheets.outerHTML
-          );
-        } catch (error) {
-          alert(
-            "問題用紙を保存できませんでした。\n" +
-            "問題数を減らして、もう一度お試しください。"
-          );
-          return;
-        }
+        const generatedHtml = generatedSheets.outerHTML;
 
         generatedSheets.remove();
 
-        window.location.href = "problem-sheet.html";
+        return generatedHtml;
 
-      }
-    );
+    };
 
   }
 

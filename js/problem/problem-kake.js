@@ -497,10 +497,8 @@ document.addEventListener("DOMContentLoaded", () => {
      既存のみとり算の生成処理には触れない
   ========================================================= */
 
-  generateButton.addEventListener("click", event => {
+  window.generateKakeSheets = () => {
     if (!kakeCard.classList.contains("expanded")) return;
-
-    event.stopImmediatePropagation();
 
     const blocks = [...detail.querySelectorAll(".individual-problem-block")];
 
@@ -663,9 +661,85 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const html = sheets.map(renderSheet).join("");
 
-    sessionStorage.setItem("generatedProblemSheets", html);
+    return html;
+  };
+
+  /* =========================================================
+     共通の問題生成・保存・画面遷移
+  ========================================================= */
+
+  generateButton.addEventListener("click", () => {
+
+    const mitoriCard = document.querySelector(
+      '.problem-type-card[data-problem-type="mitori"]'
+    );
+
+    const kakeIsOpen =
+      kakeCard.classList.contains("expanded");
+
+    const mitoriIsOpen =
+      !!mitoriCard &&
+      mitoriCard.classList.contains("expanded");
+
+    // どちらも開いていない場合
+    if (!mitoriIsOpen && !kakeIsOpen) {
+      alert("見取算またはかけ算の設定を開いてください。");
+      return;
+    }
+
+    // 前回の一時生成物を削除
+    document.querySelector("#problemGeneratedSheets")?.remove();
+
+    const generatedParts = [];
+
+    // 見取算を生成
+    if (mitoriIsOpen) {
+
+      const mitoriHtml =
+        window.generateMitoriSheets?.();
+
+      if (!mitoriHtml) return;
+
+      generatedParts.push(mitoriHtml);
+    }
+
+    // かけ算を生成
+    if (kakeIsOpen) {
+
+      const kakeHtml =
+        window.generateKakeSheets?.();
+
+      if (!kakeHtml) return;
+
+      generatedParts.push(kakeHtml);
+    }
+
+    // 両方のHTMLを一つにまとめる
+    const combinedHtml =
+      generatedParts.join("");
+
+    // 一度だけ保存
+    try {
+
+      sessionStorage.setItem(
+        "generatedProblemSheets",
+        combinedHtml
+      );
+
+    } catch (error) {
+
+      alert(
+        "問題用紙を保存できませんでした。\n" +
+        "問題数を減らして、もう一度お試しください。"
+      );
+
+      return;
+    }
+
+    // 一度だけ印刷画面へ移動
     window.location.href = "problem-sheet.html";
-  }, true);
+
+  });
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
