@@ -777,3 +777,80 @@
 .problem-copy-settings-button:active {
   transform: translateY(1px);
 }
+
+/* =========================================================
+   かけ算専用カラー
+   みとり算の青色デザインには影響させない
+========================================================= */
+
+/* メイン設定パネル */
+.kake-problem-create-panel {
+  background: #f0fdf4;
+  border-color: #16a34a;
+}
+
+/* 見出し */
+.kake-problem-create-panel .problem-create-heading {
+  color: #166534;
+}
+
+/* 問題ごとのカード */
+.kake-problem-create-panel .kake-individual-problem-block {
+  border-color: #bbf7d0;
+}
+
+/* 入力欄 */
+.kake-problem-create-panel .problem-form-input,
+.kake-problem-create-panel .problem-form-select {
+  border-color: #bbf7d0;
+}
+
+/* 入力欄のフォーカス */
+.kake-problem-create-panel .problem-form-input:focus,
+.kake-problem-create-panel .problem-form-select:focus {
+  border-color: #16a34a;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+/* 問題数ボタン */
+.kake-problem-create-panel .problem-count-button:hover,
+.kake-problem-create-panel .problem-sheet-count-button:hover {
+  border-color: #16a34a;
+}
+
+/* 選択中の問題数ボタン */
+.kake-problem-create-panel .problem-count-button.selected,
+.kake-problem-create-panel .problem-sheet-count-button.selected {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+}
+
+/* 区間設定 */
+.kake-problem-create-panel .problem-section {
+  border-color: #bbf7d0;
+}
+
+/* 区間見出し */
+.kake-problem-create-panel .problem-section-title {
+  color: #166534;
+}
+
+/* 区間追加ボタン */
+.kake-problem-create-panel .problem-add-section-button {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.kake-problem-create-panel .problem-add-section-button:hover {
+  background: #dcfce7;
+}
+
+/* 設定コピー */
+.kake-problem-create-panel .problem-copy-settings-button {
+  background: #15803d;
+}
+
+.kake-problem-create-panel .problem-copy-settings-button:hover {
+  background: #166534;
+}
