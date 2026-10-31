@@ -1005,6 +1005,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   display:inline-block;
                   min-width:180px;
                   text-align:right;
+                  font-family:'Soloburn', sans-serif;
+                  font-weight:500;
                 ">
                   ${escapeHtml(p.a)}
                 </span>
@@ -1020,6 +1022,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   display:inline-block;
                   min-width:180px;
                   text-align:right;
+                  font-family:'Soloburn', sans-serif;
+                  font-weight:500;
                 ">
                   ${escapeHtml(p.b)}
                 </span>
@@ -1035,7 +1039,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   display:inline-block;
                   min-width:150px;
                   height:28px;
-                  border-bottom:1px solid #999;
                 "></span>
 
               </div>
