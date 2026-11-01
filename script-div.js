@@ -33,6 +33,14 @@ const DIV_LEVEL_CONFIG = [
 
 function startDivision() {
 
+  // 新しい問題では回答ロックを解除
+  state.answerLocked = false;
+
+  const answerInput = document.getElementById("answerInput");
+  if (answerInput) {
+    answerInput.disabled = false;
+  }
+
   if (state.isFinished) return;
 
   if (state.currentQuestion > state.questionCount) {
@@ -233,9 +241,9 @@ function startDivisionGame() {
 // =====================
 function checkAnswerDivision() {
 
-  if (state.nextTimer) {
-    clearTimeout(state.nextTimer);
-    state.nextTimer = null;
+  // 判定済みなら二重判定しない
+  if (state.answerLocked || state.isFinished) {
+    return;
   }
 
   const inputEl = document.getElementById("answerInput");
@@ -249,6 +257,12 @@ function checkAnswerDivision() {
 
   const input = inputEl.value;
   const clean = input.replace(/,/g, "");
+
+  // 未入力でなければ、判定直後にロック
+  if (clean !== "") {
+    state.answerLocked = true;
+    inputEl.disabled = true;
+  }
 
   // 前回の表示をリセット
   if (correctResult) correctResult.style.display = "none";

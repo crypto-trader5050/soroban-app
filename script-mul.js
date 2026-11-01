@@ -42,6 +42,14 @@ function startMultiplication() {
 
   if (state.isFinished) return;
 
+  // 新しい問題では回答ロックを解除
+  state.answerLocked = false;
+
+  const answerInput = document.getElementById("answerInput");
+  if (answerInput) {
+    answerInput.disabled = false;
+  }
+
   if (state.currentQuestion > state.questionCount) {
     showResult();
     return;
@@ -167,6 +175,11 @@ function generateMultiplicationNumber(digits) {
 // =====================
 function checkAnswerMultiplication() {
 
+  // 判定済みなら二重判定しない
+  if (state.answerLocked || state.isFinished) {
+    return;
+  }
+
   const inputEl = document.getElementById("answerInput");
   const judge = document.getElementById("judge");
   const correctResult = document.getElementById("correctResult");
@@ -178,6 +191,12 @@ function checkAnswerMultiplication() {
 
   const input = inputEl.value;
   const clean = input.replace(/,/g, "");
+
+  // 未入力でなければ、判定直後にロック
+  if (clean !== "") {
+    state.answerLocked = true;
+    inputEl.disabled = true;
+  }
 
   // 前回の表示をリセット
   if (correctResult) correctResult.style.display = "none";

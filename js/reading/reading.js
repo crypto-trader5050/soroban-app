@@ -33,7 +33,8 @@ let readingState = {
   currentQuestion: 0,
   correctCount: 0,
   isRunning: false,
-  cancelled: false
+  cancelled: false,
+  answerLocked: false
 };
 
 
@@ -2493,6 +2494,14 @@ function startReading() {
 
 function startReadingQuestion() {
 
+  // 新しい問題では回答ロックを解除
+  readingState.answerLocked = false;
+
+  const answerInput = document.getElementById("answerInput");
+  if (answerInput) {
+    answerInput.disabled = false;
+  }
+
   const numbers =
     generateReadingQuestion();
 
@@ -2698,6 +2707,7 @@ function showReadingAnswerArea() {
 
   if (input) {
 
+    input.disabled = false;
     input.focus();
 
   }
@@ -2721,6 +2731,10 @@ function checkReadingAnswer() {
     return;
   }
 
+  // 判定済みなら二重判定しない
+  if (readingState.answerLocked || readingState.cancelled) {
+    return;
+  }
 
   const userAnswer =
     input.value.trim();
@@ -2734,6 +2748,9 @@ function checkReadingAnswer() {
 
   }
 
+  // 回答を受け付けた時点でロック
+  readingState.answerLocked = true;
+  input.disabled = true;
 
   let correct = false;
 

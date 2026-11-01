@@ -51,6 +51,7 @@ let state = {
   correctCount: 0,
   timers: [],
   nextTimer: null,
+  answerLocked: false,
   runId: 0,
 };
 
@@ -488,6 +489,14 @@ function generateQuestion() {
 
   console.log("現在:", state.currentQuestion, "/", state.questionCount);
 
+  // 新しい問題では回答ロックを解除
+  state.answerLocked = false;
+
+  const answerInput = document.getElementById("answerInput");
+  if (answerInput) {
+    answerInput.disabled = false;
+  }
+
   state.runId++;
 
   if (state.nextTimer) {
@@ -658,43 +667,22 @@ function runFlash() {
 // =====================
 function checkAnswer() {
 
-  console.log("問題番号", state.currentQuestion);
-
-  if (state.nextTimer) {
-    clearTimeout(state.nextTimer);
-    state.nextTimer = null;
+  // 判定済みなら何もしない（二重判定防止）
+  if (state.answerLocked || state.isFinished) {
+    return;
   }
 
   const inputEl = document.getElementById("answerInput");
   const judge = document.getElementById("judge");
-  const result = document.getElementById("answerResult");
-  const yourAnswer = document.getElementById("yourAnswer");
-  const correctAnswer = document.getElementById("correctAnswer");
-  const progress = document.getElementById("answerProgress");
-  const progressBar = document.getElementById("answerProgressBar");
-  const correctResult = document.getElementById("correctResult");
 
+  // 未入力は従来どおり判定する
   const input = inputEl.value;
   const clean = input.replace(/,/g, "");
 
-  // 前回の表示をリセット
-  if (result) result.style.display = "none";
-  if (progress) progress.style.display = "none";
-
-  if (progressBar) {
-    progressBar.style.transition = "none";
-    progressBar.style.width = "0%";
-  }
-
-  // =====================
-  // 未入力の場合
-  // =====================
   if (clean === "") {
-
     judge.textContent = "未入力";
 
     setTimeout(() => {
-
       if (state.isFinished) return;
 
       inputEl.value = "";
@@ -705,12 +693,32 @@ function checkAnswer() {
       } else {
         showResult();
       }
-
     }, 300);
 
     return;
   }
 
+  // 入力がある場合、ここで回答をロック
+  state.answerLocked = true;
+  inputEl.disabled = true;
+
+  console.log("問題番号", state.currentQuestion);
+
+  const result = document.getElementById("answerResult");
+  const yourAnswer = document.getElementById("yourAnswer");
+  const correctAnswer = document.getElementById("correctAnswer");
+  const progress = document.getElementById("answerProgress");
+  const progressBar = document.getElementById("answerProgressBar");
+  const correctResult = document.getElementById("correctResult");
+
+  // 前回の表示をリセット
+  if (result) result.style.display = "none";
+  if (progress) progress.style.display = "none";
+
+  if (progressBar) {
+    progressBar.style.transition = "none";
+    progressBar.style.width = "0%";
+  }
 
   // =====================
   // 正解の場合
@@ -1101,6 +1109,17 @@ inputEl.addEventListener("input", () => {
 });
 
 document.getElementById("keypad").addEventListener("click", (e) => {
+
+  // 判定後は数字・クリア・マイナス・決定をすべて無効化
+  if (
+    state.answerLocked ||
+    (typeof readingState !== "undefined" &&
+     readingState.isRunning &&
+     readingState.answerLocked)
+  ) {
+    return;
+  }
+
   const num = e.target.dataset.num;
 
   if (num !== undefined) {
