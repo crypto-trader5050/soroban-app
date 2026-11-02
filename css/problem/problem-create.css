@@ -854,3 +854,22 @@
 .kake-problem-create-panel .problem-copy-settings-button:hover {
   background: #166534;
 }
+
+/* 個別確定ボタンの表示を強制 */
+.problem-generation-result > .problem-confirm-button {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 10;
+  width: min(100%, 420px);
+  min-height: 50px;
+  margin: 18px auto;
+  padding: 12px 20px;
+  background: #1683e6 !important;
+  color: #ffffff !important;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}

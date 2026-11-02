@@ -711,11 +711,6 @@ document.addEventListener("DOMContentLoaded", () => {
       heading.appendChild(status);
       section.appendChild(heading);
 
-      const content = document.createElement("div");
-      content.className = "problem-generation-result-content";
-      content.innerHTML = item.html;
-      section.appendChild(content);
-
       const confirmButton = document.createElement("button");
       confirmButton.type = "button";
       confirmButton.className = "problem-confirm-button";
@@ -726,6 +721,12 @@ document.addEventListener("DOMContentLoaded", () => {
       confirmButton.disabled = item.confirmed;
 
       section.appendChild(confirmButton);
+
+      const content = document.createElement("div");
+      content.className = "problem-generation-result-content";
+      content.innerHTML = item.html;
+      section.appendChild(content);
+
       previewArea.appendChild(section);
     });
 
