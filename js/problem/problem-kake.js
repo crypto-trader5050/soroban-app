@@ -665,80 +665,215 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /* =========================================================
-     共通の問題生成・保存・画面遷移
+     共通の問題生成・個別確定・印刷画面への受け渡し
+     対象：みとり算・かけ算
   ========================================================= */
 
-  generateButton.addEventListener("click", () => {
+  const generationState = {
+    mitori: { html: "", confirmed: false, generated: false },
+    kake:   { html: "", confirmed: false, generated: false }
+  };
 
-    const mitoriCard = document.querySelector(
-      '.problem-type-card[data-problem-type="mitori"]'
-    );
+  const mitoriCard = document.querySelector(
+    '.problem-type-card[data-problem-type="mitori"]'
+  );
 
-    const kakeIsOpen =
-      kakeCard.classList.contains("expanded");
+  const previewArea = document.createElement("div");
+  previewArea.id = "problemGenerationPreview";
+  previewArea.className = "problem-generation-preview";
+  generateButton.parentNode.appendChild(previewArea);
 
-    const mitoriIsOpen =
-      !!mitoriCard &&
-      mitoriCard.classList.contains("expanded");
+  function renderGenerationPreview() {
+    previewArea.innerHTML = "";
 
-    // どちらも開いていない場合
-    if (!mitoriIsOpen && !kakeIsOpen) {
-      alert("見取算またはかけ算の設定を開いてください。");
+    [
+      ["mitori", "みとり算"],
+      ["kake", "かけ算"]
+    ].forEach(([type, label]) => {
+      const item = generationState[type];
+
+      if (!item.generated) return;
+
+      const section = document.createElement("section");
+      section.className = "problem-generation-result";
+      section.dataset.problemType = type;
+
+      const heading = document.createElement("div");
+      heading.className = "problem-generation-result-heading";
+
+      const title = document.createElement("strong");
+      title.textContent = label;
+
+      const status = document.createElement("span");
+      status.textContent = item.confirmed ? "決定済み" : "未決定";
+
+      heading.appendChild(title);
+      heading.appendChild(status);
+      section.appendChild(heading);
+
+      const content = document.createElement("div");
+      content.className = "problem-generation-result-content";
+      content.innerHTML = item.html;
+      section.appendChild(content);
+
+      const confirmButton = document.createElement("button");
+      confirmButton.type = "button";
+      confirmButton.className = "problem-confirm-button";
+      confirmButton.dataset.confirmType = type;
+      confirmButton.textContent = item.confirmed
+        ? "この問題は決定済みです"
+        : "この問題に決定";
+      confirmButton.disabled = item.confirmed;
+
+      section.appendChild(confirmButton);
+      previewArea.appendChild(section);
+    });
+
+    const bothGenerated =
+      generationState.mitori.generated &&
+      generationState.kake.generated;
+
+    const allConfirmed =
+      bothGenerated &&
+      generationState.mitori.confirmed &&
+      generationState.kake.confirmed;
+
+    if (allConfirmed) {
+      const printButton = document.createElement("button");
+      printButton.type = "button";
+      printButton.className = "problem-proceed-print-button";
+      printButton.textContent = "決定した問題を印刷画面へ進む";
+      printButton.addEventListener("click", moveToPrintPage);
+
+      previewArea.appendChild(printButton);
+    }
+  }
+
+  function moveToPrintPage() {
+    const bothConfirmed =
+      generationState.mitori.generated &&
+      generationState.kake.generated &&
+      generationState.mitori.confirmed &&
+      generationState.kake.confirmed;
+
+    if (!bothConfirmed) {
+      alert("みとり算・かけ算の両方を決定してください。");
       return;
     }
 
-    // 前回の一時生成物を削除
-    document.querySelector("#problemGeneratedSheets")?.remove();
-
-    const generatedParts = [];
-
-    // 見取算を生成
-    if (mitoriIsOpen) {
-
-      const mitoriHtml =
-        window.generateMitoriSheets?.();
-
-      if (!mitoriHtml) return;
-
-      generatedParts.push(mitoriHtml);
-    }
-
-    // かけ算を生成
-    if (kakeIsOpen) {
-
-      const kakeHtml =
-        window.generateKakeSheets?.();
-
-      if (!kakeHtml) return;
-
-      generatedParts.push(kakeHtml);
-    }
-
-    // 両方のHTMLを一つにまとめる
     const combinedHtml =
-      generatedParts.join("");
+      generationState.mitori.html +
+      generationState.kake.html;
 
-    // 一度だけ保存
     try {
-
       sessionStorage.setItem(
         "generatedProblemSheets",
         combinedHtml
       );
-
     } catch (error) {
-
       alert(
-        "問題用紙を保存できませんでした。\n" +
-        "問題数を減らして、もう一度お試しください。"
+        "問題用紙を保存できませんでした。\n問題数を減らして、もう一度お試しください。"
       );
-
       return;
     }
 
-    // 一度だけ印刷画面へ移動
     window.location.href = "problem-sheet.html";
+  }
 
+  generateButton.addEventListener("click", () => {
+
+    if (!mitoriCard) {
+      alert("みとり算の設定が見つかりません。");
+      return;
+    }
+
+    const mitoriIsOpen =
+      mitoriCard.classList.contains("expanded");
+
+    const kakeIsOpen =
+      kakeCard.classList.contains("expanded");
+
+    const firstGeneration =
+      !generationState.mitori.generated &&
+      !generationState.kake.generated;
+
+    // 初回は両方の設定を開いて生成する
+    if (firstGeneration && (!mitoriIsOpen || !kakeIsOpen)) {
+      alert("みとり算とかけ算の設定を両方開いてください。");
+      return;
+    }
+
+    // 決定済みではない種類だけを再生成対象にする
+    const shouldGenerateMitori =
+      !generationState.mitori.confirmed;
+
+    const shouldGenerateKake =
+      !generationState.kake.confirmed;
+
+    if (!shouldGenerateMitori && !shouldGenerateKake) {
+      renderGenerationPreview();
+      alert("みとり算・かけ算は両方とも決定済みです。");
+      return;
+    }
+
+    // 未決定の設定カードが閉じている場合は生成しない
+    if (shouldGenerateMitori && !mitoriIsOpen) {
+      alert("未決定のみとり算の設定を開いてください。");
+      return;
+    }
+
+    if (shouldGenerateKake && !kakeIsOpen) {
+      alert("未決定のかけ算の設定を開いてください。");
+      return;
+    }
+
+    previewArea.innerHTML = "";
+
+    // みとり算を生成
+    if (shouldGenerateMitori) {
+      const html = window.generateMitoriSheets?.();
+
+      if (!html) {
+        renderGenerationPreview();
+        return;
+      }
+
+      generationState.mitori.html = html;
+      generationState.mitori.generated = true;
+      generationState.mitori.confirmed = false;
+    }
+
+    // かけ算を生成
+    if (shouldGenerateKake) {
+      const html = window.generateKakeSheets?.();
+
+      if (!html) {
+        renderGenerationPreview();
+        return;
+      }
+
+      generationState.kake.html = html;
+      generationState.kake.generated = true;
+      generationState.kake.confirmed = false;
+    }
+
+    renderGenerationPreview();
+  });
+
+  // 個別の「この問題に決定」ボタン
+  previewArea.addEventListener("click", event => {
+    const button = event.target.closest("[data-confirm-type]");
+
+    if (!button) return;
+
+    const type = button.dataset.confirmType;
+    const item = generationState[type];
+
+    if (!item || !item.generated || item.confirmed) return;
+
+    item.confirmed = true;
+
+    renderGenerationPreview();
   });
 
   function randomInt(min, max) {
