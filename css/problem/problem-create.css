@@ -883,16 +883,17 @@
   margin: 30px auto;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 36px;
   box-sizing: border-box;
 }
 
 .problem-generation-result {
   width: 100%;
-  padding: 18px;
-  background: #ffffff;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   box-sizing: border-box;
 }
 
@@ -923,16 +924,11 @@
   background: #126bc0;
 }
 
-.problem-confirm-button:disabled {
-  background: #15803d;
-  color: #ffffff;
-  cursor: default;
-  opacity: 1;
-}
-
 .problem-generation-result-content {
   width: 100%;
-  overflow-x: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
   box-sizing: border-box;
 }
 
@@ -957,10 +953,6 @@
 }
 
 @media (max-width: 600px) {
-  .problem-generation-result {
-    padding: 10px;
-  }
-
   .problem-confirm-button,
   .problem-proceed-print-button {
     width: 100%;

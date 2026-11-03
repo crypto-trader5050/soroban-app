@@ -785,7 +785,14 @@ document.addEventListener("DOMContentLoaded", () => {
         heading.appendChild(title);
         section.appendChild(heading);
 
-        // 確定ボタン
+        // 問題用紙
+        const content = document.createElement("div");
+        content.className = "problem-generation-result-content";
+        content.innerHTML = item.html;
+
+        section.appendChild(content);
+
+        // 問題用紙の下に確定・取り消しボタンを配置
         const confirmButton = document.createElement("button");
         confirmButton.type = "button";
         confirmButton.className = "problem-confirm-button";
@@ -793,19 +800,11 @@ document.addEventListener("DOMContentLoaded", () => {
         confirmButton.dataset.sheetIndex = index;
 
         confirmButton.textContent = item.confirmed
-          ? "決定済み"
+          ? "決定を取り消す"
           : "この問題に決定";
-
-        confirmButton.disabled = item.confirmed;
 
         section.appendChild(confirmButton);
 
-        // 問題用紙
-        const content = document.createElement("div");
-        content.className = "problem-generation-result-content";
-        content.innerHTML = item.html;
-
-        section.appendChild(content);
         previewArea.appendChild(section);
       });
     });
@@ -945,7 +944,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /*
-   * 問題用紙ごとの確定ボタン
+   * 問題用紙ごとの確定・取り消し
    */
   previewArea.addEventListener("click", event => {
     const button = event.target.closest(
@@ -959,9 +958,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const item = generationState[type]?.[index];
 
-    if (!item || item.confirmed) return;
+    if (!item) return;
 
-    item.confirmed = true;
+    // 決定状態を反転
+    item.confirmed = !item.confirmed;
 
     renderGenerationPreview();
   });
