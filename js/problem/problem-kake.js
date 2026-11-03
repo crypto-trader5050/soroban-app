@@ -663,108 +663,204 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return html;
   };
-
+  
   /* =========================================================
      共通の問題生成・個別確定・印刷画面への受け渡し
-     対象：みとり算・かけ算
+     問題用紙1枚ごとに確定状態を管理
   ========================================================= */
 
   const generationState = {
-    mitori: { html: "", confirmed: false, generated: false },
-    kake:   { html: "", confirmed: false, generated: false }
+    mitori: [],
+    kake: []
   };
 
   const mitoriCard = document.querySelector(
     '.problem-type-card[data-problem-type="mitori"]'
   );
 
+  // 確認画面
   const previewArea = document.createElement("div");
   previewArea.id = "problemGenerationPreview";
   previewArea.className = "problem-generation-preview";
-  generateButton.parentNode.appendChild(previewArea);
 
+  generateButton.insertAdjacentElement("afterend", previewArea);
+
+  /*
+   * 生成HTMLを1枚ずつに分割する
+   *
+   * みとり算：#problemGeneratedSheets の子要素
+   * かけ算　：.kake-print-sheet
+   */
+  function splitGeneratedSheets(html, type) {
+    const template = document.createElement("template");
+    template.innerHTML = html;
+
+    if (type === "mitori") {
+      const wrapper = template.content.querySelector(
+        "#problemGeneratedSheets"
+      );
+
+      if (!wrapper) return [];
+
+      return Array.from(wrapper.children).map(
+        sheet => sheet.outerHTML
+      );
+    }
+
+    return Array.from(
+      template.content.querySelectorAll(".kake-print-sheet")
+    ).map(sheet => sheet.outerHTML);
+  }
+
+  /*
+   * 新しい生成結果を反映する
+   * 決定済みの用紙は以前のHTMLを維持する
+   */
+  function updateGeneratedSheets(type, newSheets) {
+    const oldSheets = generationState[type];
+    const updatedSheets = [];
+
+    newSheets.forEach((html, index) => {
+      const oldSheet = oldSheets[index];
+
+      if (oldSheet && oldSheet.confirmed) {
+        updatedSheets.push(oldSheet);
+      } else {
+        updatedSheets.push({
+          html,
+          confirmed: false
+        });
+      }
+    });
+
+    // 新しい生成枚数より前の確定済み用紙がある場合は保持
+    oldSheets.forEach((oldSheet, index) => {
+      if (
+        index >= newSheets.length &&
+        oldSheet.confirmed
+      ) {
+        updatedSheets.push(oldSheet);
+      }
+    });
+
+    generationState[type] = updatedSheets;
+  }
+
+  /*
+   * 確認画面を描画
+   */
   function renderGenerationPreview() {
     previewArea.innerHTML = "";
 
-    [
+    const types = [
       ["mitori", "みとり算"],
       ["kake", "かけ算"]
-    ].forEach(([type, label]) => {
-      const item = generationState[type];
+    ];
 
-      if (!item.generated) return;
+    let hasSheets = false;
+    let allConfirmed = true;
 
-      const section = document.createElement("section");
-      section.className = "problem-generation-result";
-      section.dataset.problemType = type;
+    types.forEach(([type, label]) => {
+      const sheets = generationState[type];
 
-      const heading = document.createElement("div");
-      heading.className = "problem-generation-result-heading";
+      sheets.forEach((item, index) => {
+        hasSheets = true;
 
-      const title = document.createElement("strong");
-      title.textContent = label;
+        if (!item.confirmed) {
+          allConfirmed = false;
+        }
 
-      const status = document.createElement("span");
-      status.textContent = item.confirmed ? "決定済み" : "未決定";
+        const section = document.createElement("section");
+        section.className = "problem-generation-result";
+        section.dataset.problemType = type;
+        section.dataset.sheetIndex = index;
 
-      heading.appendChild(title);
-      heading.appendChild(status);
-      section.appendChild(heading);
+        const heading = document.createElement("div");
+        heading.className = "problem-generation-result-heading";
 
-      const confirmButton = document.createElement("button");
-      confirmButton.type = "button";
-      confirmButton.className = "problem-confirm-button";
-      confirmButton.dataset.confirmType = type;
-      confirmButton.textContent = item.confirmed
-        ? "この問題は決定済みです"
-        : "この問題に決定";
-      confirmButton.disabled = item.confirmed;
+        const title = document.createElement("strong");
+        title.textContent =
+          `${label} ${index + 1}枚目`;
 
-      section.appendChild(confirmButton);
+        heading.appendChild(title);
+        section.appendChild(heading);
 
-      const content = document.createElement("div");
-      content.className = "problem-generation-result-content";
-      content.innerHTML = item.html;
-      section.appendChild(content);
+        // 確定ボタン
+        const confirmButton = document.createElement("button");
+        confirmButton.type = "button";
+        confirmButton.className = "problem-confirm-button";
+        confirmButton.dataset.confirmType = type;
+        confirmButton.dataset.sheetIndex = index;
 
-      previewArea.appendChild(section);
+        confirmButton.textContent = item.confirmed
+          ? "決定済み"
+          : "この問題に決定";
+
+        confirmButton.disabled = item.confirmed;
+
+        section.appendChild(confirmButton);
+
+        // 問題用紙
+        const content = document.createElement("div");
+        content.className = "problem-generation-result-content";
+        content.innerHTML = item.html;
+
+        section.appendChild(content);
+        previewArea.appendChild(section);
+      });
     });
 
-    const bothGenerated =
-      generationState.mitori.generated &&
-      generationState.kake.generated;
-
-    const allConfirmed =
-      bothGenerated &&
-      generationState.mitori.confirmed &&
-      generationState.kake.confirmed;
-
-    if (allConfirmed) {
+    // すべての生成済み用紙が決定された場合だけ印刷ボタンを表示
+    if (hasSheets && allConfirmed) {
       const printButton = document.createElement("button");
+
       printButton.type = "button";
       printButton.className = "problem-proceed-print-button";
-      printButton.textContent = "決定した問題を印刷画面へ進む";
-      printButton.addEventListener("click", moveToPrintPage);
+      printButton.textContent =
+        "決定した問題を印刷画面へ進む";
+
+      printButton.addEventListener(
+        "click",
+        moveToPrintPage
+      );
 
       previewArea.appendChild(printButton);
     }
   }
 
+  /*
+   * 印刷画面へ移動
+   */
   function moveToPrintPage() {
-    const bothConfirmed =
-      generationState.mitori.generated &&
-      generationState.kake.generated &&
-      generationState.mitori.confirmed &&
-      generationState.kake.confirmed;
+    const allSheets = [
+      ...generationState.mitori,
+      ...generationState.kake
+    ];
 
-    if (!bothConfirmed) {
-      alert("みとり算・かけ算の両方を決定してください。");
+    if (
+      allSheets.length === 0 ||
+      allSheets.some(item => !item.confirmed)
+    ) {
+      alert("すべての問題用紙を決定してください。");
       return;
     }
 
+    const mitoriHtml = generationState.mitori
+      .map(item => item.html)
+      .join("");
+
+    const kakeHtml = generationState.kake
+      .map(item => item.html)
+      .join("");
+
+    // みとり算のHTMLは元の印刷画面が認識できる親要素で包む
     const combinedHtml =
-      generationState.mitori.html +
-      generationState.kake.html;
+      (
+        generationState.mitori.length
+          ? `<div id="problemGeneratedSheets">${mitoriHtml}</div>`
+          : ""
+      ) +
+      kakeHtml;
 
     try {
       sessionStorage.setItem(
@@ -773,7 +869,8 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     } catch (error) {
       alert(
-        "問題用紙を保存できませんでした。\n問題数を減らして、もう一度お試しください。"
+        "問題用紙を保存できませんでした。\n" +
+        "問題数を減らして、もう一度お試しください。"
       );
       return;
     }
@@ -781,96 +878,88 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "problem-sheet.html";
   }
 
+  /*
+   * 問題生成ボタン
+   * 開いている種類だけを生成する
+   */
   generateButton.addEventListener("click", () => {
-
-    if (!mitoriCard) {
-      alert("みとり算の設定が見つかりません。");
-      return;
-    }
-
     const mitoriIsOpen =
+      !!mitoriCard &&
       mitoriCard.classList.contains("expanded");
 
     const kakeIsOpen =
       kakeCard.classList.contains("expanded");
 
-    const firstGeneration =
-      !generationState.mitori.generated &&
-      !generationState.kake.generated;
-
-    // 初回は両方の設定を開いて生成する
-    if (firstGeneration && (!mitoriIsOpen || !kakeIsOpen)) {
-      alert("みとり算とかけ算の設定を両方開いてください。");
+    if (!mitoriIsOpen && !kakeIsOpen) {
+      alert("みとり算またはかけ算の設定を開いてください。");
       return;
     }
 
-    // 決定済みではない種類だけを再生成対象にする
-    const shouldGenerateMitori =
-      !generationState.mitori.confirmed;
+    // みとり算だけ生成・再生成
+    if (mitoriIsOpen) {
+      const mitoriHtml =
+        window.generateMitoriSheets?.();
 
-    const shouldGenerateKake =
-      !generationState.kake.confirmed;
-
-    if (!shouldGenerateMitori && !shouldGenerateKake) {
-      renderGenerationPreview();
-      alert("みとり算・かけ算は両方とも決定済みです。");
-      return;
-    }
-
-    // 未決定の設定カードが閉じている場合は生成しない
-    if (shouldGenerateMitori && !mitoriIsOpen) {
-      alert("未決定のみとり算の設定を開いてください。");
-      return;
-    }
-
-    if (shouldGenerateKake && !kakeIsOpen) {
-      alert("未決定のかけ算の設定を開いてください。");
-      return;
-    }
-
-    previewArea.innerHTML = "";
-
-    // みとり算を生成
-    if (shouldGenerateMitori) {
-      const html = window.generateMitoriSheets?.();
-
-      if (!html) {
+      if (!mitoriHtml) {
         renderGenerationPreview();
         return;
       }
 
-      generationState.mitori.html = html;
-      generationState.mitori.generated = true;
-      generationState.mitori.confirmed = false;
+      const mitoriSheets = splitGeneratedSheets(
+        mitoriHtml,
+        "mitori"
+      );
+
+      if (!mitoriSheets.length) {
+        alert("みとり算の問題用紙を取得できませんでした。");
+        return;
+      }
+
+      updateGeneratedSheets("mitori", mitoriSheets);
     }
 
-    // かけ算を生成
-    if (shouldGenerateKake) {
-      const html = window.generateKakeSheets?.();
+    // かけ算だけ生成・再生成
+    if (kakeIsOpen) {
+      const kakeHtml =
+        window.generateKakeSheets?.();
 
-      if (!html) {
+      if (!kakeHtml) {
         renderGenerationPreview();
         return;
       }
 
-      generationState.kake.html = html;
-      generationState.kake.generated = true;
-      generationState.kake.confirmed = false;
+      const kakeSheets = splitGeneratedSheets(
+        kakeHtml,
+        "kake"
+      );
+
+      if (!kakeSheets.length) {
+        alert("かけ算の問題用紙を取得できませんでした。");
+        return;
+      }
+
+      updateGeneratedSheets("kake", kakeSheets);
     }
 
     renderGenerationPreview();
   });
 
-  // 個別の「この問題に決定」ボタン
+  /*
+   * 問題用紙ごとの確定ボタン
+   */
   previewArea.addEventListener("click", event => {
-    const button = event.target.closest("[data-confirm-type]");
+    const button = event.target.closest(
+      ".problem-confirm-button"
+    );
 
     if (!button) return;
 
     const type = button.dataset.confirmType;
-    const item = generationState[type];
+    const index = Number(button.dataset.sheetIndex);
 
-    if (!item || !item.generated || item.confirmed) return;
+    const item = generationState[type]?.[index];
+
+    if (!item || item.confirmed) return;
 
     item.confirmed = true;
 

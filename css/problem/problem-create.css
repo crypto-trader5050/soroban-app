@@ -873,3 +873,96 @@
   font-weight: 800;
   cursor: pointer;
 }
+
+/* =========================================================
+   問題用紙ごとの確認・個別確定
+========================================================= */
+
+.problem-generation-preview {
+  width: 100%;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  box-sizing: border-box;
+}
+
+.problem-generation-result {
+  width: 100%;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.problem-generation-result-heading {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #222222;
+}
+
+.problem-confirm-button {
+  display: block;
+  width: min(100%, 420px);
+  min-height: 50px;
+  margin: 12px auto 20px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #1683e6;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.problem-confirm-button:hover:not(:disabled) {
+  background: #126bc0;
+}
+
+.problem-confirm-button:disabled {
+  background: #15803d;
+  color: #ffffff;
+  cursor: default;
+  opacity: 1;
+}
+
+.problem-generation-result-content {
+  width: 100%;
+  overflow-x: auto;
+  box-sizing: border-box;
+}
+
+.problem-proceed-print-button {
+  display: block;
+  width: min(100%, 480px);
+  min-height: 54px;
+  margin: 10px auto 30px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #15803d;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.problem-proceed-print-button:hover {
+  background: #166534;
+}
+
+@media (max-width: 600px) {
+  .problem-generation-result {
+    padding: 10px;
+  }
+
+  .problem-confirm-button,
+  .problem-proceed-print-button {
+    width: 100%;
+  }
+}
