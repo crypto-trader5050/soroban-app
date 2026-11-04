@@ -1134,6 +1134,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   function renderSheet(sheet) {
+    const useTwoColumns =
+      sheet.problems.length >= 30 &&
+      !sheet.problems.some(p =>
+        String(p.a).replace(/\D/g, "").length +
+        String(p.b).replace(/\D/g, "").length >= 10
+      );
+
+    const middle = Math.ceil(sheet.problems.length / 2);
+
+    const problemColumns = useTwoColumns
+      ? [
+          sheet.problems.slice(0, middle),
+          sheet.problems.slice(middle)
+        ]
+      : [sheet.problems];
+
     return `
       <section class="kake-print-sheet" style="
         background:#fff;
@@ -1188,85 +1204,103 @@ document.addEventListener("DOMContentLoaded", () => {
         </header>
 
         <div style="
-          border:2px solid #222;
+          display:grid;
+          grid-template-columns:${useTwoColumns ? "repeat(2, minmax(0, 1fr))" : "1fr"};
+          gap:${useTwoColumns ? "12px" : "0"};
           width:100%;
           box-sizing:border-box;
         ">
 
-          ${sheet.problems.map(p => `
+          ${problemColumns.map(column => `
             <div style="
-              display:grid;
-              grid-template-columns:60px minmax(0,1fr);
-              min-height:48px;
-              border-bottom:1px solid #777;
+              border:2px solid #222;
+              min-width:0;
               box-sizing:border-box;
-              break-inside:avoid;
             ">
 
-              <div style="
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                border-right:1px solid #777;
-                font-size:15px;
-                font-weight:600;
-              ">
-                ${p.number}
-              </div>
-
-              <div style="
-                display:flex;
-                align-items:center;
-                justify-content:flex-start;
-                padding:5px 18px;
-                box-sizing:border-box;
-                font-size:21px;
-                font-weight:600;
-                font-variant-numeric:tabular-nums;
-                white-space:nowrap;
-              ">
-
-                <span style="
-                  display:inline-block;
-                  min-width:180px;
-                  text-align:right;
-                  font-family:'Soloburn', sans-serif;
-                  font-weight:500;
+              ${column.map(p => `
+                <div style="
+                  display:grid;
+                  grid-template-columns:${useTwoColumns ? "34px minmax(0, 1fr)" : "60px minmax(0, 1fr)"};
+                  min-height:${useTwoColumns ? "42px" : "48px"};
+                  border-bottom:1px solid #777;
+                  box-sizing:border-box;
+                  break-inside:avoid;
                 ">
-                  ${escapeHtml(p.a)}
-                </span>
 
-                <span style="
-                  display:inline-block;
-                  width:42px;
-                  text-align:center;
-                  font-weight:400;
-                ">×</span>
+                  <div style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    border-right:1px solid #777;
+                    font-size:${useTwoColumns ? "12px" : "15px"};
+                    font-weight:600;
+                  ">
+                    ${p.number}
+                  </div>
 
-                <span style="
-                  display:inline-block;
-                  min-width:180px;
-                  text-align:right;
-                  font-family:'Soloburn', sans-serif;
-                  font-weight:500;
-                ">
-                  ${escapeHtml(p.b)}
-                </span>
+                  <div style="
+                    display:flex;
+                    align-items:center;
+                    justify-content:flex-start;
+                    padding:${useTwoColumns ? "4px 5px" : "5px 18px"};
+                    box-sizing:border-box;
+                    font-size:${useTwoColumns ? "15px" : "21px"};
+                    font-weight:600;
+                    font-variant-numeric:tabular-nums;
+                    white-space:nowrap;
+                    min-width:0;
+                  ">
 
-                <span style="
-                  display:inline-block;
-                  width:42px;
-                  text-align:center;
-                  font-weight:400;
-                ">＝</span>
+                    <span style="
+                      display:inline-block;
+                      flex:1;
+                      min-width:0;
+                      text-align:right;
+                      font-family:'Soloburn', sans-serif;
+                      font-weight:500;
+                    ">
+                      ${escapeHtml(p.a)}
+                    </span>
 
-                <span style="
-                  display:inline-block;
-                  min-width:150px;
-                  height:28px;
-                "></span>
+                    <span style="
+                      display:inline-block;
+                      width:${useTwoColumns ? "18px" : "42px"};
+                      flex-shrink:0;
+                      text-align:center;
+                      font-weight:400;
+                    ">×</span>
 
-              </div>
+                    <span style="
+                      display:inline-block;
+                      flex:1;
+                      min-width:0;
+                      text-align:right;
+                      font-family:'Soloburn', sans-serif;
+                      font-weight:500;
+                    ">
+                      ${escapeHtml(p.b)}
+                    </span>
+
+                    <span style="
+                      display:inline-block;
+                      width:${useTwoColumns ? "18px" : "42px"};
+                      flex-shrink:0;
+                      text-align:center;
+                      font-weight:400;
+                    ">＝</span>
+
+                    <span style="
+                      display:inline-block;
+                      width:${useTwoColumns ? "35px" : "150px"};
+                      flex-shrink:0;
+                      height:28px;
+                    "></span>
+
+                  </div>
+                </div>
+              `).join("")}
+
             </div>
           `).join("")}
 
