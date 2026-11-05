@@ -666,16 +666,21 @@ document.addEventListener("DOMContentLoaded", () => {
   
   /* =========================================================
      共通の問題生成・個別確定・印刷画面への受け渡し
-     問題用紙1枚ごとに確定状態を管理
+     みとり算・かけ算・わり算に対応
   ========================================================= */
 
   const generationState = {
     mitori: [],
-    kake: []
+    kake: [],
+    wari: []
   };
 
   const mitoriCard = document.querySelector(
     '.problem-type-card[data-problem-type="mitori"]'
+  );
+
+  const wariCard = document.querySelector(
+    '.problem-type-card[data-problem-type="wari"]'
   );
 
   // 確認画面
@@ -687,9 +692,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /*
    * 生成HTMLを1枚ずつに分割する
-   *
-   * みとり算：#problemGeneratedSheets の子要素
-   * かけ算　：.kake-print-sheet
    */
   function splitGeneratedSheets(html, type) {
     const template = document.createElement("template");
@@ -705,6 +707,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return Array.from(wrapper.children).map(
         sheet => sheet.outerHTML
       );
+    }
+
+    if (type === "wari") {
+      return Array.from(
+        template.content.querySelectorAll(".wari-print-sheet")
+      ).map(sheet => sheet.outerHTML);
     }
 
     return Array.from(
@@ -754,7 +762,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const types = [
       ["mitori", "みとり算"],
-      ["kake", "かけ算"]
+      ["kake", "かけ算"],
+      ["wari", "わり算"]
     ];
 
     let hasSheets = false;
@@ -779,8 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
         heading.className = "problem-generation-result-heading";
 
         const title = document.createElement("strong");
-        title.textContent =
-          `${label} ${index + 1}枚目`;
+        title.textContent = `${label} ${index + 1}枚目`;
 
         heading.appendChild(title);
         section.appendChild(heading);
@@ -833,7 +841,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function moveToPrintPage() {
     const allSheets = [
       ...generationState.mitori,
-      ...generationState.kake
+      ...generationState.kake,
+      ...generationState.wari
     ];
 
     if (
@@ -852,6 +861,10 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(item => item.html)
       .join("");
 
+    const wariHtml = generationState.wari
+      .map(item => item.html)
+      .join("");
+
     // みとり算のHTMLは元の印刷画面が認識できる親要素で包む
     const combinedHtml =
       (
@@ -859,7 +872,8 @@ document.addEventListener("DOMContentLoaded", () => {
           ? `<div id="problemGeneratedSheets">${mitoriHtml}</div>`
           : ""
       ) +
-      kakeHtml;
+      kakeHtml +
+      wariHtml;
 
     try {
       sessionStorage.setItem(
@@ -889,12 +903,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const kakeIsOpen =
       kakeCard.classList.contains("expanded");
 
-    if (!mitoriIsOpen && !kakeIsOpen) {
-      alert("みとり算またはかけ算の設定を開いてください。");
+    const wariIsOpen =
+      !!wariCard &&
+      wariCard.classList.contains("expanded");
+
+    if (!mitoriIsOpen && !kakeIsOpen && !wariIsOpen) {
+      alert("みとり算・かけ算・わり算のいずれかの設定を開いてください。");
       return;
     }
 
-    // みとり算だけ生成・再生成
+    // みとり算
     if (mitoriIsOpen) {
       const mitoriHtml =
         window.generateMitoriSheets?.();
@@ -917,7 +935,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateGeneratedSheets("mitori", mitoriSheets);
     }
 
-    // かけ算だけ生成・再生成
+    // かけ算
     if (kakeIsOpen) {
       const kakeHtml =
         window.generateKakeSheets?.();
@@ -938,6 +956,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateGeneratedSheets("kake", kakeSheets);
+    }
+
+    // わり算
+    if (wariIsOpen) {
+      const wariHtml =
+        window.generateWariSheets?.();
+
+      if (!wariHtml) {
+        renderGenerationPreview();
+        return;
+      }
+
+      const wariSheets = splitGeneratedSheets(
+        wariHtml,
+        "wari"
+      );
+
+      if (!wariSheets.length) {
+        alert("わり算の問題用紙を取得できませんでした。");
+        return;
+      }
+
+      updateGeneratedSheets("wari", wariSheets);
     }
 
     renderGenerationPreview();
