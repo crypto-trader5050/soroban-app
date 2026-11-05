@@ -136,6 +136,37 @@ document.addEventListener("DOMContentLoaded", () => {
               </p>
             </section>
 
+            <section class="problem-count-area">
+              <h3 class="problem-create-heading">割り切りパターン</h3>
+              <select class="problem-form-select division-pattern">
+                <option value="all-exact">① 整数・小数とも割り切れる</option>
+                <option value="integer-exact">② 整数のみ割り切れる</option>
+                <option value="both-inexact">③ 整数・小数とも割り切れない</option>
+              </select>
+            </section>
+
+            <section class="problem-count-area division-inexact-settings" style="display:none;">
+              <h3 class="problem-create-heading">割り切れない問題数</h3>
+
+              <div class="problem-form-item division-decimal-inexact-area">
+                <label class="problem-form-label">小数問題のうち</label>
+                <select class="problem-form-select decimal-inexact-count">
+                  <option value="0">0問</option>
+                </select>
+              </div>
+
+              <div class="problem-form-item division-integer-inexact-area" style="display:none;">
+                <label class="problem-form-label">整数問題のうち</label>
+                <select class="problem-form-select integer-inexact-count">
+                  <option value="0">0問</option>
+                </select>
+              </div>
+
+              <p class="problem-section-status division-inexact-note">
+                割り切れない問題数を指定してください。
+              </p>
+            </section>
+
             <section class="problem-section-area">
               <h3 class="problem-create-heading">問題設定</h3>
               <div class="problem-section-list individual-section-list"></div>
@@ -192,19 +223,47 @@ document.addEventListener("DOMContentLoaded", () => {
       let totalQuestions = 0;
 
       const decimalCountSelect = block.querySelector(".decimal-question-count");
+      const patternSelect = block.querySelector(".division-pattern");
+      const inexactSettings = block.querySelector(".division-inexact-settings");
+      const decimalInexactSelect = block.querySelector(".decimal-inexact-count");
+      const integerInexactSelect = block.querySelector(".integer-inexact-count");
+      const decimalInexactArea = block.querySelector(".division-decimal-inexact-area");
+      const integerInexactArea = block.querySelector(".division-integer-inexact-area");
+
+      function setCountOptions(select, max) {
+        const previous = Number(select.value) || 0;
+        select.innerHTML = Array.from(
+          { length: max + 1 },
+          (_, n) => `<option value="${n}">${n}問</option>`
+        ).join("");
+        select.value = String(Math.min(previous, max));
+      }
+
+      function updateDivisionCountOptions() {
+        const decimalCount = Number(decimalCountSelect.value) || 0;
+        const integerCount = Math.max(0, totalQuestions - decimalCount);
+        setCountOptions(decimalInexactSelect, decimalCount);
+        setCountOptions(integerInexactSelect, integerCount);
+      }
+
+      function updateDivisionPatternUI() {
+        const pattern = patternSelect.value;
+        inexactSettings.style.display = pattern === "all-exact" ? "none" : "";
+        decimalInexactArea.style.display = pattern === "all-exact" ? "none" : "";
+        integerInexactArea.style.display = pattern === "both-inexact" ? "" : "none";
+        updateDivisionCountOptions();
+      }
 
       function updateDecimalCountOptions() {
         const previous = Number(decimalCountSelect.value) || 0;
-
-        decimalCountSelect.innerHTML = Array.from(
-          { length: totalQuestions + 1 },
-          (_, n) => `<option value="${n}">${n}問</option>`
-        ).join("");
-
-        decimalCountSelect.value = String(
-          Math.min(previous, totalQuestions)
-        );
+        setCountOptions(decimalCountSelect, totalQuestions);
+        decimalCountSelect.value = String(Math.min(previous, totalQuestions));
+        updateDivisionPatternUI();
       }
+
+      decimalCountSelect.addEventListener("change", updateDivisionPatternUI);
+      patternSelect.addEventListener("change", updateDivisionPatternUI);
+      updateDivisionPatternUI();
 
       countButtons.forEach(button => {
         button.addEventListener("click", () => {
@@ -467,9 +526,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-
-
-
     detail.querySelectorAll("[data-sheets]").forEach(button => {
       button.addEventListener("click", () => {
         detail.querySelectorAll("[data-sheets]").forEach(b => b.classList.remove("selected"));
@@ -605,6 +661,52 @@ document.addEventListener("DOMContentLoaded", () => {
         decimalEligible.slice(0, decimalQuestionCount)
       );
 
+      const divisionPattern = block.querySelector(".division-pattern").value;
+      const decimalInexactCount = Number(
+        block.querySelector(".decimal-inexact-count").value
+      ) || 0;
+      const integerInexactCount = Number(
+        block.querySelector(".integer-inexact-count").value
+      ) || 0;
+
+      if (divisionPattern === "integer-exact" || divisionPattern === "both-inexact") {
+        if (decimalInexactCount < 0 || decimalInexactCount > decimalQuestionCount) {
+          alert("小数問題の割り切れない問題数を確認してください。");
+          return;
+        }
+      }
+
+      if (divisionPattern === "both-inexact") {
+        const integerQuestionCount = total - decimalQuestionCount;
+        if (integerInexactCount < 0 || integerInexactCount > integerQuestionCount) {
+          alert("整数問題の割り切れない問題数を確認してください。");
+          return;
+        }
+      }
+
+      const shuffled = values => {
+        const result = [...values];
+        for (let i = result.length - 1; i > 0; i--) {
+          const j = randomInt(0, i);
+          [result[i], result[j]] = [result[j], result[i]];
+        }
+        return result;
+      };
+
+      const decimalInexactNumbers = new Set(
+        shuffled([...decimalQuestionNumbers]).slice(0,
+          divisionPattern === "all-exact" ? 0 : decimalInexactCount)
+      );
+
+      const integerQuestionNumbers = Array.from(
+        { length: total }, (_, index) => index + 1
+      ).filter(number => !decimalQuestionNumbers.has(number));
+
+      const integerInexactNumbers = new Set(
+        shuffled(integerQuestionNumbers).slice(0,
+          divisionPattern === "both-inexact" ? integerInexactCount : 0)
+      );
+
       // 問題を生成する
       for (let q = 1; q <= total; q++) {
         const r = ranges.find(x => q >= x.start && q <= x.end);
@@ -619,21 +721,51 @@ document.addEventListener("DOMContentLoaded", () => {
         const decimalSide = Math.random() < 0.5 ? "a" : "b";
         const bothDecimal = useDecimal && Math.random() < 0.25;
 
-        const a = makeOperand(
-          r,
-          "a",
-          useDecimal && (bothDecimal || decimalSide === "a"),
-          firstDecimalQuestion && (bothDecimal || decimalSide === "a")
-        );
+        const shouldBeInexact = useDecimal
+          ? decimalInexactNumbers.has(q)
+          : integerInexactNumbers.has(q);
 
-        const b = makeOperand(
-          r,
-          "b",
-          useDecimal && (bothDecimal || decimalSide === "b"),
-          firstDecimalQuestion && (bothDecimal || decimalSide === "b")
-        );
+        let a;
+        let b;
+        let rawAnswer;
+        let matchedPattern = false;
 
-        const rawAnswer = a.value / b.value;
+        // 指定された割り切り条件に合う組み合わせを生成する
+        for (let attempt = 0; attempt < 20000; attempt++) {
+          const candidateA = makeOperand(
+            r,
+            "a",
+            useDecimal && (bothDecimal || decimalSide === "a"),
+            firstDecimalQuestion && (bothDecimal || decimalSide === "a")
+          );
+
+          const candidateB = makeOperand(
+            r,
+            "b",
+            useDecimal && (bothDecimal || decimalSide === "b"),
+            firstDecimalQuestion && (bothDecimal || decimalSide === "b")
+          );
+
+          const candidateAnswer = candidateA.value / candidateB.value;
+          const isExact = Math.abs(candidateAnswer - Math.round(candidateAnswer)) < 1e-10;
+
+          if (isExact !== shouldBeInexact) {
+            a = candidateA;
+            b = candidateB;
+            rawAnswer = candidateAnswer;
+            matchedPattern = true;
+            break;
+          }
+        }
+
+        if (!matchedPattern) {
+          alert(
+            `第${q}問で指定した割り切り条件の問題を作成できませんでした。\n` +
+            "桁数の範囲を広げて、もう一度お試しください。"
+          );
+          return;
+        }
+
         const answer = processAnswer(
           rawAnswer,
           r.roundingMode,
@@ -777,8 +909,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-
-
   function processAnswer(value, mode, places) {
     const digits = Math.max(0, places);
     const factor = 10 ** digits;
@@ -806,7 +936,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return parts.join(".");
   }
 
-
   function makeInstruction(r) {
     const place = r.roundingPlace === -1
       ? "整数未満"
@@ -819,7 +948,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return `答えは${place}を${method}して答えなさい。`;
   }
 
-
   function escapeHtml(value) {
     return String(value).replace(/[&<>"']/g, c => ({
       "&": "&amp;",
@@ -829,7 +957,6 @@ document.addEventListener("DOMContentLoaded", () => {
       "'": "&#039;"
     })[c]);
   }
-
 
   function renderSheet(sheet) {
     const useTwoColumns =

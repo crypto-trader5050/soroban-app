@@ -666,7 +666,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   /* =========================================================
      共通の問題生成・個別確定・印刷画面への受け渡し
-     みとり算・かけ算・わり算に対応
+     問題用紙1枚ごとに確定状態を管理
   ========================================================= */
 
   const generationState = {
@@ -692,6 +692,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /*
    * 生成HTMLを1枚ずつに分割する
+   *
+   * みとり算：#problemGeneratedSheets の子要素
+   * かけ算　：.kake-print-sheet
+   * わり算　：.wari-print-sheet
    */
   function splitGeneratedSheets(html, type) {
     const template = document.createElement("template");
@@ -709,14 +713,12 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     }
 
-    if (type === "wari") {
-      return Array.from(
-        template.content.querySelectorAll(".wari-print-sheet")
-      ).map(sheet => sheet.outerHTML);
-    }
+    const selector = type === "wari"
+      ? ".wari-print-sheet"
+      : ".kake-print-sheet";
 
     return Array.from(
-      template.content.querySelectorAll(".kake-print-sheet")
+      template.content.querySelectorAll(selector)
     ).map(sheet => sheet.outerHTML);
   }
 
@@ -788,7 +790,8 @@ document.addEventListener("DOMContentLoaded", () => {
         heading.className = "problem-generation-result-heading";
 
         const title = document.createElement("strong");
-        title.textContent = `${label} ${index + 1}枚目`;
+        title.textContent =
+          `${label} ${index + 1}枚目`;
 
         heading.appendChild(title);
         section.appendChild(heading);
@@ -912,7 +915,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // みとり算
+    // みとり算だけ生成・再生成
     if (mitoriIsOpen) {
       const mitoriHtml =
         window.generateMitoriSheets?.();
@@ -935,7 +938,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateGeneratedSheets("mitori", mitoriSheets);
     }
 
-    // かけ算
+    // かけ算だけ生成・再生成
     if (kakeIsOpen) {
       const kakeHtml =
         window.generateKakeSheets?.();
@@ -958,7 +961,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateGeneratedSheets("kake", kakeSheets);
     }
 
-    // わり算
+    // わり算だけ生成・再生成
     if (wariIsOpen) {
       const wariHtml =
         window.generateWariSheets?.();
