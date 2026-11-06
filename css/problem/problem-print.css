@@ -697,40 +697,52 @@
 
 }
 
-
 /* =========================================================
-   わり算専用カラー
+   わり算専用カラー（オレンジ）
 ========================================================= */
 
+/* メイン設定パネル */
 .wari-problem-create-panel {
   background: #fff7ed;
   border-color: #f97316;
 }
 
+/* 見出し */
 .wari-problem-create-panel .problem-create-heading {
   color: #9a3412;
 }
 
+/* 問題ごとのカード */
 .wari-problem-create-panel .kake-individual-problem-block {
   border-color: #fed7aa;
 }
 
+/* 入力欄 */
 .wari-problem-create-panel .problem-form-input,
 .wari-problem-create-panel .problem-form-select {
   border-color: #fed7aa;
 }
 
+/* 入力欄のフォーカス */
 .wari-problem-create-panel .problem-form-input:focus,
 .wari-problem-create-panel .problem-form-select:focus {
   border-color: #f97316;
   box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
 }
 
+/* 問題数ボタン */
+.wari-problem-create-panel .problem-count-button,
+.wari-problem-create-panel .problem-sheet-count-button {
+  border-color: #fed7aa;
+}
+
+/* 問題数ボタンのホバー */
 .wari-problem-create-panel .problem-count-button:hover,
 .wari-problem-create-panel .problem-sheet-count-button:hover {
   border-color: #f97316;
 }
 
+/* 選択中の問題数ボタン */
 .wari-problem-create-panel .problem-count-button.selected,
 .wari-problem-create-panel .problem-sheet-count-button.selected {
   background: #f97316;
@@ -738,14 +750,17 @@
   color: #ffffff;
 }
 
+/* 区間設定 */
 .wari-problem-create-panel .problem-section {
   border-color: #fed7aa;
 }
 
+/* 区間見出し */
 .wari-problem-create-panel .problem-section-title {
   color: #9a3412;
 }
 
+/* 区間追加ボタン */
 .wari-problem-create-panel .problem-add-section-button {
   border-color: #f97316;
   color: #ea580c;
@@ -755,6 +770,7 @@
   background: #ffedd5;
 }
 
+/* 設定コピー */
 .wari-problem-create-panel .problem-copy-settings-button {
   background: #ea580c;
 }
