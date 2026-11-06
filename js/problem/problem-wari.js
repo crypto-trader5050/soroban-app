@@ -550,13 +550,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================================
      わり算の問題生成
-     既存のみとり算・かけ算の生成処理には触れない
+     割り切れる問題は「わる数 × 答え」で作る
+     割り切れない問題は「わる数 × 答え ＋ 余り」で作る
   ========================================================= */
 
   window.generateWariSheets = () => {
     if (!wariCard.classList.contains("expanded")) return;
 
-    const blocks = [...detail.querySelectorAll(".individual-problem-block")];
+    const blocks = [
+      ...detail.querySelectorAll(".individual-problem-block")
+    ];
 
     if (!blocks.length) {
       alert("わり算の設定を開いてください。");
@@ -566,15 +569,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const sheets = [];
 
     for (const block of blocks) {
-      const countButton = block.querySelector(".individual-count-button.selected");
-      const total = countButton ? Number(countButton.dataset.count) : 0;
+      const countButton = block.querySelector(
+        ".individual-count-button.selected"
+      );
+
+      const total = countButton
+        ? Number(countButton.dataset.count)
+        : 0;
 
       if (!total) {
-        alert(`問題${problemLabel(Number(block.dataset.problemNumber))}の総問題数を選択してください。`);
+        alert("総問題数を選択してください。");
         return;
       }
 
-      const sections = [...block.querySelectorAll(".problem-section")];
+      const sections = [
+        ...block.querySelectorAll(".problem-section")
+      ];
 
       if (!sections.length) {
         alert("問題設定の区間がありません。");
@@ -585,16 +595,75 @@ document.addEventListener("DOMContentLoaded", () => {
         block.querySelector(".decimal-question-count").value
       );
 
+      const divisionPattern = block.querySelector(
+        ".division-pattern"
+      ).value;
+
+      const decimalInexactCount = Number(
+        block.querySelector(".decimal-inexact-count").value
+      ) || 0;
+
+      const integerInexactCount = Number(
+        block.querySelector(".integer-inexact-count").value
+      ) || 0;
+
+      if (
+        !Number.isInteger(decimalQuestionCount) ||
+        decimalQuestionCount < 0 ||
+        decimalQuestionCount > total
+      ) {
+        alert("小数を含む問題数を確認してください。");
+        return;
+      }
+
+      if (
+        divisionPattern !== "all-exact" &&
+        (
+          decimalInexactCount < 0 ||
+          decimalInexactCount > decimalQuestionCount
+        )
+      ) {
+        alert("小数問題の割り切れない問題数を確認してください。");
+        return;
+      }
+
+      if (divisionPattern === "both-inexact") {
+        const integerQuestionCount =
+          total - decimalQuestionCount;
+
+        if (
+          integerInexactCount < 0 ||
+          integerInexactCount > integerQuestionCount
+        ) {
+          alert("整数問題の割り切れない問題数を確認してください。");
+          return;
+        }
+      }
+
       const ranges = sections.map(section => ({
-        start: Number(section.querySelector(".section-start").value),
-        end: Number(section.querySelector(".section-end").value),
-        aIntMin: Number(section.querySelector(".a-int-min").value),
-        aIntMax: Number(section.querySelector(".a-int-max").value),
-        bIntMin: Number(section.querySelector(".b-int-min").value),
-        bIntMax: Number(section.querySelector(".b-int-max").value),
+        start: Number(
+          section.querySelector(".section-start").value
+        ),
+        end: Number(
+          section.querySelector(".section-end").value
+        ),
+        aIntMin: Number(
+          section.querySelector(".a-int-min").value
+        ),
+        aIntMax: Number(
+          section.querySelector(".a-int-max").value
+        ),
+        bIntMin: Number(
+          section.querySelector(".b-int-min").value
+        ),
+        bIntMax: Number(
+          section.querySelector(".b-int-max").value
+        ),
         leadingZero: section.querySelector(".leading-zero").value,
         roundingMode: section.querySelector(".rounding-mode").value,
-        roundingPlace: Number(section.querySelector(".rounding-place").value)
+        roundingPlace: Number(
+          section.querySelector(".rounding-place").value
+        )
       }));
 
       ranges.sort((a, b) => a.start - b.start);
@@ -609,7 +678,10 @@ document.addEventListener("DOMContentLoaded", () => {
           r.end < r.start ||
           r.end > total
         ) {
-          alert("区間の開始問題・終了問題を確認してください。区間に抜けや重複がないように設定してください。");
+          alert(
+            "区間の開始問題・終了問題を確認してください。" +
+            "区間に抜けや重複がないように設定してください。"
+          );
           return;
         }
 
@@ -630,152 +702,96 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const getField = name =>
-        block.querySelector(`[data-field="${name}"]`)?.value.trim() || "";
+        block.querySelector(`[data-field="${name}"]`)
+          ?.value.trim() || "";
 
-      const problems = [];
-
-      // 全問題を小数問題の候補にする
-      const decimalEligible = Array.from(
+      // 小数を含む問題の番号をランダムに決める
+      const questionNumbers = Array.from(
         { length: total },
         (_, index) => index + 1
       );
 
-      // 指定された小数問題数を実現できるか確認
-      if (
-        !Number.isInteger(decimalQuestionCount) ||
-        decimalQuestionCount < 0 ||
-        decimalQuestionCount > total
-      ) {
-        alert("小数を含む問題数を確認してください。");
-        return;
-      }
-
-      // 小数を含める問題番号をランダムに選ぶ
-      for (let i = decimalEligible.length - 1; i > 0; i--) {
-        const j = randomInt(0, i);
-        [decimalEligible[i], decimalEligible[j]] =
-          [decimalEligible[j], decimalEligible[i]];
-      }
-
       const decimalQuestionNumbers = new Set(
-        decimalEligible.slice(0, decimalQuestionCount)
+        shuffle(questionNumbers).slice(0, decimalQuestionCount)
       );
 
-      const divisionPattern = block.querySelector(".division-pattern").value;
-      const decimalInexactCount = Number(
-        block.querySelector(".decimal-inexact-count").value
-      ) || 0;
-      const integerInexactCount = Number(
-        block.querySelector(".integer-inexact-count").value
-      ) || 0;
+      const integerQuestionNumbers = questionNumbers.filter(
+        number => !decimalQuestionNumbers.has(number)
+      );
 
-      if (divisionPattern === "integer-exact" || divisionPattern === "both-inexact") {
-        if (decimalInexactCount < 0 || decimalInexactCount > decimalQuestionCount) {
-          alert("小数問題の割り切れない問題数を確認してください。");
-          return;
-        }
-      }
-
-      if (divisionPattern === "both-inexact") {
-        const integerQuestionCount = total - decimalQuestionCount;
-        if (integerInexactCount < 0 || integerInexactCount > integerQuestionCount) {
-          alert("整数問題の割り切れない問題数を確認してください。");
-          return;
-        }
-      }
-
-      const shuffled = values => {
-        const result = [...values];
-        for (let i = result.length - 1; i > 0; i--) {
-          const j = randomInt(0, i);
-          [result[i], result[j]] = [result[j], result[i]];
-        }
-        return result;
-      };
-
+      // 割り切れない問題の番号を決める
       const decimalInexactNumbers = new Set(
-        shuffled([...decimalQuestionNumbers]).slice(0,
-          divisionPattern === "all-exact" ? 0 : decimalInexactCount)
+        divisionPattern === "all-exact"
+          ? []
+          : shuffle([...decimalQuestionNumbers])
+              .slice(0, decimalInexactCount)
       );
-
-      const integerQuestionNumbers = Array.from(
-        { length: total }, (_, index) => index + 1
-      ).filter(number => !decimalQuestionNumbers.has(number));
 
       const integerInexactNumbers = new Set(
-        shuffled(integerQuestionNumbers).slice(0,
-          divisionPattern === "both-inexact" ? integerInexactCount : 0)
+        divisionPattern === "both-inexact"
+          ? shuffle(integerQuestionNumbers)
+              .slice(0, integerInexactCount)
+          : []
       );
 
-      // 問題を生成する
+      const firstDecimalQuestionNumber =
+        decimalQuestionNumbers.size > 0
+          ? Math.min(...decimalQuestionNumbers)
+          : null;
+
+      const problems = [];
+
+      // 問題を1問ずつ生成
       for (let q = 1; q <= total; q++) {
-        const r = ranges.find(x => q >= x.start && q <= x.end);
+        const r = ranges.find(
+          x => q >= x.start && q <= x.end
+        );
+
+        if (!r) {
+          alert(`第${q}問の設定が見つかりません。`);
+          return;
+        }
 
         const useDecimal = decimalQuestionNumbers.has(q);
-
-        // 最初の小数問題では、0.xxx形式を優先する
-        const firstDecimalQuestion =
-          useDecimal &&
-          q === Math.min(...decimalQuestionNumbers);
-
-        const decimalSide = Math.random() < 0.5 ? "a" : "b";
-        const bothDecimal = useDecimal && Math.random() < 0.25;
 
         const shouldBeInexact = useDecimal
           ? decimalInexactNumbers.has(q)
           : integerInexactNumbers.has(q);
 
-        let a;
-        let b;
-        let rawAnswer;
-        let matchedPattern = false;
+        // 最初の小数問題だけ、選択された形式の0.xxxを優先する
+        const forceLeadingZero =
+          useDecimal &&
+          q === firstDecimalQuestionNumber &&
+          r.leadingZero !== "no";
 
-        // 指定された割り切り条件に合う組み合わせを生成する
-        for (let attempt = 0; attempt < 20000; attempt++) {
-          const candidateA = makeOperand(
-            r,
-            "a",
-            useDecimal && (bothDecimal || decimalSide === "a"),
-            firstDecimalQuestion && (bothDecimal || decimalSide === "a")
-          );
+        const pair = makeDivisionPair(
+          r,
+          useDecimal,
+          shouldBeInexact,
+          forceLeadingZero
+        );
 
-          const candidateB = makeOperand(
-            r,
-            "b",
-            useDecimal && (bothDecimal || decimalSide === "b"),
-            firstDecimalQuestion && (bothDecimal || decimalSide === "b")
-          );
-
-          const candidateAnswer = candidateA.value / candidateB.value;
-          const isExact = Math.abs(candidateAnswer - Math.round(candidateAnswer)) < 1e-10;
-
-          if (isExact !== shouldBeInexact) {
-            a = candidateA;
-            b = candidateB;
-            rawAnswer = candidateAnswer;
-            matchedPattern = true;
-            break;
-          }
-        }
-
-        if (!matchedPattern) {
+        if (!pair) {
           alert(
-            `第${q}問で指定した割り切り条件の問題を作成できませんでした。\n` +
-            "桁数の範囲を広げて、もう一度お試しください。"
+            `第${q}問を指定した桁数と割り切り条件で作成できません。\n\n` +
+            "わられる数・わる数の桁数範囲を広げてください。" +
+            (useDecimal
+              ? "\n小数問題では、選択した小数の表記に必要な桁数も確認してください。"
+              : "")
           );
           return;
         }
 
         const answer = processAnswer(
-          rawAnswer,
+          pair.answer,
           r.roundingMode,
           r.roundingPlace
         );
 
         problems.push({
           number: q,
-          a: a.text,
-          b: b.text,
+          a: pair.a.text,
+          b: pair.b.text,
           answer,
           instruction: makeInstruction(r)
         });
@@ -791,122 +807,286 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    const html = sheets.map(renderSheet).join("");
-
-    return html;
+    return sheets.map(renderSheet).join("");
   };
 
+
+  /* =========================================================
+     共通処理
+  ========================================================= */
+
   function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(
+      Math.random() * (max - min + 1)
+    ) + min;
   }
 
-  function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
-    const minDigits = r[`${side}IntMin`];
-    const maxDigits = r[`${side}IntMax`];
-    const totalDigits = randomInt(minDigits, maxDigits);
+  function shuffle(values) {
+    const result = [...values];
 
-    if (!useDecimal) {
-      const min = totalDigits === 1 ? 1 : 10 ** (totalDigits - 1);
-      const max = 10 ** totalDigits - 1;
-      const value = randomInt(min, max);
-      return { text: formatNumber(value), value };
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = randomInt(0, i);
+      [result[i], result[j]] = [result[j], result[i]];
     }
 
-    const style = r.leadingZero || "no";
+    return result;
+  }
 
-    // 「先頭の0を付けない」場合は、整数部が1以上の小数にする
-    // それ以外は、選択した形式まで段階的に0.xxx形式を含める
-    const maxLeadingFractionZeros = {
-      "no": -1,
-      "point-zero": 0,
-      "point-zero-one": 1,
-      "point-zero-two": 2
-    }[style] ?? -1;
 
-    let textValue;
+  /* =========================================================
+     わり算の数値を組み立てる
 
-    const canUseZeroInteger =
-      maxLeadingFractionZeros >= 0 &&
-      totalDigits >= 2;
+     割り切れる：
+       わられる数 = わる数 × 答え
 
-    const useZeroInteger =
-      canUseZeroInteger &&
-      (forceZeroInteger || Math.random() < 0.35);
+     割り切れない：
+       わられる数 = わる数 × 答え ＋ 1
 
-    if (useZeroInteger) {
-      // 選択した形式までの範囲から、小数部の先頭の0の数を選ぶ
-      const leadingFractionZeros = randomInt(
-        0,
-        Math.min(maxLeadingFractionZeros, totalDigits - 2)
+     小数の場合は、両方を同じ小数桁数で表す。
+     そのため、係数同士の割り算で正確に判定できる。
+  ========================================================= */
+
+  function makeDivisionPair(
+    r,
+    useDecimal,
+    inexact,
+    forceLeadingZero
+  ) {
+    const scaleMap = {
+      "no": 1,
+      "point-zero": 1,
+      "point-zero-one": 2,
+      "point-zero-two": 3
+    };
+
+    const scale = useDecimal
+      ? (scaleMap[r.leadingZero] ?? 1)
+      : 0;
+
+    const minADigits = useDecimal
+      ? Math.max(r.aIntMin, scale + 1)
+      : r.aIntMin;
+
+    const minBDigits = useDecimal
+      ? Math.max(r.bIntMin, scale + 1)
+      : r.bIntMin;
+
+    if (
+      minADigits > r.aIntMax ||
+      minBDigits > r.bIntMax
+    ) {
+      return null;
+    }
+
+    const remainder = inexact ? 1 : 0;
+
+    const candidates = [];
+
+    // わられる数の桁数を選ぶ
+    for (
+      let aDigits = minADigits;
+      aDigits <= r.aIntMax;
+      aDigits++
+    ) {
+      const aRange = getCoefficientRange(
+        aDigits,
+        scale,
+        forceLeadingZero
       );
 
-      // 整数部の0と小数部の先頭の0を含めて総桁数を計算
-      const significantDigits =
-        totalDigits - 1 - leadingFractionZeros;
+      if (!aRange) continue;
 
-      // 最後の桁は必ず0以外にする
-      const prefix = randomInt(
-        1,
-        10 ** significantDigits - 1
-      ).toString().padStart(significantDigits, "0");
+      // わる数の桁数を選ぶ
+      const bStart = forceLeadingZero
+        ? scale + 1
+        : minBDigits;
 
-      const fraction =
-        "0".repeat(leadingFractionZeros) + prefix;
+      const bEnd = forceLeadingZero
+        ? scale + 1
+        : r.bIntMax;
 
-      textValue = `0.${fraction}`;
-    } else {
-      // 整数部が1以上の小数
-      if (totalDigits < 2) {
-        const value = randomInt(1, 9);
-        return { text: String(value), value };
+      for (
+        let bDigits = bStart;
+        bDigits <= bEnd;
+        bDigits++
+      ) {
+        if (
+          bDigits < r.bIntMin ||
+          bDigits > r.bIntMax
+        ) {
+          continue;
+        }
+
+        let bRange;
+
+        if (forceLeadingZero) {
+          // 0.x / 0.0x / 0.00x の形式
+          bRange = {
+            min: inexact ? 2 : 1,
+            max: 9
+          };
+        } else {
+          bRange = getCoefficientRange(
+            bDigits,
+            scale,
+            false
+          );
+        }
+
+        if (!bRange) continue;
+
+        const effectiveBMin = Math.max(
+          bRange.min,
+          inexact ? 2 : 1
+        );
+
+        if (effectiveBMin > bRange.max) continue;
+
+        // 商の範囲を計算する
+        const qMin = Math.max(
+          inexact ? 1 : 2,
+          Math.ceil(
+            (aRange.min - remainder) / bRange.max
+          )
+        );
+
+        const qMax = Math.min(
+          Math.floor(
+            (aRange.max - remainder) / effectiveBMin
+          ),
+          aRange.max - aRange.min
+        );
+
+        if (qMin <= qMax) {
+          candidates.push({
+            aRange,
+            bRange,
+            qMin,
+            qMax,
+            effectiveBMin
+          });
+        }
       }
-
-      // 総桁数を維持したまま、小数点以下の桁数を決める
-      const decimalDigits = randomInt(1, totalDigits - 1);
-      const integerDigits = totalDigits - decimalDigits;
-
-      const integerMin = integerDigits === 1
-        ? 1
-        : 10 ** (integerDigits - 1);
-
-      const integerMax = 10 ** integerDigits - 1;
-      const integerPart = randomInt(integerMin, integerMax);
-
-      // 小数部は指定桁数で生成し、最後の桁は0以外にする
-      const fractionPrefix = decimalDigits > 1
-        ? String(randomInt(0, 10 ** (decimalDigits - 1) - 1))
-            .padStart(decimalDigits - 1, "0")
-        : "";
-
-      const fraction = fractionPrefix + randomInt(1, 9);
-
-      textValue = `${integerPart}.${fraction}`;
     }
 
-    const value = Number(textValue);
+    if (!candidates.length) return null;
 
-    // 小数部の末尾にある不要な0だけを削除する
-    let display = String(value);
+    // 桁数条件に合う組み合わせを選ぶ
+    const selected = candidates[
+      randomInt(0, candidates.length - 1)
+    ];
 
-    if (display.includes(".")) {
-      display = display.replace(/0+$/, "");
-      display = display.replace(/\.$/, "");
-    }
+    const q = randomInt(
+      selected.qMin,
+      selected.qMax
+    );
 
-    // 先頭の0を必ず補う
-    if (display.startsWith(".")) {
-      display = "0" + display;
-    }
+    // わる数の範囲を計算する
+    const bMin = Math.max(
+      selected.effectiveBMin,
+      Math.ceil(
+        (selected.aRange.min - remainder) / q
+      )
+    );
 
-    // カンマは整数部にだけ付ける
-    const parts = display.split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    display = parts.join(".");
+    const bMax = Math.min(
+      selected.bRange.max,
+      Math.floor(
+        (selected.aRange.max - remainder) / q
+      )
+    );
+
+    if (bMin > bMax) return null;
+
+    const bCoefficient = randomInt(bMin, bMax);
+
+    // ここが重要：
+    // 割り切れるかどうかを試すのではなく、
+    // 最初から指定条件どおりの数を計算して作る
+    const aCoefficient =
+      bCoefficient * q + remainder;
+
+    const aValue =
+      aCoefficient / (10 ** scale);
+
+    const bValue =
+      bCoefficient / (10 ** scale);
 
     return {
-      text: display,
-      value
+      a: {
+        text: formatScaledNumber(aCoefficient, scale),
+        value: aValue
+      },
+      b: {
+        text: formatScaledNumber(bCoefficient, scale),
+        value: bValue
+      },
+      answer: aCoefficient / bCoefficient
     };
+  }
+
+
+  /* =========================================================
+     総桁数に合う係数の範囲
+  ========================================================= */
+
+  function getCoefficientRange(
+    digits,
+    scale,
+    allowLeadingZero
+  ) {
+    if (scale === 0) {
+      return {
+        min: 10 ** (digits - 1),
+        max: (10 ** digits) - 1
+      };
+    }
+
+    if (digits < scale + 1) {
+      return null;
+    }
+
+    let min;
+
+    if (digits === scale + 1) {
+      min = allowLeadingZero
+        ? 1
+        : 10 ** scale;
+    } else {
+      min = 10 ** (digits - 1);
+    }
+
+    return {
+      min,
+      max: (10 ** digits) - 1
+    };
+  }
+
+
+  /* =========================================================
+     係数を小数表記に変換
+     小数の桁数を保つため、末尾の0も維持する
+  ========================================================= */
+
+  function formatScaledNumber(value, scale) {
+    if (scale === 0) {
+      return formatNumber(value);
+    }
+
+    const digits = String(value).padStart(
+      scale + 1,
+      "0"
+    );
+
+    let integerPart = digits.slice(0, -scale);
+    const decimalPart = digits.slice(-scale);
+
+    integerPart = integerPart.replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      ","
+    );
+
+    return `${integerPart}.${decimalPart}`;
   }
 
   function processAnswer(value, mode, places) {
