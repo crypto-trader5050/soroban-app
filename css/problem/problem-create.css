@@ -959,3 +959,44 @@
   }
 }
 
+/* =========================================================
+   わり算専用カラー
+========================================================= */
+
+/* メイン設定パネル */
+.wari-problem-create-panel {
+  background: #fff7ed;
+  border-color: #f97316;
+}
+
+/* 見出し */
+.wari-problem-create-panel .problem-create-heading {
+  color: #9a3412;
+}
+
+/* 作成枚数・問題数ボタンのホバー */
+.wari-problem-create-panel .problem-count-button:hover,
+.wari-problem-create-panel .problem-sheet-count-button:hover {
+  border-color: #f97316;
+}
+
+/* 選択中のボタン */
+.wari-problem-create-panel .problem-count-button.selected,
+.wari-problem-create-panel .problem-sheet-count-button.selected {
+  background: #f97316;
+  border-color: #f97316;
+  color: #ffffff;
+}
+
+/* 入力欄 */
+.wari-problem-create-panel .problem-form-input,
+.wari-problem-create-panel .problem-form-select {
+  border-color: #fed7aa;
+}
+
+/* 入力欄のフォーカス */
+.wari-problem-create-panel .problem-form-input:focus,
+.wari-problem-create-panel .problem-form-select:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}

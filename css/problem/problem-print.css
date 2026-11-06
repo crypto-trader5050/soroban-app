@@ -778,32 +778,3 @@
 .wari-problem-create-panel .problem-copy-settings-button:hover {
   background: #c2410c;
 }
-
-.wari-problem-create-panel > .problem-count-area {
-  border-color: #fed7aa;
-  background: #fff7ed;
-}
-
-.wari-problem-create-panel > .problem-count-area .problem-create-heading {
-  color: #9a3412;
-}
-
-/* 作成枚数ボタン */
-.wari-problem-create-panel .problem-sheet-count-button {
-  border-color: #fed7aa;
-  color: #9a3412;
-  background: #ffffff;
-}
-
-/* ホバー */
-.wari-problem-create-panel .problem-sheet-count-button:hover {
-  border-color: #f97316;
-  background: #ffedd5;
-}
-
-/* 選択中 */
-.wari-problem-create-panel .problem-sheet-count-button.selected {
-  background: #f97316;
-  border-color: #f97316;
-  color: #ffffff;
-}
