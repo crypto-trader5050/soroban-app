@@ -353,6 +353,10 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
 
+            <p class="problem-section-status">
+              ※小数点と先頭の0は桁数に含みません。
+            </p>
+
             <div class="problem-form-item">
               <label class="problem-form-label">小数の表記</label>
               <select class="problem-form-select leading-zero">
@@ -1026,41 +1030,208 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+function getCoefficientRange(
+  digits,
+  scale,
+  allowLeadingZero
+) {
+  if (!Number.isInteger(digits) || digits < 1) {
+    return null;
+  }
+
+  // 整数の場合
+  if (scale === 0) {
+    return {
+      min: 10 ** (digits - 1),
+      max: (10 ** digits) - 1
+    };
+  }
+
+  // 0.xxx形式を許可しない場合、
+  // 小数点以下の桁数以内の有効数字は使用できない
+  if (digits <= scale && !allowLeadingZero) {
+    return null;
+  }
+
+  // 係数そのものの有効数字の桁数を基準にする
+  return {
+    min: 10 ** (digits - 1),
+    max: (10 ** digits) - 1
+  };
+}
+
+
   /* =========================================================
      総桁数に合う係数の範囲
   ========================================================= */
 
-  function getCoefficientRange(
-    digits,
-    scale,
-    allowLeadingZero
-  ) {
-    if (scale === 0) {
-      return {
-        min: 10 ** (digits - 1),
-        max: (10 ** digits) - 1
-      };
-    }
 
-    if (digits < scale + 1) {
-      return null;
-    }
+function makeDivisionPair(
+  r,
+  useDecimal,
+  inexact,
+  forceLeadingZero
+) {
+  const scaleMap = {
+    "no": 1,
+    "point-zero": 1,
+    "point-zero-one": 2,
+    "point-zero-two": 3
+  };
 
-    let min;
+  const scale = useDecimal
+    ? (scaleMap[r.leadingZero] ?? 1)
+    : 0;
 
-    if (digits === scale + 1) {
-      min = allowLeadingZero
-        ? 1
-        : 10 ** scale;
-    } else {
-      min = 10 ** (digits - 1);
-    }
+  const remainder = inexact ? 1 : 0;
 
-    return {
-      min,
-      max: (10 ** digits) - 1
-    };
+  const candidates = [];
+
+  // 総桁数は有効数字の桁数として扱う
+  // 0.xxx形式の場合は、整数部の0と小数部先頭の0を数えない
+
+  let aStart = r.aIntMin;
+  let aEnd = r.aIntMax;
+
+  let bStart = r.bIntMin;
+  let bEnd = r.bIntMax;
+
+  // 0.xxx形式を強制する場合は、
+  // 小数点以下の桁数以内の有効数字に限定する
+  if (useDecimal && forceLeadingZero) {
+    aEnd = Math.min(aEnd, scale);
+    bEnd = Math.min(bEnd, scale);
   }
+
+  if (
+    aStart > aEnd ||
+    bStart > bEnd
+  ) {
+    return null;
+  }
+
+  // わられる数の桁数を選ぶ
+  for (
+    let aDigits = aStart;
+    aDigits <= aEnd;
+    aDigits++
+  ) {
+    const aRange = getCoefficientRange(
+      aDigits,
+      scale,
+      forceLeadingZero
+    );
+
+    if (!aRange) continue;
+
+    // わる数の桁数を選ぶ
+    for (
+      let bDigits = bStart;
+      bDigits <= bEnd;
+      bDigits++
+    ) {
+      const bRange = getCoefficientRange(
+        bDigits,
+        scale,
+        forceLeadingZero
+      );
+
+      if (!bRange) continue;
+
+      const effectiveBMin = Math.max(
+        bRange.min,
+        inexact ? 2 : 1
+      );
+
+      if (effectiveBMin > bRange.max) {
+        continue;
+      }
+
+      // 商の範囲を計算する
+      const qMin = Math.max(
+        inexact ? 1 : 2,
+        Math.ceil(
+          (aRange.min - remainder) / bRange.max
+        )
+      );
+
+      const qMax = Math.min(
+        Math.floor(
+          (aRange.max - remainder) / effectiveBMin
+        ),
+        aRange.max - aRange.min
+      );
+
+      if (qMin <= qMax) {
+        candidates.push({
+          aRange,
+          bRange,
+          qMin,
+          qMax,
+          effectiveBMin
+        });
+      }
+    }
+  }
+
+  if (!candidates.length) {
+    return null;
+  }
+
+  // 桁数条件に合う組み合わせを選ぶ
+  const selected = candidates[
+    randomInt(0, candidates.length - 1)
+  ];
+
+  const q = randomInt(
+    selected.qMin,
+    selected.qMax
+  );
+
+  // わる数の範囲を計算する
+  const bMin = Math.max(
+    selected.effectiveBMin,
+    Math.ceil(
+      (selected.aRange.min - remainder) / q
+    )
+  );
+
+  const bMax = Math.min(
+    selected.bRange.max,
+    Math.floor(
+      (selected.aRange.max - remainder) / q
+    )
+  );
+
+  if (bMin > bMax) {
+    return null;
+  }
+
+  const bCoefficient = randomInt(bMin, bMax);
+
+  // 割り切れる・割り切れない条件を満たす数を直接生成
+  const aCoefficient =
+    bCoefficient * q + remainder;
+
+  const aValue =
+    aCoefficient / (10 ** scale);
+
+  const bValue =
+    bCoefficient / (10 ** scale);
+
+  return {
+    a: {
+      text: formatScaledNumber(aCoefficient, scale),
+      value: aValue
+    },
+    b: {
+      text: formatScaledNumber(bCoefficient, scale),
+      value: bValue
+    },
+    answer: aCoefficient / bCoefficient
+  };
+}
+
 
 
 /* =========================================================

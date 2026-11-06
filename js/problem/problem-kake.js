@@ -294,6 +294,10 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
             </div>
 
+            <p class="problem-section-status">
+              ※小数点と先頭の0は桁数に含みません。
+            </p>
+
             <div class="problem-form-item">
               <label class="problem-form-label">小数の表記</label>
               <select class="problem-form-select leading-zero">
@@ -1014,116 +1018,153 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
-    const minDigits = r[`${side}IntMin`];
-    const maxDigits = r[`${side}IntMax`];
-    const totalDigits = randomInt(minDigits, maxDigits);
 
-    if (!useDecimal) {
-      const min = totalDigits === 1 ? 1 : 10 ** (totalDigits - 1);
-      const max = 10 ** totalDigits - 1;
-      const value = randomInt(min, max);
-      return { text: formatNumber(value), value };
-    }
+function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
+  const minDigits = r[`${side}IntMin`];
+  const maxDigits = r[`${side}IntMax`];
 
-    const style = r.leadingZero || "no";
+  // 総桁数は、有効数字の桁数として扱う
+  const totalDigits = randomInt(minDigits, maxDigits);
 
-    // 「先頭の0を付けない」場合は、整数部が1以上の小数にする
-    // それ以外は、選択した形式まで段階的に0.xxx形式を含める
-    const maxLeadingFractionZeros = {
-      "no": -1,
-      "point-zero": 0,
-      "point-zero-one": 1,
-      "point-zero-two": 2
-    }[style] ?? -1;
+  // 整数の場合
+  if (!useDecimal) {
+    const min = totalDigits === 1
+      ? 1
+      : 10 ** (totalDigits - 1);
 
-    let textValue;
-
-    const canUseZeroInteger =
-      maxLeadingFractionZeros >= 0 &&
-      totalDigits >= 2;
-
-    const useZeroInteger =
-      canUseZeroInteger &&
-      (forceZeroInteger || Math.random() < 0.35);
-
-    if (useZeroInteger) {
-      // 選択した形式までの範囲から、小数部の先頭の0の数を選ぶ
-      const leadingFractionZeros = randomInt(
-        0,
-        Math.min(maxLeadingFractionZeros, totalDigits - 2)
-      );
-
-      // 整数部の0と小数部の先頭の0を含めて総桁数を計算
-      const significantDigits =
-        totalDigits - 1 - leadingFractionZeros;
-
-      // 最後の桁は必ず0以外にする
-      const prefix = randomInt(
-        1,
-        10 ** significantDigits - 1
-      ).toString().padStart(significantDigits, "0");
-
-      const fraction =
-        "0".repeat(leadingFractionZeros) + prefix;
-
-      textValue = `0.${fraction}`;
-    } else {
-      // 整数部が1以上の小数
-      if (totalDigits < 2) {
-        const value = randomInt(1, 9);
-        return { text: String(value), value };
-      }
-
-      // 総桁数を維持したまま、小数点以下の桁数を決める
-      const decimalDigits = randomInt(1, totalDigits - 1);
-      const integerDigits = totalDigits - decimalDigits;
-
-      const integerMin = integerDigits === 1
-        ? 1
-        : 10 ** (integerDigits - 1);
-
-      const integerMax = 10 ** integerDigits - 1;
-      const integerPart = randomInt(integerMin, integerMax);
-
-      // 小数部は指定桁数で生成し、最後の桁は0以外にする
-      const fractionPrefix = decimalDigits > 1
-        ? String(randomInt(0, 10 ** (decimalDigits - 1) - 1))
-            .padStart(decimalDigits - 1, "0")
-        : "";
-
-      const fraction = fractionPrefix + randomInt(1, 9);
-
-      textValue = `${integerPart}.${fraction}`;
-    }
-
-    const value = Number(textValue);
-
-    // 小数部の末尾にある不要な0だけを削除する
-    let display = String(value);
-
-    if (display.includes(".")) {
-      display = display.replace(/0+$/, "");
-      display = display.replace(/\.$/, "");
-    }
-
-    // 先頭の0を必ず補う
-    if (display.startsWith(".")) {
-      display = "0" + display;
-    }
-
-    // カンマは整数部にだけ付ける
-    const parts = display.split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    display = parts.join(".");
+    const max = 10 ** totalDigits - 1;
+    const value = randomInt(min, max);
 
     return {
-      text: display,
+      text: formatNumber(value),
       value
     };
   }
 
+  const style = r.leadingZero || "no";
 
+  const maxLeadingFractionZeros = {
+    "no": -1,
+    "point-zero": 0,
+    "point-zero-one": 1,
+    "point-zero-two": 2
+  }[style] ?? -1;
+
+  // 0.xxx形式を使用できるか
+  const canUseZeroInteger =
+    maxLeadingFractionZeros >= 0;
+
+  const useZeroInteger =
+    canUseZeroInteger &&
+    (forceZeroInteger || Math.random() < 0.35);
+
+  let textValue;
+
+  if (useZeroInteger) {
+    // 0.xxx形式
+    // 小数部の先頭の0は総桁数に含めない
+    const leadingFractionZeros = randomInt(
+      0,
+      maxLeadingFractionZeros
+    );
+
+    // 指定された総桁数の有効数字を作る
+    // 最後の数字は必ず0以外にする
+    const prefix = totalDigits === 1
+      ? String(randomInt(1, 9))
+      : (
+          String(
+            randomInt(
+              10 ** (totalDigits - 2),
+              10 ** (totalDigits - 1) - 1
+            )
+          ) +
+          String(randomInt(1, 9))
+        );
+
+    const fraction =
+      "0".repeat(leadingFractionZeros) + prefix;
+
+    textValue = `0.${fraction}`;
+
+  } else {
+    // 整数部が1以上の小数
+    // 小数を含めるには最低2桁必要
+    if (totalDigits < 2) {
+      const value = randomInt(1, 9);
+
+      return {
+        text: String(value),
+        value
+      };
+    }
+
+    // 総桁数を維持して整数部と小数部に分ける
+    const decimalDigits = randomInt(
+      1,
+      totalDigits - 1
+    );
+
+    const integerDigits =
+      totalDigits - decimalDigits;
+
+    const integerMin = integerDigits === 1
+      ? 1
+      : 10 ** (integerDigits - 1);
+
+    const integerMax =
+      10 ** integerDigits - 1;
+
+    const integerPart = randomInt(
+      integerMin,
+      integerMax
+    );
+
+    // 小数部の最後は必ず0以外にする
+    const fractionPrefix = decimalDigits > 1
+      ? String(
+          randomInt(
+            0,
+            10 ** (decimalDigits - 1) - 1
+          )
+        ).padStart(decimalDigits - 1, "0")
+      : "";
+
+    const fraction =
+      fractionPrefix + randomInt(1, 9);
+
+    textValue = `${integerPart}.${fraction}`;
+  }
+
+  const value = Number(textValue);
+
+  // 表示用の文字列を整える
+  let display = String(value);
+
+  if (display.includes(".")) {
+    display = display.replace(/0+$/, "");
+    display = display.replace(/\.$/, "");
+  }
+
+  // 先頭の0を補う
+  if (display.startsWith(".")) {
+    display = "0" + display;
+  }
+
+  // カンマは整数部にだけ付ける
+  const parts = display.split(".");
+  parts[0] = parts[0].replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ","
+  );
+
+  display = parts.join(".");
+
+  return {
+    text: display,
+    value
+  };
+}
 
   function processAnswer(value, mode, places) {
     const digits = Math.max(0, places);
