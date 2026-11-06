@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function makeSettings() {
     detail.innerHTML = `
-      <div class="problem-create-panel kake-problem-create-panel">
+      <div class="problem-create-panel wari-problem-create-panel">
 
         <section class="problem-count-area">
           <h3 class="problem-create-heading">作成枚数</h3>
