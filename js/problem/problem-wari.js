@@ -1063,31 +1063,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* =========================================================
-     係数を小数表記に変換
-     小数の桁数を保つため、末尾の0も維持する
-  ========================================================= */
+/* =========================================================
+   係数を小数表記に変換
+   小数部分の末尾の0は取り除く
+   整数部分の0は維持する
+========================================================= */
 
-  function formatScaledNumber(value, scale) {
-    if (scale === 0) {
-      return formatNumber(value);
-    }
-
-    const digits = String(value).padStart(
-      scale + 1,
-      "0"
-    );
-
-    let integerPart = digits.slice(0, -scale);
-    const decimalPart = digits.slice(-scale);
-
-    integerPart = integerPart.replace(
-      /\B(?=(\d{3})+(?!\d))/g,
-      ","
-    );
-
-    return `${integerPart}.${decimalPart}`;
+function formatScaledNumber(value, scale) {
+  if (scale === 0) {
+    return formatNumber(value);
   }
+
+  const digits = String(value).padStart(
+    scale + 1,
+    "0"
+  );
+
+  let integerPart = digits.slice(0, -scale);
+  let decimalPart = digits.slice(-scale);
+
+  // 小数部分の末尾の0だけを取り除く
+  decimalPart = decimalPart.replace(/0+$/, "");
+
+  // 小数部分がなくなった場合は整数として表示
+  if (decimalPart === "") {
+    return formatNumber(Number(integerPart));
+  }
+
+  integerPart = integerPart.replace(
+    /\B(?=(\d{3})+(?!\d))/g,
+    ","
+  );
+
+  return `${integerPart}.${decimalPart}`;
+}
 
   function processAnswer(value, mode, places) {
     const digits = Math.max(0, places);
