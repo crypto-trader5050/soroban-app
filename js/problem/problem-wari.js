@@ -1210,7 +1210,11 @@ function formatScaledNumber(value, scale) {
             ">
 
               ${column.map(p => `
-                <div style="
+                <div
+                  data-answer-key="true"
+                  data-problem-number="${p.number}"
+                  data-answer="${escapeHtml(p.answer)}"
+                  style="
                   display:grid;
                   grid-template-columns:${useTwoColumns ? "34px minmax(0, 1fr)" : "60px minmax(0, 1fr)"};
                   min-height:${useTwoColumns ? "42px" : "48px"};

@@ -843,8 +843,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /*
-   * 印刷画面へ移動
-   */
+  * 印刷画面へ移動
+  */
   function moveToPrintPage() {
     const allSheets = [
       ...generationState.mitori,
@@ -860,6 +860,192 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    /*
+    * 各問題用紙から解答を取得
+    */
+    function collectAnswers(sheets) {
+      const result = [];
+
+      for (let i = 0; i < sheets.length; i++) {
+        const holder = document.createElement("div");
+        holder.innerHTML = sheets[i].html;
+
+        const rows = holder.querySelectorAll(
+          '[data-answer-key="true"]'
+        );
+
+        if (
+          !rows.length ||
+          Array.from(rows).some(row =>
+            !row.hasAttribute("data-problem-number") ||
+            !row.hasAttribute("data-answer")
+          )
+        ) {
+          return null;
+        }
+
+        const answers = Array.from(rows).map(row => ({
+          number: row.dataset.problemNumber,
+          answer: row.dataset.answer
+        }));
+
+        result.push({
+          sheetLabel: `${i + 1}枚目`,
+          answers
+        });
+      }
+
+      return result;
+    }
+
+    /*
+    * HTMLに安全に表示するための処理
+    */
+    function escapeAnswerText(value) {
+      return String(value).replace(/[&<>"']/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[c]);
+    }
+
+    /*
+    * 3種類の解答を取得
+    */
+    const answerGroups = [
+      {
+        title: "みとり算",
+        sheets: collectAnswers(generationState.mitori)
+      },
+      {
+        title: "かけ算",
+        sheets: collectAnswers(generationState.kake)
+      },
+      {
+        title: "わり算",
+        sheets: collectAnswers(generationState.wari)
+      }
+    ];
+
+    /*
+    * 解答データが取得できているか確認
+    */
+    if (answerGroups.some(group => group.sheets === null)) {
+      alert(
+        "解答データを読み取れませんでした。\n" +
+        "問題用紙を再生成して、もう一度決定してください。"
+      );
+      return;
+    }
+
+    /*
+    * 解答ページのHTMLを作成
+    */
+    const answerHtml = `
+      <section class="combined-answer-sheet" style="
+        background:#fff;
+        color:#111;
+        max-width:1000px;
+        margin:0 auto;
+        padding:28px;
+        box-sizing:border-box;
+        page-break-before:always;
+        break-before:page;
+        font-family:sans-serif;
+      ">
+
+        <h1 style="
+          text-align:center;
+          font-size:28px;
+          margin:0 0 28px;
+          padding-bottom:12px;
+          border-bottom:3px solid #222;
+        ">
+          解答
+        </h1>
+
+        ${answerGroups
+          .filter(group => group.sheets.length > 0)
+          .map(group => `
+            <div style="
+              margin-bottom:28px;
+              break-inside:avoid;
+            ">
+
+              <h2 style="
+                font-size:21px;
+                margin:0 0 12px;
+                padding:8px 12px;
+                background:#eee;
+                border-left:5px solid #333;
+              ">
+                ${group.title}
+              </h2>
+
+              ${group.sheets.map(sheet => `
+                <div style="
+                  margin-bottom:18px;
+                ">
+
+                  <h3 style="
+                    font-size:16px;
+                    margin:0 0 8px;
+                  ">
+                    ${sheet.sheetLabel}
+                  </h3>
+
+                  <div style="
+                    display:grid;
+                    grid-template-columns:repeat(3, minmax(0, 1fr));
+                    gap:0 16px;
+                  ">
+
+                    ${sheet.answers.map(answer => `
+                      <div style="
+                        display:flex;
+                        align-items:center;
+                        gap:8px;
+                        min-height:32px;
+                        border-bottom:1px solid #ccc;
+                        padding:3px 5px;
+                        box-sizing:border-box;
+                        font-size:15px;
+                        break-inside:avoid;
+                      ">
+
+                        <span style="
+                          min-width:28px;
+                          text-align:right;
+                          color:#555;
+                        ">
+                          ${escapeAnswerText(answer.number)}.
+                        </span>
+
+                        <strong style="
+                          font-variant-numeric:tabular-nums;
+                          overflow-wrap:anywhere;
+                        ">
+                          ${escapeAnswerText(answer.answer)}
+                        </strong>
+
+                      </div>
+                    `).join("")}
+
+                  </div>
+                </div>
+              `).join("")}
+
+            </div>
+          `).join("")}
+
+      </section>
+    `;
+
+    /*
+    * 問題用紙のHTML
+    */
     const mitoriHtml = generationState.mitori
       .map(item => item.html)
       .join("");
@@ -872,7 +1058,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(item => item.html)
       .join("");
 
-    // みとり算のHTMLは元の印刷画面が認識できる親要素で包む
+    /*
+    * 問題用紙の後ろに解答ページを追加
+    */
     const combinedHtml =
       (
         generationState.mitori.length
@@ -880,8 +1068,12 @@ document.addEventListener("DOMContentLoaded", () => {
           : ""
       ) +
       kakeHtml +
-      wariHtml;
+      wariHtml +
+      answerHtml;
 
+    /*
+    * 印刷画面へ保存
+    */
     try {
       sessionStorage.setItem(
         "generatedProblemSheets",
@@ -897,122 +1089,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.location.href = "problem-sheet.html";
   }
-
-  /*
-   * 問題生成ボタン
-   * 開いている種類だけを生成する
-   */
-  generateButton.addEventListener("click", () => {
-    const mitoriIsOpen =
-      !!mitoriCard &&
-      mitoriCard.classList.contains("expanded");
-
-    const kakeIsOpen =
-      kakeCard.classList.contains("expanded");
-
-    const wariIsOpen =
-      !!wariCard &&
-      wariCard.classList.contains("expanded");
-
-    if (!mitoriIsOpen && !kakeIsOpen && !wariIsOpen) {
-      alert("みとり算・かけ算・わり算のいずれかの設定を開いてください。");
-      return;
-    }
-
-    // みとり算だけ生成・再生成
-    if (mitoriIsOpen) {
-      const mitoriHtml =
-        window.generateMitoriSheets?.();
-
-      if (!mitoriHtml) {
-        renderGenerationPreview();
-        return;
-      }
-
-      const mitoriSheets = splitGeneratedSheets(
-        mitoriHtml,
-        "mitori"
-      );
-
-      if (!mitoriSheets.length) {
-        alert("みとり算の問題用紙を取得できませんでした。");
-        return;
-      }
-
-      updateGeneratedSheets("mitori", mitoriSheets);
-    }
-
-    // かけ算だけ生成・再生成
-    if (kakeIsOpen) {
-      const kakeHtml =
-        window.generateKakeSheets?.();
-
-      if (!kakeHtml) {
-        renderGenerationPreview();
-        return;
-      }
-
-      const kakeSheets = splitGeneratedSheets(
-        kakeHtml,
-        "kake"
-      );
-
-      if (!kakeSheets.length) {
-        alert("かけ算の問題用紙を取得できませんでした。");
-        return;
-      }
-
-      updateGeneratedSheets("kake", kakeSheets);
-    }
-
-    // わり算だけ生成・再生成
-    if (wariIsOpen) {
-      const wariHtml =
-        window.generateWariSheets?.();
-
-      if (!wariHtml) {
-        renderGenerationPreview();
-        return;
-      }
-
-      const wariSheets = splitGeneratedSheets(
-        wariHtml,
-        "wari"
-      );
-
-      if (!wariSheets.length) {
-        alert("わり算の問題用紙を取得できませんでした。");
-        return;
-      }
-
-      updateGeneratedSheets("wari", wariSheets);
-    }
-
-    renderGenerationPreview();
-  });
-
-  /*
-   * 問題用紙ごとの確定・取り消し
-   */
-  previewArea.addEventListener("click", event => {
-    const button = event.target.closest(
-      ".problem-confirm-button"
-    );
-
-    if (!button) return;
-
-    const type = button.dataset.confirmType;
-    const index = Number(button.dataset.sheetIndex);
-
-    const item = generationState[type]?.[index];
-
-    if (!item) return;
-
-    // 決定状態を反転
-    item.confirmed = !item.confirmed;
-
-    renderGenerationPreview();
-  });
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -1304,7 +1380,11 @@ function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
             ">
 
               ${column.map(p => `
-                <div style="
+                <div
+                  data-answer-key="true"
+                  data-problem-number="${p.number}"
+                  data-answer="${escapeHtml(p.answer)}"
+                  style="
                   display:grid;
                   grid-template-columns:${useTwoColumns ? "34px minmax(0, 1fr)" : "60px minmax(0, 1fr)"};
                   min-height:${useTwoColumns ? "42px" : "48px"};

@@ -3532,6 +3532,9 @@ function calculateMitoriRows(problems, problemList) {
       item.className =
         "problem-generated-item";
 
+      item.dataset.answerKey = "true";
+      item.dataset.problemNumber = String(problem.number);
+      item.dataset.answer = String(problem.answer);
 
       /*
        * 問題番号
