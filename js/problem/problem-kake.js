@@ -1391,23 +1391,6 @@ function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
 
         </div>
 
-        <details style="margin-top:20px;">
-          <summary>答え（印刷時は必要に応じて開いてください）</summary>
-
-          <div style="
-            display:grid;
-            grid-template-columns:repeat(5,minmax(0,1fr));
-            gap:8px;
-            margin-top:10px;
-          ">
-            ${sheet.problems.map(p => `
-              <div style="border:1px solid #ddd; padding:6px;">
-                ${p.number}. ${escapeHtml(p.answer)}
-              </div>
-            `).join("")}
-          </div>
-        </details>
-
       </section>
     `;
   }
