@@ -1090,6 +1090,122 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "problem-sheet.html";
   }
 
+  /*
+   * 問題生成ボタン
+   * 開いている種類だけを生成する
+   */
+  generateButton.addEventListener("click", () => {
+    const mitoriIsOpen =
+      !!mitoriCard &&
+      mitoriCard.classList.contains("expanded");
+
+    const kakeIsOpen =
+      kakeCard.classList.contains("expanded");
+
+    const wariIsOpen =
+      !!wariCard &&
+      wariCard.classList.contains("expanded");
+
+    if (!mitoriIsOpen && !kakeIsOpen && !wariIsOpen) {
+      alert("みとり算・かけ算・わり算のいずれかの設定を開いてください。");
+      return;
+    }
+
+    // みとり算だけ生成・再生成
+    if (mitoriIsOpen) {
+      const mitoriHtml =
+        window.generateMitoriSheets?.();
+
+      if (!mitoriHtml) {
+        renderGenerationPreview();
+        return;
+      }
+
+      const mitoriSheets = splitGeneratedSheets(
+        mitoriHtml,
+        "mitori"
+      );
+
+      if (!mitoriSheets.length) {
+        alert("みとり算の問題用紙を取得できませんでした。");
+        return;
+      }
+
+      updateGeneratedSheets("mitori", mitoriSheets);
+    }
+
+    // かけ算だけ生成・再生成
+    if (kakeIsOpen) {
+      const kakeHtml =
+        window.generateKakeSheets?.();
+
+      if (!kakeHtml) {
+        renderGenerationPreview();
+        return;
+      }
+
+      const kakeSheets = splitGeneratedSheets(
+        kakeHtml,
+        "kake"
+      );
+
+      if (!kakeSheets.length) {
+        alert("かけ算の問題用紙を取得できませんでした。");
+        return;
+      }
+
+      updateGeneratedSheets("kake", kakeSheets);
+    }
+
+    // わり算だけ生成・再生成
+    if (wariIsOpen) {
+      const wariHtml =
+        window.generateWariSheets?.();
+
+      if (!wariHtml) {
+        renderGenerationPreview();
+        return;
+      }
+
+      const wariSheets = splitGeneratedSheets(
+        wariHtml,
+        "wari"
+      );
+
+      if (!wariSheets.length) {
+        alert("わり算の問題用紙を取得できませんでした。");
+        return;
+      }
+
+      updateGeneratedSheets("wari", wariSheets);
+    }
+
+    renderGenerationPreview();
+  });
+
+  /*
+   * 問題用紙ごとの確定・取り消し
+   */
+  previewArea.addEventListener("click", event => {
+    const button = event.target.closest(
+      ".problem-confirm-button"
+    );
+
+    if (!button) return;
+
+    const type = button.dataset.confirmType;
+    const index = Number(button.dataset.sheetIndex);
+
+    const item = generationState[type]?.[index];
+
+    if (!item) return;
+
+    // 決定状態を反転
+    item.confirmed = !item.confirmed;
+
+    renderGenerationPreview();
+  });
+
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
