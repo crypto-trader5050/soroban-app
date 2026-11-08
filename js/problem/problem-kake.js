@@ -843,8 +843,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /*
-  * 印刷画面へ移動
-  */
+   * 印刷画面へ移動
+   */
   function moveToPrintPage() {
     const allSheets = [
       ...generationState.mitori,
@@ -860,9 +860,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    /*
-    * 各問題用紙から解答を取得
-    */
+    /* 各問題用紙から解答を取得 */
     function collectAnswers(sheets) {
       const result = [];
 
@@ -889,18 +887,13 @@ document.addEventListener("DOMContentLoaded", () => {
           answer: row.dataset.answer
         }));
 
-        result.push({
-          sheetLabel: `${i + 1}枚目`,
-          answers
-        });
+        result.push({ answers });
       }
 
       return result;
     }
 
-    /*
-    * HTMLに安全に表示するための処理
-    */
+    /* HTMLに安全に表示するための処理 */
     function escapeAnswerText(value) {
       return String(value).replace(/[&<>"']/g, c => ({
         "&": "&amp;",
@@ -911,28 +904,37 @@ document.addEventListener("DOMContentLoaded", () => {
       })[c]);
     }
 
-    /*
-    * 3種類の解答を取得
-    */
-    const answerGroups = [
-      {
-        title: "みとり算",
-        sheets: collectAnswers(generationState.mitori)
-      },
-      {
+    /* 答えの整数部分に3桁区切りを付ける */
+    function formatAnswerNumber(value) {
+      const raw = String(value).trim();
+      const normalized = raw.replace(/,/g, "");
+
+      if (!/^-?\d+(?:\.\d+)?$/.test(normalized)) {
+        return raw;
+      }
+
+      const parts = normalized.split(".");
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return parts.join(".");
+    }
+
+    /* 解答ページの表示順を指定 */
+    const answerGroups = {
+      kake: {
         title: "かけ算",
         sheets: collectAnswers(generationState.kake)
       },
-      {
+      wari: {
         title: "わり算",
         sheets: collectAnswers(generationState.wari)
+      },
+      mitori: {
+        title: "みとり算",
+        sheets: collectAnswers(generationState.mitori)
       }
-    ];
+    };
 
-    /*
-    * 解答データが取得できているか確認
-    */
-    if (answerGroups.some(group => group.sheets === null)) {
+    if (Object.values(answerGroups).some(group => group.sheets === null)) {
       alert(
         "解答データを読み取れませんでした。\n" +
         "問題用紙を再生成して、もう一度決定してください。"
@@ -940,9 +942,95 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    /*
-    * 解答ページのHTMLを作成
-    */
+    /* 最も回数の多い科目に合わせて、回ごとの解答欄を作る */
+    const maxRounds = Math.max(
+      answerGroups.kake.sheets.length,
+      answerGroups.wari.sheets.length,
+      answerGroups.mitori.sheets.length
+    );
+
+    const fullWidthDigits = "０１２３４５６７８９";
+
+    const roundHtml = Array.from({ length: maxRounds }, (_, roundIndex) => {
+      const roundLabel = String(roundIndex + 1).replace(
+        /\d/g,
+        digit => fullWidthDigits[Number(digit)]
+      );
+
+      /* この回が存在する科目だけを、指定順で並べる */
+      const subjects = [
+        answerGroups.kake,
+        answerGroups.wari,
+        answerGroups.mitori
+      ].filter(group => group.sheets[roundIndex]);
+
+      return `
+        <section style="
+          border:3px solid #222;
+          padding:14px 16px 16px;
+          margin:0 0 22px;
+          box-sizing:border-box;
+        ">
+          <h2 style="
+            text-align:center;
+            font-size:22px;
+            margin:0 0 14px;
+            padding:0 0 9px;
+            border-bottom:2px solid #555;
+          ">第${roundLabel}回</h2>
+
+          <div style="
+            display:grid;
+            grid-template-columns:repeat(${subjects.length}, minmax(0, 1fr));
+            gap:0 18px;
+            align-items:start;
+          ">
+            ${subjects.map(group => `
+              <div style="min-width:0;">
+                <h3 style="
+                  text-align:center;
+                  font-size:17px;
+                  margin:0 0 9px;
+                  padding:7px 4px;
+                  background:#eee;
+                  border-bottom:2px solid #777;
+                ">${group.title}</h3>
+
+                ${group.sheets[roundIndex].answers.map((answer, answerIndex) => `
+                  <div style="
+                    display:flex;
+                    align-items:center;
+                    gap:7px;
+                    min-height:32px;
+                    border-bottom:1px solid #ccc;
+                    padding:3px 4px;
+                    box-sizing:border-box;
+                    font-size:15px;
+                    break-inside:avoid;
+                  ">
+                    <span style="
+                      min-width:25px;
+                      text-align:right;
+                      color:#555;
+                      font-family:sans-serif;
+                    ">${answerIndex + 1}.</span>
+
+                    <strong style="
+                      font-family:'Soloburn', sans-serif;
+                      font-variant-numeric:tabular-nums;
+                      overflow-wrap:anywhere;
+                      font-weight:normal;
+                    ">${escapeAnswerText(formatAnswerNumber(answer.answer))}</strong>
+                  </div>
+                `).join("")}
+              </div>
+            `).join("")}
+          </div>
+        </section>
+      `;
+    }).join("");
+
+    /* 解答ページのHTMLを作成 */
     const answerHtml = `
       <section class="combined-answer-sheet" style="
         background:#fff;
@@ -955,97 +1043,19 @@ document.addEventListener("DOMContentLoaded", () => {
         break-before:page;
         font-family:sans-serif;
       ">
-
         <h1 style="
           text-align:center;
           font-size:28px;
           margin:0 0 28px;
           padding-bottom:12px;
           border-bottom:3px solid #222;
-        ">
-          解答
-        </h1>
+        ">解答</h1>
 
-        ${answerGroups
-          .filter(group => group.sheets.length > 0)
-          .map(group => `
-            <div style="
-              margin-bottom:28px;
-              break-inside:avoid;
-            ">
-
-              <h2 style="
-                font-size:21px;
-                margin:0 0 12px;
-                padding:8px 12px;
-                background:#eee;
-                border-left:5px solid #333;
-              ">
-                ${group.title}
-              </h2>
-
-              ${group.sheets.map(sheet => `
-                <div style="
-                  margin-bottom:18px;
-                ">
-
-                  <h3 style="
-                    font-size:16px;
-                    margin:0 0 8px;
-                  ">
-                    ${sheet.sheetLabel}
-                  </h3>
-
-                  <div style="
-                    display:grid;
-                    grid-template-columns:repeat(3, minmax(0, 1fr));
-                    gap:0 16px;
-                  ">
-
-                    ${sheet.answers.map(answer => `
-                      <div style="
-                        display:flex;
-                        align-items:center;
-                        gap:8px;
-                        min-height:32px;
-                        border-bottom:1px solid #ccc;
-                        padding:3px 5px;
-                        box-sizing:border-box;
-                        font-size:15px;
-                        break-inside:avoid;
-                      ">
-
-                        <span style="
-                          min-width:28px;
-                          text-align:right;
-                          color:#555;
-                        ">
-                          ${escapeAnswerText(answer.number)}.
-                        </span>
-
-                        <strong style="
-                          font-variant-numeric:tabular-nums;
-                          overflow-wrap:anywhere;
-                        ">
-                          ${escapeAnswerText(answer.answer)}
-                        </strong>
-
-                      </div>
-                    `).join("")}
-
-                  </div>
-                </div>
-              `).join("")}
-
-            </div>
-          `).join("")}
-
+        ${roundHtml}
       </section>
     `;
 
-    /*
-    * 問題用紙のHTML
-    */
+    /* 問題用紙のHTML */
     const mitoriHtml = generationState.mitori
       .map(item => item.html)
       .join("");
@@ -1058,9 +1068,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(item => item.html)
       .join("");
 
-    /*
-    * 問題用紙の後ろに解答ページを追加
-    */
+    /* 問題用紙の後ろに解答ページを追加 */
     const combinedHtml =
       (
         generationState.mitori.length
@@ -1071,9 +1079,7 @@ document.addEventListener("DOMContentLoaded", () => {
       wariHtml +
       answerHtml;
 
-    /*
-    * 印刷画面へ保存
-    */
+    /* 印刷画面へ保存 */
     try {
       sessionStorage.setItem(
         "generatedProblemSheets",
