@@ -860,40 +860,94 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    /* 各問題用紙から解答を取得 */
-    function collectAnswers(sheets) {
-      const result = [];
+    /*
+    * 回数ごとに解答をまとめる
+    */
+    const roundGroups = new Map();
 
+    function collectAnswers(sheets, subjectKey, subjectTitle) {
       for (let i = 0; i < sheets.length; i++) {
         const holder = document.createElement("div");
         holder.innerHTML = sheets[i].html;
+
+        const sheetRoot = holder.querySelector(
+          "[data-sheet-round]"
+        );
 
         const rows = holder.querySelectorAll(
           '[data-answer-key="true"]'
         );
 
         if (
+          !sheetRoot ||
           !rows.length ||
           Array.from(rows).some(row =>
             !row.hasAttribute("data-problem-number") ||
             !row.hasAttribute("data-answer")
           )
         ) {
-          return null;
+          return false;
         }
 
+        // 入力された回数をそのまま取得
+        const round = sheetRoot.getAttribute("data-sheet-round") ?? "";
+
+        // 同じ回数のグループを取得
+        let group = roundGroups.get(round);
+
+        if (!group) {
+          group = {
+            round,
+            subjects: {
+              kake: null,
+              wari: null,
+              mitori: null
+            }
+          };
+
+          roundGroups.set(round, group);
+        }
+
+        // 科目の解答欄を作成
+        if (!group.subjects[subjectKey]) {
+          group.subjects[subjectKey] = {
+            title: subjectTitle,
+            answers: []
+          };
+        }
+
+        // 解答を追加
         const answers = Array.from(rows).map(row => ({
           number: row.dataset.problemNumber,
           answer: row.dataset.answer
         }));
 
-        result.push({ answers });
+        group.subjects[subjectKey].answers.push(...answers);
       }
 
-      return result;
+      return true;
     }
 
-    /* HTMLに安全に表示するための処理 */
+    /*
+    * 科目ごとに解答を収集
+    * グループの順番は最初に見つかった順
+    */
+    const collected =
+      collectAnswers(generationState.mitori, "mitori", "みとり算") &&
+      collectAnswers(generationState.kake, "kake", "かけ算") &&
+      collectAnswers(generationState.wari, "wari", "わり算");
+
+    if (!collected) {
+      alert(
+        "解答データを読み取れませんでした。\n" +
+        "問題用紙を再生成して、もう一度決定してください。"
+      );
+      return;
+    }
+
+    /*
+    * HTMLに安全に表示するための処理
+    */
     function escapeAnswerText(value) {
       return String(value).replace(/[&<>"']/g, c => ({
         "&": "&amp;",
@@ -904,7 +958,9 @@ document.addEventListener("DOMContentLoaded", () => {
       })[c]);
     }
 
-    /* 答えの整数部分に3桁区切りを付ける */
+    /*
+    * 答えの整数部分に3桁区切りを付ける
+    */
     function formatAnswerNumber(value) {
       const raw = String(value).trim();
       const normalized = raw.replace(/,/g, "");
@@ -918,51 +974,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return parts.join(".");
     }
 
-    /* 解答ページの表示順を指定 */
-    const answerGroups = {
-      kake: {
-        title: "かけ算",
-        sheets: collectAnswers(generationState.kake)
-      },
-      wari: {
-        title: "わり算",
-        sheets: collectAnswers(generationState.wari)
-      },
-      mitori: {
-        title: "みとり算",
-        sheets: collectAnswers(generationState.mitori)
-      }
-    };
+    /*
+    * 解答ページを作成
+    */
+    const roundHtml = Array.from(roundGroups.values()).map(group => {
 
-    if (Object.values(answerGroups).some(group => group.sheets === null)) {
-      alert(
-        "解答データを読み取れませんでした。\n" +
-        "問題用紙を再生成して、もう一度決定してください。"
-      );
-      return;
-    }
-
-    /* 最も回数の多い科目に合わせて、回ごとの解答欄を作る */
-    const maxRounds = Math.max(
-      answerGroups.kake.sheets.length,
-      answerGroups.wari.sheets.length,
-      answerGroups.mitori.sheets.length
-    );
-
-    const fullWidthDigits = "０１２３４５６７８９";
-
-    const roundHtml = Array.from({ length: maxRounds }, (_, roundIndex) => {
-      const roundLabel = String(roundIndex + 1).replace(
-        /\d/g,
-        digit => fullWidthDigits[Number(digit)]
-      );
-
-      /* この回が存在する科目だけを、指定順で並べる */
+      // 科目の表示順を指定
       const subjects = [
-        answerGroups.kake,
-        answerGroups.wari,
-        answerGroups.mitori
-      ].filter(group => group.sheets[roundIndex]);
+        group.subjects.kake,
+        group.subjects.wari,
+        group.subjects.mitori
+      ].filter(Boolean);
 
       return `
         <section style="
@@ -977,7 +999,7 @@ document.addEventListener("DOMContentLoaded", () => {
             margin:0 0 14px;
             padding:0 0 9px;
             border-bottom:2px solid #555;
-          ">第${roundLabel}回</h2>
+          ">${escapeAnswerText(group.round || "（回数未入力）")}</h2>
 
           <div style="
             display:grid;
@@ -985,7 +1007,7 @@ document.addEventListener("DOMContentLoaded", () => {
             gap:0 18px;
             align-items:start;
           ">
-            ${subjects.map(group => `
+            ${subjects.map(subject => `
               <div style="min-width:0;">
                 <h3 style="
                   text-align:center;
@@ -994,9 +1016,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   padding:7px 4px;
                   background:#eee;
                   border-bottom:2px solid #777;
-                ">${group.title}</h3>
+                ">${subject.title}</h3>
 
-                ${group.sheets[roundIndex].answers.map((answer, answerIndex) => `
+                ${subject.answers.map((answer, answerIndex) => `
                   <div style="
                     display:flex;
                     align-items:center;
@@ -1030,7 +1052,9 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
     }).join("");
 
-    /* 解答ページのHTMLを作成 */
+    /*
+    * 解答ページのHTMLを作成
+    */
     const answerHtml = `
       <section class="combined-answer-sheet" style="
         background:#fff;
@@ -1055,7 +1079,9 @@ document.addEventListener("DOMContentLoaded", () => {
       </section>
     `;
 
-    /* 問題用紙のHTML */
+    /*
+    * 問題用紙のHTML
+    */
     const mitoriHtml = generationState.mitori
       .map(item => item.html)
       .join("");
@@ -1068,7 +1094,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(item => item.html)
       .join("");
 
-    /* 問題用紙の後ろに解答ページを追加 */
+    /*
+    * 問題用紙の後ろに解答ページを追加
+    */
     const combinedHtml =
       (
         generationState.mitori.length
@@ -1079,7 +1107,9 @@ document.addEventListener("DOMContentLoaded", () => {
       wariHtml +
       answerHtml;
 
-    /* 印刷画面へ保存 */
+    /*
+    * 印刷画面へ保存
+    */
     try {
       sessionStorage.setItem(
         "generatedProblemSheets",
@@ -1434,7 +1464,9 @@ function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
       : [sheet.problems];
 
     return `
-      <section class="kake-print-sheet" style="
+      <section class="kake-print-sheet"
+        data-sheet-round="${escapeHtml(sheet.round || "")}"
+        style="
         background:#fff;
         color:#111;
         max-width:1000px;
@@ -1467,7 +1499,9 @@ function makeOperand(r, side, useDecimal = false, forceZeroInteger = false) {
           ">
             <span>時間：${escapeHtml(sheet.time || "　　　　")} 分</span>
             <span>級・段位：${escapeHtml(sheet.grade || "　　　　　　")}</span>
-            <span>回数：${escapeHtml(sheet.round || "　　　　　　")}</span>
+            ${sheet.round
+              ? `<span>${escapeHtml(sheet.round)}</span>`
+              : ""}
           </div>
 
           ${sheet.freeText

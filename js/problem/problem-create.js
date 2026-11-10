@@ -3380,6 +3380,8 @@ function calculateMitoriRows(problems, problemList) {
     sheet.id =
       "problemGeneratedSheet";
 
+    sheet.dataset.sheetRound = settings.paper.round || "";
+
 
     /*
      * 問題用紙情報

@@ -1142,7 +1142,9 @@ function formatScaledNumber(value, scale) {
       : [sheet.problems];
 
     return `
-      <section class="kake-print-sheet wari-print-sheet" style="
+      <section class="kake-print-sheet wari-print-sheet"
+        data-sheet-round="${escapeHtml(sheet.round || "")}"
+        style="
         background:#fff;
         color:#111;
         max-width:1000px;
@@ -1175,7 +1177,9 @@ function formatScaledNumber(value, scale) {
           ">
             <span>時間：${escapeHtml(sheet.time || "　　　　")} 分</span>
             <span>級・段位：${escapeHtml(sheet.grade || "　　　　　　")}</span>
-            <span>回数：${escapeHtml(sheet.round || "　　　　　　")}</span>
+            ${sheet.round
+              ? `<span>${escapeHtml(sheet.round)}</span>`
+              : ""}
           </div>
 
           ${sheet.freeText
