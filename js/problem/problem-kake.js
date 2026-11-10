@@ -865,6 +865,8 @@ document.addEventListener("DOMContentLoaded", () => {
     */
     const roundGroups = new Map();
 
+    let duplicateError = "";
+
     function collectAnswers(sheets, subjectKey, subjectTitle) {
       for (let i = 0; i < sheets.length; i++) {
         const holder = document.createElement("div");
@@ -908,13 +910,20 @@ document.addEventListener("DOMContentLoaded", () => {
           roundGroups.set(round, group);
         }
 
-        // 科目の解答欄を作成
-        if (!group.subjects[subjectKey]) {
-          group.subjects[subjectKey] = {
-            title: subjectTitle,
-            answers: []
-          };
+        // 同じ種目・同じ回数がすでに存在する場合はエラー
+        if (group.subjects[subjectKey]) {
+          duplicateError =
+            `「${round || "（回数未入力）"}」の${subjectTitle}が重複しています。\n` +
+            "同じ種目・同じ回数の問題用紙は複数作成できません。\n" +
+            "問題用紙を確認してください。";
+
+          return false;
         }
+
+        group.subjects[subjectKey] = {
+          title: subjectTitle,
+          answers: []
+        };
 
         // 解答を追加
         const answers = Array.from(rows).map(row => ({
@@ -939,6 +948,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!collected) {
       alert(
+        duplicateError ||
         "解答データを読み取れませんでした。\n" +
         "問題用紙を再生成して、もう一度決定してください。"
       );
