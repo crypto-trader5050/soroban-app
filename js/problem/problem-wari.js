@@ -430,6 +430,37 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    function incrementRoundValue(value, increment) {
+      const match = String(value).match(
+        /^(.*?)([0-9０-９]+)(回)$/
+      );
+
+      if (!match) return value;
+
+      const prefix = match[1];
+      const digits = match[2];
+      const suffix = match[3];
+
+      const number = Number(
+        digits.replace(/[０-９]/g, char =>
+          String(char.charCodeAt(0) - 0xFF10)
+        )
+      ) + increment;
+
+      let result = String(number).padStart(
+        digits.length,
+        "0"
+      );
+
+      if (/[０-９]/.test(digits)) {
+        result = result.replace(/[0-9]/g, char =>
+          String.fromCharCode(char.charCodeAt(0) + 0xFEE0)
+        );
+      }
+
+      return prefix + result + suffix;
+    }
+
     function copySettings(source, target) {
       // ① 総問題数を先に選択し、コピー先の区間を初期化する
       const selectedCount = source.querySelector(
@@ -468,7 +499,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const targetInput = inputs[index];
 
         if (targetInput) {
-          targetInput.value = input.value;
+          if (input.dataset.field === "round") {
+            const sourceNumber =
+              Number(source.dataset.problemNumber);
+
+            const targetNumber =
+              Number(target.dataset.problemNumber);
+
+            targetInput.value = incrementRoundValue(
+              input.value,
+              targetNumber - sourceNumber
+            );
+          } else {
+            targetInput.value = input.value;
+          }
+
           targetInput.dispatchEvent(
             new Event("change", { bubbles: true })
           );

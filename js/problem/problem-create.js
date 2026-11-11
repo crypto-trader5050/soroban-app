@@ -1137,6 +1137,36 @@ function createMitoriSettings(container) {
 
   }
 
+  function incrementRoundValue(value, increment) {
+    const match = String(value).match(
+      /^(.*?)([0-9０-９]+)(回)$/
+    );
+
+    if (!match) return value;
+
+    const prefix = match[1];
+    const digits = match[2];
+    const suffix = match[3];
+
+    const number = Number(
+      digits.replace(/[０-９]/g, char =>
+        String(char.charCodeAt(0) - 0xFF10)
+      )
+    ) + increment;
+
+    let result = String(number).padStart(
+      digits.length,
+      "0"
+    );
+
+    if (/[０-９]/.test(digits)) {
+      result = result.replace(/[0-9]/g, char =>
+        String.fromCharCode(char.charCodeAt(0) + 0xFEE0)
+      );
+    }
+
+    return prefix + result + suffix;
+  }
 
   /* =====================================================
      個別問題の設定コピー
@@ -1187,28 +1217,10 @@ function createMitoriSettings(container) {
                 targetBlock.dataset.problemNumber
               );
 
-            const roundMatch =
-              sourceInput.value.match(
-                /^(.*?)(\d+)(回)$/
-              );
-
-            if (roundMatch) {
-
-              targetInput.value =
-                roundMatch[1] +
-                (
-                  Number(roundMatch[2]) +
-                  targetNumber -
-                  sourceNumber
-                ) +
-                roundMatch[3];
-
-            } else {
-
-              targetInput.value =
-                sourceInput.value;
-
-            }
+            targetInput.value = incrementRoundValue(
+              sourceInput.value,
+              targetNumber - sourceNumber
+            );
 
           } else {
 
