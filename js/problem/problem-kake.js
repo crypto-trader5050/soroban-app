@@ -165,6 +165,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const copyButton = area.querySelector(".kake-copy-button");
 
+      let hasShownCopyNote = false;
+
       if (copyButton) {
         copyButton.addEventListener("click", () => {
           const source = area.querySelector(
@@ -178,7 +180,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (source && target) copySettings(source, target);
           }
 
-          alert("問題①の設定を、問題②以降にコピーしました。");
+          if (!hasShownCopyNote) {
+            alert(
+              "問題①の設定を、問題②以降にコピーしました。\n\n" +
+              "※回数に「回」を付けて入力すると、コピー先で自動的に連番になります。"
+            );
+
+            hasShownCopyNote = true;
+
+          } else {
+
+            alert(
+              "問題①の設定を、問題②以降にコピーしました。"
+            );
+
+          }
         });
       }
     }
