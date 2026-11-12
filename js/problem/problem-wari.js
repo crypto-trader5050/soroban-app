@@ -195,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const copyButton = area.querySelector(".kake-copy-button");
+      let hasShownCopyNote = false;
 
       if (copyButton) {
         copyButton.addEventListener("click", () => {
@@ -209,7 +210,32 @@ document.addEventListener("DOMContentLoaded", () => {
             if (source && target) copySettings(source, target);
           }
 
-          alert("問題①の設定を、問題②以降にコピーしました。");
+          const roundInput = source.querySelector(
+            '[data-field="round"]'
+          );
+
+          const roundValue = roundInput
+            ? roundInput.value
+            : "";
+
+          if (!roundValue.includes("回") && !hasShownCopyNote) {
+            alert(
+              "問題①の設定を、問題②以降にコピーしました。\n\n" +
+              "※回数に「回」を付けて入力すると、コピー先で自動的に連番になります。"
+            );
+
+            hasShownCopyNote = true;
+
+          } else {
+
+            alert(
+              "問題①の設定を、問題②以降にコピーしました。"
+            );
+
+            if (roundValue.includes("回")) {
+              hasShownCopyNote = true;
+            }
+          }
         });
       }
     }
