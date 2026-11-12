@@ -985,7 +985,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // 同じ種目・同じ回数がすでに存在する場合はエラー
         if (group.subjects[subjectKey]) {
           duplicateError =
-            `「${round || "（回数未入力）"}」の${subjectTitle}が重複しています。\n` +
+            `${round ? `「${round}」の` : ""}${subjectTitle}が重複しています。\n` +
             "同じ種目・同じ回数の問題用紙は複数作成できません。\n" +
             "問題用紙を確認してください。";
 
@@ -1081,7 +1081,7 @@ document.addEventListener("DOMContentLoaded", () => {
             margin:0 0 14px;
             padding:0 0 9px;
             border-bottom:2px solid #555;
-          ">${escapeAnswerText(group.round || "（回数未入力）")}</h2>
+          ">${escapeAnswerText(group.round || "")}</h2>
 
           <div style="
             display:grid;
