@@ -37,7 +37,7 @@
 
 .problem-create-heading {
   margin: 0 0 18px;
-  color: #123e72;
+  color: #9a3412;
   font-size: 22px;
   font-weight: 900;
 }
@@ -90,8 +90,8 @@
 .problem-form-input:focus,
 .problem-form-select:focus {
   outline: none;
-  border-color: #1683e6;
-  box-shadow: 0 0 0 3px rgba(22, 131, 230, 0.12);
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
 }
 
 
@@ -141,13 +141,13 @@
 
 .problem-count-button:hover,
 .problem-sheet-count-button:hover {
-  border-color: #1683e6;
+  border-color: #f97316;
 }
 
 .problem-count-button.selected,
 .problem-sheet-count-button.selected {
-  background: #1683e6;
-  border-color: #1683e6;
+  background: #f97316;
+  border-color: #f97316;
   color: #ffffff;
 }
 
@@ -177,8 +177,7 @@
 
 .problem-section-title {
   margin: 0 0 14px;
-
-  color: #123e72;
+  color: #9a3412;
   font-size: 17px;
   font-weight: 900;
 }
@@ -218,21 +217,17 @@
   width: 100%;
   margin-top: 14px;
   padding: 11px 16px;
-
   background: #ffffff;
-
-  border: 2px dashed #1683e6;
+  border: 2px dashed #f97316;
   border-radius: 10px;
-
-  color: #1683e6;
+  color: #f97316;
   font-size: 15px;
   font-weight: 900;
-
   cursor: pointer;
 }
 
 .problem-add-section-button:hover {
-  background: #f0f7ff;
+  background: #ffedd5;
 }
 
 
@@ -296,21 +291,18 @@
   width: min(100%, 420px);
   min-height: 56px;
   padding: 14px 24px;
-
-  background: #1683e6;
-  border: 2px solid #1683e6;
+  background: #f97316;
+  border: 2px solid #f97316;
   border-radius: 12px;
-
   color: #ffffff;
   font-size: 18px;
   font-weight: 900;
-
   cursor: pointer;
 }
 
 .problem-generate-button:hover {
-  background: #0f6fc5;
-  border-color: #0f6fc5;
+  background: #ea580c;
+  border-color: #ea580c;
 }
 
 .problem-generate-button:active {
@@ -761,7 +753,7 @@
   padding: 14px 18px;
   border: none;
   border-radius: 10px;
-  background: #2463a6;
+  background: #ea580c;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
@@ -771,7 +763,7 @@
 }
 
 .problem-copy-settings-button:hover {
-  background: #174b83;
+  background: #c2410c;
 }
 
 .problem-copy-settings-button:active {
@@ -998,4 +990,33 @@
 .wari-problem-create-panel .problem-form-select:focus {
   border-color: #16a34a;
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+}
+
+/* 区間設定 */
+.wari-problem-create-panel .problem-section {
+  border-color: #bbf7d0;
+}
+
+/* 区間見出し */
+.wari-problem-create-panel .problem-section-title {
+  color: #166534;
+}
+
+/* 区間追加ボタン */
+.wari-problem-create-panel .problem-add-section-button {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.wari-problem-create-panel .problem-add-section-button:hover {
+  background: #dcfce7;
+}
+
+/* 設定コピー */
+.wari-problem-create-panel .problem-copy-settings-button {
+  background: #15803d;
+}
+
+.wari-problem-create-panel .problem-copy-settings-button:hover {
+  background: #166534;
 }
