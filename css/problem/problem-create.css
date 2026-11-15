@@ -10,6 +10,11 @@
   border-radius: 16px;
 }
 
+/* みとり算の問題ごとのカード枠線 */
+.problem-create-panel:not(.kake-problem-create-panel):not(.wari-problem-create-panel) .individual-problem-block {
+  border-color: #fed7aa;
+}
+
 /* =========================================================
    問題用紙ごとのカード
 ========================================================= */
@@ -291,8 +296,8 @@
   width: min(100%, 420px);
   min-height: 56px;
   padding: 14px 24px;
-  background: #f97316;
-  border: 2px solid #f97316;
+  background: #1683e6;
+  border: 2px solid #1683e6;
   border-radius: 12px;
   color: #ffffff;
   font-size: 18px;
@@ -301,8 +306,8 @@
 }
 
 .problem-generate-button:hover {
-  background: #ea580c;
-  border-color: #ea580c;
+  background: #0f6fc5;
+  border-color: #0f6fc5;
 }
 
 .problem-generate-button:active {
@@ -958,6 +963,11 @@
 .wari-problem-create-panel {
   background: #f0fdf4;
   border-color: #16a34a;
+}
+
+/* 問題用紙ごとのカード枠線 */
+.wari-problem-create-panel .kake-individual-problem-block {
+  border-color: #bbf7d0;
 }
 
 /* 見出し */
