@@ -1180,13 +1180,13 @@ document.addEventListener("DOMContentLoaded", () => {
     * 問題用紙の後ろに解答ページを追加
     */
     const combinedHtml =
+      kakeHtml +
+      wariHtml +
       (
         generationState.mitori.length
           ? `<div id="problemGeneratedSheets">${mitoriHtml}</div>`
           : ""
       ) +
-      kakeHtml +
-      wariHtml +
       answerHtml;
 
     /*
