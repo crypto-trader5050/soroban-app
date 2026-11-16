@@ -193,36 +193,6 @@
       </select>
     </div>
 
-    <h3>余白設定（mm）</h3>
-
-    <div class="print-margin-grid">
-
-      <label>
-        上
-        <input type="number" id="marginTop"
-               value="10" min="0" max="50">
-      </label>
-
-      <label>
-        下
-        <input type="number" id="marginBottom"
-               value="10" min="0" max="50">
-      </label>
-
-      <label>
-        左
-        <input type="number" id="marginLeft"
-               value="10" min="0" max="50">
-      </label>
-
-      <label>
-        右
-        <input type="number" id="marginRight"
-               value="10" min="0" max="50">
-      </label>
-
-    </div>
-
     <div class="print-setting-row">
       <label for="problemFontSize">文字サイズ</label>
       <select id="problemFontSize">
@@ -279,25 +249,30 @@
         const orientation =
           document.getElementById("paperOrientation").value;
 
+        // 用紙サイズ（mm）
+        const paperDimensions = {
+          A4: [210, 297],
+          B5: [182, 257],
+          A3: [297, 420]
+        };
+
+        const [baseWidth, baseHeight] =
+          paperDimensions[paperSize] || paperDimensions.A4;
+
+        // 縦・横に応じて幅と高さを入れ替える
+        const pageWidth =
+          orientation === "landscape" ? baseHeight : baseWidth;
+
+        const pageHeight =
+          orientation === "landscape" ? baseWidth : baseHeight;
+
         const pageNumber =
           document.getElementById("pageNumber").value;
-
-        const top =
-          Math.max(0, Number(document.getElementById("marginTop").value) || 0);
-
-        const bottom =
-          Math.max(0, Number(document.getElementById("marginBottom").value) || 0);
-
-        const left =
-          Math.max(0, Number(document.getElementById("marginLeft").value) || 0);
-
-        const right =
-          Math.max(0, Number(document.getElementById("marginRight").value) || 0);
 
         printStyle.textContent = `
           @page {
             size: ${paperSize} ${orientation};
-            margin: ${top}mm ${right}mm ${bottom}mm ${left}mm;
+            margin: 0;
 
             ${pageNumber === "show" ? `
               @bottom-center {
@@ -306,6 +281,27 @@
                 color: #333;
               }
             ` : ""}
+          }
+
+          /* 画面プレビュー：用紙サイズ・向きに連動 */
+          @media screen {
+
+            #problemSheetOutput {
+              width: 100% !important;
+              overflow-x: auto !important;
+              box-sizing: border-box !important;
+            }
+
+            #problemGeneratedSheets > *,
+            .kake-print-sheet,
+            .wari-print-sheet,
+            .combined-answer-sheet {
+              width: ${pageWidth}mm !important;
+              min-height: ${pageHeight}mm !important;
+              box-sizing: border-box !important;
+              margin: 20px auto !important;
+            }
+
           }
 
           @media print {
