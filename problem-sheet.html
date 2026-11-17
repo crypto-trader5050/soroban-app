@@ -272,7 +272,10 @@
         printStyle.textContent = `
           @page {
             size: ${paperSize} ${orientation};
-            margin: 0;
+
+            margin: ${pageNumber === "show"
+              ? "0mm 0mm 12mm 0mm"
+              : "0"};
 
             ${pageNumber === "show" ? `
               @bottom-center {
