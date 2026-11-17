@@ -287,22 +287,42 @@
           }
 
           /* 画面プレビュー：用紙サイズ・向きに連動 */
+          /* 画面プレビュー：実際の用紙を表示 */
           @media screen {
 
+            body {
+              background: #e9edf2 !important;
+            }
+
             #problemSheetOutput {
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
               width: 100% !important;
+              max-width: none !important;
               overflow-x: auto !important;
               box-sizing: border-box !important;
+              gap: 24px !important;
+            }
+
+            #problemGeneratedSheets {
+              width: ${pageWidth}mm !important;
+              max-width: none !important;
+              margin: 0 auto !important;
             }
 
             #problemGeneratedSheets > *,
             .kake-print-sheet,
             .wari-print-sheet,
             .combined-answer-sheet {
+              display: block !important;
               width: ${pageWidth}mm !important;
               min-height: ${pageHeight}mm !important;
+              max-width: none !important;
+              margin: 0 auto 24px !important;
               box-sizing: border-box !important;
-              margin: 20px auto !important;
+              background: #fff !important;
+              box-shadow: 0 2px 12px rgba(0,0,0,0.15) !important;
             }
 
           }
