@@ -146,6 +146,43 @@
       }
     }
 
+    /* かけ算・わり算の自動配置用 */
+    .subject-print-page {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      box-sizing: border-box;
+      background: #fff;
+    }
+
+    .subject-print-page.is-two-up {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .subject-print-page > .kake-print-sheet,
+    .subject-print-page > .wari-print-sheet {
+      width: 100% !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+
+    @media print {
+      .subject-print-page {
+        break-after: page;
+        page-break-after: always;
+      }
+
+      .subject-print-page:last-of-type {
+        break-after: auto;
+        page-break-after: auto;
+      }
+    }
+
   </style>
 </head>
 
@@ -193,201 +230,518 @@
       </select>
     </div>
 
-    <div class="print-setting-row">
-      <label for="problemFontSize">文字サイズ</label>
-      <select id="problemFontSize">
-        <option value="12">小</option>
-        <option value="16" selected>標準</option>
-        <option value="20">大</option>
-        <option value="24">特大</option>
-      </select>
-    </div>
-
   </section>
 
   <main id="problemSheetOutput"></main>
 
-  <script>
-    (() => {
-      const output =
-        document.getElementById("problemSheetOutput");
+<script>
+(() => {
+  const output = document.getElementById("problemSheetOutput");
+  const html = sessionStorage.getItem("generatedProblemSheets");
 
-      const html =
-        sessionStorage.getItem(
-          "generatedProblemSheets"
+  if (!html) {
+    const message = document.createElement("p");
+    message.className = "problem-sheet-message";
+    message.textContent =
+      "問題用紙がありません。設定画面に戻って問題を生成してください。";
+    output.appendChild(message);
+  } else {
+    output.innerHTML = html;
+  }
+
+  const printStyle = document.createElement("style");
+  printStyle.id = "printEditorDynamicStyles";
+  document.head.appendChild(printStyle);
+
+  // 用紙サイズ
+  const paperDimensions = {
+    A4: [210, 297],
+    B5: [182, 257],
+    A3: [297, 420]
+  };
+
+  // 用紙の幅と高さを取得
+  function getPageDimensions() {
+    const size = document.getElementById("paperSize").value;
+    const orientation =
+      document.getElementById("paperOrientation").value;
+
+    const [w, h] = paperDimensions[size] || paperDimensions.A4;
+
+    return orientation === "landscape"
+      ? { width: h, height: w }
+      : { width: w, height: h };
+  }
+
+  // =========================================
+  // かけ算・わり算の自動配置
+  // =========================================
+
+  function arrangeSubjectSheets() {
+
+    // 既存の配置をいったん解除
+    const existing = output.querySelector("#subjectPrintPages");
+
+    if (existing) {
+      while (existing.firstElementChild) {
+        const page = existing.firstElementChild;
+
+        while (page.firstElementChild) {
+          output.insertBefore(page.firstElementChild, existing);
+        }
+
+        page.remove();
+      }
+
+      existing.remove();
+    }
+
+    // かけ算・わり算の問題用紙を取得
+    const kakeSheets = Array.from(
+      output.querySelectorAll(
+        ":scope > .kake-print-sheet:not(.wari-print-sheet)"
+      )
+    );
+
+    const wariSheets = Array.from(
+      output.querySelectorAll(
+        ":scope > .wari-print-sheet"
+      )
+    );
+
+    if (!kakeSheets.length && !wariSheets.length) return;
+
+    const dimensions = getPageDimensions();
+
+    // ページ番号用の余白を考慮
+    const availableHeight = dimensions.height - 12;
+
+    const gapMm = 4;
+
+    const pageRoot = document.createElement("div");
+    pageRoot.id = "subjectPrintPages";
+
+    // =========================================
+    // 同じ回数のかけ算・わり算を組み合わせる
+    // =========================================
+
+    const usedWari = new Set();
+    const groups = [];
+
+    kakeSheets.forEach(kake => {
+
+      const round =
+        kake.getAttribute("data-sheet-round") || "";
+
+      const matchIndex = wariSheets.findIndex((wari, i) => {
+
+        return (
+          !usedWari.has(i) &&
+          (wari.getAttribute("data-sheet-round") || "") === round
         );
 
-      if (!html) {
-        const message =
-          document.createElement("p");
+      });
 
-        message.className =
-          "problem-sheet-message";
+      if (matchIndex >= 0) {
 
-        message.textContent =
-          "問題用紙がありません。設定画面に戻って問題を生成してください。";
+        usedWari.add(matchIndex);
 
-        output.appendChild(message);
+        groups.push({
+          kake,
+          wari: wariSheets[matchIndex]
+        });
+
       } else {
-        output.innerHTML = html;
+
+        groups.push({
+          kake,
+          wari: null
+        });
+
       }
 
+    });
 
-      // =========================================
-      // 印刷設定の反映
-      // =========================================
+    // 対応するかけ算がないわり算も追加
+    wariSheets.forEach((wari, i) => {
 
-      const printStyle = document.createElement("style");
-      printStyle.id = "printEditorDynamicStyles";
-      document.head.appendChild(printStyle);
-
-      function applyPrintSettings() {
-
-        const paperSize =
-          document.getElementById("paperSize").value;
-
-        const orientation =
-          document.getElementById("paperOrientation").value;
-
-        // 用紙サイズ（mm）
-        const paperDimensions = {
-          A4: [210, 297],
-          B5: [182, 257],
-          A3: [297, 420]
-        };
-
-        const [baseWidth, baseHeight] =
-          paperDimensions[paperSize] || paperDimensions.A4;
-
-        // 縦・横に応じて幅と高さを入れ替える
-        const pageWidth =
-          orientation === "landscape" ? baseHeight : baseWidth;
-
-        const pageHeight =
-          orientation === "landscape" ? baseWidth : baseHeight;
-
-        const pageNumber =
-          document.getElementById("pageNumber").value;
-
-        printStyle.textContent = `
-          @page {
-            size: ${paperSize} ${orientation};
-
-            margin: ${pageNumber === "show"
-              ? "0mm 0mm 12mm 0mm"
-              : "0"};
-
-            ${pageNumber === "show" ? `
-              @bottom-center {
-                content: counter(page);
-                font-size: 9pt;
-                color: #333;
-              }
-            ` : ""}
-          }
-
-          /* 画面プレビュー：用紙サイズ・向きに連動 */
-          /* 画面プレビュー：実際の用紙を表示 */
-          @media screen {
-
-            body {
-              background: #e9edf2 !important;
-            }
-
-            #problemSheetOutput {
-              display: flex !important;
-              flex-direction: column !important;
-              align-items: center !important;
-              width: 100% !important;
-              max-width: none !important;
-              overflow-x: auto !important;
-              box-sizing: border-box !important;
-              gap: 24px !important;
-            }
-
-            #problemGeneratedSheets {
-              width: ${pageWidth}mm !important;
-              max-width: none !important;
-              margin: 0 auto !important;
-            }
-
-            #problemGeneratedSheets > *,
-            .kake-print-sheet,
-            .wari-print-sheet,
-            .combined-answer-sheet {
-              display: block !important;
-              width: ${pageWidth}mm !important;
-              min-height: ${pageHeight}mm !important;
-              max-width: none !important;
-              margin: 0 auto 24px !important;
-              box-sizing: border-box !important;
-              background: #fff !important;
-              box-shadow: 0 2px 12px rgba(0,0,0,0.15) !important;
-            }
-
-          }
-
-          @media print {
-
-            body {
-              margin: 0 !important;
-              padding: 0 !important;
-            }
-
-            #problemSheetOutput {
-              width: 100% !important;
-              max-width: none !important;
-              margin: 0 !important;
-            }
-
-            #problemGeneratedSheets {
-              max-width: none !important;
-              margin: 0 !important;
-              padding: 0 !important;
-            }
-
-            #problemGeneratedSheets > *,
-            .kake-print-sheet,
-            .wari-print-sheet,
-            .combined-answer-sheet {
-              max-width: none !important;
-              margin: 0 !important;
-              padding: 0 !important;
-              box-sizing: border-box !important;
-            }
-
-          }
-        `;
+      if (!usedWari.has(i)) {
+        groups.push({
+          kake: null,
+          wari
+        });
       }
 
-      // 設定変更時に反映
-      document
-        .querySelectorAll("#printEditor select, #printEditor input")
-        .forEach(control => {
-          control.addEventListener("change", applyPrintSettings);
-        });
+    });
 
-      // 初期設定を反映
-      applyPrintSettings();
+    // =========================================
+    // 半分の幅に収まるか実寸で確認
+    // =========================================
 
+    const measureBox = document.createElement("div");
 
-      document
-        .getElementById("backToSettings")
-        .addEventListener("click", () => {
-          if (history.length > 1) {
-            history.back();
-          } else {
-            window.location.href = "index.html";
+    measureBox.style.cssText = [
+      "position:absolute",
+      "left:-100000px",
+      "top:0",
+      "visibility:hidden",
+      `width:${dimensions.width}mm`,
+      "display:block",
+      "box-sizing:border-box"
+    ].join(";");
+
+    document.body.appendChild(measureBox);
+
+    function fitsInColumn(sheet) {
+
+      if (!sheet) return false;
+
+      const clone = sheet.cloneNode(true);
+
+      clone.style.setProperty(
+        "display",
+        "block",
+        "important"
+      );
+
+      clone.style.setProperty(
+        "width",
+        `calc((100% - ${gapMm}mm) / 2)`,
+        "important"
+      );
+
+      clone.style.setProperty(
+        "max-width",
+        "none",
+        "important"
+      );
+
+      clone.style.setProperty(
+        "height",
+        "auto",
+        "important"
+      );
+
+      clone.style.setProperty(
+        "min-height",
+        "0",
+        "important"
+      );
+
+      clone.style.setProperty(
+        "margin",
+        "0",
+        "important"
+      );
+
+      clone.style.setProperty(
+        "page-break-after",
+        "auto",
+        "important"
+      );
+
+      clone.style.setProperty(
+        "break-after",
+        "auto",
+        "important"
+      );
+
+      measureBox.appendChild(clone);
+
+      const widthOkay =
+        clone.scrollWidth <= clone.clientWidth + 2;
+
+      const heightMm =
+        clone.getBoundingClientRect().height * 25.4 / 96;
+
+      const heightOkay =
+        heightMm <= availableHeight;
+
+      clone.remove();
+
+      return widthOkay && heightOkay;
+    }
+
+    // =========================================
+    // ページへの配置
+    // =========================================
+
+    groups.forEach(group => {
+
+      const page = document.createElement("section");
+
+      page.className = "subject-print-page";
+
+      page.style.width = `${dimensions.width}mm`;
+      page.style.minHeight = `${dimensions.height}mm`;
+      page.style.padding = "0";
+
+      // かけ算・わり算の両方が半分の幅に収まるか
+      const canPair =
+        group.kake &&
+        group.wari &&
+        fitsInColumn(group.kake) &&
+        fitsInColumn(group.wari);
+
+      if (canPair) {
+
+        // 両方収まる場合は左右に並べる
+        page.classList.add("is-two-up");
+
+        page.appendChild(group.kake);
+        page.appendChild(group.wari);
+
+      } else {
+
+        // 収まらない場合は別々のページにする
+        if (group.kake) {
+          page.appendChild(group.kake);
+        }
+
+        if (group.wari) {
+
+          if (group.kake) {
+
+            const secondPage =
+              document.createElement("section");
+
+            secondPage.className =
+              "subject-print-page";
+
+            secondPage.style.width =
+              `${dimensions.width}mm`;
+
+            secondPage.style.minHeight =
+              `${dimensions.height}mm`;
+
+            secondPage.appendChild(group.wari);
+
+            pageRoot.appendChild(page);
+            pageRoot.appendChild(secondPage);
+
+            return;
           }
-        });
 
-      document
-        .getElementById("printProblemSheets")
-        .addEventListener("click", () => {
-          window.print();
-        });
-    })();
-  </script>
+          page.appendChild(group.wari);
+        }
+
+      }
+
+      pageRoot.appendChild(page);
+
+    });
+
+    measureBox.remove();
+
+    // 元の問題用紙を取り除く
+    kakeSheets.forEach(sheet => sheet.remove());
+    wariSheets.forEach(sheet => sheet.remove());
+
+    // 解答用紙の直前に配置
+    const answerSheet =
+      output.querySelector(":scope > .combined-answer-sheet");
+
+    if (answerSheet) {
+      output.insertBefore(pageRoot, answerSheet);
+    } else {
+      output.appendChild(pageRoot);
+    }
+
+  }
+
+  // =========================================
+  // 印刷設定の反映
+  // =========================================
+
+  function applyPrintSettings() {
+
+    const paperSize =
+      document.getElementById("paperSize").value;
+
+    const orientation =
+      document.getElementById("paperOrientation").value;
+
+    const { width: pageWidth, height: pageHeight } =
+      getPageDimensions();
+
+    const pageNumber =
+      document.getElementById("pageNumber").value;
+
+    printStyle.textContent = `
+
+      @page {
+        size: ${paperSize} ${orientation};
+
+        margin: ${pageNumber === "show"
+          ? "0mm 0mm 12mm 0mm"
+          : "0"};
+
+        ${pageNumber === "show" ? `
+          @bottom-center {
+            content: counter(page);
+            font-size: 9pt;
+            color: #333;
+          }
+        ` : ""}
+      }
+
+      /* =====================================
+         画面プレビュー
+      ===================================== */
+
+      @media screen {
+
+        body {
+          background: #e9edf2 !important;
+        }
+
+        #problemSheetOutput {
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          width: 100% !important;
+          max-width: none !important;
+          overflow-x: auto !important;
+          box-sizing: border-box !important;
+          gap: 24px !important;
+        }
+
+        #problemGeneratedSheets,
+        #subjectPrintPages {
+          width: ${pageWidth}mm !important;
+          max-width: none !important;
+          margin: 0 auto !important;
+        }
+
+        #problemGeneratedSheets > *,
+        .combined-answer-sheet,
+        .subject-print-page {
+          display: block !important;
+          width: ${pageWidth}mm !important;
+          min-height: ${pageHeight}mm !important;
+          max-width: none !important;
+          margin: 0 auto 24px !important;
+          box-sizing: border-box !important;
+          background: #fff !important;
+          box-shadow: 0 2px 12px rgba(0,0,0,0.15) !important;
+        }
+
+        /* 左右2列に配置 */
+        .subject-print-page.is-two-up {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 4mm !important;
+        }
+
+        .subject-print-page > .kake-print-sheet,
+        .subject-print-page > .wari-print-sheet {
+          width: 100% !important;
+          min-height: 0 !important;
+          margin: 0 !important;
+          padding: 7mm !important;
+          box-shadow: none !important;
+        }
+
+      }
+
+      /* =====================================
+         印刷
+      ===================================== */
+
+      @media print {
+
+        body {
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        #problemSheetOutput {
+          width: 100% !important;
+          max-width: none !important;
+          margin: 0 !important;
+        }
+
+        #problemGeneratedSheets {
+          max-width: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        #problemGeneratedSheets > *,
+        .combined-answer-sheet,
+        .subject-print-page {
+          max-width: none !important;
+          margin: 0 !important;
+          box-sizing: border-box !important;
+        }
+
+        .subject-print-page {
+          width: ${pageWidth}mm !important;
+          min-height: ${pageHeight}mm !important;
+          break-after: page;
+          page-break-after: always;
+        }
+
+        .subject-print-page.is-two-up {
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 4mm !important;
+        }
+
+        .subject-print-page > .kake-print-sheet,
+        .subject-print-page > .wari-print-sheet {
+          width: 100% !important;
+          max-width: none !important;
+          min-width: 0 !important;
+          min-height: 0 !important;
+          margin: 0 !important;
+          padding: 7mm !important;
+          box-sizing: border-box !important;
+          page-break-after: auto !important;
+          break-after: auto !important;
+        }
+
+      }
+
+    `;
+
+    // 用紙設定変更後に配置を再計算
+    arrangeSubjectSheets();
+
+  }
+
+  // 設定変更時に反映
+  document
+    .querySelectorAll("#printEditor select, #printEditor input")
+    .forEach(control => {
+      control.addEventListener("change", applyPrintSettings);
+    });
+
+  // 初期設定
+  applyPrintSettings();
+
+  // 設定画面に戻る
+  document
+    .getElementById("backToSettings")
+    .addEventListener("click", () => {
+
+      if (history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+
+    });
+
+  // 印刷・PDF保存
+  document
+    .getElementById("printProblemSheets")
+    .addEventListener("click", () => {
+      window.print();
+    });
+
+})();
+</script>
 
 </body>
 </html>
