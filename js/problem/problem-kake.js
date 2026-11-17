@@ -839,9 +839,9 @@ document.addEventListener("DOMContentLoaded", () => {
     previewArea.innerHTML = "";
 
     const types = [
-      ["mitori", "みとり算"],
       ["kake", "かけ算"],
-      ["wari", "わり算"]
+      ["wari", "わり算"],
+      ["mitori", "みとり算"]
     ];
 
     let hasSheets = false;
@@ -919,9 +919,9 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function moveToPrintPage() {
     const allSheets = [
-      ...generationState.mitori,
       ...generationState.kake,
-      ...generationState.wari
+      ...generationState.wari,
+      ...generationState.mitori
     ];
 
     if (
@@ -1014,9 +1014,9 @@ document.addEventListener("DOMContentLoaded", () => {
     * グループの順番は最初に見つかった順
     */
     const collected =
-      collectAnswers(generationState.mitori, "mitori", "みとり算") &&
       collectAnswers(generationState.kake, "kake", "かけ算") &&
-      collectAnswers(generationState.wari, "wari", "わり算");
+      collectAnswers(generationState.wari, "wari", "わり算") &&
+      collectAnswers(generationState.mitori, "mitori", "みとり算");
 
     if (!collected) {
       alert(
@@ -1210,7 +1210,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /*
    * 問題生成ボタン
-   * 開いている種類だけを生成する
+   * かけ算 → わり算 → みとり算の順番で生成
    */
   generateButton.addEventListener("click", () => {
     const mitoriIsOpen =
@@ -1229,30 +1229,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // みとり算だけ生成・再生成
-    if (mitoriIsOpen) {
-      const mitoriHtml =
-        window.generateMitoriSheets?.();
-
-      if (!mitoriHtml) {
-        renderGenerationPreview();
-        return;
-      }
-
-      const mitoriSheets = splitGeneratedSheets(
-        mitoriHtml,
-        "mitori"
-      );
-
-      if (!mitoriSheets.length) {
-        alert("みとり算の問題用紙を取得できませんでした。");
-        return;
-      }
-
-      updateGeneratedSheets("mitori", mitoriSheets);
-    }
-
-    // かけ算だけ生成・再生成
+    // ① かけ算を生成
     if (kakeIsOpen) {
       const kakeHtml =
         window.generateKakeSheets?.();
@@ -1275,7 +1252,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateGeneratedSheets("kake", kakeSheets);
     }
 
-    // わり算だけ生成・再生成
+    // ② わり算を生成
     if (wariIsOpen) {
       const wariHtml =
         window.generateWariSheets?.();
@@ -1296,6 +1273,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateGeneratedSheets("wari", wariSheets);
+    }
+
+    // ③ みとり算を生成
+    if (mitoriIsOpen) {
+      const mitoriHtml =
+        window.generateMitoriSheets?.();
+
+      if (!mitoriHtml) {
+        renderGenerationPreview();
+        return;
+      }
+
+      const mitoriSheets = splitGeneratedSheets(
+        mitoriHtml,
+        "mitori"
+      );
+
+      if (!mitoriSheets.length) {
+        alert("みとり算の問題用紙を取得できませんでした。");
+        return;
+      }
+
+      updateGeneratedSheets("mitori", mitoriSheets);
     }
 
     renderGenerationPreview();

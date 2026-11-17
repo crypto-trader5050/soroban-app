@@ -533,10 +533,6 @@
 
     measureBox.remove();
 
-    // 元の問題用紙を取り除く
-    kakeSheets.forEach(sheet => sheet.remove());
-    wariSheets.forEach(sheet => sheet.remove());
-
     // 解答用紙の直前に配置
     const answerSheet =
       output.querySelector(":scope > .combined-answer-sheet");
