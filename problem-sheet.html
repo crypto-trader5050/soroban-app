@@ -533,15 +533,32 @@
 
     measureBox.remove();
 
-    // 解答用紙の直前に配置
-    const answerSheet =
-      output.querySelector(":scope > .combined-answer-sheet");
+  // =========================================
+  // 表示順を かけ算 → わり算 → みとり算 → 解答 にする
+  // =========================================
 
+  // かけ算・わり算の配置ページを先に追加
+  const answerSheet =
+    output.querySelector(":scope > .combined-answer-sheet");
+
+  if (answerSheet) {
+    output.insertBefore(pageRoot, answerSheet);
+  } else {
+    output.appendChild(pageRoot);
+  }
+
+  // みとり算を取得
+  const mitoriSheets =
+    output.querySelector("#problemGeneratedSheets");
+
+  // みとり算をかけ算・わり算の後ろ、解答の前に移動
+  if (mitoriSheets) {
     if (answerSheet) {
-      output.insertBefore(pageRoot, answerSheet);
+      output.insertBefore(mitoriSheets, answerSheet);
     } else {
-      output.appendChild(pageRoot);
+      output.appendChild(mitoriSheets);
     }
+  }
 
   }
 
