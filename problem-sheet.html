@@ -767,6 +767,7 @@
           box-sizing: border-box !important;
         }
 
+        /* かけ算・わり算 */
         .subject-print-page {
           width: ${pageWidth}mm !important;
           min-height: ${pageHeight}mm !important;
@@ -791,6 +792,38 @@
           box-sizing: border-box !important;
           page-break-after: auto !important;
           break-after: auto !important;
+        }
+
+        /* =====================================
+           みとり算：元の段組みを維持
+        ===================================== */
+
+        .problem-generated-list.mitori-print-list {
+          display: flex !important;
+          flex-direction: column !important;
+          flex-wrap: nowrap !important;
+          row-gap: 4mm !important;
+          width: 100% !important;
+        }
+
+        .mitori-print-row {
+          display: flex !important;
+          flex-direction: row !important;
+          flex-wrap: nowrap !important;
+          width: 100% !important;
+          gap: 0 !important;
+          align-items: stretch !important;
+          break-inside: avoid !important;
+          page-break-inside: avoid !important;
+        }
+
+        .mitori-print-row > .problem-generated-item {
+          display: block !important;
+          flex: 1 1 0 !important;
+          width: 0 !important;
+          max-width: none !important;
+          min-width: 0 !important;
+          box-sizing: border-box !important;
         }
 
       }
