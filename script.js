@@ -662,6 +662,41 @@ function runFlash() {
     state.timers.push(timer);
   }
 
+
+/* ========================================
+   結果カード：桁数に応じた数字表示
+======================================== */
+function setResultNumber(element, value) {
+
+  const number = BigInt(value);
+
+  // 表示用にカンマを付ける（計算値は変更しない）
+  element.textContent = number.toLocaleString("en-US");
+
+  // カンマを除いた桁数
+  const digits = number.toString().replace("-", "").length;
+
+  // 桁数に応じたフォントサイズ
+  let size;
+
+  if (digits <= 4) {
+    size = 30;
+  } else if (digits <= 6) {
+    size = 26;
+  } else if (digits <= 8) {
+    size = 22;
+  } else if (digits <= 10) {
+    size = 18;
+  } else if (digits <= 12) {
+    size = 15;
+  } else {
+    size = 12;
+  }
+
+  element.style.fontSize = size + "px";
+}
+
+
 // =====================
 // 回答チェック
 // =====================
@@ -782,8 +817,8 @@ function checkAnswer() {
 
     if (result && yourAnswer && correctAnswer) {
 
-      yourAnswer.textContent = input;
-      correctAnswer.textContent = state.answer;
+      setResultNumber(yourAnswer, clean);
+      setResultNumber(correctAnswer, state.answer);
 
       result.style.display = "block";
     }
