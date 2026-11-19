@@ -171,6 +171,37 @@ function generateMultiplicationNumber(digits) {
 }
 
 // =====================
+// 結果カード：桁数に応じた数字表示
+// =====================
+function setResultNumber(element, value) {
+  const number = BigInt(value);
+
+  // 3桁区切りで表示
+  element.textContent = number.toLocaleString("en-US");
+
+  // 桁数に応じてフォントサイズを調整
+  const digits = number.toString().replace("-", "").length;
+
+  let size;
+
+  if (digits <= 4) {
+    size = 30;
+  } else if (digits <= 6) {
+    size = 26;
+  } else if (digits <= 8) {
+    size = 22;
+  } else if (digits <= 10) {
+    size = 18;
+  } else if (digits <= 12) {
+    size = 15;
+  } else {
+    size = 12;
+  }
+
+  element.style.fontSize = size + "px";
+}
+
+// =====================
 // 回答チェック（かけ算用）
 // =====================
 function checkAnswerMultiplication() {
@@ -274,9 +305,17 @@ function checkAnswerMultiplication() {
     // 不正解
     judge.textContent = "";
 
-    if (yourAnswer) yourAnswer.textContent = input;
-    if (correctAnswer) correctAnswer.textContent = state.answer.toLocaleString();
-    if (result) result.style.display = "block";
+    if (yourAnswer) {
+      setResultNumber(yourAnswer, clean);
+    }
+
+    if (correctAnswer) {
+      setResultNumber(correctAnswer, state.answer);
+    }
+
+    if (result) {
+      result.style.display = "block";
+    }
 
     if (progress && progressBar) {
       progress.style.display = "block";
