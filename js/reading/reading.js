@@ -2714,6 +2714,36 @@ function showReadingAnswerArea() {
 
 }
 
+// =====================
+// 読み上げ結果カード：桁数に応じた数字表示
+// =====================
+function setReadingResultNumber(element, value) {
+  const number = BigInt(value);
+
+  // 3桁区切りで表示
+  element.textContent = number.toLocaleString("en-US");
+
+  // 桁数を取得（マイナス記号は除外）
+  const digits = number.toString().replace("-", "").length;
+
+  let size;
+
+  if (digits <= 4) {
+    size = 30;
+  } else if (digits <= 6) {
+    size = 26;
+  } else if (digits <= 8) {
+    size = 22;
+  } else if (digits <= 10) {
+    size = 18;
+  } else if (digits <= 12) {
+    size = 15;
+  } else {
+    size = 12;
+  }
+
+  element.style.fontSize = size + "px";
+}
 
 /* =========================================================
    解答判定
@@ -2827,12 +2857,17 @@ if (correct) {
 } else {
   // 不正解の場合：左右のカードを表示
   if (yourAnswer) {
-    yourAnswer.textContent = userAnswer;
+    setReadingResultNumber(
+      yourAnswer,
+      userAnswer.replace(/,/g, "")
+    );
   }
 
   if (correctAnswer) {
-    correctAnswer.textContent =
-      readingState.answer.toLocaleString();
+    setReadingResultNumber(
+      correctAnswer,
+      readingState.answer
+    );
   }
 
   if (result) {
