@@ -473,34 +473,39 @@
 }
 
 
+
 /* =========================================================
    ホームへ戻る
 ========================================================= */
 
 .read-home-button {
   display: block;
-
-  margin: 0 auto;
-
-  padding: 10px 20px;
-
-  border: none;
-
-  background: transparent;
-
-  color: #527384;
-
+  margin: 28px auto 0;
+  padding: 12px 30px;
+  border: 2px solid #1683e6;
+  border-radius: 28px;
+  background: #ffffff;
+  color: #0758a8;
   font-family: inherit;
-  font-size: 15px;
-  font-weight: 700;
-
+  font-size: 16px;
+  font-weight: 800;
+  box-shadow: 0 3px 10px rgba(29, 76, 112, 0.06);
   cursor: pointer;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .read-home-button:hover {
-  color: #176487;
+  background: #eef8ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(29, 76, 112, 0.10);
 }
 
+.read-home-button:active {
+  transform: scale(0.98);
+}
 
 /* =========================================================
    タブレット
