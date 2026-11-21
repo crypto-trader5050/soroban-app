@@ -168,6 +168,7 @@ function selectType(type) {
 
   document.getElementById("flashSelect").style.display = "none";
   document.getElementById("levelSelect").style.display = "block";
+  document.getElementById("flashLevelHomeButton").style.display = "block";
 
   createLevelButtons();
 }
@@ -212,6 +213,7 @@ function selectReadType(type) {
 
   document.getElementById("readSelect").style.display = "none";
   document.getElementById("levelSelect").style.display = "block";
+  document.getElementById("flashLevelHomeButton").style.display = "none";
 
   createReadLevelButtons();
 
