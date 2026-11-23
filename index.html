@@ -437,6 +437,100 @@
 </div>
 
 <!-- ==================================================
+     みとり暗算 トレーニング選択
+================================================== -->
+
+<div id="mitoriTrainingSelect" style="display:none;">
+
+  <div class="mitori-training-inner">
+
+    <div class="mitori-training-header">
+
+      <div class="mitori-training-icon">
+        🧮
+      </div>
+
+      <h1>みとり暗算</h1>
+
+      <p>
+        トレーニング方法を選んでください
+      </p>
+
+    </div>
+
+    <!-- トレーニング選択 -->
+
+    <div class="mitori-training-cards">
+
+      <!-- 桁数トレーニング -->
+
+      <article class="mitori-training-card digit-training-card">
+
+        <div class="mitori-training-card-icon">
+          🔢
+        </div>
+
+        <h2>桁数トレーニング</h2>
+
+        <p>
+          これまでの桁数別トレーニングに挑戦
+        </p>
+
+        <button
+          type="button"
+          onclick="selectTrainingMode('digit')">
+
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+
+        </button>
+
+      </article>
+
+
+      <!-- 速度トレーニング -->
+
+      <article class="mitori-training-card speed-training-card">
+
+        <div class="mitori-training-card-icon">
+          ⚡
+        </div>
+
+        <h2>速度トレーニング</h2>
+
+        <p>
+          数字が表示されるスピードに挑戦
+        </p>
+
+        <button
+          type="button"
+          onclick="selectTrainingMode('speed')">
+
+          <span>はじめる</span>
+          <span class="arrow">›</span>
+
+        </button>
+
+      </article>
+
+    </div>
+
+    <!-- 戻る -->
+
+    <button
+      type="button"
+      class="flash-home-button"
+      onclick="backToFlashSelect()">
+
+      ← 戻る
+
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ==================================================
      問題作成 メニュー
 ================================================== -->
 

@@ -164,9 +164,30 @@ function goFlash() {
 }
 
 function selectType(type) {
+
   state.type = type;
 
+  // トレーニングモードをリセット
+  state.trainingMode = null;
+
   document.getElementById("flashSelect").style.display = "none";
+
+  // =====================================
+  // みとり暗算の場合
+  // =====================================
+  if (type === "mitori") {
+
+    document.getElementById("mitoriTrainingSelect").style.display = "block";
+
+    document.getElementById("levelSelect").style.display = "none";
+    document.getElementById("flashLevelHomeButton").style.display = "none";
+
+    return;
+  }
+
+  // =====================================
+  // かけ暗算・わり暗算の場合（従来どおり）
+  // =====================================
   document.getElementById("levelSelect").style.display = "block";
   document.getElementById("flashLevelHomeButton").style.display = "block";
 
@@ -201,7 +222,6 @@ function goRead() {
   document.getElementById("readSelect").style.display = "block";
 
 }
-
 
 // =====================
 // 読み上げ種類選択
