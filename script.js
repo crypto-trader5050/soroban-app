@@ -217,12 +217,13 @@ function selectTrainingMode(mode) {
     return;
   }
 
-  // 速度トレーニング（現在は準備中）
+  // 速度トレーニング
   if (mode === "speed") {
 
-    document.getElementById("mitoriTrainingSelect").style.display = "block";
+    document.getElementById("levelSelect").style.display = "block";
+    document.getElementById("flashLevelHomeButton").style.display = "block";
 
-    alert("速度トレーニングは現在準備中です。");
+    createSpeedLevelButtons();
 
     return;
   }
@@ -544,6 +545,12 @@ function startEngine() {
 }
 
 function generateQuestion() {
+
+  // 速度トレーニングの場合
+  if (state.trainingMode === "speed") {
+    generateSpeedQuestion();
+    return;
+  }
 
   if (state.isFinished) {
     console.log("完全停止中");
