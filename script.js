@@ -163,6 +163,7 @@ function goFlash() {
 
 }
 
+
 function selectType(type) {
 
   state.type = type;
@@ -184,6 +185,15 @@ function selectType(type) {
 
     return;
   }
+
+  // =====================================
+  // かけ暗算・わり暗算の場合（従来どおり）
+  // =====================================
+  document.getElementById("levelSelect").style.display = "block";
+  document.getElementById("flashLevelHomeButton").style.display = "block";
+
+  createLevelButtons();
+}
 
 
 // =====================
@@ -228,16 +238,6 @@ function backToFlashSelect() {
   document.getElementById("mitoriTrainingSelect").style.display = "none";
   document.getElementById("flashSelect").style.display = "block";
 
-}
-
-
-  // =====================================
-  // かけ暗算・わり暗算の場合（従来どおり）
-  // =====================================
-  document.getElementById("levelSelect").style.display = "block";
-  document.getElementById("flashLevelHomeButton").style.display = "block";
-
-  createLevelButtons();
 }
 
 // =====================
