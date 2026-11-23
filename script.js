@@ -185,6 +185,52 @@ function selectType(type) {
     return;
   }
 
+
+// =====================
+// みとり暗算のトレーニング方法選択
+// =====================
+
+function selectTrainingMode(mode) {
+
+  state.trainingMode = mode;
+
+  // トレーニング選択画面を隠す
+  document.getElementById("mitoriTrainingSelect").style.display = "none";
+
+  // 桁数トレーニング
+  if (mode === "digit") {
+
+    document.getElementById("levelSelect").style.display = "block";
+    document.getElementById("flashLevelHomeButton").style.display = "block";
+
+    createLevelButtons();
+    return;
+  }
+
+  // 速度トレーニング（現在は準備中）
+  if (mode === "speed") {
+
+    document.getElementById("mitoriTrainingSelect").style.display = "block";
+
+    alert("速度トレーニングは現在準備中です。");
+
+    return;
+  }
+}
+
+
+// =====================
+// トレーニング選択画面へ戻る
+// =====================
+
+function backToFlashSelect() {
+
+  document.getElementById("mitoriTrainingSelect").style.display = "none";
+  document.getElementById("flashSelect").style.display = "block";
+
+}
+
+
   // =====================================
   // かけ暗算・わり暗算の場合（従来どおり）
   // =====================================

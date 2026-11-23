@@ -1,0 +1,201 @@
+
+/* ========================================
+   みとり暗算 トレーニング選択画面
+======================================== */
+
+#mitoriTrainingSelect {
+  min-height: 100vh;
+  padding: 40px 20px 50px;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #f0f7ff, #f8fbff);
+}
+
+.mitori-training-inner {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.mitori-training-header {
+  text-align: center;
+  margin-bottom: 42px;
+}
+
+.mitori-training-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.mitori-training-header h1 {
+  margin: 0 0 12px;
+  color: #174b83;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.mitori-training-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.mitori-training-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+  max-width: 850px;
+  margin: 0 auto 35px;
+}
+
+.mitori-training-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  padding: 30px 24px;
+  box-sizing: border-box;
+  text-align: center;
+  background: #ffffff;
+  border: 2px solid #dbeafe;
+  border-radius: 22px;
+  box-shadow: 0 8px 22px rgba(30, 80, 130, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.mitori-training-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(30, 80, 130, 0.14);
+}
+
+.mitori-training-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  margin-bottom: 18px;
+  font-size: 38px;
+  background: #eff6ff;
+  border-radius: 50%;
+}
+
+.mitori-training-card h2 {
+  margin: 0 0 12px;
+  color: #174b83;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.mitori-training-card p {
+  min-height: 48px;
+  margin: 0 0 22px;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.mitori-training-card button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 230px;
+  padding: 14px 22px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  background: #2878c8;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(40, 120, 200, 0.2);
+}
+
+.mitori-training-card button:hover {
+  background: #1765b2;
+}
+
+.mitori-training-card button .arrow {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.speed-training-card {
+  border-color: #fde2b5;
+}
+
+.speed-training-card .mitori-training-card-icon {
+  background: #fff7e8;
+}
+
+.speed-training-card h2 {
+  color: #a65b12;
+}
+
+.speed-training-card button {
+  background: #e99427;
+  box-shadow: 0 4px 10px rgba(233, 148, 39, 0.2);
+}
+
+.speed-training-card button:hover {
+  background: #cf7b13;
+}
+
+/* 戻るボタン */
+
+#mitoriTrainingSelect .flash-home-button {
+  display: block;
+  margin: 0 auto;
+  padding: 12px 30px;
+  color: #0758a8;
+  font-size: 16px;
+  font-weight: 700;
+  background: #ffffff;
+  border: 2px solid #1683e6;
+  border-radius: 28px;
+  box-shadow: 0 3px 8px rgba(0, 80, 160, 0.08);
+  cursor: pointer;
+}
+
+#mitoriTrainingSelect .flash-home-button:hover {
+  background: #edf6ff;
+}
+
+#mitoriTrainingSelect .flash-home-button:active {
+  transform: scale(0.98);
+}
+
+/* スマートフォン */
+
+@media (max-width: 650px) {
+
+  #mitoriTrainingSelect {
+    padding: 28px 16px 40px;
+  }
+
+  .mitori-training-header {
+    margin-bottom: 28px;
+  }
+
+  .mitori-training-header h1 {
+    font-size: 27px;
+  }
+
+  .mitori-training-cards {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 420px;
+  }
+
+  .mitori-training-card {
+    min-height: 250px;
+    padding: 25px 20px;
+  }
+
+  .mitori-training-card h2 {
+    font-size: 21px;
+  }
+
+}
