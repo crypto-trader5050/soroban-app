@@ -16,6 +16,7 @@
 
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/usage-guide.css">
 
   <link rel="stylesheet" href="css/flash/flash-select.css">
   <link rel="stylesheet" href="css/flash/flash-level.css">
@@ -56,7 +57,9 @@
         <span>設定</span>
       </button>
 
-      <button class="header-menu-button" type="button">
+      <button class="header-menu-button"
+              type="button"
+              onclick="openUsageGuide()">
         <span class="header-menu-icon">?</span>
         <span>使い方</span>
       </button>
@@ -312,6 +315,56 @@
     </div>
 
   </footer>
+
+</div>
+
+<!-- ==================================================
+     使い方ガイド
+================================================== -->
+
+<div id="usageGuide" style="display:none;">
+
+  <div class="usage-guide-inner">
+
+    <h1>アプリの使い方</h1>
+
+    <p>
+      このアプリは、ホーム画面に追加すると
+      アプリのように手軽に利用できます。
+      App StoreやGoogle Playからのダウンロードは不要です。
+    </p>
+
+    <section>
+      <h2>iPhone・iPadの場合</h2>
+      <ol>
+        <li>Safariでアプリを開く</li>
+        <li>画面下の「共有」ボタン（□↑）をタップ</li>
+        <li>「ホーム画面に追加」を選び、「追加」をタップ</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Androidの場合</h2>
+      <ol>
+        <li>Google Chromeでアプリを開く</li>
+        <li>右上の「︙」をタップ</li>
+        <li>「アプリをインストール」または「ホーム画面に追加」を選ぶ</li>
+      </ol>
+    </section>
+
+    <p class="usage-guide-note">
+      ホーム画面にアイコンが表示されれば完了です。
+      次回からアイコンをタップして起動できます。
+      <br>
+      ※利用にはインターネット接続が必要です。
+    </p>
+
+    <button type="button"
+            onclick="closeUsageGuide()">
+      閉じる
+    </button>
+
+  </div>
 
 </div>
 
@@ -1341,6 +1394,7 @@
 <script src="js/problem/problem-create.js"></script>
 <script src="js/problem/problem-kake.js"></script>
 <script src="js/problem/problem-wari.js"></script>
+<script src="js/usage-guide.js"></script>
 
 <script>
   if ("serviceWorker" in navigator) {
