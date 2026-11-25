@@ -1133,18 +1133,21 @@ function speakYomiSequence(
   callback
 ) {
 
-  /* =======================================================
-     速度4・5
-     → 1問をまとまりで読み上げる
-     → Utteranceの切り替えによる隙間をなくす
-  ======================================================= */
-
-  if (
-    readingState.speed >= 4 &&
-    index === 0
-  ) {
+  if (index === 0) {
 
     const speedSettings = {
+
+      1: {
+        rate: 0.75
+      },
+
+      2: {
+        rate: 0.95
+      },
+
+      3: {
+        rate: 1.15
+      },
 
       4: {
         rate: 1.40
@@ -1265,438 +1268,8 @@ function speakYomiSequence(
     return;
   }
 
-
-  /* =======================================================
-     速度1～3
-     → 従来方式
-  ======================================================= */
-
-  const item =
-    numbers[index];
-
-
-  const numberText =
-    numberToJapanese(item.value);
-
-
-  const speedSettings = {
-
-    1: {
-      rate: 0.75,
-      numberGap: 220,
-      phraseGap: 180
-    },
-
-    2: {
-      rate: 0.95,
-      numberGap: 150,
-      phraseGap: 130
-    },
-
-    3: {
-      rate: 1.15,
-      numberGap: 100,
-      phraseGap: 100
-    }
-
-  };
-
-
-  const settings =
-    speedSettings[readingState.speed] ||
-    speedSettings[3];
-
-
-  const baseRate =
-    settings.rate;
-
-  const numberGap =
-    settings.numberGap;
-
-  const phraseGap =
-    settings.phraseGap;
-
-
-/* =======================================================
-   最後の数字
-======================================================= */
-
-if (index === numbers.length - 1) {
-
-  const previous =
-    numbers[index - 1];
-
-
-  /* 引き算 → 最後が足し算
-     →「くわえて」 */
-
-  if (
-    item.operation === "add" &&
-    previous &&
-    previous.operation === "subtract"
-  ) {
-
-    speakReading(
-      "くわえて",
-      () => {
-
-        setTimeout(() => {
-
-          speakReading(
-            numberText +
-            "えんでは",
-
-            callback,
-
-            {
-              rate:
-                baseRate * 0.94,
-
-              pitch:
-                0.90
-            }
-          );
-
-        }, phraseGap);
-
-      },
-
-      {
-        rate:
-          baseRate * 0.90,
-
-        pitch:
-          1.01
-      }
-    );
-
-    return;
-  }
-
-
-  /* 足し算 → 最後が引き算
-     →「ひいては」 */
-
-  if (
-    item.operation === "subtract" &&
-    previous &&
-    previous.operation !== "subtract"
-  ) {
-
-    speakReading(
-      "ひいては",
-      () => {
-
-        setTimeout(() => {
-
-          speakReading(
-            numberText +
-            "えんでは",
-
-            callback,
-
-            {
-              rate:
-                baseRate * 0.94,
-
-              pitch:
-                0.90
-            }
-          );
-
-        }, phraseGap);
-
-      },
-
-      {
-        rate:
-          baseRate * 0.90,
-
-        pitch:
-          0.98
-      }
-    );
-
-    return;
-  }
-
-
-  /* それ以外の最後の数字 */
-
-  speakReading(
-    numberText +
-    "えんでは",
-
-    callback,
-
-    {
-      rate:
-        baseRate * 0.94,
-
-      pitch:
-        0.90
-    }
-  );
-
-  return;
 }
 
-
-/* =======================================================
-   1問目
-======================================================= */
-
-if (index === 0) {
-
-  speakReading(
-    "ねがいましては",
-    () => {
-
-      setTimeout(() => {
-
-        speakReading(
-          numberText +
-          "えんなり",
-
-          () => {
-
-            setTimeout(() => {
-
-              speakYomiSequence(
-                numbers,
-                index + 1,
-                callback
-              );
-
-            }, numberGap);
-
-          },
-
-          {
-            rate:
-              baseRate * 0.94,
-
-            pitch:
-              1.00
-          }
-        );
-
-      }, phraseGap);
-
-    },
-
-    {
-      rate:
-        baseRate * 0.88,
-
-      pitch:
-        1.02
-    }
-  );
-
-  return;
-}
-
-
-/* =======================================================
-   引き算
-   → 最初の引き算だけ「ひいては」
-======================================================= */
-
-if (
-  item.operation === "subtract"
-) {
-
-  const previous =
-    numbers[index - 1];
-
-  const isFirstSubtract =
-    !previous ||
-    previous.operation !== "subtract";
-
-
-  if (isFirstSubtract) {
-
-    speakReading(
-      "ひいては",
-      () => {
-
-        setTimeout(() => {
-
-          speakReading(
-            numberText +
-            "えんなり",
-
-            () => {
-
-              setTimeout(() => {
-
-                speakYomiSequence(
-                  numbers,
-                  index + 1,
-                  callback
-                );
-
-              }, numberGap);
-
-            },
-
-            {
-              rate:
-                baseRate * 0.94,
-
-              pitch:
-                0.99
-            }
-          );
-
-        }, phraseGap);
-
-      },
-
-      {
-        rate:
-          baseRate * 0.90,
-
-        pitch:
-          0.98
-      }
-    );
-
-  } else {
-
-    /* 引き算が続いている
-       →「ひいては」は読まない */
-
-    speakReading(
-      numberText +
-      "えんなり",
-
-      () => {
-
-        setTimeout(() => {
-
-          speakYomiSequence(
-            numbers,
-            index + 1,
-            callback
-          );
-
-        }, numberGap);
-
-      },
-
-      {
-        rate:
-          baseRate * 0.94,
-
-        pitch:
-          0.99
-      }
-    );
-  }
-
-
-  return;
-}
-
-
-/* =======================================================
-   前の数字が引き算
-   →「くわえて」
-======================================================= */
-
-const previous =
-  numbers[index - 1];
-
-
-if (
-  previous &&
-  previous.operation === "subtract"
-) {
-
-  speakReading(
-    "くわえて",
-    () => {
-
-      setTimeout(() => {
-
-        speakReading(
-          numberText +
-          "えんなり",
-
-          () => {
-
-            setTimeout(() => {
-
-              speakYomiSequence(
-                numbers,
-                index + 1,
-                callback
-              );
-
-            }, numberGap);
-
-          },
-
-          {
-            rate:
-              baseRate * 0.94,
-
-            pitch:
-              1.00
-          }
-        );
-
-      }, phraseGap);
-
-    },
-
-    {
-      rate:
-        baseRate * 0.90,
-
-      pitch:
-        1.01
-    }
-  );
-
-  return;
-}
-
-
-/* =======================================================
-   通常の加算
-======================================================= */
-
-speakReading(
-  numberText +
-  "えんなり",
-
-  () => {
-
-    setTimeout(() => {
-
-      speakYomiSequence(
-        numbers,
-        index + 1,
-        callback
-      );
-
-    }, numberGap);
-
-  },
-
-  {
-    rate:
-      baseRate * 0.94,
-
-    pitch:
-      1.00
-  }
-);
-
-}
 
 /* =========================================================
    問題読み上げ・暗算
@@ -1707,19 +1280,21 @@ function speakAnzanSequence(
   callback
 ) {
 
-  /* =======================================================
-     速度4・5
-     → 1問をまとまりで読み上げる
-     → 読み上げ算と同じ構造
-     → 暗算なので速度だけ速くする
-  ======================================================= */
-
-  if (
-    readingState.speed >= 4 &&
-    index === 0
-  ) {
+  if (index === 0) {
 
     const speedSettings = {
+
+      1: {
+        rate: 0.90
+      },
+
+      2: {
+        rate: 1.10
+      },
+
+      3: {
+        rate: 1.30
+      },
 
       4: {
         rate: 1.60
