@@ -319,7 +319,7 @@
 
   /* 読み上げ中だけタイトルと条件表示を下げる */
   #app:has(#readingConditionDisplay[style*="display: block"]) #questionTitle {
-    margin-top: 32px;
+    margin-top: 64px;
   }
 
   /* 条件表示との間隔 */
