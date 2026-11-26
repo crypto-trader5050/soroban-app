@@ -309,14 +309,22 @@
   }
 }
 
-/* ========================================
-   スマホ横向き：読み上げ画面のタイトル位置
-======================================== */
 
-@media screen and (max-width: 600px) and (orientation: landscape) {
+/* ==================================================
+   読み上げ実行画面：スマホ横向きの表示位置調整
+   PC・フラッシュ暗算には影響させない
+================================================== */
 
-  #questionTitle {
-    margin-top: 40px !important;
+@media screen and (orientation: landscape) and (max-width: 1200px) {
+
+  /* 読み上げ中だけタイトルと条件表示を下げる */
+  #app:has(#readingConditionDisplay[style*="display: block"]) #questionTitle {
+    margin-top: 32px;
+  }
+
+  /* 条件表示との間隔 */
+  #app:has(#readingConditionDisplay[style*="display: block"]) #readingConditionDisplay {
+    margin-top: 6px;
   }
 
 }
