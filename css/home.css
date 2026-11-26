@@ -479,77 +479,129 @@
 }
 
 
+
 /* =========================================================
-   メインカード共通
+   HOME メインカード共通・プレミアムデザイン
 ========================================================= */
 
 .main-card {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
 
   min-height: 365px;
 
   display: flex;
   flex-direction: column;
 
-  padding: 20px 34px 16px;
+  padding: 24px 30px 20px;
 
-  background: rgba(255, 255, 255, 0.97);
-
-  border: 2px solid;
-
-  border-radius: 19px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 26px;
 
   box-shadow:
-    0 4px 12px rgba(29, 76, 112, 0.06);
+    0 12px 28px rgba(32, 83, 126, 0.10),
+    0 3px 8px rgba(32, 83, 126, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
+/* カード上部の柔らかな光 */
+
+.main-card::before {
+  content: "";
+
+  position: absolute;
+  z-index: 0;
+
+  width: 210px;
+  height: 210px;
+
+  top: -105px;
+  right: -75px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.48);
+
+  pointer-events: none;
+}
+
+/* カード内の内容を前面に */
+
+.main-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ホバー時 */
 
 .main-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-7px);
 
   box-shadow:
-    0 9px 20px rgba(29, 76, 112, 0.12);
+    0 20px 38px rgba(32, 83, 126, 0.16),
+    0 6px 12px rgba(32, 83, 126, 0.08);
 }
 
 /* =========================================================
-   HOME メインカード
-   カードごとの色設定
+   カードごとの背景色
 ========================================================= */
 
 .flash-card {
-  border-color: #1683e6;
-}
+  background:
+    linear-gradient(
+      145deg,
+      #f2f9ff 0%,
+      #deefff 52%,
+      #cfe7ff 100%
+    );
 
+  border-color: #a9d2f6;
+}
 
 .print-card {
-  border-color: #17a86b;
-}
+  background:
+    linear-gradient(
+      145deg,
+      #f1fcf6 0%,
+      #ddf5e8 52%,
+      #cceedd 100%
+    );
 
+  border-color: #a5d9bb;
+}
 
 .read-card {
-  border-color: #ff8a00;
+  background:
+    linear-gradient(
+      145deg,
+      #fffaf2 0%,
+      #fff0dc 52%,
+      #ffe4c3 100%
+    );
+
+  border-color: #f0c99c;
 }
 
-
 /* =========================================================
-   HOME カードアイコン
+   カードアイコン
 ========================================================= */
 
 .card-icon {
-  width: 76px;
-  height: 76px;
+  width: 82px;
+  height: 82px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin: 0 auto 10px;
+  margin: 0 auto 13px;
 
-  border-radius: 50%;
+  border-radius: 25px;
 
   color: #ffffff;
 
@@ -557,152 +609,134 @@
   line-height: 1;
 
   box-shadow:
-    0 2px 5px rgba(0, 0, 0, 0.08);
-}
+    0 8px 16px rgba(28, 73, 112, 0.16),
+    inset 0 2px 3px rgba(255, 255, 255, 0.35);
 
+  transform: rotate(-3deg);
+}
 
 .flash-icon {
-  background: #1683e6;
+  background: linear-gradient(145deg, #43a5f5, #0867c5);
 }
-
 
 .print-icon {
-  background: #17a86b;
+  background: linear-gradient(145deg, #42c98c, #07834e);
 }
-
 
 .read-icon {
-  background: #ff8a00;
+  background: linear-gradient(145deg, #ffb34f, #e87913);
 }
 
-
 /* =========================================================
-   HOME カード見出し
+   カード見出し
 ========================================================= */
 
 .main-card h2 {
-  margin: 0 0 5px;
+  margin: 0 0 8px;
 
   text-align: center;
 
-  font-size: 28px;
-
+  font-size: 27px;
   font-weight: 900;
-
   line-height: 1.35;
-}
 
+  letter-spacing: 0.3px;
+}
 
 .flash-card h2 {
   color: #0758a8;
 }
 
-
 .print-card h2 {
-  color: #087d4d;
+  color: #08764a;
 }
-
 
 .read-card h2 {
-  color: #ef7100;
+  color: #c7670b;
 }
 
-
 /* =========================================================
-   HOME カード説明
+   カード説明文
 ========================================================= */
 
 .card-lead {
   min-height: 52px;
 
-  margin: 0 0 7px;
+  margin: 0 0 9px;
 
   text-align: center;
 
-  color: #182c42;
+  color: #263d54;
 
   font-size: 14px;
-
-  font-weight: 600;
-
-  line-height: 1.65;
+  font-weight: 650;
+  line-height: 1.7;
 }
 
-
-/* =========================================================
-   HOME カード説明下の点線
-========================================================= */
+/* 説明文の下のアクセントライン */
 
 .card-lead::after {
   content: "";
 
   display: block;
 
-  margin: 8px auto 0;
+  width: 72%;
+  margin: 12px auto 0;
 
-  width: 100%;
-
-  border-bottom: 3px dotted;
+  border-bottom: 2px solid;
+  opacity: 0.38;
 }
-
 
 .flash-card .card-lead::after {
   border-color: #1683e6;
 }
 
-
 .print-card .card-lead::after {
   border-color: #17a86b;
 }
 
-
 .read-card .card-lead::after {
-  border-color: #ff8a00;
+  border-color: #e9821b;
 }
 
-
 /* =========================================================
-   HOME カード項目
+   カード内の項目
 ========================================================= */
 
 .card-features {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  margin: 4px 0 10px;
+  gap: 5px;
+
+  margin: 5px 0 14px;
   padding: 0;
+
   list-style: none;
 }
-
 
 .print-card .card-features {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 5px;
 }
 
 .card-features li {
   position: relative;
 
-  padding: 0 0 0 25px;
+  padding: 3px 0 3px 28px;
 
   background: transparent;
 
-  color: #24384c;
+  color: #263d54;
 
   border-radius: 0;
 
   font-size: 14px;
-
   font-weight: 700;
-
   line-height: 1.55;
 }
 
-
-/* =========================================================
-   HOME カード項目のチェックマーク
-========================================================= */
+/* チェックマーク */
 
 .card-features li::before {
   content: "✓";
@@ -712,8 +746,8 @@
   left: 0;
   top: 50%;
 
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
 
   display: flex;
   align-items: center;
@@ -729,24 +763,20 @@
   font-weight: 900;
 }
 
-
 .flash-card .card-features li::before {
   background: #1683e6;
 }
-
 
 .print-card .card-features li::before {
   background: #17a86b;
 }
 
-
 .read-card .card-features li::before {
   background: #ff8a00;
 }
 
-
 /* =========================================================
-   HOME カードボタン
+   カードボタン
 ========================================================= */
 
 .main-card-button {
@@ -759,55 +789,85 @@
   position: relative;
 
   margin: auto 0 0;
-
-  padding: 11px 18px;
+  padding: 13px 42px 13px 20px;
 
   color: #ffffff;
 
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 18px;
 
-  border-radius: 28px;
-
-  font-size: 22px;
-
+  font-size: 19px;
   font-weight: 900;
+  letter-spacing: 0.5px;
 
   cursor: pointer;
 
+  box-shadow:
+    0 6px 12px rgba(22, 73, 119, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35);
+
   transition:
-    transform 0.15s ease,
-    opacity 0.15s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
 }
-
-
-.main-card-button:hover {
-  opacity: 0.92;
-
-  transform: translateY(-1px);
-}
-
-
-.main-card-button:active {
-  transform: scale(0.98);
-}
-
-
-/* =========================================================
-   HOME カードボタンの色
-========================================================= */
 
 .flash-card .main-card-button {
-  background: #1683e6;
+  background: linear-gradient(110deg, #1688e9, #075bb5);
 }
-
 
 .print-card .main-card-button {
-  background: #17a86b;
+  background: linear-gradient(110deg, #20b979, #07814e);
 }
 
-
 .read-card .main-card-button {
-  background: #ff8a00;
+  background: linear-gradient(110deg, #ff9d32, #e8750b);
+}
+
+/* ボタンのホバー */
+
+.main-card-button:hover {
+  filter: brightness(1.08);
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 18px rgba(22, 73, 119, 0.22),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/* ボタンを押したとき */
+
+.main-card-button:active {
+  transform: translateY(1px);
+
+  box-shadow:
+    0 3px 6px rgba(22, 73, 119, 0.18);
+}
+
+/* キーボード操作時のフォーカス */
+
+.main-card-button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* 右矢印 */
+
+.arrow {
+  position: absolute;
+
+  right: 20px;
+
+  font-size: 31px;
+  font-weight: 400;
+  line-height: 0.8;
+
+  transition: transform 0.2s ease;
+}
+
+.main-card-button:hover .arrow {
+  transform: translateX(4px);
 }
 
 
