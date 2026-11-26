@@ -1370,3 +1370,654 @@ body:has(#home:not([style*="display: none"])) {
   }
 
 }
+
+
+/* =========================================================
+   PREMIUM HOME DESIGN
+   そろばんトレーニング TOP画面・品質向上
+   既存HTML・JavaScript・機能には変更を加えない
+========================================================= */
+
+/* ---------- ブランドカラー ---------- */
+
+#home {
+  --premium-navy: #073b78;
+  --premium-blue: #0879d5;
+  --premium-light: #eaf6ff;
+  --premium-orange: #ff9417;
+  --premium-green: #13a878;
+
+  background:
+    radial-gradient(
+      circle at 10% 18%,
+      rgba(85, 182, 244, 0.16),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 92% 65%,
+      rgba(75, 164, 231, 0.13),
+      transparent 25%
+    ),
+    linear-gradient(
+      145deg,
+      #e8f6ff 0%,
+      #f7fbff 48%,
+      #ffffff 100%
+    );
+}
+
+/* ---------- 背景装飾を控えめに ---------- */
+
+#home::before {
+  opacity: 0.55;
+}
+
+#home::after {
+  opacity: 0.35;
+}
+
+/* ---------- ヘッダー ---------- */
+
+#home .home-header {
+  min-height: 88px;
+  padding: 0 4.5%;
+
+  background:
+    linear-gradient(
+      115deg,
+      #06366f 0%,
+      #0755a4 55%,
+      #0875c7 100%
+    );
+
+  box-shadow:
+    0 5px 18px rgba(4, 48, 95, 0.22),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+#home .logo-area {
+  gap: 13px;
+}
+
+#home .logo-icon {
+  width: 58px;
+  height: 58px;
+  font-size: 45px;
+
+  filter:
+    drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+}
+
+#home .logo-text {
+  font-size: clamp(25px, 3vw, 42px);
+  letter-spacing: 1.5px;
+
+  text-shadow:
+    0 2px 5px rgba(0,0,0,0.16);
+}
+
+/* ---------- ヘッダーボタン ---------- */
+
+#home .header-menu {
+  gap: 20px;
+}
+
+#home .header-menu-button {
+  min-width: 68px;
+  font-size: 13px;
+  gap: 5px;
+}
+
+#home .header-menu-icon {
+  width: 45px;
+  height: 45px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #2997ef,
+      #0866bd
+    );
+
+  border: 1px solid rgba(255,255,255,0.3);
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.18),
+    inset 0 1px 2px rgba(255,255,255,0.35);
+}
+
+/* ---------- メイン領域 ---------- */
+
+#home .home-main {
+  width: min(1260px, 92%);
+  padding-top: 25px;
+  padding-bottom: 22px;
+}
+
+/* ---------- ヒーロー ---------- */
+
+#home .hero-section {
+  min-height: 215px;
+  margin-bottom: 20px;
+  padding: 28px 35px;
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(255,255,255,0.72),
+      rgba(235,247,255,0.25)
+    );
+
+  border: 1px solid rgba(255,255,255,0.85);
+  border-radius: 25px;
+
+  box-shadow:
+    0 8px 24px rgba(34, 103, 157, 0.06);
+}
+
+#home .hero-text h1 {
+  font-size: clamp(34px, 3.8vw, 50px);
+  letter-spacing: 0.5px;
+
+  text-shadow:
+    0 2px 1px rgba(255,255,255,0.8);
+}
+
+#home .hero-text h1 span {
+  color: #f28a18;
+}
+
+#home .hero-text p {
+  font-size: 18px;
+  color: #315477;
+}
+
+#home .hero-text::after {
+  width: 570px;
+  max-width: 85%;
+  margin-top: 15px;
+
+  border-bottom: 4px dotted #55a9e5;
+}
+
+#home .hero-character {
+  width: 420px;
+  right: 18px;
+  bottom: -30px;
+}
+
+#home .hero-character-image {
+  filter:
+    drop-shadow(0 10px 9px rgba(24, 71, 110, 0.19));
+}
+
+/* ---------- 3つのメインカード ---------- */
+
+#home .main-cards {
+  gap: 28px;
+  margin-bottom: 20px;
+}
+
+#home .main-card {
+  min-height: 350px;
+  padding: 23px 28px 20px;
+
+  background:
+    linear-gradient(
+      155deg,
+      #ffffff 0%,
+      #fafdff 100%
+    );
+
+  border-width: 1.5px;
+  border-radius: 23px;
+
+  box-shadow:
+    0 8px 22px rgba(28, 79, 120, 0.09),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+#home .main-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow:
+    0 15px 30px rgba(28, 79, 120, 0.15);
+}
+
+#home .flash-card {
+  border-color: #58a9ef;
+}
+
+#home .print-card {
+  border-color: #54c49b;
+}
+
+#home .read-card {
+  border-color: #ffb45e;
+}
+
+/* ---------- カードアイコン ---------- */
+
+#home .card-icon {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 13px;
+
+  font-size: 36px;
+
+  box-shadow:
+    0 6px 13px rgba(0,0,0,0.13),
+    inset 0 2px 3px rgba(255,255,255,0.32);
+}
+
+#home .flash-icon {
+  background:
+    linear-gradient(145deg, #36a1f5, #0870cc);
+}
+
+#home .print-icon {
+  background:
+    linear-gradient(145deg, #35c58e, #079966);
+}
+
+#home .read-icon {
+  background:
+    linear-gradient(145deg, #ffae32, #f47a00);
+}
+
+/* ---------- カード見出し ---------- */
+
+#home .main-card h2 {
+  font-size: 25px;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+}
+
+/* ---------- カード説明 ---------- */
+
+#home .card-lead {
+  min-height: 52px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #40566c;
+}
+
+#home .card-lead::after {
+  margin-top: 10px;
+  border-bottom-width: 2px;
+}
+
+/* ---------- カード内の機能一覧 ---------- */
+
+#home .card-features {
+  gap: 4px;
+  margin-top: 7px;
+  margin-bottom: 13px;
+}
+
+#home .card-features li {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #30475e;
+}
+
+#home .card-features li::before {
+  width: 17px;
+  height: 17px;
+  font-size: 11px;
+}
+
+/* ---------- メインボタン ---------- */
+
+#home .main-card-button {
+  min-height: 48px;
+  padding: 11px 20px;
+
+  border-radius: 30px;
+
+  font-size: 20px;
+  letter-spacing: 0.5px;
+
+  box-shadow:
+    0 5px 10px rgba(0,0,0,0.13),
+    inset 0 1px 0 rgba(255,255,255,0.28);
+}
+
+#home .flash-card .main-card-button {
+  background:
+    linear-gradient(110deg, #2699f0, #0870ca);
+}
+
+#home .print-card .main-card-button {
+  background:
+    linear-gradient(110deg, #25bd83, #079968);
+}
+
+#home .read-card .main-card-button {
+  background:
+    linear-gradient(110deg, #ffad30, #f47a00);
+}
+
+#home .main-card-button:hover {
+  opacity: 1;
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+}
+
+#home .main-card-button:active {
+  transform: translateY(1px) scale(0.985);
+  box-shadow:
+    0 2px 5px rgba(0,0,0,0.12);
+}
+
+#home .arrow {
+  font-size: 32px;
+}
+
+/* ---------- 4つの特徴 ---------- */
+
+#home .feature-bar {
+  margin-bottom: 18px;
+
+  background: rgba(255,255,255,0.94);
+  border: 1px solid #d6e7f3;
+  border-radius: 19px;
+
+  box-shadow:
+    0 6px 17px rgba(35, 83, 123, 0.07);
+}
+
+#home .feature-item {
+  min-height: 105px;
+  padding: 14px 15px;
+  gap: 11px;
+
+  border-color: #e4edf4;
+}
+
+#home .feature-icon {
+  font-size: 38px;
+}
+
+#home .feature-item h3 {
+  font-size: 15px;
+  color: #164c80;
+}
+
+#home .feature-item p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #52677b;
+}
+
+/* ---------- 下部パネル ---------- */
+
+#home .bottom-panels {
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+#home .bottom-panel {
+  min-height: 175px;
+  padding: 20px 25px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 6px 17px rgba(35, 83, 123, 0.06);
+}
+
+#home .message-panel {
+  background:
+    linear-gradient(135deg, #eaf6ff, #ffffff 85%);
+  border-color: #b8ddf6;
+}
+
+#home .recommend-panel {
+  background:
+    linear-gradient(135deg, #fffaf0, #fff4db 100%);
+  border-color: #f1d69e;
+}
+
+#home .panel-title {
+  gap: 11px;
+  margin-bottom: 9px;
+}
+
+#home .panel-title h2 {
+  font-size: 20px;
+}
+
+#home .panel-title-icon {
+  font-size: 25px;
+}
+
+#home .message-content p {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+#home .message-content p:first-child {
+  font-size: 23px;
+}
+
+#home .small-character {
+  font-size: 72px;
+}
+
+#home .recommend-list {
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+#home .recommend-message {
+  font-size: 14px;
+}
+
+/* ---------- フッター ---------- */
+
+#home .home-footer {
+  min-height: 55px;
+  padding: 8px 5%;
+
+  background:
+    linear-gradient(
+      110deg,
+      #06366f,
+      #0755a4 60%,
+      #0875c7
+    );
+
+  box-shadow:
+    0 -3px 12px rgba(5, 60, 110, 0.08);
+}
+
+#home .footer-logo {
+  font-size: 19px;
+}
+
+#home .footer-description {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* =========================================================
+   PREMIUM HOME DESIGN
+   タブレット対応
+========================================================= */
+
+@media (max-width: 900px) {
+
+  #home .home-header {
+    min-height: 82px;
+  }
+
+  #home .hero-section {
+    min-height: 220px;
+  }
+
+  #home .hero-character {
+    width: 340px;
+    right: 0;
+    bottom: -15px;
+  }
+
+  #home .main-cards {
+    gap: 18px;
+  }
+
+  #home .main-card {
+    padding: 22px;
+  }
+
+  #home .feature-item {
+    padding: 13px;
+  }
+
+}
+
+/* =========================================================
+   PREMIUM HOME DESIGN
+   スマートフォン対応
+========================================================= */
+
+@media (max-width: 600px) {
+
+  #home .home-header {
+    min-height: 70px;
+    padding: 9px 4%;
+  }
+
+  #home .logo-area {
+    gap: 6px;
+  }
+
+  #home .logo-text {
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+
+  #home .logo-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 26px;
+  }
+
+  #home .header-menu {
+    gap: 3px;
+  }
+
+  #home .header-menu-button {
+    min-width: 48px;
+    font-size: 10px;
+  }
+
+  #home .header-menu-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+  }
+
+  #home .home-main {
+    width: 92%;
+    padding-top: 17px;
+  }
+
+  #home .hero-section {
+    min-height: 230px;
+    padding: 24px 17px;
+    margin-bottom: 16px;
+    border-radius: 19px;
+  }
+
+  #home .hero-text {
+    max-width: 100%;
+  }
+
+  #home .hero-text h1 {
+    font-size: 25px;
+    line-height: 1.35;
+  }
+
+  #home .hero-text p {
+    max-width: 75%;
+    font-size: 12px;
+  }
+
+  #home .hero-text::after {
+    width: 70%;
+    margin-top: 10px;
+  }
+
+  #home .hero-character {
+    width: 230px;
+    right: -22px;
+    bottom: -15px;
+    opacity: 0.9;
+  }
+
+  #home .main-cards {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  #home .main-card {
+    min-height: 300px;
+    padding: 21px 24px 18px;
+    border-radius: 19px;
+  }
+
+  #home .card-icon {
+    width: 62px;
+    height: 62px;
+    font-size: 31px;
+  }
+
+  #home .main-card h2 {
+    font-size: 23px;
+  }
+
+  #home .card-lead {
+    font-size: 13px;
+  }
+
+  #home .main-card-button {
+    min-height: 47px;
+    font-size: 19px;
+  }
+
+  #home .feature-bar {
+    grid-template-columns: 1fr;
+  }
+
+  #home .feature-item {
+    min-height: 80px;
+    border-right: none;
+    border-bottom: 1px solid #e4edf4;
+  }
+
+  #home .feature-item:last-child {
+    border-bottom: none;
+  }
+
+  #home .bottom-panels {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  #home .bottom-panel {
+    min-height: 155px;
+    padding: 18px;
+  }
+
+  #home .home-footer {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+
+}
