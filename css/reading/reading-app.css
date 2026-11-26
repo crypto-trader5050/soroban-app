@@ -308,3 +308,15 @@
     width: min(82vw, 340px);
   }
 }
+
+/* ========================================
+   スマホ横向き：読み上げ画面のタイトル位置
+======================================== */
+
+@media screen and (max-width: 600px) and (orientation: landscape) {
+
+  #questionTitle {
+    margin-top: 40px !important;
+  }
+
+}
