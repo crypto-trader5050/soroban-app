@@ -390,12 +390,10 @@
   line-height: 1.4;
   letter-spacing: -0.025em;
 
-  -webkit-text-stroke: 3px #ffffff;
+  -webkit-text-stroke: 4px #ffffff;
   paint-order: stroke fill;
 
-  text-shadow:
-    3px 4px 0 #073d83,
-    0 5px 8px rgba(0, 45, 100, 0.18);
+  text-shadow: none;
 }
 
 /* 今日も：オレンジの強調 */
@@ -406,12 +404,10 @@
   font-size: 1.12em;
   font-weight: 900;
 
-  -webkit-text-stroke: 3px #ffffff;
+  -webkit-text-stroke: 4px #ffffff;
   paint-order: stroke fill;
 
-  text-shadow:
-    3px 4px 0 #d85d00,
-    0 5px 8px rgba(180, 75, 0, 0.16);
+  text-shadow: none;
 }
 
 /* サブコピー */
@@ -434,8 +430,9 @@
   text-shadow: 1px 2px 2px rgba(255, 255, 255, 0.8);
 }
 
+
 /* =========================================================
-   黄色の筆書き風アクセントライン
+   ヒーロー下：ロング・ライトニングライン
 ========================================================= */
 
 .hero-text::after {
@@ -443,30 +440,55 @@
 
   display: block;
 
-  width: 630px;
-  max-width: 90%;
-  height: 20px;
+  width: calc(100% + 100px);
+  max-width: calc(100vw - 30px);
+  height: 25px;
 
-  margin-top: 5px;
+  margin-top: 7px;
+  margin-left: -50px;
 
-  background:
-    linear-gradient(
-      177deg,
-      transparent 38%,
-      #ffcf16 40%,
-      #ffcf16 57%,
-      transparent 60%
-    ),
-    linear-gradient(
-      183deg,
-      transparent 63%,
-      #ffb900 65%,
-      #ffb900 76%,
-      transparent 79%
-    );
+  background: linear-gradient(
+    180deg,
+    #ffe45a 0%,
+    #ffc400 55%,
+    #ffad00 100%
+  );
 
-  border-radius: 50%;
+  clip-path: polygon(
+    0% 65%,
+    10% 28%,
+    19% 53%,
+    29% 8%,
+    39% 48%,
+    49% 18%,
+    60% 62%,
+    70% 12%,
+    81% 49%,
+    91% 20%,
+    100% 42%,
+    91% 75%,
+    81% 67%,
+    70% 91%,
+    60% 73%,
+    49% 100%,
+    39% 70%,
+    29% 91%,
+    19% 75%,
+    10% 88%,
+    0% 65%
+  );
+
   transform: rotate(-1deg);
+}
+
+/* スマートフォンでは横幅を調整 */
+
+@media screen and (max-width: 600px) {
+  .hero-text::after {
+    width: calc(100% + 30px);
+    max-width: calc(100vw - 30px);
+    margin-left: -15px;
+  }
 }
 
 
