@@ -435,48 +435,96 @@
 
 
 
+
 /* =========================================================
-   サブコピー下：ライトニングアクセント
+   ヒーロー下の二色の稲妻ライン
 ========================================================= */
 
 .hero-text::after {
   content: "";
-
   display: block;
-
   width: 82%;
   max-width: 500px;
-  height: 17px;
+  height: 20px;
+  margin: 8px auto 0;
 
-  margin: 5px auto 0;
-
-  background: #ffc928;
+  background:
+    linear-gradient(
+      180deg,
+      #FF8A24 0%,
+      #FF8A24 100%
+    );
 
   clip-path: polygon(
-    0% 55%,
-    12% 43%,
-    19% 0%,
-    24% 48%,
-    43% 36%,
-    51% 100%,
-    59% 42%,
-    77% 32%,
+    0% 48%,
+    13% 35%,
+    20% 0%,
+    25% 39%,
+    43% 27%,
+    50% 75%,
+    60% 32%,
+    77% 20%,
     84% 0%,
-    88% 43%,
-    100% 30%,
-    88% 62%,
-    84% 35%,
-    77% 66%,
-    59% 75%,
-    51% 100%,
-    43% 57%,
-    24% 68%,
-    19% 34%,
-    12% 65%,
-    0% 55%
+    89% 34%,
+    100% 22%,
+    88% 55%,
+    84% 29%,
+    76% 58%,
+    59% 67%,
+    50% 100%,
+    43% 49%,
+    25% 61%,
+    20% 30%,
+    13% 57%
   );
 
-  transform: rotate(-0.5deg);
+  position: relative;
+  filter: none;
+}
+
+/* 黄色の稲妻を重ねる */
+.hero-text {
+  position: relative;
+}
+
+.hero-text::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 82%;
+  max-width: 500px;
+  height: 20px;
+  left: 50%;
+  bottom: -3px;
+  transform: translateX(-50%) rotate(-1deg);
+
+  background: #FFD12A;
+
+  clip-path: polygon(
+    0% 48%,
+    13% 35%,
+    20% 0%,
+    25% 39%,
+    43% 27%,
+    50% 75%,
+    60% 32%,
+    77% 20%,
+    84% 0%,
+    89% 34%,
+    100% 22%,
+    88% 55%,
+    84% 29%,
+    76% 58%,
+    59% 67%,
+    50% 100%,
+    43% 49%,
+    25% 61%,
+    20% 30%,
+    13% 57%
+  );
+
+  z-index: -1;
+  pointer-events: none;
 }
 
 
@@ -484,7 +532,15 @@
   .hero-text::after {
     width: 82%;
     max-width: 500px;
-    margin: 5px auto 0;
+    height: 16px;
+    margin: 6px auto 0;
+  }
+
+  .hero-text::before {
+    width: 82%;
+    max-width: 500px;
+    height: 16px;
+    bottom: -2px;
   }
 }
 
