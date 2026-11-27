@@ -496,7 +496,7 @@
 
   padding: 24px 30px 20px;
 
-  border: 1px solid rgba(255, 255, 255, 0.9);
+  border: 3px solid;
   border-radius: 26px;
 
   box-shadow:
@@ -560,7 +560,7 @@
       #cfe7ff 100%
     );
 
-  border-color: #a9d2f6;
+  border-color: #78b9ef;
 }
 
 .print-card {
@@ -572,7 +572,7 @@
       #cceedd 100%
     );
 
-  border-color: #a5d9bb;
+  border-color: #79c99c;
 }
 
 .read-card {
@@ -584,7 +584,7 @@
       #ffe4c3 100%
     );
 
-  border-color: #f0c99c;
+  border-color: #efb36f;
 }
 
 /* =========================================================
