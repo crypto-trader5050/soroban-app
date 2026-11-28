@@ -1,6 +1,6 @@
 /* =====================================================
    レベル選択
-   TOP画面と統一したデザイン
+   藍色・ゴールド背景
 ===================================================== */
 
 #levelSelect {
@@ -11,54 +11,16 @@
   padding: 50px 20px 70px;
 
   text-align: center;
+  color: #ffffff;
 
-  color: #102f58;
-
-  background:
-    radial-gradient(
-      circle at 15% 20%,
-      rgba(76, 169, 233, 0.18),
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 85% 75%,
-      rgba(35, 127, 176, 0.12),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #d9f4ff 0%,
-      #ffffff 48%,
-      #eefaff 100%
-    );
+  background-image: url("../assets/images/level-bg.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 
   position: relative;
   overflow: hidden;
 }
-
-
-/* =====================================================
-   装飾
-===================================================== */
-
-#levelSelect::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background:
-    repeating-linear-gradient(
-      -25deg,
-      rgba(255, 255, 255, 0.35) 0,
-      rgba(255, 255, 255, 0.35) 2px,
-      transparent 2px,
-      transparent 34px
-    );
-
-  pointer-events: none;
-}
-
 
 /* =====================================================
    見出し
